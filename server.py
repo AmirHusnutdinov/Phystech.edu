@@ -1,5 +1,5 @@
 import os
-from ServiceFiles.settings import app
+from ServiceFiles.settings import app, host
 from ServiceFiles.links import main_page
 from MainPage.main_page import StartPage
 from flask import render_template
@@ -11,4 +11,4 @@ def open_main_page():
 
 
 port = int(os.environ.get("PORT", 8181))
-app.run(host="0.0.0.0", port=port)
+app.run(host=host, port=port)
