@@ -1,5 +1,5 @@
 import os
-from ServiceFiles.settings import app, host
+from settings import app, host
 from ServiceFiles.links import main_page
 from MainPage.main_page import StartPage
 from flask import render_template
