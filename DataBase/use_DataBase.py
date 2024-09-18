@@ -1,4 +1,4 @@
-from ServiceFiles.settings import host, user, password, db_name
+from settings import host, user, password, db_name
 import psycopg2
 
 

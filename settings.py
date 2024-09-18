@@ -1,5 +1,4 @@
 import datetime
-import os
 from flask import Flask
 
 host = "127.0.0.1"
