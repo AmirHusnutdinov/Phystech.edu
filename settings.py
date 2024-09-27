@@ -9,4 +9,4 @@ app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=365)
 
 user = "postgres"
 password = "12345"
-db_name = "phystech"
+db_name = "food_helper"
