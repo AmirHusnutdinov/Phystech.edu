@@ -115,6 +115,71 @@ header h1 {
     color: #555;
 }
 
+/* Секция цитат */
+.quotes {
+    padding: 50px 0;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.quotes h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #663300;
+}
+
+.quote-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #ff9933;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 100px; /* Фиксированная высота */
+    overflow: hidden; /* Скрываем выступающие части */
+}
+
+.quote-text {
+    font-size: 1.5em;
+    color: #555;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    transform: translateY(20px);
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.quote-text.active {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}
+
+/* Медиа-запросы для адаптивного дизайна */
+@media (max-width: 768px) {
+    .quotes h2 {
+        font-size: 1.5em;
+    }
+
+    .quote-text {
+        font-size: 1.2em;
+    }
+}
+
+@media (max-width: 480px) {
+    .quotes h2 {
+        font-size: 1.2em;
+    }
+
+    .quote-text {
+        font-size: 1em;
+    }
+}
+
 /* Подвал */
 footer {
     background-color: #ffcc99;

@@ -29,6 +29,39 @@
         </div>
     </div>
 </section>
+
+<section class="quotes">
+    <div class="container">
+        <h2>Цитаты о здоровом питании</h2>
+        <div class="quote-container">
+            <div class="quote-text" id="quote-text"></div>
+        </div>
+    </div>
+    <script>
+    const quotes = [
+        "Здоровое питание — это не диета, это образ жизни. — Эллен ДеДженерес",
+        "Ешьте пищу, а не диету. — Майкл Поллан",
+        "Здоровое питание — это основа здоровья. — Мишель Обама",
+        "Ешьте для того, чтобы жить, а не живите для того, чтобы есть. — Сократ",
+        "Здоровое питание — это инвестиция в себя. — Джек Лалоэ"
+    ];
+
+    const quoteText = document.getElementById('quote-text');
+    let currentIndex = 0;
+
+    function changeQuote() {
+        quoteText.classList.remove('active');
+        setTimeout(() => {
+            quoteText.textContent = quotes[currentIndex];
+            quoteText.classList.add('active');
+            currentIndex = (currentIndex + 1) % quotes.length;
+        }, 500); // Задержка для анимации
+    }
+
+    changeQuote(); // Показать первую цитату
+    setInterval(changeQuote, 5000); // Менять цитату каждые 5 секунд
+</script>
+</section>
+
 </body>
-</html>
 {% endblock %}
