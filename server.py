@@ -64,7 +64,7 @@ def page_bad_request(_):
 
 @app.errorhandler(404)
 def page_not_found(_):
-    error_phrase = ["Похоже такой", "страницы", "нет."]
+    error_phrase = ["Похоже такой", "страницы", "нет"]
     return render_template("ErrorCodes/errors.html",
                            error_code_name="Not Found",
                            error_code="404",

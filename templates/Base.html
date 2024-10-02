@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="/static/assets/css/style_base.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Montserrat:300i,400,700&amp;subset=cyrillic-ext"
+          rel="stylesheet">
+    <title>{{title}}</title>
+</head>
+<script>document.getElementById("year").innerHTML = new Date().getFullYear();</script>
+<body class="{{is_genreal_page}}">
+<header class="header{{is_nav}}" id="header{{is_nav}}">
+    <div class="container">
+        <div class="header__inner">
+            <div>
+                <a class="header__logo" href="{{general}}">Food helper</a></div>
+
+            <nav class="nav1__nav" id="nav{{is_mobile}}">
+                {% if login != True %}
+                <a class="nav__link {{au_is_active}}" href="{{authorization}}">Войти</a>
+                {% endif %}
+                <a class="nav__link {{ev_is_active}}" href="{{events}}">События</a>
+                <a class="nav__link {{bl_is_active}}" href="{{blog}}">Блог</a>
+                <a class="nav__link {{an_is_active}}" href="{{answers}}">Вопросы</a>
+                <a class="nav__link {{re_is_active}}" href="{{reviews}}">Отзывы</a>
+                {% if login == True %}
+                <a class="nav__link {{us_is_active}}" href="{{cabinet}}" title="Личный кабинет"><img class="nav__img"
+                                                                                                     src="/static/assets/images/service_photos/user-ico{{is_cabinet}}.svg"
+                                                                                                     title="Личный кабинет"
+                                                                                                     width="27px"></a>
+                {% endif %}
+            </nav>
+
+            <button class="nav-toggle" id="nav_toggle" type="button">
+                <span class="nav-toggle__item">Меню</span>
+            </button>
+        </div>
+    </div>
+
+</header>
+{% block content %}{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navToggle = document.getElementById('nav_toggle');
+        const nav = document.getElementById('nav{{is_mobile}}');
+
+        navToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+    });
+</script>
+</body>
+<footer><footer>
+    <div class="container">
+        <p>&copy; 2024 Food helper. Все права защищены.</p>
+    </div>
+</footer></footer>
+</html>

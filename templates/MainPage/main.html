@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% extends "Base.html" %}
+{% block content %}
+<link rel="stylesheet" href="../../static/assets/css/style_main.css">
 <body>
-<p> Всем Aboba bebra !!! </p>
+<section class="hero">
+    <div class="container">
+        <h2>Ваш путь к здоровью и успеху начинается здесь</h2>
+        <p>Мы предлагаем индивидуальные планы питания, разработанные специально для спортсменов любого уровня.</p>
+        <a href="#services" class="btn">Узнать больше</a>
+    </div>
+</section>
+
+<section id="services" class="services">
+    <div class="container">
+        <h2>Наши услуги</h2>
+        <div class="service-cards">
+            <div class="service-card">
+                <h3>Индивидуальный план питания</h3>
+                <p>Создаем персональные планы питания с учетом ваших целей и предпочтений.</p>
+            </div>
+            <div class="service-card">
+                <h3>Консультации с диетологом</h3>
+                <p>Получайте профессиональные советы от опытных диетологов.</p>
+            </div>
+            <div class="service-card">
+                <h3>Рецепты и советы</h3>
+                <p>Доступ к базе рецептов и советов по правильному питанию.</p>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
+{% endblock %}
