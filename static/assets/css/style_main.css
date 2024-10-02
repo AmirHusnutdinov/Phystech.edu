@@ -260,13 +260,6 @@ header h1 {
     }
 }
 
-/* Подвал */
-footer {
-    background-color: #6c757d; /* Холодный цвет футера */
-    padding: 20px 0;
-    text-align: center;
-    color: #fff;
-}
 
 /* Медиа-запросы для адаптивного дизайна */
 @media (max-width: 768px) {

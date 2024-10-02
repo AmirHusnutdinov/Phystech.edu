@@ -189,7 +189,12 @@ hr {
     transform-origin: left bottom;
     transform: rotate(-45deg) translate3d(0px, 3px, 0);
 }
-
+footer {
+    background-color: #6c757d; /* Холодный цвет футера */
+    padding: 20px 0;
+    text-align: center;
+    color: #fff;
+}
 /* Media queries */
 @media (max-width: 768px) {
     .nav1__nav {
