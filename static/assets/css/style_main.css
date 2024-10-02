@@ -3,7 +3,7 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f9f5f2;
+    background-color: #f0f4f8; /* Холодный фон */
     color: #333;
 }
 
@@ -16,7 +16,7 @@ body {
 
 /* Шапка */
 header {
-    background-color: #ffcc99;
+    background-color: #6c757d; /* Холодный цвет */
     padding: 20px 0;
     text-align: center;
 }
@@ -24,30 +24,39 @@ header {
 header h1 {
     font-size: 2.5em;
     margin: 0;
-    color: #663300;
+    color: #fff;
 }
 
 .tagline {
     font-size: 1.2em;
-    color: #804d19;
+    color: #e9ecef;
 }
 
 /* Секция героя */
-.hero {
+.hero-image {
+    background-image: url('4k-mountain.jpg'); /* Замените на путь к вашему изображению */
     background-size: cover;
     background-position: center;
-    padding: 100px 0;
-    text-align: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #fff;
+    text-align: center;
 }
 
-.hero h2 {
-    margin-top: 7%;
+.hero-content {
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон для текста */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.hero-content h2 {
     font-size: 2.5em;
     margin-bottom: 20px;
 }
 
-.hero p {
+.hero-content p {
     font-size: 1.2em;
     margin-bottom: 30px;
 }
@@ -55,7 +64,7 @@ header h1 {
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #ff9933;
+    background-color: #007bff; /* Холодный цвет кнопки */
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
@@ -63,19 +72,20 @@ header h1 {
 }
 
 .btn:hover {
-    background-color: #e68a00;
+    background-color: #0056b3; /* Холодный цвет кнопки при наведении */
 }
 
 /* Секция услуг */
 .services {
     padding: 50px 0;
     text-align: center;
+    background-color: #e9ecef; /* Холодный фон */
 }
 
 .services h2 {
     font-size: 2em;
     margin-bottom: 7%;
-    color: #663300;
+    color: #343a40; /* Холодный цвет текста */
 }
 
 .service-cards {
@@ -98,16 +108,10 @@ header h1 {
     transform: translateY(-10px);
 }
 
-.service-card img {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 20px;
-}
-
 .service-card h3 {
     font-size: 1.5em;
     margin-bottom: 10px;
-    color: #663300;
+    color: #343a40; /* Холодный цвет текста */
 }
 
 .service-card p {
@@ -119,13 +123,13 @@ header h1 {
 .quotes {
     padding: 50px 0;
     text-align: center;
-    background-color: #f9f9f9;
+    background-color: #f0f4f8; /* Холодный фон */
 }
 
 .quotes h2 {
     font-size: 2em;
     margin-bottom: 30px;
-    color: #663300;
+    color: #343a40; /* Холодный цвет текста */
 }
 
 .quote-container {
@@ -133,7 +137,7 @@ header h1 {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    border: 2px solid #ff9933;
+    border: 2px solid #007bff; /* Холодный цвет рамки */
     border-radius: 10px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -180,12 +184,88 @@ header h1 {
     }
 }
 
+/* Методология расчета калорий */
+.methodology {
+    padding: 50px 0;
+    background-color: #e9ecef; /* Холодный фон */
+}
+
+.methodology h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #343a40; /* Холодный цвет текста */
+    text-align: center;
+}
+
+.methodology-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.methodology-content h3 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #343a40; /* Холодный цвет текста */
+}
+
+.methodology-content p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.methodology-content ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.methodology-content ul li {
+    margin-bottom: 10px;
+}
+
+/* Медиа-запросы для адаптивного дизайна */
+@media (max-width: 768px) {
+    .methodology h2 {
+        font-size: 1.5em;
+    }
+
+    .methodology-content h3 {
+        font-size: 1.2em;
+    }
+
+    .methodology-content p,
+    .methodology-content ul {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .methodology h2 {
+        font-size: 1.2em;
+    }
+
+    .methodology-content h3 {
+        font-size: 1em;
+    }
+
+    .methodology-content p,
+    .methodology-content ul {
+        font-size: 0.9em;
+    }
+}
+
 /* Подвал */
 footer {
-    background-color: #ffcc99;
+    background-color: #6c757d; /* Холодный цвет футера */
     padding: 20px 0;
     text-align: center;
-    color: #663300;
+    color: #fff;
 }
 
 /* Медиа-запросы для адаптивного дизайна */

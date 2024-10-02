@@ -2,8 +2,8 @@
 {% block content %}
 <link rel="stylesheet" href="../../static/assets/css/style_main.css">
 <body>
-<section class="hero">
-    <div class="container">
+<section class="hero-image">
+    <div class="hero-content">
         <h2>Ваш путь к здоровью и успеху начинается здесь</h2>
         <p>Мы предлагаем индивидуальные планы питания, разработанные специально для спортсменов любого уровня.</p>
         <a href="#services" class="btn">Узнать больше</a>
@@ -60,7 +60,53 @@
 
     changeQuote(); // Показать первую цитату
     setInterval(changeQuote, 5000); // Менять цитату каждые 5 секунд
+
+    // Плавный скролл к элементу с id="services"
+    document.querySelector('.btn').addEventListener('click', function(event) {
+        event.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            window.scrollTo({
+                top: target.offsetTop,
+                behavior: 'smooth'
+            });
+        }
+    });
 </script>
+</section>
+
+<section class="methodology">
+    <div class="container">
+        <h2>Методология расчета калорий</h2>
+        <div class="methodology-content">
+            <h3>Для профессионалов</h3>
+            <p>Для профессионалов мы учитываем следующие параметры:</p>
+            <ul>
+                <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
+                <li><strong>Возраст:</strong> В годах.</li>
+                <li><strong>Сон:</strong> В часах.</li>
+                <li><strong>Рост:</strong> В см.</li>
+                <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
+                <li><strong>Регулярный углублённый мыслительный процесс:</strong> Да/Нет.</li>
+                <li><strong>Пол:</strong> М/Ж.</li>
+                <li><strong>Вес:</strong> В кг.</li>
+                <li><strong>Метаболизм:</strong> Быстрый/Медленный.</li>
+                <li><strong>Экто-эндоморфы:</strong> Выпадающий список.</li>
+                <li><strong>Вредные привычки:</strong> Выпадающий список.</li>
+            </ul>
+
+            <h3>Для начинающих</h3>
+            <p>Для начинающих мы учитываем следующие параметры:</p>
+            <ul>
+                <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
+                <li><strong>Пол:</strong> М/Ж.</li>
+                <li><strong>Возраст:</strong> В годах.</li>
+                <li><strong>Рост:</strong> В см.</li>
+                <li><strong>Вес:</strong> В кг.</li>
+                <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
+            </ul>
+        </div>
+    </div>
 </section>
 
 </body>
