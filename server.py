@@ -1,15 +1,17 @@
 import os
-from settings import app, host
-from ServiceFiles.links import main_page, admin, authorization, registration, calendar, mode1, mode2, selected_products
-from MainPage.main_page import StartPage
+
+from flask import render_template
+
 from Admin.admin import Admin
-from Login.registration import Registration
-from Login.authorization import Authorization
 from Calendar.calendar import Calendar
+from Login.authorization import Authorization
+from Login.registration import Registration
+from MainPage.main_page import StartPage
 from Mode1.mode1 import Mode1
 from Mode2.mode2 import Mode2
-from flask import render_template
 from SelectedProducts.selectedProducts import SelectedProduct
+from ServiceFiles.links import main_page, admin, authorization, registration, calendar, mode1, mode2, selected_products
+from settings import app, host
 
 
 @app.route(main_page)
@@ -92,5 +94,5 @@ def page_internal_server_error(_):
                            main_page=main_page), 501
 
 
-port = int(os.environ.get("PORT", 8181))
-app.run(host=host, port=port)
+port = int(os.environ.get("PORT", 8080))
+app.run(host=host, port=port, debug=True)

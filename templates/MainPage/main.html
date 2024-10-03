@@ -1,5 +1,6 @@
 {% extends "Base.html" %}
 {% block content %}
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 <link rel="stylesheet" href="../../static/assets/css/style_main.css">
 <body>
 <section class="hero-image">
@@ -10,19 +11,19 @@
     </div>
 </section>
 
-<section id="services" class="services">
+<section id="services" class="services" data-aos="fade-up">
     <div class="container">
         <h2>Наши услуги</h2>
         <div class="service-cards">
-            <div class="service-card">
+            <div class="service-card" data-aos="fade-up">
                 <h3>Индивидуальный план питания</h3>
                 <p>Создаем персональные планы питания с учетом ваших целей и предпочтений.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card" data-aos="fade-up">
                 <h3>Консультации с диетологом</h3>
                 <p>Получайте профессиональные советы от опытных диетологов.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card" data-aos="fade-up">
                 <h3>Рецепты и советы</h3>
                 <p>Доступ к базе рецептов и советов по правильному питанию.</p>
             </div>
@@ -30,7 +31,7 @@
     </div>
 </section>
 
-<section class="quotes">
+<section class="quotes" data-aos="fade-up">
     <div class="container">
         <h2>Цитаты о здоровом питании</h2>
         <div class="quote-container">
@@ -72,10 +73,10 @@
             });
         }
     });
-</script>
+    </script>
 </section>
 
-<section class="methodology">
+<section class="methodology" data-aos="fade-up">
     <div class="container">
         <h2>Методология расчета калорий</h2>
         <div class="methodology-content">
@@ -109,5 +110,9 @@
     </div>
 </section>
 
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
 </body>
 {% endblock %}
