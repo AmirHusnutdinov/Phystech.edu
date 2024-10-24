@@ -3,6 +3,8 @@
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 <link rel="stylesheet" href="../../static/assets/css/style_main.css">
 <body>
+
+<!--Блок главного фото-->
 <section class="hero-image">
     <div class="hero-content">
         <h2>Ваш путь к здоровью и успеху начинается здесь</h2>
@@ -11,6 +13,7 @@
     </div>
 </section>
 
+<!--Блок услуг-->
 <section id="services" class="services" data-aos="fade-up">
     <div class="container">
         <h2>Наши услуги</h2>
@@ -31,6 +34,24 @@
     </div>
 </section>
 
+<!--Блок ссылок на моды-->
+<section class="modes" data-aos="fade-up">
+    <div class="container">
+        <h2>Выбери подходящий для тебя вариант</h2>
+        <div class="mode-blocks">
+            <a href="{{mode1}}" class="mode-block mode1">
+                <h3>Mode 1</h3>
+                <p>Дополнительная информация о Mode 1.</p>
+            </a>
+            <a href="{{mode2}}" class="mode-block mode2">
+                <h3>Mode 2</h3>
+                <p>Дополнительная информация о Mode 2.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!--Блок цитат-->
 <section class="quotes" data-aos="fade-up">
     <div class="container">
         <h2>Цитаты о здоровом питании</h2>
@@ -76,6 +97,7 @@
     </script>
 </section>
 
+<!--Блок методологии-->
 <section class="methodology" data-aos="fade-up">
     <div class="container">
         <h2>Методология расчета калорий</h2>
@@ -112,7 +134,9 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-    AOS.init();
+    AOS.init({
+        once: true // Анимация срабатывает только один раз
+    });
 </script>
 </body>
 {% endblock %}

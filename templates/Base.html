@@ -10,23 +10,25 @@
     <title>{{title}}</title>
 </head>
 <script>document.getElementById("year").innerHTML = new Date().getFullYear();</script>
-<body class="{{is_genreal_page}}">
+
 <header class="header{{is_nav}}" id="header{{is_nav}}">
     <div class="container">
         <div class="header__inner">
             <div>
-                <a class="header__logo" href="{{general}}">Food Helper</a></div>
+                <a class="header__logo" href="{{header_links[0]}}">Food Helper</a></div>
 
-            <nav class="nav1__nav" id="nav{{is_mobile}}">
+            <nav class="nav1__nav">
                 {% if login != True %}
-                <a class="nav__link {{au_is_active}}" href="{{authorization}}">Войти</a>
+                <a class="nav__link {{au_is_active}}" href="{{header_links[5]}}">Войти</a>
                 {% endif %}
-                <a class="nav__link {{ev_is_active}}" href="{{events}}">События</a>
-                <a class="nav__link {{bl_is_active}}" href="{{blog}}">Блог</a>
-                <a class="nav__link {{an_is_active}}" href="{{answers}}">Вопросы</a>
-                <a class="nav__link {{re_is_active}}" href="{{reviews}}">Отзывы</a>
+
+<!--                Пока поставил сюда просто mode1 после реализации авторизации поставить условия на выбор-->
+                <a class="nav__link {{mo_is_active}}" href="{{header_links[1]}}">Сегодня</a>
+                <a class="nav__link {{ca_is_active}}" href="{{header_links[2]}}">Календарь</a>
+                <a class="nav__link {{an_is_active}}" href="{{header_links[3]}}">Вопросы</a>
+                <a class="nav__link {{ab_is_active}}" href="{{header_links[4]}}">О нас</a>
                 {% if login == True %}
-                <a class="nav__link {{us_is_active}}" href="{{cabinet}}" title="Личный кабинет"><img class="nav__img"
+                <a class="nav__link {{us_is_active}}" href="{{header_links[6]}}" title="Личный кабинет"><img class="nav__img"
                                                                                                      src="/static/assets/images/service_photos/user-ico{{is_cabinet}}.svg"
                                                                                                      title="Личный кабинет"
                                                                                                      width="27px"></a>
