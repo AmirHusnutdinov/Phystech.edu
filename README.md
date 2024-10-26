@@ -1,2 +1,2 @@
 # Phystech.edu
-There's going to be something cool here soon.
+Пишите для своего кода тесты и соблюдайте pep8 когда я сделаю CI/CD отсутствие этих вещей будет караться

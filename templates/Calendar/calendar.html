@@ -1,10 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% extends "Base.html" %}
+{% block content %}
 <body>
-<p>calendar</p>
+    <link rel="stylesheet" href="../../static/assets/css/style_calendar.css">
+    <div class="calendar">
+        <div class="calendar-header">
+            <div class="arrow" onclick="prevMonth()">&#8249;</div>
+            <h2 id="monthYear"></h2>
+            <div class="arrow" onclick="nextMonth()">&#8250;</div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="calendar-footer">
+            <p>Дней подряд: <span id="daysInRow">3</span></p>
+            <p>Максимум: <span id="maxDays">7</span></p>
+        </div>
+    </div>
 </body>
-</html>
+    <script>
+        const monthYear = document.getElementById('monthYear');
+        const calendarGrid = document.getElementById('calendarGrid');
+        const daysInRow = document.getElementById('daysInRow');
+        const maxDays = document.getElementById('maxDays');
+
+        let currentDate = new Date();
+
+        function updateCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const monthName = new Intl.DateTimeFormat('ru-RU', { month: 'long' }).format(currentDate);
+            monthYear.textContent = `${monthName} ${year}`;
+
+            calendarGrid.innerHTML = '';
+
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('day');
+                calendarGrid.appendChild(emptyDay);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                dayElement.textContent = day;
+
+                const today = new Date();
+                if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
+                    dayElement.classList.add('today');
+                    dayElement.textContent = `${day} (50%)`;
+                } else if (today > new Date(year, month, day)) {
+                    // Здесь можно добавить логику для отображения галочки или крестика
+                    dayElement.classList.add('completed'); // или 'failed'
+                }
+
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+
+        function prevMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateCalendar();
+        }
+
+        updateCalendar();
+    </script>
+{% endblock %}

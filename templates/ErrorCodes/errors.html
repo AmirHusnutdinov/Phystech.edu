@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{error_code_name}}</title>
+    <link rel="stylesheet" href="../../static/assets/css/style_errors.css">
+</head>
+<body>
+
+<body class="bg-purple">
+
+<div class="stars">
+    <div class="central-body">
+        <div class="error">
+            <div class="box">
+                <h3>ERROR {{error_code}}</h3>
+                <p>{{error_phrase[0]}} <span> {{error_phrase[1]}} </span> {{error_phrase[2]}}</p>
+            </div>
+        </div>
+        <a href="{{main_page}}" class="btn-go-home" target="_blank">НА ГЛАВНУЮ</a>
+    </div>
+    <div class="objects">
+        <img class="object_rocket" src="http://salehriaz.com/404Page/img/rocket.svg" width="40px">
+        <div class="earth-moon">
+            <img class="object_earth" src="http://salehriaz.com/404Page/img/earth.svg" width="100px">
+            <img class="object_moon" src="http://salehriaz.com/404Page/img/moon.svg" width="80px">
+        </div>
+        <div class="box_astronaut">
+            <img class="object_astronaut" src="http://salehriaz.com/404Page/img/astronaut.svg" width="140px">
+        </div>
+    </div>
+    <div class="glowing_stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+</div>
+</body>
+</body>
+
+<!--Стили для номера ошибки-->
+<style>h3::before, h3::after {
+  position: absolute;
+  content: 'ERROR {{error_code}}';
+  top: -1px;
+  left: 0;
+  mix-blend-mode: soft-light;
+  animation: dance 2s infinite steps(2);
+}
+
+h3::before {
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+  color: magenta;
+  animation: shiftright 200ms steps(2) infinite;
+}
+
+h3::after {
+  clip-path: polygon(0 100%, 100% 100%, 100% 50%, 0 50%);
+  color: cyan;
+  animation: shiftleft 200ms steps(2) infinite;
+}
+}
+</style>
+
+<style>
+    p span::before, p span::after {
+  content: '{{error_phrase[1]}}';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  mix-blend-mode: multiply;
+}
+</style>
+</html>
