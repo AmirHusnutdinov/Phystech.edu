@@ -1,7 +1,6 @@
 import os
 
 from flask import render_template
-
 from Admin.admin import Admin
 from Calendar.calendar import Calendar
 from Login.authorization import Authorization
@@ -12,7 +11,6 @@ from Mode2.mode2 import Mode2
 from SelectedProducts.selectedProducts import SelectedProduct
 from ServiceFiles.links import main_page, admin, authorization, registration, calendar, mode1, mode2, selected_products
 from settings import app, host
-
 
 @app.route(main_page)
 def open_main_page():
