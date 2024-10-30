@@ -2,8 +2,6 @@ from flask import render_template
 from Cloud.cloud_main import urls_files_cloud_list
 from ServiceFiles.links import mode1, mode2, header_links
 
-from ServiceFiles.links import mode1, mode2, header_links
-
 
 class StartPage:
     @staticmethod
