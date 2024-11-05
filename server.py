@@ -1,6 +1,6 @@
 import os
 
-from flask import render_template
+from flask import render_template, request
 from Admin.admin import Admin
 from Calendar.calendar import Calendar
 from Login.authorization import Authorization
@@ -12,6 +12,9 @@ from SelectedProducts.selectedProducts import SelectedProduct
 from ServiceFiles.links import main_page, admin, authorization, registration, calendar, mode1, mode2, selected_products
 from settings import app, host
 
+
+app.secret_key = os.urandom(24)
+
 @app.route(main_page)
 def open_main_page():
     return StartPage.show_the_main_page()
@@ -22,15 +25,25 @@ def open_admin_page():
     return Admin.show_admin_page()
 
 
-@app.route(authorization)
+@app.route('/register', methods=['GET', 'POST'])
+def show_registration_page():
+    return Registration.show_registration_page()
+
+@app.route('/process_registration', methods=['POST'])
+def process_registration():
+    return Registration.process_registration()
+
+@app.route('/login', methods=['GET', 'POST'])
 def open_authorization_page():
     return Authorization.show_authorization_page()
 
+@app.route('/process_login', methods=['POST'])
+def process_login():
+    return Authorization.process_login()
 
-@app.route(registration)
-def open_registration_page():
-    return Registration.show_registration_page()
-
+@app.route('/logout')
+def logout():
+    return Authorization.logout()
 
 @app.route(calendar)
 def open_calendar_page():
