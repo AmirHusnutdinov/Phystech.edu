@@ -1,73 +1,151 @@
 {% extends "Base.html" %}
 {% block content %}
-<body>
-    <link rel="stylesheet" href="../../static/assets/css/style_calendar.css">
-    <div class="calendar">
-        <div class="calendar-header">
-            <div class="arrow" onclick="prevMonth()">&#8249;</div>
-            <h2 id="monthYear"></h2>
-            <div class="arrow" onclick="nextMonth()">&#8250;</div>
+<link rel="stylesheet" href="/static/assets/css/style_calendar.css">
+<script>document.getElementById("year").innerHTML = new Date().getFullYear();</script>
+<div class="calendar-page">
+    <div class="calendar-container">
+        <div class="header_calendar">
+            <button id="prevBtn" class="nav-btn">←</button>
+            <div id="currentDate" class="current-date"></div>
+            <button id="nextBtn" class="nav-btn">→</button>
+            <div id="caloriePanel" class="calorie-panel">
+                <h3>Calories Consumed</h3>
+                <ul id="calorieList"></ul>
+            </div>
         </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-        <div class="calendar-footer">
-            <p>Дней подряд: <span id="daysInRow">3</span></p>
-            <p>Максимум: <span id="maxDays">7</span></p>
+        <div class="calendar">
+            <div class="day names">Sun</div>
+            <div class="day names">Mon</div>
+            <div class="day names">Tue</div>
+            <div class="day names">Wed</div>
+            <div class="day names">Thu</div>
+            <div class="day names">Fri</div>
+            <div class="day names">Sat</div>
         </div>
     </div>
-</body>
+
     <script>
-        const monthYear = document.getElementById('monthYear');
-        const calendarGrid = document.getElementById('calendarGrid');
-        const daysInRow = document.getElementById('daysInRow');
-        const maxDays = document.getElementById('maxDays');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const currentDate = document.getElementById('currentDate');
+        const caloriePanel = document.getElementById('caloriePanel');
+        const calorieList = document.getElementById('calorieList');
+        let holdTimer;
 
-        let currentDate = new Date();
+        const today = new Date();
+        let currentMonth = today.getMonth();
+        let currentYear = today.getFullYear();
 
-        function updateCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const monthName = new Intl.DateTimeFormat('ru-RU', { month: 'long' }).format(currentDate);
-            monthYear.textContent = `${monthName} ${year}`;
+        // Sample calorie data
+        const calorieData = {};
 
-            calendarGrid.innerHTML = '';
-
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const firstDayOfMonth = new Date(year, month, 1).getDay();
-
-            for (let i = 0; i < firstDayOfMonth; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.classList.add('day');
-                calendarGrid.appendChild(emptyDay);
-            }
-
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dayElement = document.createElement('div');
-                dayElement.classList.add('day');
-                dayElement.textContent = day;
-
-                const today = new Date();
-                if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === day) {
-                    dayElement.classList.add('today');
-                    dayElement.textContent = `${day} (50%)`;
-                } else if (today > new Date(year, month, day)) {
-                    // Здесь можно добавить логику для отображения галочки или крестика
-                    dayElement.classList.add('completed'); // или 'failed'
-                }
-
-                calendarGrid.appendChild(dayElement);
-            }
+        function generateRandomCalories() {
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        for (let i = 1; i <= daysInMonth; i++) {
+        calorieData[i] = Math.floor(Math.random() * 2000); // Random between 0 and 2000
+        }
         }
 
-        function prevMonth() {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            updateCalendar();
+        function showCaloriePanel() {
+        calorieList.innerHTML = '';
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        for (let i = 1; i <= daysInMonth; i++) {
+        const li = document.createElement('li');
+        li.textContent = `Day
+        𝑖
+        :
+        i:{calorieData[i]} kcal`;
+        calorieList.appendChild(li);
+        }
+        caloriePanel.classList.add('show');
         }
 
-        function nextMonth() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            updateCalendar();
+        function hideCaloriePanel() {
+        caloriePanel.classList.remove('show');
         }
 
-        updateCalendar();
+        function renderCalendar(month, year) {
+        const calendar = document.querySelector('.calendar');
+        // Clear all cells, including empty ones
+        calendar.innerHTML = `
+        <div class="day names">Sun</div>
+        <div class="day names">Mon</div>
+        <div class="day names">Tue</div>
+        <div class="day names">Wed</div>
+        <div class="day names">Thu</div>
+        <div class="day names">Fri</div>
+        <div class="day names">Sat</div>
+        `;
+
+        const firstDay = new Date(year, month).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Update current date display
+        currentDate.textContent = new Date(year, month).toLocaleDateString('default', { month: 'long', year: 'numeric' });
+
+        generateRandomCalories();
+
+        for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.classList.add('day', 'empty');
+        calendar.appendChild(emptyCell);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.classList.add('day', 'date');
+        dayCell.textContent = day;
+        dayCell.classList.add(calorieData[day] < 1000 ? 'green' : 'red');
+        calendar.appendChild(dayCell);
+        }
+        }
+
+        prevBtn.addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+        }
+        renderCalendar(currentMonth, currentYear);
+        });
+
+        nextBtn.addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+        }
+        renderCalendar(currentMonth, currentYear);
+        });
+
+        // Hold to show calorie panel
+        function handleMouseDown() {
+        holdTimer = setTimeout(showCaloriePanel, 500);
+        }
+
+        function handleMouseUp() {
+        clearTimeout(holdTimer);
+        }
+
+        prevBtn.addEventListener('mousedown', handleMouseDown);
+        prevBtn.addEventListener('mouseup', handleMouseUp);
+        nextBtn.addEventListener('mousedown', handleMouseDown);
+        nextBtn.addEventListener('mouseup', handleMouseUp);
+
+        // Touch events for mobile
+        prevBtn.addEventListener('touchstart', handleMouseDown);
+        prevBtn.addEventListener('touchend', handleMouseUp);
+        nextBtn.addEventListener('touchstart', handleMouseDown);
+        nextBtn.addEventListener('touchend', handleMouseUp);
+
+        // Hide panel when clicking outside
+        document.addEventListener('click', (e) => {
+        if (!caloriePanel.contains(e.target) && !prevBtn.contains(e.target) && !nextBtn.contains(e.target)) {
+        hideCaloriePanel();
+        }
+        });
+
+        renderCalendar(currentMonth, currentYear);
     </script>
+</div>
 {% endblock %}

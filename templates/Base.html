@@ -2,63 +2,41 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link href="/static/assets/css/style_base.css" rel="stylesheet">
-    <link href="/static/assets/css/style_main.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Montserrat:300i,400,700&amp;subset=cyrillic-ext"
-          rel="stylesheet">
-    <title>{{title}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodHelper</title>
+    <link rel="stylesheet" href="static/assets/css/style_base.css">
 </head>
-<script>document.getElementById("year").innerHTML = new Date().getFullYear();</script>
-
-<header class="header{{is_nav}}" id="header{{is_nav}}">
-    <div class="container">
-        <div class="header__inner">
-            <div>
-                <a class="header__logo" href="{{header_links[0]}}">Food Helper</a></div>
-
-            <nav class="nav1__nav">
-                {% if login != True %}
-                <a class="nav__link {{au_is_active}}" href="{{header_links[5]}}">Войти</a>
-                {% endif %}
-
-<!--                Пока поставил сюда просто mode1 после реализации авторизации поставить условия на выбор-->
-                <a class="nav__link {{mo_is_active}}" href="{{header_links[1]}}">Сегодня</a>
-                <a class="nav__link {{ca_is_active}}" href="{{header_links[2]}}">Календарь</a>
-                <a class="nav__link {{an_is_active}}" href="{{header_links[3]}}">Вопросы</a>
-                <a class="nav__link {{ab_is_active}}" href="{{header_links[4]}}">О нас</a>
-                {% if login == True %}
-                <a class="nav__link {{us_is_active}}" href="{{header_links[6]}}" title="Личный кабинет"><img class="nav__img"
-                                                                                                     src="/static/assets/images/service_photos/user-ico{{is_cabinet}}.svg"
-                                                                                                     title="Личный кабинет"
-                                                                                                     width="27px"></a>
-                {% endif %}
-            </nav>
-
-            <button class="nav-toggle" id="nav_toggle" type="button">
-                <span class="nav-toggle__item">Меню</span>
-            </button>
-        </div>
+<body>
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a href="{{header_links[0]}}">FoodHelper</a>
     </div>
-
-</header>
-{% block content %}{% endblock %}
-
+    <div class="navbar-links">
+        <a href="{{header_links[1]}}">План на день</a>
+        <a href="{{header_links[2]}}">Календарь</a>
+        <a href="{{header_links[]}}">Ссылка 3</a>
+        <a href="{{header_links[]}}">Ссылка 4</a>
+        <a href="{{header_links[6]}}">Кабинет</a>
+    </div>
+    <div class="navbar-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        </div>
+</nav>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const navToggle = document.getElementById('nav_toggle');
-        const nav = document.getElementById('nav{{is_mobile}}');
-
-        navToggle.addEventListener('click', function() {
-            nav.classList.toggle('active');
-            navToggle.classList.toggle('active');
-        });
+    document.querySelector('.navbar-toggle').addEventListener('click', function() {
+        document.querySelector('.navbar-links').classList.toggle('active');
+        document.querySelector('.navbar-toggle').classList.toggle('active');
     });
 </script>
-</body>
-<footer>
-    <div class="container">
-        <p>&copy; 2024 Food helper. Все права защищены.</p>
-    </div>
+
+{% block content %}
+<!-- Здесь будет основное содержимое страницы -->
+{% endblock %}
+
+<footer class="footer">
+    <p>Food Helper 2024 Все права защищены</p>
 </footer>
+</body>
 </html>

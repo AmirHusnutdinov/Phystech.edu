@@ -6,10 +6,9 @@ from Calendar.calendar import Calendar
 from Login.authorization import Authorization
 from Login.registration import Registration
 from MainPage.main_page import StartPage
-from Mode1.mode1 import Mode1
-from Mode2.mode2 import Mode2
+from DayPlan.day_plan import DayPlan
 from SelectedProducts.selectedProducts import SelectedProduct
-from ServiceFiles.links import main_page, admin, authorization, registration, calendar, mode1, mode2, selected_products
+from ServiceFiles.links import main_page, admin, authorization, registration, calendar, day_plan, selected_products
 from settings import app, host
 
 @app.route(main_page)
@@ -37,14 +36,9 @@ def open_calendar_page():
     return Calendar.show_calendar_page()
 
 
-@app.route(mode1)
-def open_mode1_page():
-    return Mode1.show_mode1_page()
-
-
-@app.route(mode2)
-def open_mode2_page():
-    return Mode2.show_mode2_page()
+@app.route(day_plan)
+def open_day_plan_page():
+    return DayPlan.show_day_plan_page()
 
 
 @app.route(selected_products)

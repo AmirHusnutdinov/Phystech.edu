@@ -34,7 +34,6 @@ header h1 {
 
 /* Секция героя */
 .hero-image {
-    background-image: url('4k-mountain.jpg'); /* Замените на путь к вашему изображению */
     background-size: cover;
     background-position: center;
     height: 100vh;
