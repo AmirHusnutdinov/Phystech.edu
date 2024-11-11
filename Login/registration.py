@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash
 
-from forms import RegistrationForm  # Импортируйте вашу форму регистрации
+from Login.forms import RegistrationForm
 
 
 class Registration:
