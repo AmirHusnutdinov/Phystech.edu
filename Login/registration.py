@@ -1,6 +1,6 @@
-from flask import render_template, request, redirect, url_for, flash
-from .forms import RegistrationForm  # Импортируйте вашу форму регистрации
-import email_validator
+from flask import render_template, redirect, url_for, flash
+
+from forms import RegistrationForm  # Импортируйте вашу форму регистрации
 
 
 class Registration:
@@ -13,7 +13,7 @@ class Registration:
     def process_registration():
         form = RegistrationForm()
         if form.validate_on_submit():
-            username = form.username.data
+            form.username.data
             email = form.email.data
             password = form.password.data
 

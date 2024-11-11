@@ -1,5 +1,7 @@
-from flask import render_template, request, redirect, url_for, flash, session
-from .forms import LoginForm  # Импортируйте вашу форму
+from flask import render_template, redirect, url_for, flash, session
+
+from forms import LoginForm# Импортируйте вашу форму
+
 
 class Authorization:
     @staticmethod

@@ -1,5 +1,6 @@
-from settings import host, user, password, db_name
 import psycopg2
+
+from settings import host, user, password, db_name
 
 
 def database_query(sql):

@@ -1,16 +1,16 @@
 import os
 
-from flask import render_template, request
+from flask import render_template
+
 from Admin.admin import Admin
 from Calendar.calendar import Calendar
+from DayPlan.day_plan import DayPlan
 from Login.authorization import Authorization
 from Login.registration import Registration
 from MainPage.main_page import StartPage
-from DayPlan.day_plan import DayPlan
 from SelectedProducts.selectedProducts import SelectedProduct
-from ServiceFiles.links import main_page, admin, authorization, registration, calendar, day_plan, selected_products
+from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products
 from settings import app, host
-
 
 app.secret_key = os.urandom(24)
 

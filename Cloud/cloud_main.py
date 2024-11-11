@@ -1,10 +1,8 @@
 import boto3
-import logging
-from botocore.exceptions import ClientError
+
 from settings import app
 
 # from cloud.configuration import *
-from datetime import timedelta
 
 # int(timedelta(days = 365).total_seconds()) хз нужно ли
 
