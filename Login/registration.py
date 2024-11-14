@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash
-
+from ServiceFiles.links import header_links
 from Login.forms import RegistrationForm
 
 
@@ -7,7 +7,9 @@ class Registration:
     @staticmethod
     def show_registration_page():
         form = RegistrationForm()
-        return render_template("Login/registration.html", form=form)
+        return render_template("Login/registration.html",
+                               header_links=header_links,
+                               form=form)
 
     @staticmethod
     def process_registration():

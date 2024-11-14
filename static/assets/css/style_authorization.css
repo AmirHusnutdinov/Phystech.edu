@@ -1,0 +1,136 @@
+/* Общие стили */
+.body_login {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 76.8vh;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+/* Контейнер формы */
+.auth-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 80px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out, rotateIn 1s ease-in-out;
+    max-width: 500px;
+    width: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Убираем поворот при наведении */
+.auth-container:hover {
+    transform: scale(1.05);
+}
+
+/* Заголовок формы */
+.auth-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2em;
+    animation: slideInDown 1s ease-in-out;
+}
+
+/* Группа полей ввода */
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 1em;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.input-group input:focus {
+    border-color: #6c63ff;
+    outline: none;
+    transform: scale(1.05);
+}
+
+/* Кнопка входа */
+.auth-button {
+    width: 100%;
+    padding: 10px;
+    background: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.auth-button:hover {
+    background: #564dff;
+    transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+    .auth-container {
+        padding: 20px;
+    }
+
+    .auth-title {
+        font-size: 1.5em;
+    }
+
+    .input-group input, .auth-button {
+        font-size: 0.9em;
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes rotateIn {
+    from {
+        transform: rotateY(90deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotateY(0deg);
+        opacity: 1;
+    }
+}

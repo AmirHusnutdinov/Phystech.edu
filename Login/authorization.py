@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, flash, session
-
+from ServiceFiles.links import header_links
 from Login.forms import LoginForm
 
 
@@ -7,7 +7,10 @@ class Authorization:
     @staticmethod
     def show_authorization_page():
         form = LoginForm()
-        return render_template("Login/authorization.html", form=form)
+        return render_template("Login/authorization.html",
+                               header_links=header_links,
+                               form=form,
+                               title="Авторизация")
 
     @staticmethod
     def process_login():

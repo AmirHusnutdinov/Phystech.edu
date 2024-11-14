@@ -9,7 +9,7 @@ from Login.authorization import Authorization
 from Login.registration import Registration
 from MainPage.main_page import StartPage
 from SelectedProducts.selectedProducts import SelectedProduct
-from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products
+from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization
 from settings import app, host
 
 app.secret_key = os.urandom(24)
@@ -24,7 +24,7 @@ def open_admin_page():
     return Admin.show_admin_page()
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route(registration, methods=['GET', 'POST'])
 def show_registration_page():
     return Registration.show_registration_page()
 
@@ -32,7 +32,7 @@ def show_registration_page():
 def process_registration():
     return Registration.process_registration()
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route(authorization, methods=['GET', 'POST'])
 def open_authorization_page():
     return Authorization.show_authorization_page()
 

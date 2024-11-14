@@ -3,16 +3,22 @@
 }
 
 .body_day_plan {
-flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 74vh;
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
     color: #333;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .container_today {
@@ -20,10 +26,15 @@ flex-direction: column;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 85%;
+    width: 80%;
+    margin-top: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px;
+}
 
-    margin-top: 55px;
-
+.container_today:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .date-block {
@@ -33,6 +44,13 @@ flex-direction: column;
     color: #555;
     background-color: #e9ecef;
     border-radius: 5px;
+    padding: 10px;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* Показатели */
@@ -46,12 +64,14 @@ flex-direction: column;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 .progress-bar {
     background-color: #e0e0e0;
     border-radius: 5px;
     overflow: hidden;
+    overflow-x: hidden;
     height: 10px;
     position: relative;
 }
@@ -68,6 +88,12 @@ input[type="number"] {
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+    border-color: #2196f3;
+    outline: none;
 }
 
 /* Ссылки */
@@ -83,11 +109,12 @@ input[type="number"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #add-link:hover {
     background-color: #1976d2;
+    transform: scale(1.05);
 }
 
 .link-item {
@@ -116,12 +143,13 @@ input[type="number"] {
     border-radius: 5px;
     text-decoration: none;
     margin-right: 10px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     width: 100%;
 }
 
 .link-square:hover {
     background-color: #1976d2;
+    transform: scale(1.05);
 }
 
 .remove-link {
@@ -133,16 +161,17 @@ input[type="number"] {
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .remove-link:hover {
     background-color: #d32f2f;
+    transform: scale(1.05);
 }
 
 /* Адаптивность */
 @media (max-width: 600px) {
-    .container {
+    .container_today {
         padding: 10px;
     }
 

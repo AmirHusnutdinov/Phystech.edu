@@ -10,4 +10,4 @@ answers = base_link + '/answers'
 about = base_link + '/about'
 cabinet = base_link + '/cabinet'
 
-header_links = ["/", day_plan, calendar, answers, about, authorization, cabinet]
+header_links = ["/", day_plan, calendar, answers, about, authorization, registration]
