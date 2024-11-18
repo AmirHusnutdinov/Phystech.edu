@@ -1,12 +1,12 @@
 from flask import render_template
+
 from ServiceFiles.links import header_links
 
 
-class DayPlan:
+class Cabinet:
     @staticmethod
-    def show_day_plan_page():
+    def show_cabinet_page():
         return render_template(
-            "DayPlan/day_plan.html",
+            "Login/cabinet.html",
             header_links=header_links,
-            title="Дневной план"
-        )
+            title="Кабинет")

@@ -6,10 +6,12 @@ from Admin.admin import Admin
 from Calendar.calendar import Calendar
 from DayPlan.day_plan import DayPlan
 from Login.authorization import Authorization
+from Login.cabinet import Cabinet
 from Login.registration import Registration
 from MainPage.main_page import StartPage
 from SelectedProducts.selectedProducts import SelectedProduct
-from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization
+from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
+    cabinet
 from settings import app, host
 
 app.secret_key = os.urandom(24)
@@ -43,6 +45,11 @@ def process_login():
 @app.route('/logout')
 def logout():
     return Authorization.logout()
+
+
+@app.route(cabinet, methods=['GET', 'POST'])
+def open_cabinet_page():
+    return Cabinet.show_cabinet_page()
 
 @app.route(calendar)
 def open_calendar_page():

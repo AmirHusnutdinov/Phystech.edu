@@ -9,6 +9,7 @@ class Registration:
         form = RegistrationForm()
         return render_template("Login/registration.html",
                                header_links=header_links,
+                               title="Авторизация",
                                form=form)
 
     @staticmethod
