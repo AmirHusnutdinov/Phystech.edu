@@ -7,7 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 76.8vh;
+    height: 78.4vh;
     overflow: hidden;
     perspective: 1000px;
 }
@@ -15,7 +15,7 @@
 /* Контейнер формы */
 .auth-container {
     background: rgba(255, 255, 255, 0.9);
-    padding: 80px;
+    padding: 55px;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     animation: fadeIn 1s ease-in-out, rotateIn 1s ease-in-out;

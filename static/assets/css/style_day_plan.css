@@ -101,7 +101,7 @@ input[type="number"]:focus {
     margin-top: 30px;
 }
 
-#add-link {
+#add-meal {
     width: 100%;
     padding: 10px 20px;
     background-color: #2196f3;
@@ -112,60 +112,142 @@ input[type="number"]:focus {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#add-link:hover {
+#add-meal:hover {
     background-color: #1976d2;
     transform: scale(1.05);
 }
 
-.link-item {
+.meal-item {
     display: flex;
-    align-items: center;
-    margin-top: 10px;
-    width: 100%;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.link-item.animate-in {
+.meal-item.animate-in {
     opacity: 1;
     transform: translateY(0);
 }
 
-.link-square {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    background-color: #2196f3;
-    color: #fff;
-    text-align: center;
-    line-height: 50px;
+.meal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.meal-number {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.meal-time {
+    padding: 5px;
+    border: 1px solid #ccc;
     border-radius: 5px;
-    text-decoration: none;
+}
+
+.meal-dishes {
+    margin-top: 20px;
+}
+
+.dish-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.dish-item.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.dish-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.dish-name {
+    flex: 1;
     margin-right: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    width: 100%;
 }
 
-.link-square:hover {
-    background-color: #1976d2;
-    transform: scale(1.05);
+.dish-weight {
+    width: 80px;
+    margin-right: 10px;
 }
 
-.remove-link {
-    height: 50px;
-    width: 60%;
-    background-color: #f44336;
-    color: #fff;
+.dish-calories {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.dish-nutrients {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dish-nutrients input {
+    width: 20%;
+}
+
+.meal-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.meal-total {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.meal-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.remove-meal, .add-dish {
+    padding: 10px 20px;
     border: none;
-    padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.remove-link:hover {
+.remove-meal {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.remove-meal:hover {
     background-color: #d32f2f;
+    transform: scale(1.05);
+}
+
+.add-dish {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.add-dish:hover {
+    background-color: #388e3c;
     transform: scale(1.05);
 }
 
@@ -179,9 +261,26 @@ input[type="number"]:focus {
         font-size: 1em;
     }
 
-    .link-square {
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
+    .meal-header {
+        flex-direction: column;
+        align-items: flex-start;
     }
-}
+
+    .meal-time {
+        margin-top: 10px;
+    }
+
+    .dish-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dish-weight {
+        margin-top: 10px;
+    }
+
+    .dish-nutrients {
+        flex-direction: column;
+    }
+
+    .dish

@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<p>selected aboba</p>
-</body>
-</html>
+{% extends "Base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../../static/assets/css/style_selected_products.css">
+<div class="body_selected_products">
+
+    <div class="container">
+
+        <!-- Поле поиска блюда -->
+        <div class="search-bar">
+            <input type="text" placeholder="Поиск блюда..." id="search-input">
+            <button id="search-button">Поиск</button>
+        </div>
+
+        <!-- Кнопки-ссылки -->
+        <div class="buttons">
+            <a href="#" class="button add-product">Добавить продукт</a>
+            <a href="#" class="button add-recipe">Добавить рецепт</a>
+        </div> <br>
+
+        <!-- Секции с продуктами -->
+        <div class="product-sections-container">
+            <div class="product-sections">
+                {% for index in range(5) %}
+                <div class="product-section">
+                    <h2 class="product-title">Блюдо {{ index + 1 }}</h2>
+                    <div class="product-info">
+                        <div class="macronutrients">
+                            <div class="macronutrient">
+                                <span class="label_protein">Белки:</span>
+                                <span class="value_protein">20 г</span>
+                            </div>
+                            <div class="macronutrient">
+                                <span class="label_fats">Жиры:</span>
+                                <span class="value_fats">10 г</span>
+                            </div>
+                            <div class="macronutrient">
+                                <span class="label_carbohydrates">Углеводы:</span>
+                                <span class="value_carbohydrates">30 г</span>
+                            </div>
+                        </div>
+                        <div class="calories">
+                            <span class="label">Калории:</span>
+                            <span class="value">250 ккал</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

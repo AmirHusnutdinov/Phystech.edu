@@ -9,32 +9,36 @@
         <div class="profile">
             <h2>Профиль</h2>
             <form>
-                <div class="form-group">
-                    <label for="name">Имя:</label>
-                    <input type="text" id="name" name="name" placeholder="Введите ваше имя">
+                <div class="row">
+                    <div class="form-group">
+                        <label for="name">Имя:</label>
+                        <input type="text" id="name" name="name" placeholder="Введите ваше имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Почта:</label>
+                        <input type="email" id="email" name="email" placeholder="Введите вашу почту">
+                    </div>
+                    <div class="form-group">
+                        <label for="language">Язык:</label>
+                        <select id="language" name="language">
+                            <option value="ru">Русский</option>
+                            <option value="en">Английский</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Почта:</label>
-                    <input type="email" id="email" name="email" placeholder="Введите вашу почту">
-                </div>
-                <div class="form-group">
-                    <label for="weight">Вес (кг):</label>
-                    <input type="number" id="weight" name="weight" placeholder="Введите ваш вес">
-                </div>
-                <div class="form-group">
-                    <label for="height">Рост (см):</label>
-                    <input type="number" id="height" name="height" placeholder="Введите ваш рост">
-                </div>
-                <div class="form-group">
-                    <label for="water">Количество воды в день (мл):</label>
-                    <input type="number" id="water" name="water" placeholder="Введите количество воды">
-                </div>
-                <div class="form-group">
-                    <label for="language">Язык:</label>
-                    <select id="language" name="language">
-                        <option value="ru">Русский</option>
-                        <option value="en">Английский</option>
-                    </select>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="weight">Вес (кг):</label>
+                        <input type="number" id="weight" name="weight" placeholder="Введите ваш вес">
+                    </div>
+                    <div class="form-group">
+                        <label for="height">Рост (см):</label>
+                        <input type="number" id="height" name="height" placeholder="Введите ваш рост">
+                    </div>
+                    <div class="form-group">
+                        <label for="water">Количество воды в день (мл):</label>
+                        <input type="number" id="water" name="water" placeholder="Введите количество воды">
+                    </div>
                 </div>
                 <button type="submit" class="btn">Сохранить</button>
             </form>

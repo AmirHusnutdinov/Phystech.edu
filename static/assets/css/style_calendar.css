@@ -1,13 +1,10 @@
 .calendar-page {
-    margin-top: 5%;
-    height: 100%;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin-bottom: 10.4%;
+    height: 78.4vh;
 }
 
 .calendar-container {
@@ -15,11 +12,11 @@
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     width: 90%;
-    height: 120%;
-    padding: 20px;
+    padding: 30px;
     animation: fadeIn 1s ease-in-out;
     display: flex;
     flex-direction: column;
+    height: 60vh;
 }
 
 .calendar-page .header_calendar {
@@ -64,7 +61,8 @@
     grid-template-columns: repeat(7, 1fr);
     gap: 10px;
     flex: 1;
-    overflow-y: auto;
+    overflow-y: hidden;
+     overflow-x: hidden;
 }
 
 .calendar-page .day {

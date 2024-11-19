@@ -17,13 +17,14 @@ body {
 .navbar-brand a {
     color: white;
     text-decoration: none;
-    font-size: 1.5em;
+    font-size: 1.8em;
     font-weight: bold;
 }
 
 .navbar-links {
     display: flex;
     gap: 20px;
+    font-size: 1.1em;
 }
 
 .navbar-links a {
@@ -92,7 +93,7 @@ body {
     background-color: black;
     color: white;
     text-align: center;
-    padding: 30px 0;
+    padding: 20px 0;
     position: flex;
     bottom: 0;
     width: 100%;

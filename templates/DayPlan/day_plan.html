@@ -38,10 +38,10 @@
                 <input type="number" id="calories" placeholder="ккал" oninput="updateProgressBar('calories-bar', this.value)">
             </div>
         </div>
-
+        <a href="/selected_products">Это временная ссылка на выбор продукта</a>
         <div class="links-container">
-            <button id="add-link">Добавить прием пищи</button>
-            <div id="links-list"></div>
+            <button id="add-meal">Добавить прием пищи</button>
+            <div id="meals-list"></div>
         </div>
     </div>
 
@@ -60,24 +60,65 @@
         let mealCounter = 1;
 
         // Добавление и удаление полей
-        document.getElementById('add-link').addEventListener('click', function() {
-            const linkList = document.getElementById('links-list');
-            const newLink = document.createElement('div');
-            newLink.className = 'link-item';
-            newLink.innerHTML = `
-                <a href="#" class="link-square">${mealCounter}-й прием пищи</a>
-                <button class="remove-link">Удалить</button>
+        document.getElementById('add-meal').addEventListener('click', function() {
+            const mealsList = document.getElementById('meals-list');
+            const newMeal = document.createElement('div');
+            newMeal.className = 'meal-item';
+            newMeal.innerHTML = `
+                <div class="meal-header">
+                    <span class="meal-number">${mealCounter}-й прием пищи</span>
+                    <input type="time" class="meal-time" placeholder="Время">
+                </div>
+                <hr>
+                <div class="meal-dishes">
+                    <!-- Блюда будут добавляться сюда -->
+                </div>
+                <hr>
+                <div class="meal-summary">
+                    <span class="meal-total">Итого: 0 г белков, 0 г жиров, 0 г углеводов, 0 ккал</span>
+                    <div class="meal-buttons">
+                        <button class="remove-meal">Удалить прием пищи</button>
+                        <button class="add-dish">Добавить блюдо</button>
+                    </div>
+                </div>
             `;
-            linkList.appendChild(newLink);
+            mealsList.appendChild(newMeal);
 
             // Добавляем анимацию
-            newLink.classList.add('animate-in');
+            newMeal.classList.add('animate-in');
 
             // Удаление поля
-            newLink.querySelector('.remove-link').addEventListener('click', function() {
-                linkList.removeChild(newLink);
+            newMeal.querySelector('.remove-meal').addEventListener('click', function() {
+                mealsList.removeChild(newMeal);
                 mealCounter--; // Уменьшаем счетчик при удалении
                 updateMealNumbers(); // Обновляем номера приемов пищи
+            });
+
+            // Добавление блюда
+            newMeal.querySelector('.add-dish').addEventListener('click', function() {
+                const dishesContainer = newMeal.querySelector('.meal-dishes');
+                const newDish = document.createElement('div');
+                newDish.className = 'dish-item';
+                newDish.innerHTML = `
+                    <div class="dish-header">
+                        <input type="text" class="dish-name" placeholder="Название блюда">
+                        <input type="number" class="dish-weight" placeholder="Масса (г)">
+                        <span class="dish-calories">(0 ккал)</span>
+                    </div>
+                    <div class="dish-nutrients">
+                        <input type="number" class="dish-protein" placeholder="Белки (г)">
+                        <input type="number" class="dish-fats" placeholder="Жиры (г)">
+                        <input type="number" class="dish-carbs" placeholder="Углеводы (г)">
+                        <input type="number" class="dish-calories-per-100" placeholder="Калории на 100 г">
+                    </div>
+                `;
+                dishesContainer.appendChild(newDish);
+
+                // Добавляем анимацию
+                newDish.classList.add('animate-in');
+
+                // Обновляем итоговую информацию о приеме пищи
+                updateMealSummary(newMeal);
             });
 
             mealCounter++; // Увеличиваем счетчик при добавлении
@@ -85,10 +126,41 @@
 
         // Обновление номеров приемов пищи
         function updateMealNumbers() {
-            const linkItems = document.querySelectorAll('.link-item');
-            linkItems.forEach((item, index) => {
-                item.querySelector('.link-square').innerText = `${index + 1}-й прием пищи`;
+            const mealItems = document.querySelectorAll('.meal-item');
+            mealItems.forEach((item, index) => {
+                item.querySelector('.meal-number').innerText = `${index + 1}-й прием пищи`;
             });
+        }
+
+        // Обновление итоговой информации о приеме пищи
+        function updateMealSummary(meal) {
+            const dishes = meal.querySelectorAll('.dish-item');
+            let totalProtein = 0;
+            let totalFats = 0;
+            let totalCarbs = 0;
+            let totalCalories = 0;
+
+            dishes.forEach(dish => {
+                const weight = parseFloat(dish.querySelector('.dish-weight').value) || 0;
+                const proteinPer100 = parseFloat(dish.querySelector('.dish-protein').value) || 0;
+                const fatsPer100 = parseFloat(dish.querySelector('.dish-fats').value) || 0;
+                const carbsPer100 = parseFloat(dish.querySelector('.dish-carbs').value) || 0;
+                const caloriesPer100 = parseFloat(dish.querySelector('.dish-calories-per-100').value) || 0;
+
+                const protein = (proteinPer100 / 100) * weight;
+                const fats = (fatsPer100 / 100) * weight;
+                const carbs = (carbsPer100 / 100) * weight;
+                const calories = (caloriesPer100 / 100) * weight;
+
+                totalProtein += protein;
+                totalFats += fats;
+                totalCarbs += carbs;
+                totalCalories += calories;
+
+                dish.querySelector('.dish-calories').innerText = `(${calories.toFixed(2)} ккал)`;
+            });
+
+            meal.querySelector('.meal-total').innerText = `Итого: ${totalProtein.toFixed(2)} г белков, ${totalFats.toFixed(2)} г жиров, ${totalCarbs.toFixed(2)} г углеводов, ${totalCalories.toFixed(2)} ккал`;
         }
     </script>
     </div>

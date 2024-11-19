@@ -26,8 +26,19 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
-.form-group {
+.row {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
 }
 
 label {
@@ -40,7 +51,7 @@ input[type="text"],
 input[type="email"],
 input[type="number"],
 select {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
