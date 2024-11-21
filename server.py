@@ -9,9 +9,10 @@ from Login.authorization import Authorization
 from Login.cabinet import Cabinet
 from Login.registration import Registration
 from MainPage.main_page import StartPage
+from News.news import News
 from SelectedProducts.selectedProducts import SelectedProduct
 from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
-    cabinet
+    cabinet, all_news, one_news
 from settings import app, host
 
 app.secret_key = os.urandom(24)
@@ -65,6 +66,13 @@ def open_day_plan_page():
 def open_selected_products_page():
     return SelectedProduct.show_selected_product_page()
 
+@app.route(all_news)
+def open_all_news_page():
+    return News.show_all_news_page()
+
+@app.route(one_news)
+def open_one_news_page(news_id):
+    return News.show_one_news_page(news_id)
 
 @app.errorhandler(400)
 def page_bad_request(_):

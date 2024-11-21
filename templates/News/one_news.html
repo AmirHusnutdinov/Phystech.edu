@@ -1,0 +1,14 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../../static/assets/css/style_one_news.css">
+<div class="news-detail">
+    <div class="news-header">
+        <h1 class="news-title">{{ news_title }}</h1>
+        <img src="{{ news_image_url }}" alt="News Image" class="news-image">
+    </div>
+    <div class="news-content">
+        {{ news_content | safe }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../../static/assets/css/style_news.css">
+
+<div class="body_news">
+    {% for index in range(15) %}
+    <a href="/one_news/{{ index + 1 }}" class="news-link">
+        <div class="news-card">
+            <div class="news-image">
+                <img src="https://via.placeholder.com/300" alt="News Image">
+            </div>
+            <div class="news-content">
+                <h2 class="news-title">Заголовок новости {{ index + 1 }}</h2>
+                <p class="news-excerpt">Первые 30 символов статьи...</p>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

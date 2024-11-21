@@ -1,0 +1,74 @@
+/* Основные стили для новостей */
+.body_news {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.news-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.news-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.news-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.news-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.news-content {
+    padding: 20px;
+}
+
+.news-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.news-excerpt {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .body_news {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Анимация для картинок */
+.news-image img {
+    transition: transform 0.3s ease;
+}
+
+.news-card:hover .news-image img {
+    transform: scale(1.1);
+}
+
+/* Анимация для текста */
+.news-content {
+    transition: opacity 0.3s ease;
+}
+
+.news-card:hover .news-content {
+    opacity: 0.8;
+}

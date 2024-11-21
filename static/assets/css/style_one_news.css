@@ -1,0 +1,48 @@
+/* Основные стили для страницы новости */
+.news-detail {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.news-header {
+    margin-bottom: 20px;
+}
+
+.news-title {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.news-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.news-content {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #666;
+}
+
+.news-content p {
+    margin-bottom: 20px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .news-detail {
+        padding: 10px;
+    }
+
+    .news-title {
+        font-size: 2em;
+    }
+
+    .news-content {
+        font-size: 1em;
+    }
+}
