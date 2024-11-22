@@ -18,4 +18,14 @@
     </a>
     {% endfor %}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsCards = document.querySelectorAll('.news-card');
+    newsCards.forEach((card, index) => {
+        card.style.setProperty('--index', index);
+    });
+});
+</script>
+
 {% endblock %}
