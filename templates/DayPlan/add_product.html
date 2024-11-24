@@ -1,0 +1,62 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../../static/assets/css/add_product.css">
+<div class="body_add_product">
+    <div class="container">
+        <h1>Добавить продукт</h1>
+        <form id="product-form">
+            <div class="input-group">
+                <label for="product-name">Название продукта:</label>
+                <input type="text" id="product-name" name="product-name" required>
+            </div>
+            <div class="input-group">
+                <label for="protein">Белки (100г):</label>
+                <input type="number" id="protein" name="protein" step="0.1" required>
+            </div>
+            <div class="input-group">
+                <label for="fat">Жиры (100г):</label>
+                <input type="number" id="fat" name="fat" step="0.1" required>
+            </div>
+            <div class="input-group">
+                <label for="carbs">Углеводы (100г):</label>
+                <input type="number" id="carbs" name="carbs" step="0.1" required>
+            </div>
+            <div class="input-group">
+                <label for="calories">Калории(100г):</label>
+                <input type="number" id="calories" name="calories" step="1" required>
+            </div>
+            <button type="submit">Добавить продукт</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('product-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const productName = document.getElementById('product-name').value;
+            const protein = document.getElementById('protein').value;
+            const fat = document.getElementById('fat').value;
+            const carbs = document.getElementById('carbs').value;
+            const calories = document.getElementById('calories').value;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h2>Продукт добавлен:</h2>
+                <p><strong>Название:</strong> ${productName}</p>
+                <p><strong>Белки:</strong> ${protein} г</p>
+                <p><strong>Жиры:</strong> ${fat} г</p>
+                <p><strong>Углеводы:</strong> ${carbs} г</p>
+                <p><strong>Калории:</strong> ${calories} ккал</p>
+            `;
+
+            resultDiv.classList.add('show');
+
+            setTimeout(() => {
+                resultDiv.classList.remove('show');
+            }, 3000);
+        });
+    </script>
+</div>
+{% endblock %}

@@ -10,3 +10,11 @@ class DayPlan:
             header_links=header_links,
             title="Дневной план"
         )
+
+    @staticmethod
+    def show_add_product_page():
+        return render_template(
+            "DayPlan/add_product.html",
+            header_links=header_links,
+            title="Добавить продукт"
+        )
