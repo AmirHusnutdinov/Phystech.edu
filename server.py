@@ -1,6 +1,6 @@
 import os
 
-from flask import render_template
+from flask import render_template, request
 
 from Admin.admin import Admin
 from Calendar.calendar import Calendar
@@ -12,10 +12,11 @@ from MainPage.main_page import StartPage
 from News.news import News
 from SelectedProducts.selectedProducts import SelectedProduct
 from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
-    cabinet, all_news, one_news
+    cabinet, all_news, one_news, process_registration, confirm_code, process_login, logout
 from settings import app, host
 
 app.secret_key = os.urandom(24)
+
 
 @app.route(main_page)
 def open_main_page():
@@ -31,19 +32,30 @@ def open_admin_page():
 def show_registration_page():
     return Registration.show_registration_page()
 
-@app.route('/process_registration', methods=['POST'])
+
+@app.route(process_registration, methods=['POST'])
 def process_registration():
     return Registration.process_registration()
+
+
+@app.route(confirm_code, methods=['GET', 'POST'])
+def confirm_code():
+    if request.method == 'POST':
+        return Registration.process_confirmation()
+    return Registration.show_confirmation_page()
+
 
 @app.route(authorization, methods=['GET', 'POST'])
 def open_authorization_page():
     return Authorization.show_authorization_page()
 
-@app.route('/process_login', methods=['POST'])
+
+@app.route(process_login, methods=['POST'])
 def process_login():
     return Authorization.process_login()
 
-@app.route('/logout')
+
+@app.route(logout)
 def logout():
     return Authorization.logout()
 
@@ -51,6 +63,7 @@ def logout():
 @app.route(cabinet, methods=['GET', 'POST'])
 def open_cabinet_page():
     return Cabinet.show_cabinet_page()
+
 
 @app.route(calendar)
 def open_calendar_page():
@@ -66,13 +79,16 @@ def open_day_plan_page():
 def open_selected_products_page():
     return SelectedProduct.show_selected_product_page()
 
+
 @app.route(all_news)
 def open_all_news_page():
     return News.show_all_news_page()
 
+
 @app.route(one_news)
 def open_one_news_page(news_id):
     return News.show_one_news_page(news_id)
+
 
 @app.errorhandler(400)
 def page_bad_request(_):
