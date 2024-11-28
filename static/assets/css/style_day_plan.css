@@ -1,7 +1,59 @@
-.container_today {
-    flex: 1 0 auto;
+:root {
+    --bg-color: #f0f4f8;
+    --text-color: #333;
+    --container-bg-color: #fff;
+    --date-block-bg-color: #e9ecef;
+    --progress-bar-bg-color: #e0e0e0;
+    --bar-bg-color: #4caf50;
+    --input-border-color: #ccc;
+    --input-focus-border-color: #2196f3;
+    --button-bg-color: #2196f3;
+    --button-hover-bg-color: #1976d2;
+    --meal-item-bg-color: #f9f9f9;
+    --meal-item-border-color: #ccc;
+    --dish-item-bg-color: #fff;
+    --dish-item-border-color: #ddd;
+    --remove-meal-bg-color: #f44336;
+    --remove-meal-hover-bg-color: #d32f2f;
+    --add-dish-bg-color: #4caf50;
+    --add-dish-hover-bg-color: #388e3c;
+    --color_fats: rgb(255,165,0);
+    --color_calories: rgb(0,123,255);
+    --color_protein: rgb(0,123,255);
+    --color_carbs: rgb(255,0,0);
+    --time-block-bg-color: white;
+    --input-block-bg-color: white;
 }
 
+.dark-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --container-bg-color: #1e1e1e;
+    --date-block-bg-color: #2c2c2c;
+    --progress-bar-bg-color: #333;
+    --bar-bg-color: rgb(0,255,0,0.3);
+    --input-border-color: #444;
+    --input-focus-border-color: #2196f3;
+    --button-bg-color: #3f51b5;
+    --button-hover-bg-color: #303f9f;
+    --meal-item-bg-color: #2e2e2e;
+    --meal-item-border-color: #444;
+    --dish-item-bg-color: #3e3e3e;
+    --dish-item-border-color: #555;
+    --remove-meal-bg-color: #b71c1c;
+    --remove-meal-hover-bg-color: #c62828;
+    --add-dish-bg-color: #2e7d32;
+    --add-dish-hover-bg-color: #388e3c;
+    --color_fats: rgb(255, 167, 38, 0.7);
+    --color_calories: rgb(33, 150, 243, 0.8);
+    --color_protein: rgb(33, 150, 243, 0.8);
+    --color_carbs: rgb(255,0,0,0.5);
+    --time-block-bg-color: #424242;
+    --input-block-bg-color: #555;
+    --input-block-font-color: rgb(255, 255, 255, 0.8);
+}
+
+/* Общие стили */
 .body_day_plan {
     display: flex;
     flex-direction: column;
@@ -9,8 +61,8 @@
     align-items: center;
     min-height: 74vh;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
-    color: #333;
+    background: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     animation: fadeIn 1s ease-in-out;
@@ -22,7 +74,7 @@
 }
 
 .container_today {
-    background-color: #fff;
+    background-color: var(--container-bg-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -41,8 +93,8 @@
     text-align: center;
     margin-bottom: 20px;
     font-size: 1.2em;
-    color: #555;
-    background-color: #e9ecef;
+    color: var(--text-color);
+    background-color: var(--date-block-bg-color);
     border-radius: 5px;
     padding: 10px;
     animation: slideIn 0.5s ease-in-out;
@@ -69,7 +121,7 @@
 }
 
 .progress-bar {
-    background-color: #e0e0e0;
+    background-color: var(--progress-bar-bg-color);
     border-radius: 5px;
     overflow: hidden;
     overflow-x: hidden;
@@ -79,13 +131,13 @@
 
 .bar {
     height: 100%;
-    background-color: #4caf50;
+    background-color: var(--bar-bg-color);
     transition: width 0.5s ease;
 }
 
 input[type="number"] {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border-color);
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
@@ -93,7 +145,7 @@ input[type="number"] {
 }
 
 input[type="number"]:focus {
-    border-color: #2196f3;
+    border-color: var(--input-focus-border-color);
     outline: none;
 }
 
@@ -105,7 +157,7 @@ input[type="number"]:focus {
 #add-meal {
     width: 100%;
     padding: 10px 20px;
-    background-color: #2196f3;
+    background-color: var(--button-bg-color);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -114,7 +166,7 @@ input[type="number"]:focus {
 }
 
 #add-meal:hover {
-    background-color: #1976d2;
+    background-color: var(--button-hover-bg-color);
     transform: scale(1.05);
 }
 
@@ -123,9 +175,9 @@ input[type="number"]:focus {
     flex-direction: column;
     margin-top: 20px;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--meal-item-border-color);
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background-color: var(--meal-item-bg-color);
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -150,7 +202,7 @@ input[type="number"]:focus {
 
 .meal-time {
     padding: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border-color);
     border-radius: 5px;
 }
 
@@ -163,12 +215,13 @@ input[type="number"]:focus {
     flex-direction: column;
     margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--dish-item-border-color);
     border-radius: 5px;
-    background-color: #fff;
+    background-color: var(--dish-item-bg-color);
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    position: relative;
 }
 
 .dish-item.animate-in {
@@ -195,12 +248,72 @@ input[type="number"]:focus {
 
 .dish-calories {
     font-size: 0.9em;
-    color: #777;
+    color: var(--text-color);
 }
 
 .dish-nutrients {
     display: flex;
     justify-content: space-between;
+
+}
+.dish-protein, .dish-fats, .dish-carbs, .dish-calories-per-100, .dish-name, .dish-weight{
+    background-color: var(--input-block-bg-color);
+    color: var(--input-block-font-color);
+}
+
+.remove-dish{
+    background-color: var(--remove-meal-bg-color);
+    border-radius: 50px;
+}
+
+
+#fats{
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color)
+}
+
+#fats_text{
+    color: var(--color_fats);
+}
+
+#carbs{
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color)
+}
+
+#carbs_text{
+    color: var(--color_carbs);
+}
+
+#protein{
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color)
+}
+
+#protein_text{
+    color: var(--color_protein);
+}
+
+#calories{
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color)
+}
+
+#calories_text{
+    color: var(--color_calories);
+}
+
+.meal-time{
+    background-color: var(--time-block-bg-color);
+    color: white;
 }
 
 .dish-nutrients input {
@@ -233,22 +346,22 @@ input[type="number"]:focus {
 }
 
 .remove-meal {
-    background-color: #f44336;
+    background-color: var(--remove-meal-bg-color);
     color: #fff;
 }
 
 .remove-meal:hover {
-    background-color: #d32f2f;
+    background-color: var(--remove-meal-hover-bg-color);
     transform: scale(1.05);
 }
 
 .add-dish {
-    background-color: #4caf50;
+    background-color: var(--add-dish-bg-color);
     color: #fff;
 }
 
 .add-dish:hover {
-    background-color: #388e3c;
+    background-color: var(--add-dish-hover-bg-color);
     transform: scale(1.05);
 }
 
@@ -283,5 +396,4 @@ input[type="number"]:focus {
     .dish-nutrients {
         flex-direction: column;
     }
-
-    .dish
+}

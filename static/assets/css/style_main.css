@@ -1,22 +1,59 @@
+:root {
+    --bg-color: #f0f4f8;
+    --text-color: #333;
+    --header-bg-color: #6c757d;
+    --header-text-color: #fff;
+    --hero-bg-color: rgba(0, 0, 0, 0.5);
+    --hero-text-color: #fff;
+    --services-bg-color: #e9ecef;
+    --services-text-color: #343a40;
+    --quote-bg-color: #CFCFCF;
+    --quote-text-color: #555;
+    --methodology-bg-color: #f0f4f8;
+    --methodology-text-color: #343a40;
+    --card-bg-color: #fff;
+    --card-text-color: #555;
+    --btn-bg-color: #007bff;
+    --btn-hover-bg-color: #0056b3;
+}
+
+.dark-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --header-bg-color: #333;
+    --header-text-color: #e0e0e0;
+    --hero-bg-color: rgba(0, 0, 0, 0.7);
+    --hero-text-color: #e0e0e0;
+    --services-bg-color: #212121;
+    --services-text-color: #e0e0e0;
+    --quote-bg-color: #333;
+    --quote-text-color: #e0e0e0;
+    --methodology-bg-color: #121212;
+    --methodology-text-color: #e0e0e0;
+    --card-bg-color: #424242;
+    --card-text-color: #e0e0e0;
+    --btn-bg-color: #3f51b5;
+    --btn-hover-bg-color: #303f9f;
+}
 /* Общие стили */
-body {
+.body_main {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f4f8; /* Холодный фон */
-    color: #333;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .container {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
-    color: black;
+    color: var(--text-color);
 }
 
 /* Шапка */
 header {
-    background-color: #6c757d; /* Холодный цвет */
+    background-color: var(--header-bg-color);
     padding: 20px 0;
     text-align: center;
 }
@@ -24,12 +61,12 @@ header {
 header h1 {
     font-size: 2.5em;
     margin: 0;
-    color: #fff;
+    color: var(--header-text-color);
 }
 
 .tagline {
     font-size: 1.2em;
-    color: #e9ecef;
+    color: var(--header-text-color);
 }
 
 /* Секция героя */
@@ -40,12 +77,12 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: var(--hero-text-color);
     text-align: center;
 }
 
 .hero-content {
-    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон для текста */
+    background-color: var(--hero-bg-color);
     padding: 20px;
     border-radius: 10px;
 }
@@ -63,7 +100,7 @@ header h1 {
 .btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007bff; /* Холодный цвет кнопки */
+    background-color: var(--btn-bg-color);
     color: #fff;
     text-decoration: none;
     border-radius: 5px;
@@ -71,20 +108,20 @@ header h1 {
 }
 
 .btn:hover {
-    background-color: #0056b3; /* Холодный цвет кнопки при наведении */
+    background-color: var(--btn-hover-bg-color);
 }
 
 /* Секция услуг */
 .services {
     padding: 50px 0;
     text-align: center;
-    background-color: #e9ecef; /* Холодный фон */
+    background-color: var(--services-bg-color);
 }
 
 .services h2 {
     font-size: 2em;
     margin-bottom: 7%;
-    color: #343a40; /* Холодный цвет текста */
+    color: var(--services-text-color);
 }
 
 .service-cards {
@@ -94,7 +131,7 @@ header h1 {
 }
 
 .service-card {
-    background-color: #fff;
+    background-color: var(--card-bg-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -110,25 +147,25 @@ header h1 {
 .service-card h3 {
     font-size: 1.5em;
     margin-bottom: 10px;
-    color: #343a40; /* Холодный цвет текста */
+    color: var(--services-text-color);
 }
 
 .service-card p {
     font-size: 1em;
-    color: #555;
+    color: var(--card-text-color);
 }
 
 /* Секция цитат */
 .quotes {
     padding: 50px 0;
     text-align: center;
-    background-color: #e9ecef; /* Холодный фон */
+    background-color: var(--quote-bg-color);
 }
 
 .quotes h2 {
     font-size: 2em;
     margin-bottom: 30px;
-    color: #343a40; /* Холодный цвет текста */
+    color: var(--services-text-color);
 }
 
 .quote-container {
@@ -136,17 +173,17 @@ header h1 {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    border: 2px solid #007bff; /* Холодный цвет рамки */
+    border: 2px solid #4D4D4D;
     border-radius: 10px;
-    background-color: #fff;
+    background-color: var(--card-bg-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    height: 100px; /* Фиксированная высота */
-    overflow: hidden; /* Скрываем выступающие части */
+    height: 100px;
+    overflow: hidden;
 }
 
 .quote-text {
     font-size: 1.5em;
-    color: #555;
+    color: var(--quote-text-color);
     opacity: 0;
     transition: opacity 1s ease-in-out, transform 1s ease-in-out;
     transform: translateY(20px);
@@ -162,37 +199,16 @@ header h1 {
     transform: translate(-50%, -50%);
 }
 
-/* Медиа-запросы для адаптивного дизайна */
-@media (max-width: 768px) {
-    .quotes h2 {
-        font-size: 1.5em;
-    }
-
-    .quote-text {
-        font-size: 1.2em;
-    }
-}
-
-@media (max-width: 480px) {
-    .quotes h2 {
-        font-size: 1.2em;
-    }
-
-    .quote-text {
-        font-size: 1em;
-    }
-}
-
 /* Методология расчета калорий */
 .methodology {
     padding: 50px 0;
-    background-color: #f0f4f8; /* Холодный фон */
+    background-color: var(--methodology-bg-color);
 }
 
 .methodology h2 {
     font-size: 2em;
     margin-bottom: 30px;
-    color: #343a40; /* Холодный цвет текста */
+    color: var(--methodology-text-color);
     text-align: center;
 }
 
@@ -200,7 +216,7 @@ header h1 {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--card-bg-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -208,83 +224,22 @@ header h1 {
 .methodology-content h3 {
     font-size: 1.5em;
     margin-bottom: 20px;
-    color: #343a40; /* Холодный цвет текста */
+    color: var(--methodology-text-color);
 }
 
 .methodology-content p {
     font-size: 1.2em;
     margin-bottom: 20px;
-    color: #555;
+    color: var(--card-text-color);
 }
 
 .methodology-content ul {
     list-style-type: disc;
     margin-left: 20px;
     font-size: 1.2em;
-    color: #555;
+    color: var(--card-text-color);
 }
 
 .methodology-content ul li {
     margin-bottom: 10px;
-}
-
-/* Медиа-запросы для адаптивного дизайна */
-@media (max-width: 768px) {
-    .methodology h2 {
-        font-size: 1.5em;
-    }
-
-    .methodology-content h3 {
-        font-size: 1.2em;
-    }
-
-    .methodology-content p,
-    .methodology-content ul {
-        font-size: 1em;
-    }
-}
-
-@media (max-width: 480px) {
-    .methodology h2 {
-        font-size: 1.2em;
-    }
-
-    .methodology-content h3 {
-        font-size: 1em;
-    }
-
-    .methodology-content p,
-    .methodology-content ul {
-        font-size: 0.9em;
-    }
-}
-
-
-/* Медиа-запросы для адаптивного дизайна */
-@media (max-width: 768px) {
-    .hero h2 {
-        font-size: 2em;
-    }
-
-    .hero p {
-        font-size: 1em;
-    }
-
-    .service-card {
-        width: 48%;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero h2 {
-        font-size: 1.5em;
-    }
-
-    .hero p {
-        font-size: 0.9em;
-    }
-
-    .service-card {
-        width: 100%;
-    }
 }
