@@ -23,6 +23,7 @@ class News:
             """
         return render_template(
             "News/one_news.html",
+            title=f"Новость {str(news_id)}",
             header_links=header_links,
             news_title=news_title,
             news_image_url=news_image_url,

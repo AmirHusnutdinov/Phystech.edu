@@ -1,43 +1,44 @@
 :root {
-    --bg-color: #f0f4f8;
-    --text-color: #333;
-    --header-bg-color: #6c757d;
-    --header-text-color: #fff;
+    --bg-color: rgb(240, 244, 248);
+    --text-color: rgb(51, 51, 51);
+    --header-bg-color: rgb(108, 117, 125);
+    --header-text-color: rgb(255, 255, 255);
     --hero-bg-color: rgba(0, 0, 0, 0.5);
-    --hero-text-color: #fff;
-    --services-bg-color: #e9ecef;
-    --services-text-color: #343a40;
-    --quote-bg-color: #CFCFCF;
-    --quote-text-color: #555;
-    --methodology-bg-color: #f0f4f8;
-    --methodology-text-color: #343a40;
-    --card-bg-color: #fff;
-    --card-text-color: #555;
-    --btn-bg-color: #007bff;
-    --btn-hover-bg-color: #0056b3;
+    --hero-text-color: rgb(255, 255, 255);
+    --services-bg-color: rgb(233, 236, 239);
+    --services-text-color: rgb(52, 58, 64);
+    --quote-bg-color: rgb(207, 207, 207);
+    --quote-text-color: rgb(85, 85, 85);
+    --methodology-bg-color: rgb(240, 244, 248);
+    --methodology-text-color: rgb(52, 58, 64);
+    --card-bg-color: rgb(255, 255, 255);
+    --card-text-color: rgb(85, 85, 85);
+    --btn-bg-color: rgb(0, 123, 255);
+    --btn-hover-bg-color: rgb(0, 86, 179);
 }
 
 .dark-theme {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --header-bg-color: #333;
-    --header-text-color: #e0e0e0;
+    --bg-color: rgb(18, 18, 18);
+    --text-color: rgb(224, 224, 224);
+    --header-bg-color: rgb(51, 51, 51);
+    --header-text-color: rgb(224, 224, 224);
     --hero-bg-color: rgba(0, 0, 0, 0.7);
-    --hero-text-color: #e0e0e0;
-    --services-bg-color: #212121;
-    --services-text-color: #e0e0e0;
-    --quote-bg-color: #333;
-    --quote-text-color: #e0e0e0;
-    --methodology-bg-color: #121212;
-    --methodology-text-color: #e0e0e0;
-    --card-bg-color: #424242;
-    --card-text-color: #e0e0e0;
-    --btn-bg-color: #3f51b5;
-    --btn-hover-bg-color: #303f9f;
+    --hero-text-color: rgb(224, 224, 224);
+    --services-bg-color: rgb(33, 33, 33);
+    --services-text-color: rgb(224, 224, 224);
+    --quote-bg-color: rgb(51, 51, 51);
+    --quote-text-color: rgb(224, 224, 224);
+    --methodology-bg-color: rgb(18, 18, 18);
+    --methodology-text-color: rgb(224, 224, 224);
+    --card-bg-color: rgb(66, 66, 66);
+    --card-text-color: rgb(224, 224, 224);
+    --btn-bg-color: rgb(63, 81, 181);
+    --btn-hover-bg-color: rgb(48, 63, 159);
 }
+
 /* Общие стили */
 .body_main {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
@@ -62,6 +63,7 @@ header h1 {
     font-size: 2.5em;
     margin: 0;
     color: var(--header-text-color);
+    font-family: 'Montserrat', sans-serif;
 }
 
 .tagline {
@@ -90,6 +92,7 @@ header h1 {
 .hero-content h2 {
     font-size: 2.5em;
     margin-bottom: 20px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .hero-content p {
@@ -101,7 +104,7 @@ header h1 {
     display: inline-block;
     padding: 10px 20px;
     background-color: var(--btn-bg-color);
-    color: #fff;
+    color: rgb(255, 255, 255);
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
@@ -122,6 +125,7 @@ header h1 {
     font-size: 2em;
     margin-bottom: 7%;
     color: var(--services-text-color);
+    font-family: 'Montserrat', sans-serif;
 }
 
 .service-cards {
@@ -166,6 +170,7 @@ header h1 {
     font-size: 2em;
     margin-bottom: 30px;
     color: var(--services-text-color);
+    font-family: 'Montserrat', sans-serif;
 }
 
 .quote-container {
@@ -173,7 +178,7 @@ header h1 {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    border: 2px solid #4D4D4D;
+    border: 2px solid rgb(77, 77, 77);
     border-radius: 10px;
     background-color: var(--card-bg-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -210,6 +215,7 @@ header h1 {
     margin-bottom: 30px;
     color: var(--methodology-text-color);
     text-align: center;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .methodology-content {

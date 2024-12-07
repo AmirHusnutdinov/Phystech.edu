@@ -2,12 +2,12 @@
 .body_login {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, rgb(245, 247, 250), rgb(195, 207, 226));
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 78.4vh;
+    height: 76vh;
     overflow: hidden;
     perspective: 1000px;
 }
@@ -33,10 +33,11 @@
 /* Заголовок формы */
 .auth-title {
     text-align: center;
-    color: #333;
+    color: rgb(51, 51, 51);
     margin-bottom: 30px;
     font-size: 2em;
     animation: slideInDown 1s ease-in-out;
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Группа полей ввода */
@@ -49,7 +50,7 @@
 .input-group label {
     display: block;
     margin-bottom: 5px;
-    color: #555;
+    color: rgb(85, 85, 85);
     font-size: 1em;
     animation: fadeIn 1s ease-in-out;
 }
@@ -57,14 +58,14 @@
 .input-group input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid rgb(204, 204, 204);
     border-radius: 5px;
     font-size: 1em;
     transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .input-group input:focus {
-    border-color: #6c63ff;
+    border-color: rgb(108, 99, 255);
     outline: none;
     transform: scale(1.05);
 }
@@ -73,7 +74,7 @@
 .auth-button {
     width: 100%;
     padding: 10px;
-    background: #6c63ff;
+    background: rgb(108, 99, 255);
     color: white;
     border: none;
     border-radius: 5px;
@@ -84,7 +85,7 @@
 }
 
 .auth-button:hover {
-    background: #564dff;
+    background: rgb(86, 77, 255);
     transform: translateY(-2px);
 }
 
@@ -100,6 +101,20 @@
 
     .input-group input, .auth-button {
         font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 15px;
+    }
+
+    .auth-title {
+        font-size: 1.2em;
+    }
+
+    .input-group input, .auth-button {
+        font-size: 0.8em;
     }
 }
 
@@ -133,4 +148,41 @@
         transform: rotateY(0deg);
         opacity: 1;
     }
+}
+
+/* Темная тема */
+.dark-theme .body_login {
+    background: linear-gradient(135deg, rgb(30, 30, 30), rgb(51, 51, 51));
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme .auth-container {
+    background: rgba(51, 51, 51, 0.9);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .auth-title {
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme .input-group label {
+    color: rgb(153, 153, 153);
+}
+
+.dark-theme .input-group input {
+    background: rgb(68, 68, 68);
+    color: rgb(224, 224, 224);
+    border-color: rgb(85, 85, 85);
+}
+
+.dark-theme .input-group input:focus {
+    border-color: rgb(108, 99, 255);
+}
+
+.dark-theme .auth-button {
+    background: rgb(108, 99, 255);
+}
+
+.dark-theme .auth-button:hover {
+    background: rgb(86, 77, 255);
 }

@@ -1,6 +1,7 @@
+/* Основные стили */
 .body_selected_products {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(240, 244, 248);
     margin: 0;
     padding: 0;
     height: 78.4vh;
@@ -10,7 +11,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
 }
@@ -24,15 +25,15 @@
 .search-bar input {
     flex: 1;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid rgb(204, 204, 204);
     border-radius: 5px;
     font-size: 16px;
 }
 
 .search-bar button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: rgb(0, 123, 255);
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -40,7 +41,7 @@
 }
 
 .search-bar button:hover {
-    background-color: #0056b3;
+    background-color: rgb(0, 86, 179);
 }
 
 .product-sections-container {
@@ -56,7 +57,7 @@
 }
 
 .product-section {
-    background-color: #f9f9f9;
+    background-color: rgb(249, 249, 249);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -71,7 +72,8 @@
 .product-title {
     margin: 0 0 10px;
     font-size: 24px;
-    color: #333;
+    color: rgb(51, 51, 51);
+    font-family: 'Montserrat', sans-serif;
 }
 
 .product-info {
@@ -96,45 +98,45 @@
 
 /* Белки */
 .macronutrient .label_protein{
-    color: #007bff;
+    color: rgb(0, 123, 255);
     font-size: 20px;
 }
 
 .macronutrient .value_protein{
-    color: #007bff;
+    color: rgb(0, 123, 255);
     font-size: 20px;
 }
 
 /* Жиры */
 .macronutrient .label_fats{
-    color: orange;
+    color: rgb(255, 165, 0);
     font-size: 20px;
 }
 
 .macronutrient .value_fats{
-    color: orange;
+    color: rgb(255, 165, 0);
     font-size: 20px;
 }
 
 /* Углеводы */
 .macronutrient .label_carbohydrates{
-    color: red;
+    color: rgb(255, 0, 0);
     font-size: 20px;
 }
 
 .macronutrient .value_carbohydrates{
-    color: red;
+    color: rgb(255, 0, 0);
     font-size: 20px;
 }
 
 .label {
     font-size: 14px;
-    color: #666;
+    color: rgb(102, 102, 102);
 }
 
 .value {
     font-size: 18px;
-    color: #333;
+    color: rgb(51, 51, 51);
 }
 
 .calories {
@@ -145,12 +147,12 @@
 
 .calories .label {
     font-size: 14px;
-    color: #666;
+    color: rgb(102, 102, 102);
 }
 
 .calories .value {
     font-size: 20px;
-    color: #007bff;
+    color: rgb(0, 123, 255);
 }
 
 .buttons {
@@ -162,15 +164,15 @@
 
 .button {
     padding: 10px 20px;
-    background-color: #28a745;
-    color: #fff;
+    background-color: rgb(40, 167, 69);
+    color: rgb(255, 255, 255);
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
 
 .button:hover {
-    background-color: #218838;
+    background-color: rgb(33, 136, 56);
 }
 
 /* Адаптивность для мобильных устройств */
@@ -202,4 +204,68 @@
         flex-direction: column;
         gap: 10px;
     }
+}
+
+/* Темная тема */
+.dark-theme .body_selected_products {
+    background-color: rgb(44, 44, 44);
+}
+
+.dark-theme .container {
+    background-color: rgb(51, 51, 51);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .search-bar input {
+    background-color: rgb(68, 68, 68);
+    color: rgb(224, 224, 224);
+    border-color: rgb(85, 85, 85);
+}
+
+.dark-theme .search-bar button {
+    background-color: rgb(0, 86, 179);
+}
+
+.dark-theme .product-section {
+    background-color: rgb(68, 68, 68);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .product-title {
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme .macronutrient .label_protein,
+.dark-theme .macronutrient .value_protein {
+    color: rgb(0, 123, 255);
+}
+
+.dark-theme .macronutrient .label_fats,
+.dark-theme .macronutrient .value_fats {
+    color: rgb(255, 165, 0);
+}
+
+.dark-theme .macronutrient .label_carbohydrates,
+.dark-theme .macronutrient .value_carbohydrates {
+    color: rgb(255, 0, 0);
+}
+
+.dark-theme .label {
+    color: rgb(204, 204, 204);
+}
+
+.dark-theme .value {
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme .calories .value {
+    color: rgb(0, 123, 255);
+}
+
+.dark-theme .button {
+    background-color: rgb(33, 136, 56);
+}
+
+.dark-theme .button:hover {
+    background-color: rgb(30, 126, 52);
 }

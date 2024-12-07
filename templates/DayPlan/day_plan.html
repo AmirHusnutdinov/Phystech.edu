@@ -37,6 +37,13 @@
                 </div>
                 <input type="number" id="calories" placeholder="ккал" oninput="updateProgressBar('calories-bar', this.value)">
             </div>
+            <div class="indicator">
+                <label for="water" id="water_text">Вода</label>
+                <div class="progress-bar">
+                    <div id="water-bar" class="bar" style="width: 0%;"></div>
+                </div>
+                <input type="number" id="water" placeholder="л" oninput="updateProgressBar('water-bar', this.value)">
+            </div>
         </div>
         <a href="/selected_products">Это временная ссылка на выбор продукта</a>
         <div class="links-container">

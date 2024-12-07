@@ -93,8 +93,10 @@ input:checked + .slider .moon {
     justify-content: space-between;
     align-items: center;
     background-color: black;
-    padding: 30px 20px;
+    padding: 4vh 20px;
     color: white;
+    position: relative;
+    z-index: 1000;
 }
 
 .navbar-brand a {
@@ -158,6 +160,7 @@ input:checked + .slider .moon {
     padding: 20px;
     width: 100%;
     text-align: center;
+    z-index: 999;
 }
 
 /* Медиа-запрос для мобильных устройств */
@@ -171,13 +174,57 @@ input:checked + .slider .moon {
     }
 }
 
+/* Основные стили для темной темы */
+body.dark-theme {
+    background-color: rgb(44, 44, 44);
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme .navbar {
+    background-color: rgb(31, 31, 31);
+}
+
+.dark-theme .navbar-brand a,
+.dark-theme .navbar-links a {
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme .navbar-links a:hover {
+    color: rgb(0, 123, 255);
+}
+
+.dark-theme .footer {
+    background-color: rgb(31, 31, 31);
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme .slider {
+    background-color: rgb(224, 224, 224);
+}
+
+.dark-theme .slider.round {
+    border-color: rgb(224, 224, 224);
+}
+
+.dark-theme .slider.round:before {
+    background-color: rgb(31, 31, 31);
+}
+
+.dark-theme .sun {
+    color: rgb(31, 31, 31);
+}
+
+.dark-theme .moon {
+    color: rgb(224, 224, 224);
+}
+
 /* Стили для футера */
 .footer {
     background-color: black;
     color: white;
     text-align: center;
-    padding: 20px 0;
-    position: flex;
+    padding: 3vh 0;
+    position: relative;
     bottom: 0;
     width: 100%;
 }

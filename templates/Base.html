@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
-
 </head>
 <body>
 <nav class="navbar">
@@ -17,8 +16,8 @@
             <label class="theme-switch" for="checkbox">
                 <input type="checkbox" id="checkbox" />
                 <div class="slider round">
-                    <div class="sun">☀️</div>
-                    <div class="moon">🌙</div>
+                    <div class="sun"> ☀️</div>
+                    <div class="moon"> 🌙</div>
                 </div>
             </label>
         </div>
@@ -33,7 +32,7 @@
         <div class="bar"></div>
         <div class="bar"></div>
         <div class="bar"></div>
-        </div>
+    </div>
 </nav>
 <script>
     document.querySelector('.navbar-toggle').addEventListener('click', function() {
@@ -41,23 +40,23 @@
         document.querySelector('.navbar-toggle').classList.toggle('active');
     });
 </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggleBtn = document.getElementById('checkbox');
-            const savedTheme = localStorage.getItem('theme');
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const themeToggleBtn = document.getElementById('checkbox');
+        const savedTheme = localStorage.getItem('theme');
 
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-                themeToggleBtn.checked = true;
-            }
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeToggleBtn.checked = true;
+        }
 
-            themeToggleBtn.addEventListener('change', function() {
-                document.body.classList.toggle('dark-theme');
-                const isDarkTheme = document.body.classList.contains('dark-theme');
-                localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
-            });
+        themeToggleBtn.addEventListener('change', function() {
+            document.body.classList.toggle('dark-theme');
+            const isDarkTheme = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
         });
-    </script>
+    });
+</script>
 {% block content %}
 <!-- Здесь будет основное содержимое страницы -->
 {% endblock %}

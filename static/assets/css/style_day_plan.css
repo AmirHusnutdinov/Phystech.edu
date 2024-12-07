@@ -1,56 +1,56 @@
 :root {
-    --bg-color: #f0f4f8;
-    --text-color: #333;
-    --container-bg-color: #fff;
-    --date-block-bg-color: #e9ecef;
-    --progress-bar-bg-color: #e0e0e0;
-    --bar-bg-color: #4caf50;
-    --input-border-color: #ccc;
-    --input-focus-border-color: #2196f3;
-    --button-bg-color: #2196f3;
-    --button-hover-bg-color: #1976d2;
-    --meal-item-bg-color: #f9f9f9;
-    --meal-item-border-color: #ccc;
-    --dish-item-bg-color: #fff;
-    --dish-item-border-color: #ddd;
-    --remove-meal-bg-color: #f44336;
-    --remove-meal-hover-bg-color: #d32f2f;
-    --add-dish-bg-color: #4caf50;
-    --add-dish-hover-bg-color: #388e3c;
-    --color_fats: rgb(255,165,0);
-    --color_calories: rgb(0,123,255);
-    --color_protein: rgb(0,123,255);
-    --color_carbs: rgb(255,0,0);
-    --time-block-bg-color: white;
-    --input-block-bg-color: white;
+    --bg-color: rgb(240, 244, 248);
+    --text-color: rgb(51, 51, 51);
+    --container-bg-color: rgb(255, 255, 255);
+    --date-block-bg-color: rgb(233, 236, 239);
+    --progress-bar-bg-color: rgb(224, 224, 224);
+    --bar-bg-color: rgb(76, 175, 80);
+    --input-border-color: rgb(204, 204, 204);
+    --input-focus-border-color: rgb(33, 150, 243);
+    --button-bg-color: rgb(33, 150, 243);
+    --button-hover-bg-color: rgb(25, 118, 210);
+    --meal-item-bg-color: rgb(249, 249, 249);
+    --meal-item-border-color: rgb(204, 204, 204);
+    --dish-item-bg-color: rgb(255, 255, 255);
+    --dish-item-border-color: rgb(221, 221, 221);
+    --remove-meal-bg-color: rgb(244, 67, 54);
+    --remove-meal-hover-bg-color: rgb(211, 47, 47);
+    --add-dish-bg-color: rgb(76, 175, 80);
+    --add-dish-hover-bg-color: rgb(56, 142, 60);
+    --color_fats: rgb(255, 165, 0);
+    --color_calories: rgb(0, 123, 255);
+    --color_protein: rgb(0, 123, 255);
+    --color_carbs: rgb(255, 0, 0);
+    --time-block-bg-color: rgb(255, 255, 255);
+    --input-block-bg-color: rgb(255, 255, 255);
 }
 
 .dark-theme {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --container-bg-color: #1e1e1e;
-    --date-block-bg-color: #2c2c2c;
-    --progress-bar-bg-color: #333;
-    --bar-bg-color: rgb(0,255,0,0.3);
-    --input-border-color: #444;
-    --input-focus-border-color: #2196f3;
-    --button-bg-color: #3f51b5;
-    --button-hover-bg-color: #303f9f;
-    --meal-item-bg-color: #2e2e2e;
-    --meal-item-border-color: #444;
-    --dish-item-bg-color: #3e3e3e;
-    --dish-item-border-color: #555;
-    --remove-meal-bg-color: #b71c1c;
-    --remove-meal-hover-bg-color: #c62828;
-    --add-dish-bg-color: #2e7d32;
-    --add-dish-hover-bg-color: #388e3c;
-    --color_fats: rgb(255, 167, 38, 0.7);
-    --color_calories: rgb(33, 150, 243, 0.8);
-    --color_protein: rgb(33, 150, 243, 0.8);
-    --color_carbs: rgb(255,0,0,0.5);
-    --time-block-bg-color: #424242;
-    --input-block-bg-color: #555;
-    --input-block-font-color: rgb(255, 255, 255, 0.8);
+    --bg-color: rgb(18, 18, 18);
+    --text-color: rgb(224, 224, 224);
+    --container-bg-color: rgb(30, 30, 30);
+    --date-block-bg-color: rgb(44, 44, 44);
+    --progress-bar-bg-color: rgb(51, 51, 51);
+    --bar-bg-color: rgba(0, 255, 0, 0.3);
+    --input-border-color: rgb(68, 68, 68);
+    --input-focus-border-color: rgb(33, 150, 243);
+    --button-bg-color: rgb(63, 81, 181);
+    --button-hover-bg-color: rgb(48, 63, 159);
+    --meal-item-bg-color: rgb(46, 46, 46);
+    --meal-item-border-color: rgb(68, 68, 68);
+    --dish-item-bg-color: rgb(62, 62, 62);
+    --dish-item-border-color: rgb(85, 85, 85);
+    --remove-meal-bg-color: rgb(183, 28, 28);
+    --remove-meal-hover-bg-color: rgb(198, 40, 40);
+    --add-dish-bg-color: rgb(46, 125, 50);
+    --add-dish-hover-bg-color: rgb(56, 142, 60);
+    --color_fats: rgba(255, 167, 38, 0.7);
+    --color_calories: rgba(33, 150, 243, 0.8);
+    --color_protein: rgba(33, 150, 243, 0.8);
+    --color_carbs: rgba(255, 0, 0, 0.5);
+    --time-block-bg-color: rgb(66, 66, 66);
+    --input-block-bg-color: rgb(85, 85, 85);
+    --input-block-font-color: rgba(255, 255, 255, 0.8);
 }
 
 /* Общие стили */
@@ -254,64 +254,74 @@ input[type="number"]:focus {
 .dish-nutrients {
     display: flex;
     justify-content: space-between;
-
 }
-.dish-protein, .dish-fats, .dish-carbs, .dish-calories-per-100, .dish-name, .dish-weight{
+
+.dish-protein, .dish-fats, .dish-carbs, .dish-calories-per-100, .dish-name, .dish-weight {
     background-color: var(--input-block-bg-color);
     color: var(--input-block-font-color);
 }
 
-.remove-dish{
+.remove-dish {
     background-color: var(--remove-meal-bg-color);
     border-radius: 50px;
 }
 
-
-#fats{
+#fats {
     background-color: var(--input-block-bg-color);
     width: 15%;
     font-size: 30px;
-    color: var(--input-block-font-color)
+    color: var(--input-block-font-color);
 }
 
-#fats_text{
+#fats_text {
     color: var(--color_fats);
 }
 
-#carbs{
+#carbs {
     background-color: var(--input-block-bg-color);
     width: 15%;
     font-size: 30px;
-    color: var(--input-block-font-color)
+    color: var(--input-block-font-color);
 }
 
-#carbs_text{
+#carbs_text {
     color: var(--color_carbs);
 }
 
-#protein{
+#protein {
     background-color: var(--input-block-bg-color);
     width: 15%;
     font-size: 30px;
-    color: var(--input-block-font-color)
+    color: var(--input-block-font-color);
 }
 
-#protein_text{
+#protein_text {
     color: var(--color_protein);
 }
 
-#calories{
+#calories {
     background-color: var(--input-block-bg-color);
     width: 15%;
     font-size: 30px;
-    color: var(--input-block-font-color)
+    color: var(--input-block-font-color);
 }
 
-#calories_text{
+#calories_text {
     color: var(--color_calories);
 }
 
-.meal-time{
+#water {
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color);
+}
+
+#water_text {
+    color: var(--color_water);
+}
+
+.meal-time {
     background-color: var(--time-block-bg-color);
     color: white;
 }
