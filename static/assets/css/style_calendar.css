@@ -1,42 +1,82 @@
-.calendar-page {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: calc(100vh - 130px);
-    padding: 5px 0;
-    margin: 0;
-    width: 100%;
-  }
+:root {
+    --bg-color: rgb(240, 244, 248);
+    --text-color: rgb(51, 51, 51);
+    --header-bg-color: rgb(76, 175, 80);
+    --header-text-color: rgb(255, 255, 255);
+    --hero-bg-color: rgba(0, 0, 0, 0.5);
+    --hero-text-color: rgb(255, 255, 255);
+    --services-bg-color: rgb(233, 236, 239);
+    --services-text-color: rgb(52, 58, 64);
+    --quote-bg-color: rgb(207, 207, 207);
+    --quote-text-color: rgb(85, 85, 85);
+    --methodology-bg-color: rgb(240, 244, 248);
+    --methodology-text-color: rgb(52, 58, 64);
+    --card-bg-color: rgb(255, 255, 255);
+    --card-text-color: rgb(85, 85, 85);
+    --btn-bg-color: rgb(0, 123, 255);
+    --btn-hover-bg-color: rgb(0, 86, 179);
+}
 
-  .calendar-container {
-    background: #fff;
+.dark-theme {
+    --bg-color: rgb(18, 18, 18);
+    --text-color: rgb(224, 224, 224);
+    --header-bg-color: rgba(51, 51, 51, 0.5);
+    --header-text-color: rgba(224, 224, 224, 0.5);
+    --hero-bg-color: rgba(0, 0, 0, 0.7);
+    --hero-text-color: rgba(224, 224, 224, 0.5);
+    --services-bg-color: rgba(33, 33, 33, 0.5);
+    --services-text-color: rgba(224, 224, 224, 0.5);
+    --quote-bg-color: rgba(51, 51, 51, 0.5);
+    --quote-text-color: rgba(224, 224, 224, 0.5);
+    --methodology-bg-color: rgba(18, 18, 18, 0.5);
+    --methodology-text-color: rgba(224, 224, 224, 0.5);
+    --card-bg-color: rgba(66, 66, 66, 0.5);
+    --card-text-color: rgba(224, 224, 224, 0.5);
+    --btn-bg-color: rgba(63, 81, 181, 0.5);
+    --btn-hover-bg-color: rgba(48, 63, 159, 0.5);
+}
+
+/* Общие стили */
+.body_calendar {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.calendar-container {
+    background: var(--card-bg-color);
     border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
     width: 92%;
     max-width: 1150px;
     padding: 20px;
     animation: fadeIn 1s ease-in-out;
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    margin-bottom: 5px;
-  }
+    margin: 15px auto 15px;
+    height: 67.8vh;
+}
 
-  .calendar-page .header_calendar {
+.header_calendar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
     margin-bottom: 18px;
     height: 45px;
-  }
+}
 
-  .calendar-page .nav-btn {
-    background: #4CAF50;
+.nav-btn {
+    background: var(--btn-bg-color);
     border: none;
-    color: white;
+    color: var(--header-text-color);
     width: 40px;
     height: 40px;
     display: flex;
@@ -48,114 +88,114 @@
     position: relative;
     z-index: 1;
     padding: 0;
-  }
+}
 
-  .calendar-page .nav-btn:hover {
-    background: #45a049;
+.nav-btn:hover {
+    background: var(--btn-hover-bg-color);
     transform: scale(1.1);
-  }
+}
 
-  .calendar-page .nav-btn::before {
+.nav-btn::before {
     content: '';
     width: 12px;
     height: 12px;
-    border: solid white;
+    border: solid var(--header-text-color);
     border-width: 0 3px 3px 0;
     display: inline-block;
     position: absolute;
     top: 50%;
     left: 50%;
-  }
+}
 
-  .calendar-page .nav-btn:first-child::before {
+.nav-btn:first-child::before {
     transform: translate(-35%, -50%) rotate(135deg);
-  }
+}
 
-  .calendar-page .nav-btn:last-child::before {
+.nav-btn:last-child::before {
     transform: translate(-65%, -50%) rotate(-45deg);
-  }
+}
 
-  .calendar-page .current-date {
+.current-date {
     flex: 1;
     text-align: center;
     font-size: 2.6em;
     font-weight: bold;
-    color: #333;
+    color: var(--text-color);
     animation: slideIn 0.5s ease-in-out;
-  }
+}
 
-  .calendar-page .calendar {
+.calendar {
     display: grid;
     grid-template-columns: repeat(7, minmax(135px, 1fr));
     gap: 5px;
     overflow: visible;
-  }
+}
 
-  .calendar-page .day {
+.day {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     border-radius: 10px;
     font-weight: bold;
-    color: #555;
+    color: var(--text-color);
     transition: transform 0.3s, background 0.3s;
     height: 58px;
     font-size: 1.1em;
-  }
+}
 
-  .calendar-page .day.names {
-    background: #f0f0f0;
+.day.names {
+    background: var(--services-bg-color);
     height: 58px;
     margin-bottom: 5px;
-  }
+}
 
-  .calendar-page .date {
+.date {
     cursor: pointer;
     transition: transform 0.2s, background 0.3s;
     position: relative;
-  }
+}
 
-  .calendar-page .date:hover {
+.date:hover {
     transform: scale(1.05);
-  }
+}
 
-  .calendar-page .empty {
+.empty {
     background: transparent;
     cursor: default;
-  }
+}
 
-  .calendar-page .day.date.detailed {
+.day.date.detailed {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 0.5px;
     gap: 0.5px;
-    height: 50.16px; /* Уменьшено на 5% от 52.8px */
+    height: 50.16px;
     position: relative;
-    border: 4px solid #E5E5E5;
+    border: 4px solid var(--services-bg-color);
     border-radius: 12px;
     overflow: hidden;
-    background: #E5E5E5;
-  }
+    background: var(--services-bg-color);
+}
 
-  .calendar-page .day-number {
+.day-number {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 1em;
-    color: #4D4D4D;
+    color: var(--text-color);
     z-index: 1;
     font-weight: 600;
     text-shadow: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-  }
+}
 
-  .nutrient-section {
+.nutrient-section {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -163,60 +203,50 @@
     align-items: center;
     font-size: 0.8em;
     font-weight: bold;
-    color: #A0A0A0;
+    color: var(--text-color);
     text-shadow: none;
     height: calc(100% - 1px);
     margin: 0.5px;
     border-radius: 8px;
     position: relative;
     padding: 4px 0;
-  }
+}
 
-  .nutrient-section .triangle {
+.nutrient-section .triangle {
     width: 0;
     height: 0;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     position: absolute;
-  }
+}
 
-  .nutrient-section .triangle.up {
-    border-bottom: 6px solid #A0A0A0;
-    top: 6px; /* Уменьшено пропорционально */
-  }
+.nutrient-section .triangle.up {
+    border-bottom: 6px solid var(--text-color);
+    top: 6px;
+}
 
-  .nutrient-section .triangle.down {
-    border-top: 6px solid #A0A0A0;
-    bottom: 6px; /* Уменьшено пропорционально */
-  }
+.nutrient-section .triangle.down {
+    border-top: 6px solid var(--text-color);
+    bottom: 6px;
+}
 
-  .nutrient-section:first-child {
+.nutrient-section:first-child {
     background-color: #ffff00;
-  }
+}
 
-  .nutrient-section:nth-child(2) {
+.nutrient-section:nth-child(2) {
     background-color: #ffa500;
-  }
+}
 
-  .nutrient-section:nth-child(3) {
+.nutrient-section:nth-child(3) {
     background-color: #90EE90;
-  }
+}
 
-  .nutrient-section:nth-child(4) {
+.nutrient-section:nth-child(4) {
     background-color: #ff4500;
-  }
+}
 
-  .footer {
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    padding: 15px 0;
-    width: 100%;
-    font-size: 14px;
-    margin-top: auto;
-  }
-
-  .modal {
+.modal {
     display: none;
     position: fixed;
     z-index: 1000;
@@ -224,17 +254,17 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4);
-  }
+    background-color: rgba(0, 0, 0, 0.4);
+}
 
-  .modal.show {
+.modal.show {
     display: flex !important;
     justify-content: center;
     align-items: center;
-  }
+}
 
-  .modal-content {
-    background-color: #fff;
+.modal-content {
+    background-color: var(--card-bg-color);
     width: 90%;
     max-width: 500px;
     border-radius: 15px;
@@ -243,146 +273,146 @@
     left: 50%;
     transform: translate(-50%, -50%);
     overflow: hidden;
-  }
+}
 
-  .close {
+.close {
     position: absolute;
     right: 20px;
     top: 15px;
     font-size: 32px;
     font-weight: normal;
-    color: #999;
+    color: var(--text-color);
     cursor: pointer;
     z-index: 1;
-  }
+}
 
-  .modal-date {
+.modal-date {
     text-align: center;
     font-size: 32px;
     font-weight: bold;
     margin: 0;
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: var(--services-bg-color);
     border-radius: 15px 15px 0 0;
-  }
+}
 
-  .nutrition-columns {
+.nutrition-columns {
     display: flex;
     justify-content: space-between;
     padding: 15px 30px;
     gap: 30px;
-  }
+}
 
-  .nutrition-column {
+.nutrition-column {
     flex: 1;
-  }
+}
 
-  .nutrition-column h3 {
+.nutrition-column h3 {
     font-size: 24.2px;
     margin-bottom: 20px;
     font-weight: bold;
-    color: #000;
-  }
+    color: var(--text-color);
+}
 
-  .protein { color: #6B00F6; }
-  .fats { color: #FFA500; }
-  .carbs { color: #FF0000; }
-  .calories { color: #000; }
+.protein { color: #6B00F6; }
+.fats { color: #FFA500; }
+.carbs { color: #FF0000; }
+.calories { color: var(--text-color); }
 
-  .nutrition-column p {
+.nutrition-column p {
     font-size: 19.8px;
     margin: 12px 0;
     line-height: 1.5;
     font-weight: bold;
-  }
+}
 
-  .nutrition-difference {
+.nutrition-difference {
     padding: 15px 30px;
     border-radius: 0 0 15px 15px;
-  }
+}
 
-  .nutrition-difference h3 {
+.nutrition-difference h3 {
     font-size: 28px;
     margin: -15px -30px 15px -30px;
     text-align: center;
     font-weight: bold;
-    color: #000;
-    background-color: #f0f0f0;
+    color: var(--text-color);
+    background-color: var(--services-bg-color);
     padding: 15px;
-  }
+}
 
-  .difference-grid {
+.difference-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     text-align: center;
-  }
+}
 
-  .difference-item {
+.difference-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-  }
+}
 
-  .difference-item > span:first-child {
+.difference-item > span:first-child {
     font-size: 19.8px;
     font-weight: bold;
     margin-bottom: 5px;
-  }
+}
 
-  .value-wrapper {
+.value-wrapper {
     display: flex;
     align-items: baseline;
     gap: 2px;
-  }
+}
 
-  .value-wrapper .number {
+.value-wrapper .number {
     font-size: 24.2px;
     font-weight: bold;
-  }
+}
 
-  .value-wrapper .unit {
+.value-wrapper .unit {
     font-size: 14.52px;
     font-weight: bold;
-  }
+}
 
-  .diff-arrow {
+.diff-arrow {
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     margin-top: 2px;
-  }
+}
 
-  .diff-arrow.up {
+.diff-arrow.up {
     border-bottom: 14px solid #00FF00;
-  }
+}
 
-  .diff-arrow.down {
+.diff-arrow.down {
     border-top: 14px solid #FF0000;
-  }
+}
 
-  .view-controls {
+.view-controls {
     display: flex;
     align-items: center;
     margin-right: 10px;
-  }
+}
 
-  .switch {
+.switch {
     position: relative;
     display: inline-block;
     width: 60px;
     height: 34px;
-  }
+}
 
-  .switch input {
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
+}
 
-  .slider {
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -392,9 +422,9 @@
     background-color: #ccc;
     transition: .4s;
     border-radius: 34px;
-  }
+}
 
-  .slider:before {
+.slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -404,70 +434,70 @@
     background-color: white;
     transition: .4s;
     border-radius: 50%;
-  }
+}
 
-  input:checked + .slider {
-    background-color: #4CAF50;
-  }
+input:checked + .slider {
+    background-color: var(--btn-bg-color);
+}
 
-  input:checked + .slider:before {
+input:checked + .slider:before {
     transform: translateX(26px);
-  }
+}
 
-  @keyframes fadeIn {
+@keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
-  }
+}
 
-  @keyframes slideIn {
+@keyframes slideIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
-  }
+}
 
-  @media (max-width: 768px) {
-    .calendar-page .calendar-container {
-      padding: 10px;
+@media (max-width: 768px) {
+    .calendar-container {
+        padding: 10px;
     }
 
-    .calendar-page .nav-btn {
-      padding: 6px 10px;
-      font-size: 16px;
+    .nav-btn {
+        padding: 6px 10px;
+        font-size: 16px;
     }
 
-    .calendar-page .current-date {
-      font-size: 1.3em;
+    .current-date {
+        font-size: 1.3em;
     }
 
-    .calendar-page .day {
-      height: 35px;
-      font-size: 0.9em;
+    .day {
+        height: 35px;
+        font-size: 0.9em;
     }
 
-    .calendar-page .day.names {
-      height: 35px;
+    .day.names {
+        height: 35px;
     }
 
     .modal-content {
-      width: 95%;
-      margin: 10px;
+        width: 95%;
+        margin: 10px;
     }
 
     .nutrition-columns {
-      flex-direction: column;
-      padding: 20px;
-      gap: 30px;
+        flex-direction: column;
+        padding: 20px;
+        gap: 30px;
     }
 
     .nutrition-column {
-      width: 100%;
+        width: 100%;
     }
 
     .nutrition-difference {
-      padding: 20px;
+        padding: 20px;
     }
 
     .difference-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
-  }
+}

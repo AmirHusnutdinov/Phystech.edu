@@ -41,7 +41,7 @@
                     <p class="protein">Белки: <span id="modalProtein"></span>г</p>
                     <p class="fats">Жиры: <span id="modalFats"></span>г</p>
                     <p class="carbs">Углеводы: <span id="modalCarbs"></span>г</p>
-                    <p class="calories">Калории: <span id="modalCalories"></span> ккал</p>
+                    <p class="calories">Калории: <span id="modalCalories"></span>ккал</p>
                 </div>
             </div>
             <div class="nutrition-difference">
@@ -106,50 +106,55 @@ document.addEventListener('DOMContentLoaded', function() {
         'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
     ];
 
-    function getColorForValue(difference, maxDifference) {
-        const absDifference = Math.abs(difference);
-        const ratio = Math.min(absDifference / maxDifference, 1);
+function getColorForValue(difference, maxDifference, isDarkTheme) {
+    const absDifference = Math.abs(difference);
+    const ratio = Math.min(absDifference / maxDifference, 1);
 
-        const colors = [
-            '#00FF00', // Зеленый
-            '#ADFF00',
-            '#FFFF00', // Желтый
-            '#FFAD00',
-            '#FF0000'  // Красный
-        ];
+    const colors = [
+        'rgb(0, 255, 0)', // Зеленый
+        'rgb(173, 255, 0)',
+        'rgb(255, 255, 0)', // Желтый
+        'rgb(255, 173, 0)',
+        'rgb(255, 0, 0)'  // Красный
+    ];
 
-        const index = ratio * (colors.length - 1);
-        const lowerIndex = Math.floor(index);
-        const upperIndex = Math.ceil(index);
+    const darkColors = [
+        'rgba(0, 255, 0, 0.5)', // Зеленый
+        'rgba(173, 255, 0, 0.5)',
+        'rgba(255, 255, 0, 0.5)', // Желтый
+        'rgba(255, 173, 0, 0.5)',
+        'rgba(255, 0, 0, 0.5)'  // Красный
+    ];
 
-        if (lowerIndex === upperIndex) {
-            return colors[lowerIndex];
-        }
+    const index = ratio * (colors.length - 1);
+    const lowerIndex = Math.floor(index);
+    const upperIndex = Math.ceil(index);
 
-        const t = index - lowerIndex;
-        const color1 = colors[lowerIndex];
-        const color2 = colors[upperIndex];
-
-        const r1 = parseInt(color1.slice(1, 3), 16);
-        const g1 = parseInt(color1.slice(3, 5), 16);
-        const b1 = parseInt(color1.slice(5, 7), 16);
-        const r2 = parseInt(color2.slice(1, 3), 16);
-        const g2 = parseInt(color2.slice(3, 5), 16);
-        const b2 = parseInt(color2.slice(5, 7), 16);
-
-        const r = Math.round(r1 * (1 - t) + r2 * t);
-        const g = Math.round(g1 * (1 - t) + g2 * t);
-        const b = Math.round(b1 * (1 - t) + b2 * t);
-
-        return `rgb(${r}, ${g}, ${b})`;
+    if (lowerIndex === upperIndex) {
+        return isDarkTheme ? darkColors[lowerIndex] : colors[lowerIndex];
     }
 
-    function updateDifferenceArrow(elementId, difference) {
-        const element = document.getElementById(elementId);
-        const arrowSpan = element.parentElement.nextElementSibling;
-        element.textContent = Math.abs(difference);
-        arrowSpan.className = 'diff-arrow ' + (difference >= 0 ? 'up' : 'down');
-    }
+    const t = index - lowerIndex;
+    const color1 = isDarkTheme ? darkColors[lowerIndex] : colors[lowerIndex];
+    const color2 = isDarkTheme ? darkColors[upperIndex] : colors[upperIndex];
+
+    const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
+    const [r2, g2, b2] = color2.match(/\d+/g).map(Number);
+
+    const r = Math.round(r1 * (1 - t) + r2 * t);
+    const g = Math.round(g1 * (1 - t) + g2 * t);
+    const b = Math.round(b1 * (1 - t) + b2 * t);
+
+    return `rgba(${r}, ${g}, ${b}, ${isDarkTheme ? 0.5 : 1})`;
+}
+
+function updateDifferenceArrow(elementId, difference, isDarkTheme) {
+    const element = document.getElementById(elementId);
+    const arrowSpan = element.parentElement.nextElementSibling;
+    element.textContent = Math.abs(difference);
+    arrowSpan.className = 'diff-arrow ' + (difference >= 0 ? 'up' : 'down');
+    arrowSpan.style.borderBottomColor = difference >= 0 ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)';
+}
 
     function generateRandomNutrition(month, year) {
         const daysInMonth = new Date(year, month + 1, 0).getDate();
