@@ -1,151 +1,349 @@
 {% extends "Base.html" %}
 {% block content %}
 <link rel="stylesheet" href="/static/assets/css/style_calendar.css">
-<script>document.getElementById("year").innerHTML = new Date().getFullYear();</script>
 <div class="calendar-page">
     <div class="calendar-container">
         <div class="header_calendar">
-            <button id="prevBtn" class="nav-btn">←</button>
+            <button id="prevBtn" class="nav-btn"></button>
             <div id="currentDate" class="current-date"></div>
-            <button id="nextBtn" class="nav-btn">→</button>
-            <div id="caloriePanel" class="calorie-panel">
-                <h3>Calories Consumed</h3>
-                <ul id="calorieList"></ul>
+            <div class="view-controls">
+                <label class="switch">
+                    <input type="checkbox" id="viewToggle">
+                    <span class="slider"></span>
+                </label>
             </div>
+            <button id="nextBtn" class="nav-btn"></button>
         </div>
-        <div class="calendar">
-            <div class="day names">Sun</div>
-            <div class="day names">Mon</div>
-            <div class="day names">Tue</div>
-            <div class="day names">Wed</div>
-            <div class="day names">Thu</div>
-            <div class="day names">Fri</div>
-            <div class="day names">Sat</div>
+        <div id="calendar" class="calendar">
+            <div class="day names">Пн</div>
+            <div class="day names">Вт</div>
+            <div class="day names">Ср</div>
+            <div class="day names">Чт</div>
+            <div class="day names">Пт</div>
+            <div class="day names">Сб</div>
+            <div class="day names">Вс</div>
         </div>
     </div>
+    <div id="dayInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalDate" class="modal-date"></h2>
+            <div class="nutrition-columns">
+                <div class="nutrition-column">
+                    <h3>Было по плану:</h3>
+                    <p class="protein">Белки: <span id="modalPlanProtein">120</span>г</p>
+                    <p class="fats">Жиры: <span id="modalPlanFats">60</span>г</p>
+                    <p class="carbs">Углеводы: <span id="modalPlanCarbs">280</span>г</p>
+                    <p class="calories">Калории: <span id="modalPlanCalories">2500</span> ккал</p>
+                </div>
+                <div class="nutrition-column">
+                    <h3>Было съедено:</h3>
+                    <p class="protein">Белки: <span id="modalProtein"></span>г</p>
+                    <p class="fats">Жиры: <span id="modalFats"></span>г</p>
+                    <p class="carbs">Углеводы: <span id="modalCarbs"></span>г</p>
+                    <p class="calories">Калории: <span id="modalCalories"></span> ккал</p>
+                </div>
+            </div>
+            <div class="nutrition-difference">
+                <h3>Разница</h3>
+                <div class="difference-grid">
+                    <div class="difference-item">
+                        <span class="protein">Белки:</span>
+                        <div class="value-wrapper">
+                            <span class="number" id="proteinDiff"></span>
+                            <span class="unit">г</span>
+                        </div>
+                        <span class="diff-arrow"></span>
+                    </div>
+                    <div class="difference-item">
+                        <span class="fats">Жиры:</span>
+                        <div class="value-wrapper">
+                            <span class="number" id="fatsDiff"></span>
+                            <span class="unit">г</span>
+                        </div>
+                        <span class="diff-arrow"></span>
+                    </div>
+                    <div class="difference-item">
+                        <span class="carbs">Углев:</span>
+                        <div class="value-wrapper">
+                            <span class="number" id="carbsDiff"></span>
+                            <span class="unit">г</span>
+                        </div>
+                        <span class="diff-arrow"></span>
+                    </div>
+                    <div class="difference-item">
+                        <span class="calories">Калории:</span>
+                        <div class="value-wrapper">
+                            <span class="number" id="caloriesDiff"></span>
+                            <span class="unit">ккал</span>
+                        </div>
+                        <span class="diff-arrow"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <script>
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const currentDate = document.getElementById('currentDate');
-        const caloriePanel = document.getElementById('caloriePanel');
-        const calorieList = document.getElementById('calorieList');
-        let holdTimer;
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentDate = document.getElementById('currentDate');
+    const calendar = document.getElementById('calendar');
+    const modal = document.getElementById('dayInfoModal');
+    const closeBtn = document.getElementsByClassName('close')[0];
+    const viewToggle = document.getElementById('viewToggle');
 
-        const today = new Date();
-        let currentMonth = today.getMonth();
-        let currentYear = today.getFullYear();
+    const today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+    let currentNutritionData = {};
+    let isDetailedView = false;
 
-        // Sample calorie data
-        const calorieData = {};
+    const monthsGenitive = [
+        'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+        'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
 
-        function generateRandomCalories() {
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    function getColorForValue(difference, maxDifference) {
+        const absDifference = Math.abs(difference);
+        const ratio = Math.min(absDifference / maxDifference, 1);
+
+        const colors = [
+            '#00FF00', // Зеленый
+            '#ADFF00',
+            '#FFFF00', // Желтый
+            '#FFAD00',
+            '#FF0000'  // Красный
+        ];
+
+        const index = ratio * (colors.length - 1);
+        const lowerIndex = Math.floor(index);
+        const upperIndex = Math.ceil(index);
+
+        if (lowerIndex === upperIndex) {
+            return colors[lowerIndex];
+        }
+
+        const t = index - lowerIndex;
+        const color1 = colors[lowerIndex];
+        const color2 = colors[upperIndex];
+
+        const r1 = parseInt(color1.slice(1, 3), 16);
+        const g1 = parseInt(color1.slice(3, 5), 16);
+        const b1 = parseInt(color1.slice(5, 7), 16);
+        const r2 = parseInt(color2.slice(1, 3), 16);
+        const g2 = parseInt(color2.slice(3, 5), 16);
+        const b2 = parseInt(color2.slice(5, 7), 16);
+
+        const r = Math.round(r1 * (1 - t) + r2 * t);
+        const g = Math.round(g1 * (1 - t) + g2 * t);
+        const b = Math.round(b1 * (1 - t) + b2 * t);
+
+        return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function updateDifferenceArrow(elementId, difference) {
+        const element = document.getElementById(elementId);
+        const arrowSpan = element.parentElement.nextElementSibling;
+        element.textContent = Math.abs(difference);
+        arrowSpan.className = 'diff-arrow ' + (difference >= 0 ? 'up' : 'down');
+    }
+
+    function generateRandomNutrition(month, year) {
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const monthData = {};
+
         for (let i = 1; i <= daysInMonth; i++) {
-        calorieData[i] = Math.floor(Math.random() * 2000); // Random between 0 and 2000
+            const planCalories = 2500;
+            const actualCalories = Math.floor(Math.random() * 1000 + 2000);
+            monthData[i] = {
+                calories: actualCalories,
+                protein: Math.floor(Math.random() * 50 + 80),
+                fats: Math.floor(Math.random() * 30 + 50),
+                carbs: Math.floor(Math.random() * 100 + 250),
+                planCalories: planCalories,
+                planProtein: 120,
+                planFats: 60,
+                planCarbs: 280
+            };
         }
-        }
+        return monthData;
+    }
 
-        function showCaloriePanel() {
-        calorieList.innerHTML = '';
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        for (let i = 1; i <= daysInMonth; i++) {
-        const li = document.createElement('li');
-        li.textContent = `Day
-        𝑖
-        :
-        i:{calorieData[i]} kcal`;
-        calorieList.appendChild(li);
-        }
-        caloriePanel.classList.add('show');
-        }
+    function createDetailedDayCell(dayData, day) {
+        const cell = document.createElement('div');
+        cell.className = 'day date detailed';
 
-        function hideCaloriePanel() {
-        caloriePanel.classList.remove('show');
-        }
+        const dayNumber = document.createElement('span');
+        dayNumber.className = 'day-number';
+        dayNumber.textContent = day;
+        cell.appendChild(dayNumber);
 
-        function renderCalendar(month, year) {
-        const calendar = document.querySelector('.calendar');
-        // Clear all cells, including empty ones
+        const sections = [
+            {
+                letter: 'Б',
+                value: dayData.protein - dayData.planProtein,
+                max: 30
+            },
+            {
+                letter: 'Ж',
+                value: dayData.fats - dayData.planFats,
+                max: 30
+            },
+            {
+                letter: 'У',
+                value: dayData.carbs - dayData.planCarbs,
+                max: 60
+            },
+            {
+                letter: 'К',
+                value: dayData.calories - dayData.planCalories,
+                max: 500
+            }
+        ];
+
+        sections.forEach(({ letter, value, max }) => {
+            const section = document.createElement('div');
+            section.className = 'nutrient-section';
+
+            // Add triangle if there's a difference
+            if (value !== 0) {
+                const triangle = document.createElement('div');
+                triangle.className = `triangle ${value > 0 ? 'up' : 'down'}`;
+                section.appendChild(triangle);
+            }
+
+            // Add letter
+            const letterSpan = document.createElement('span');
+            letterSpan.textContent = letter;
+            section.appendChild(letterSpan);
+
+            section.style.backgroundColor = getColorForValue(value, max);
+            cell.appendChild(section);
+        });
+
+        return cell;
+    }
+
+    function createSimpleDayCell(dayData, day) {
+        const cell = document.createElement('div');
+        cell.className = 'day date';
+        cell.textContent = day;
+        const caloriesDiff = dayData.calories - dayData.planCalories;
+        cell.style.backgroundColor = getColorForValue(caloriesDiff, 500);
+        return cell;
+    }
+
+    function showDayInfo(day) {
+        const nutrition = currentNutritionData[day];
+        if (!nutrition) return;
+
+        const formattedDate = `${day} ${monthsGenitive[currentMonth]} ${currentYear} г.`;
+        document.getElementById('modalDate').textContent = formattedDate;
+
+        // Заполняем фактические значения
+        document.getElementById('modalCalories').textContent = nutrition.calories;
+        document.getElementById('modalProtein').textContent = nutrition.protein;
+        document.getElementById('modalFats').textContent = nutrition.fats;
+        document.getElementById('modalCarbs').textContent = nutrition.carbs;
+
+        // Вычисляем и отображаем разницу
+        const proteinDiff = nutrition.protein - nutrition.planProtein;
+        const fatsDiff = nutrition.fats - nutrition.planFats;
+        const carbsDiff = nutrition.carbs - nutrition.planCarbs;
+        const caloriesDiff = nutrition.calories - nutrition.planCalories;
+
+        updateDifferenceArrow('proteinDiff', proteinDiff);
+        updateDifferenceArrow('fatsDiff', fatsDiff);
+        updateDifferenceArrow('carbsDiff', carbsDiff);
+        updateDifferenceArrow('caloriesDiff', caloriesDiff);
+
+        modal.classList.add('show');
+    }
+
+    function renderCalendar(month, year) {
         calendar.innerHTML = `
-        <div class="day names">Sun</div>
-        <div class="day names">Mon</div>
-        <div class="day names">Tue</div>
-        <div class="day names">Wed</div>
-        <div class="day names">Thu</div>
-        <div class="day names">Fri</div>
-        <div class="day names">Sat</div>
+            <div class="day names">Пн</div>
+            <div class="day names">Вт</div>
+            <div class="day names">Ср</div>
+            <div class="day names">Чт</div>
+            <div class="day names">Пт</div>
+            <div class="day names">Сб</div>
+            <div class="day names">Вс</div>
         `;
 
-        const firstDay = new Date(year, month).getDay();
+        const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // Update current date display
-        currentDate.textContent = new Date(year, month).toLocaleDateString('default', { month: 'long', year: 'numeric' });
+        currentDate.textContent = new Date(year, month).toLocaleString('ru-RU', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase());
 
-        generateRandomCalories();
+        currentNutritionData = generateRandomNutrition(month, year);
 
-        for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.classList.add('day', 'empty');
-        calendar.appendChild(emptyCell);
+        let dayCount = 1;
+        for (let i = 0; i < 6; i++) {
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < (firstDay + 6) % 7) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.classList.add('day', 'empty');
+                    calendar.appendChild(emptyCell);
+                } else if (dayCount > daysInMonth) {
+                    break;
+                } else {
+                    const dayData = currentNutritionData[dayCount];
+                    const dayCell = isDetailedView ?
+                        createDetailedDayCell(dayData, dayCount) :
+                        createSimpleDayCell(dayData, dayCount);
+
+                    dayCell.dataset.day = dayCount;
+
+                    dayCell.onclick = function() {
+                        const clickedDay = parseInt(this.dataset.day);
+                        showDayInfo(clickedDay);
+                    };
+
+                    calendar.appendChild(dayCell);
+                    dayCount++;
+                }
+            }
         }
+    }
 
-        for (let day = 1; day <= daysInMonth; day++) {
-        const dayCell = document.createElement('div');
-        dayCell.classList.add('day', 'date');
-        dayCell.textContent = day;
-        dayCell.classList.add(calorieData[day] < 1000 ? 'green' : 'red');
-        calendar.appendChild(dayCell);
-        }
-        }
-
-        prevBtn.addEventListener('click', () => {
+    prevBtn.addEventListener('click', () => {
         currentMonth--;
         if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
+            currentMonth = 11;
+            currentYear--;
         }
         renderCalendar(currentMonth, currentYear);
-        });
+    });
 
-        nextBtn.addEventListener('click', () => {
+    nextBtn.addEventListener('click', () => {
         currentMonth++;
         if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
+            currentMonth = 0;
+            currentYear++;
         }
         renderCalendar(currentMonth, currentYear);
-        });
+    });
 
-        // Hold to show calorie panel
-        function handleMouseDown() {
-        holdTimer = setTimeout(showCaloriePanel, 500);
-        }
-
-        function handleMouseUp() {
-        clearTimeout(holdTimer);
-        }
-
-        prevBtn.addEventListener('mousedown', handleMouseDown);
-        prevBtn.addEventListener('mouseup', handleMouseUp);
-        nextBtn.addEventListener('mousedown', handleMouseDown);
-        nextBtn.addEventListener('mouseup', handleMouseUp);
-
-        // Touch events for mobile
-        prevBtn.addEventListener('touchstart', handleMouseDown);
-        prevBtn.addEventListener('touchend', handleMouseUp);
-        nextBtn.addEventListener('touchstart', handleMouseDown);
-        nextBtn.addEventListener('touchend', handleMouseUp);
-
-        // Hide panel when clicking outside
-        document.addEventListener('click', (e) => {
-        if (!caloriePanel.contains(e.target) && !prevBtn.contains(e.target) && !nextBtn.contains(e.target)) {
-        hideCaloriePanel();
-        }
-        });
-
+    viewToggle.addEventListener('change', () => {
+        isDetailedView = viewToggle.checked;
         renderCalendar(currentMonth, currentYear);
-    </script>
-</div>
+    });
+
+    closeBtn.onclick = function() {
+        modal.classList.remove('show');
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.classList.remove('show');
+        }
+    }
+
+    renderCalendar(currentMonth, currentYear);
+});
+</script>
 {% endblock %}
