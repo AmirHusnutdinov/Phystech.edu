@@ -1,6 +1,6 @@
 from flask import render_template
 from ServiceFiles.links import header_links
-
+from DataBase.use_DataBase import get_dishes
 
 class DayPlan:
     @staticmethod
@@ -8,8 +8,7 @@ class DayPlan:
         return render_template(
             "DayPlan/day_plan.html",
             header_links=header_links,
-            title="Дневной план"
-        )
+            title="Дневной план", dishes = get_dishes())
 
     @staticmethod
     def show_add_product_page():

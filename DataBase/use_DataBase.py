@@ -19,3 +19,7 @@ def database_query(sql):
         if connection:
             connection.close()
             print("[INFO] Postgres connection closed")
+
+def get_dishes():
+    sql = "SELECT * FROM dish"
+    return database_query(sql)
