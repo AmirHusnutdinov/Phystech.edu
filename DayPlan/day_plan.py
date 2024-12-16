@@ -2,7 +2,7 @@ from flask import render_template
 from ServiceFiles.links import header_links
 from DataBase.use_DataBase import get_dishes
 
-cookies = {"login": "user", "password": "password", "avatar": "avatar", "email": "email", "sex": "sex", "age": 20, "language": "english", "koef" : 1, "water": "0", "physical_activities": 1.5, "weight": 70, "height": 180, "calories_goal": 2000, "proteins": 100, "carbonohydrates": 300, "triglycerides": 90}
+cookies = {"login": "user", "password": "password", "avatar": "avatar", "email": "email", "sex": "sex", "age": 20, "language": "english", "koef" : 1, "water": "0", "physical_activities": 1.5, "weight": 70, "height": 180, "calories_goal": 2000, "proteins": 100, "carbs": 300, "fats": 90}
 class DayPlan:
     @staticmethod
     def show_day_plan_page():

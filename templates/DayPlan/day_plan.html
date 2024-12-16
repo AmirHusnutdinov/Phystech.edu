@@ -9,43 +9,46 @@
         </div>
 
         <div class="indicators">
-            <div class="indicator">
-                <label for="protein" id="protein_text">Белки</label>
-                <div class="progress-bar">
-                    <div id="protein-bar" class="bar" style="width: 0%;"></div>
-                </div>
-                <input type="number" id="protein" placeholder="г" oninput="updateProgressBar('protein-bar', this.value)">
-            </div>
-            <div class="indicator">
-                <label for="fats" id="fats_text">Жиры</label>
-                <div class="progress-bar">
-                    <div id="fats-bar" class="bar" style="width: 0%;"></div>
-                </div>
-                <input type="number" id="fats" placeholder="г" oninput="updateProgressBar('fats-bar', this.value)">
-            </div>
-            <div class="indicator">
-                <label for="carbs" id="carbs_text">Углеводы</label>
-                <div class="progress-bar">
-                    <div id="carbs-bar" class="bar" style="width: 0%;"></div>
-                </div>
-                <input type="number" id="carbs" placeholder="г" oninput="updateProgressBar('carbs-bar', this.value)">
-            </div>
-            <div class="indicator">
-                <label for="calories" id="calories_text">Калории</label>
-                <div class="progress-bar">
-                    <div id="calories-bar" class="bar" style="width: 0%;"></div>
-                </div>
-                <input type="number" id="calories" placeholder="ккал" oninput="updateProgressBar('calories-bar', this.value)">
-            </div>
-            <div class="indicator">
-                <label for="water" id="water_text">Вода</label>
-                <div class="progress-bar">
-                    <div id="water-bar" class="bar" style="width: 0%;"></div>
-                </div>
-                <input type="number" id="water" placeholder="л" oninput="updateProgressBar('water-bar', this.value)">
-            </div>
+    <div class="indicator">
+        <label for="protein" id="protein_text">Белки</label>
+        <div class="progress-bar">
+            <div id="protein-bar" class="bar" style="width: 0%;"></div>
         </div>
-        <a href="/selected_products">Это временная ссылка на выбор продукта</a>
+        <input type="number" id="protein" placeholder="г" value="{{ cookies.proteins }}" readonly>
+        <label for="protein_text_current_value" id="protein_text_current_value">some_value</label>
+        <label for="protein_text_goal_value" id="protein_text_goal_value">{{ cookies.proteins }}</label>
+    </div>
+    <div class="indicator">
+        <label for="fats" id="fats_text">Жиры</label>
+        <div class="progress-bar">
+            <div id="fats-bar" class="bar" style="width: 0%;"></div>
+        </div>
+        <input type="number" id="fats" placeholder="г" value="{{ cookies.fats }}" readonly>
+    </div>
+    <div class="indicator">
+        <label for="carbs" id="carbs_text">Углеводы</label>
+        <div class="progress-bar">
+            <div id="carbs-bar" class="bar" style="width: 0%;"></div>
+        </div>
+        <input type="number" id="carbs" placeholder="г" value="{{ cookies.carbs }}" readonly>
+    </div>
+    <div class="indicator">
+        <label for="calories" id="calories_text">Калории</label>
+        <div class="progress-bar">
+            <div id="calories-bar" class="bar" style="width: 0%;"></div>
+        </div>
+        <input type="number" id="calories" placeholder="ккал" value="{{ cookies.calories_goal }}" readonly>
+    </div>
+    <div class="indicator">
+        <label for="water" id="water_text">Вода</label>
+        <div class="progress-bar">
+            <div id="water-bar" class="bar" style="width: 0%;"></div>
+        </div>
+        <input type="number" id="water" placeholder="л" value="{{ cookies.water }}" readonly>
+    </div>
+    <button id="edit-indicators">Изменить план БЖУ на день</button>
+</div>
+
         <div class="links-container">
             <button id="add-meal">Добавить прием пищи</button>
             <div id="meals-list"></div>
@@ -61,126 +64,6 @@
             <div id="pagination"></div>
         </div>
     </div>
-
-    <style>
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        #dishList {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        #dishList li {
-            padding: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #dishList li:hover {
-            background-color: #f0f0f0;
-        }
-
-        .dish-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .dish-name {
-            font-weight: bold;
-        }
-
-        .dish-details {
-            font-size: 0.8em;
-            color: #666;
-        }
-
-        #pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            gap: 5px;
-            flex-wrap: wrap;
-            padding: 10px;
-        }
-
-        #pagination button {
-            min-width: 35px;
-            height: 35px;
-            margin: 0 2px;
-            padding: 5px;
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: #333;
-            transition: all 0.2s ease;
-        }
-
-        #pagination button:hover {
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-            color: #000;
-        }
-
-        #pagination button.active {
-            background-color: #007bff;
-            border-color: #007bff;
-            color: white;
-        }
-
-        #pagination button:disabled {
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        #pagination .ellipsis {
-            margin: 0 5px;
-            color: #6c757d;
-        }
-    </style>
 
     <script>
         // Обновление даты
@@ -219,8 +102,8 @@
                 <div class="meal-summary">
                     <span class="meal-total">Итого: 0 г белков, 0 г жиров, 0 г углеводов, 0 ккал</span>
                     <div class="meal-buttons">
-                        <button class="remove-meal">Удалить прием пищи</button>
                         <button class="add-dish">Добавить блюдо</button>
+                        <button class="remove-meal">Удалить прием пищи</button>
                     </div>
                 </div>
             `;
@@ -262,22 +145,16 @@
 
             dishes.forEach(dish => {
                 const weight = parseFloat(dish.querySelector('.dish-weight').value) || 0;
-                const proteinPer100 = parseFloat(dish.querySelector('.dish-protein').value) || 0;
-                const fatsPer100 = parseFloat(dish.querySelector('.dish-fats').value) || 0;
-                const carbsPer100 = parseFloat(dish.querySelector('.dish-carbs').value) || 0;
-                const caloriesPer100 = parseFloat(dish.querySelector('.dish-calories-per-100').value) || 0;
-
-                const protein = (proteinPer100 / 100) * weight;
-                const fats = (fatsPer100 / 100) * weight;
-                const carbs = (carbsPer100 / 100) * weight;
-                const calories = (caloriesPer100 / 100) * weight;
+                const protein = parseFloat(dish.querySelector('#meal-dish-proteins').textContent) || 0;
+                const fats = parseFloat(dish.querySelector('#meal-dish-fats').textContent) || 0;
+                const carbs = parseFloat(dish.querySelector('#meal-dish-carbs').textContent) || 0;
+                const calories = parseFloat(dish.querySelector('#meal-dish-calories').textContent) || 0;
 
                 totalProtein += protein;
                 totalFats += fats;
                 totalCarbs += carbs;
                 totalCalories += calories;
 
-                dish.querySelector('.dish-calories').innerText = `(${calories.toFixed(2)} ккал)`;
             });
 
             meal.querySelector('.meal-total').innerText = `Итого: ${totalProtein.toFixed(2)} г белков, ${totalFats.toFixed(2)} г жиров, ${totalCarbs.toFixed(2)} г углеводов, ${totalCalories.toFixed(2)} ккал`;
@@ -453,16 +330,23 @@
             newDish.className = 'dish-item';
             newDish.innerHTML = `
                 <div class="dish-header">
-                    <input type="text" class="dish-name" value="${dish.name}" readonly>
+                    <label for="meal-dish-name" id="meal-dish-name">${dish.name}</label>
                     <input type="number" class="dish-weight" placeholder="Масса (г)" value="100">
-                    <span class="dish-calories">(${dish.calories} ккал)</span>
                     <button class="remove-dish">-</button>
                 </div>
                 <div class="dish-nutrients">
-                    <input type="number" class="dish-protein" value="${dish.protein}" readonly>
-                    <input type="number" class="dish-fats" value="${dish.fats}" readonly>
-                    <input type="number" class="dish-carbs" value="${dish.carbs}" readonly>
-                    <input type="number" class="dish-calories-per-100" value="${dish.calories}" readonly>
+                    <label for="meal-dish-proteins-text" id="meal-dish-proteins-text" bold=>Белки: </label>
+                    <label for="meal-dish-proteins" id="meal-dish-proteins">${dish.protein}</label>
+                    <label for="meal-dish-proteins-per100" id="meal-dish-proteins-per100">${dish.protein}</label>
+                    <label for="meal-dish-fats-text" id="meal-dish-fats-text" bold=>Жиры: </label>
+                    <label for="meal-dish-fats" id="meal-dish-fats">${dish.fats}</label>
+                    <label for="meal-dish-fats-per100" id="meal-dish-fats-per100">${dish.fats}</label>
+                    <label for="meal-dish-carbs-text" id="meal-dish-carbs-text" bold=>Углеводы: </label>
+                    <label for="meal-dish-carbs" id="meal-dish-carbs">${dish.carbs}</label>
+                    <label for="meal-dish-carbs-per100" id="meal-dish-carbs-per100">${dish.carbs}</label>
+                    <label for="meal-dish-calories-text" id="meal-dish-calories-text" bold=>Калории: </label>
+                    <label for="meal-dish-calories" id="meal-dish-calories">${dish.calories}</label>
+                    <label for="meal-dish-calories-per100" id="meal-dish-calories-per100">${dish.calories}</label>
                 </div>
             `;
             dishesContainer.appendChild(newDish);
@@ -476,10 +360,58 @@
                 updateMealSummary(meal);
             });
 
+            newDish.querySelector('.dish-weight').addEventListener('change', function(){
+                const weight = parseFloat(newDish.querySelector('.dish-weight').value) || 0;
+                console.log(weight);
+                const proteins_per_100 = parseFloat(newDish.querySelector('#meal-dish-proteins-per100').textContent);
+                const fats_per_100 = parseFloat(newDish.querySelector('#meal-dish-fats-per100').textContent)
+                const carbs_per_100 = parseFloat(newDish.querySelector('#meal-dish-carbs-per100').textContent)
+                const calories_per_100 = parseFloat(newDish.querySelector('#meal-dish-calories-per100').textContent)
+                newDish.querySelector('#meal-dish-proteins').textContent = (proteins_per_100 * (weight / 100)).toFixed(2);
+                newDish.querySelector('#meal-dish-fats').textContent = (fats_per_100 * (weight / 100)).toFixed(2);
+                newDish.querySelector('#meal-dish-carbs').textContent = (carbs_per_100 * (weight / 100)).toFixed(2);
+                newDish.querySelector('#meal-dish-calories').textContent = (calories_per_100 * (weight / 100)).toFixed(2);
+                updateMealSummary(meal);
+            })
             // Update meal summary
             updateMealSummary(meal);
         }
+
+        // Function to toggle edit mode for indicators
+        function toggleEditMode() {
+            const inputs = document.querySelectorAll('.indicator input');
+            const editButton = document.getElementById('edit-indicators');
+            
+            if (editButton.textContent === 'Изменить') {
+                inputs.forEach(input => {
+                    input.readOnly = false;
+                    input.classList.add('editable');
+                });
+                editButton.textContent = 'Сохранить';
+            } else {
+                inputs.forEach(input => {
+                    input.readOnly = true;
+                    input.classList.remove('editable');
+                    updateProgressBar(input.id + '-bar', input.value);
+                });
+                editButton.textContent = 'Изменить';
+                // Here you would typically send the updated values to the server
+                // to update the cookies or user preferences
+            }
+        }
+
+        // Add event listener to the edit button
+        document.getElementById('edit-indicators').addEventListener('click', toggleEditMode);
+
+        // Initialize progress bars with values from cookies
+        window.addEventListener('load', function() {
+            const inputs = document.querySelectorAll('.indicator input');
+            inputs.forEach(input => {
+                updateProgressBar(input.id + '-bar', input.value);
+            });
+        });
     </script>
 </div>
 </body>
 {% endblock %}
+
