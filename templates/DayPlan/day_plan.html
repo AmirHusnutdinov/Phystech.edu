@@ -1,50 +1,116 @@
 {% extends "Base.html" %}
 {% block content %}
 <body>
+
 <div class="body_day_plan">
     <link rel="stylesheet" href="static/assets/css/style_day_plan.css">
     <div class="container_today">
         <div class="date-block">
             <p id="current-date"></p>
         </div>
-
+        <div class="top-container">
+            <div class="weight-input">
+                <label for="current-weight">Вес сегодня (кг):</label>
+                <input type="number" id="current-weight" step="0.1" min="0">
+            </div>
+            <div class="previous-weight">
+                <span>Вес вчера: </span>
+                <span id="previous-weight">{{ previous_weight }}</span> кг
+            </div>
+        </div>
+        
         <div class="indicators">
     <div class="indicator">
-        <label for="protein" id="protein_text">Белки</label>
+        <label for="protein" id="protein_text">Белки, г</label>
         <div class="progress-bar">
             <div id="protein-bar" class="bar" style="width: 0%;"></div>
+            <div class="difference-display">
+                <span id="protein_difference">0</span>
+                <span id="protein_arrow" class="arrow"></span>
+            </div>
         </div>
-        <input type="number" id="protein" placeholder="г" value="{{ cookies.proteins }}" readonly>
-        <label for="protein_text_current_value" id="protein_text_current_value">some_value</label>
-        <label for="protein_text_goal_value" id="protein_text_goal_value">{{ cookies.proteins }}</label>
+        <div class="percentage-display">
+            <span id="protein_percentage">0%</span>
+        </div>
+        <div class="value-container">
+            <div class="value-group">
+                <span class="value-label">Съедено за день:</span>
+                <span id="protein_text_current_value">0</span>
+            </div>
+            <div class="value-group">
+                <span class="value-label">Целевое значение:</span>
+                <span id="protein_text_goal_value">{{ cookies.proteins }}</span>
+            </div>
+        </div>
     </div>
     <div class="indicator">
-        <label for="fats" id="fats_text">Жиры</label>
+        <label for="fats" id="fats_text">Жиры, г</label>
         <div class="progress-bar">
             <div id="fats-bar" class="bar" style="width: 0%;"></div>
+            <div class="difference-display">
+                <span id="fats_difference">0</span>
+                <span id="fats_arrow" class="arrow"></span>
+            </div>
         </div>
-        <input type="number" id="fats" placeholder="г" value="{{ cookies.fats }}" readonly>
+        <div class="percentage-display">
+            <span id="fats_percentage">0%</span>
+        </div>
+        <div class="value-container">
+            <div class="value-group">
+                <span class="value-label">Съедено за день:</span>
+                <span id="fats_text_current_value">0</span>
+            </div>
+            <div class="value-group">
+                <span class="value-label">Целевое значение:</span>
+                <span id="fats_text_goal_value">{{ cookies.fats }}</span>
+            </div>
+        </div>
     </div>
     <div class="indicator">
-        <label for="carbs" id="carbs_text">Углеводы</label>
+        <label for="carbs" id="carbs_text">Углеводы, г</label>
         <div class="progress-bar">
             <div id="carbs-bar" class="bar" style="width: 0%;"></div>
+            <div class="difference-display">
+                <span id="carbs_difference">0</span>
+                <span id="carbs_arrow" class="arrow"></span>
+            </div>
         </div>
-        <input type="number" id="carbs" placeholder="г" value="{{ cookies.carbs }}" readonly>
+        <div class="percentage-display">
+            <span id="carbs_percentage">0%</span>
+        </div>
+        <div class="value-container">
+            <div class="value-group">
+                <span class="value-label">Съедено за день:</span>
+                <span id="carbs_text_current_value">0</span>
+            </div>
+            <div class="value-group">
+                <span class="value-label">Целевое значение:</span>
+                <span id="carbs_text_goal_value">{{ cookies.carbs }}</span>
+            </div>
+        </div>
     </div>
     <div class="indicator">
-        <label for="calories" id="calories_text">Калории</label>
+        <label for="calories" id="calories_text">Калории, ккал</label>
         <div class="progress-bar">
             <div id="calories-bar" class="bar" style="width: 0%;"></div>
+            <div class="difference-display">
+                <span id="calories_difference">0</span>
+                <span id="calories_arrow" class="arrow"></span>
+            </div>
         </div>
-        <input type="number" id="calories" placeholder="ккал" value="{{ cookies.calories_goal }}" readonly>
-    </div>
-    <div class="indicator">
-        <label for="water" id="water_text">Вода</label>
-        <div class="progress-bar">
-            <div id="water-bar" class="bar" style="width: 0%;"></div>
+        <div class="percentage-display">
+            <span id="calories_percentage">0%</span>
         </div>
-        <input type="number" id="water" placeholder="л" value="{{ cookies.water }}" readonly>
+        <div class="value-container">
+            <div class="value-group">
+                <span class="value-label">Съедено за день:</span>
+                <span id="calories_text_current_value">0</span>
+            </div>
+            <div class="value-group">
+                <span class="value-label">Целевое значение:</span>
+                <span id="calories_text_goal_value">{{ cookies.calories }}</span>
+            </div>
+        </div>
     </div>
     <button id="edit-indicators">Изменить план БЖУ на день</button>
 </div>
@@ -64,7 +130,49 @@
             <div id="pagination"></div>
         </div>
     </div>
+    <button id="saveButton" class="save-button" disabled>Сохранить</button>
+    <style>
+        .value-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+        .value-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .value-label {
+            font-size: 0.8em;
+            color: #666;
+        }
+        .percentage-display {
+            text-align: right;
+            font-size: 0.9em;
+            color: var(--text-color);
+            margin-top: 5px;
+        }
+        .difference-display {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.9em;
+            font-weight: bold;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+        .arrow {
+            margin-left: 2px;
+        }
+
+        .progress-bar {
+            position: relative;
+        }
+    </style>
     <script>
         // Обновление даты
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('ru-RU', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -117,6 +225,7 @@
                 mealsList.removeChild(newMeal);
                 mealCounter--; // Уменьшаем счетчик при удалении
                 updateMealNumbers(); // Обновляем номера приемов пищи
+                updateNutrientTotals(); // Update nutrient totals after removing a meal
             });
 
             // Добавление блюда
@@ -154,11 +263,95 @@
                 totalFats += fats;
                 totalCarbs += carbs;
                 totalCalories += calories;
-
             });
 
-            meal.querySelector('.meal-total').innerText = `Итого: ${totalProtein.toFixed(2)} г белков, ${totalFats.toFixed(2)} г жиров, ${totalCarbs.toFixed(2)} г углеводов, ${totalCalories.toFixed(2)} ккал`;
+            meal.querySelector('.meal-total').innerText = 
+                `Итого: ${totalProtein.toFixed(2)} г белков, ${totalFats.toFixed(2)} г жиров, ${totalCarbs.toFixed(2)} г углеводов, ${totalCalories.toFixed(2)} ккал`;
+
+            // Update global totals and progress bars
+            updateNutrientTotals();
         }
+
+        // Add new function to update all nutrient totals
+        function updateNutrientTotals() {
+            const meals = document.querySelectorAll('.meal-item');
+            let dayTotalProtein = 0;
+            let dayTotalFats = 0;
+            let dayTotalCarbs = 0;
+            let dayTotalCalories = 0;
+
+            meals.forEach(meal => {
+                const dishes = meal.querySelectorAll('.dish-item');
+                dishes.forEach(dish => {
+                    dayTotalProtein += parseFloat(dish.querySelector('#meal-dish-proteins').textContent) || 0;
+                    dayTotalFats += parseFloat(dish.querySelector('#meal-dish-fats').textContent) || 0;
+                    dayTotalCarbs += parseFloat(dish.querySelector('#meal-dish-carbs').textContent) || 0;
+                    dayTotalCalories += parseFloat(dish.querySelector('#meal-dish-calories').textContent) || 0;
+                });
+            });
+
+            // Update current values
+            document.getElementById('protein_text_current_value').textContent = dayTotalProtein.toFixed(1);
+            document.getElementById('fats_text_current_value').textContent = dayTotalFats.toFixed(1);
+            document.getElementById('carbs_text_current_value').textContent = dayTotalCarbs.toFixed(1);
+            document.getElementById('calories_text_current_value').textContent = dayTotalCalories.toFixed(1);
+
+            // Get target values
+            const proteinGoal = parseFloat(document.getElementById('protein_text_goal_value').textContent);
+            const fatsGoal = parseFloat(document.getElementById('fats_text_goal_value').textContent);
+            const carbsGoal = parseFloat(document.getElementById('carbs_text_goal_value').textContent);
+            const caloriesGoal = parseFloat(document.getElementById('calories_text_goal_value').textContent);
+
+            // Calculate percentages
+            const proteinPercentage = (dayTotalProtein / proteinGoal) * 100;
+            const fatsPercentage = (dayTotalFats / fatsGoal) * 100;
+            const carbsPercentage = (dayTotalCarbs / carbsGoal) * 100;
+            const caloriesPercentage = (dayTotalCalories / caloriesGoal) * 100;
+
+            // Update progress bars
+            updateProgressBar('protein-bar', proteinPercentage);
+            updateProgressBar('fats-bar', fatsPercentage);
+            updateProgressBar('carbs-bar', carbsPercentage);
+            updateProgressBar('calories-bar', caloriesPercentage);
+
+            // Update percentage displays
+            document.getElementById('protein_percentage').textContent = proteinPercentage.toFixed(1) + '%';
+            document.getElementById('fats_percentage').textContent = fatsPercentage.toFixed(1) + '%';
+            document.getElementById('carbs_percentage').textContent = carbsPercentage.toFixed(1) + '%';
+            document.getElementById('calories_percentage').textContent = caloriesPercentage.toFixed(1) + '%';
+
+            // Calculate and update differences
+            const proteinDiff = Math.abs(dayTotalProtein - proteinGoal).toFixed(1);
+            const fatsDiff = Math.abs(dayTotalFats - fatsGoal).toFixed(1);
+            const carbsDiff = Math.abs(dayTotalCarbs - carbsGoal).toFixed(1);
+            const caloriesDiff = Math.abs(dayTotalCalories - caloriesGoal).toFixed(1);
+
+            document.getElementById('protein_difference').textContent = proteinDiff;
+            document.getElementById('fats_difference').textContent = fatsDiff;
+            document.getElementById('carbs_difference').textContent = carbsDiff;
+            document.getElementById('calories_difference').textContent = caloriesDiff;
+
+            // Update arrows
+            updateArrow('protein_arrow', dayTotalProtein, proteinGoal);
+            updateArrow('fats_arrow', dayTotalFats, fatsGoal);
+            updateArrow('carbs_arrow', dayTotalCarbs, carbsGoal);
+            updateArrow('calories_arrow', dayTotalCalories, caloriesGoal);
+
+            // Helper function to update arrow
+            function updateArrow(arrowId, currentValue, goalValue) {
+                const arrow = document.getElementById(arrowId);
+                if (currentValue < goalValue) {
+                    arrow.textContent = '▼';
+                    arrow.style.color = 'green';
+                } else if (currentValue > goalValue) {
+                    arrow.textContent = '▲';
+                    arrow.style.color = 'red';
+                } else {
+                    arrow.textContent = '';
+                }
+            }
+        }
+
 
         function showDishSelectionModal(meal) {
             const modal = document.getElementById('dishSelectionModal');
@@ -336,16 +529,16 @@
                 </div>
                 <div class="dish-nutrients">
                     <label for="meal-dish-proteins-text" id="meal-dish-proteins-text" bold=>Белки: </label>
-                    <label for="meal-dish-proteins" id="meal-dish-proteins">${dish.protein}</label>
+                    <label for="meal-dish-proteins" id="meal-dish-proteins">${dish.protein}</label> г
                     <label for="meal-dish-proteins-per100" id="meal-dish-proteins-per100">${dish.protein}</label>
                     <label for="meal-dish-fats-text" id="meal-dish-fats-text" bold=>Жиры: </label>
-                    <label for="meal-dish-fats" id="meal-dish-fats">${dish.fats}</label>
+                    <label for="meal-dish-fats" id="meal-dish-fats">${dish.fats}</label> г
                     <label for="meal-dish-fats-per100" id="meal-dish-fats-per100">${dish.fats}</label>
                     <label for="meal-dish-carbs-text" id="meal-dish-carbs-text" bold=>Углеводы: </label>
-                    <label for="meal-dish-carbs" id="meal-dish-carbs">${dish.carbs}</label>
+                    <label for="meal-dish-carbs" id="meal-dish-carbs">${dish.carbs}</label> г
                     <label for="meal-dish-carbs-per100" id="meal-dish-carbs-per100">${dish.carbs}</label>
                     <label for="meal-dish-calories-text" id="meal-dish-calories-text" bold=>Калории: </label>
-                    <label for="meal-dish-calories" id="meal-dish-calories">${dish.calories}</label>
+                    <label for="meal-dish-calories" id="meal-dish-calories">${dish.calories}</label> ккал
                     <label for="meal-dish-calories-per100" id="meal-dish-calories-per100">${dish.calories}</label>
                 </div>
             `;
@@ -361,17 +554,18 @@
             });
 
             newDish.querySelector('.dish-weight').addEventListener('change', function(){
-                const weight = parseFloat(newDish.querySelector('.dish-weight').value) || 0;
-                console.log(weight);
+                const weight = parseFloat(this.value) || 0;
                 const proteins_per_100 = parseFloat(newDish.querySelector('#meal-dish-proteins-per100').textContent);
-                const fats_per_100 = parseFloat(newDish.querySelector('#meal-dish-fats-per100').textContent)
-                const carbs_per_100 = parseFloat(newDish.querySelector('#meal-dish-carbs-per100').textContent)
-                const calories_per_100 = parseFloat(newDish.querySelector('#meal-dish-calories-per100').textContent)
+                const fats_per_100 = parseFloat(newDish.querySelector('#meal-dish-fats-per100').textContent);
+                const carbs_per_100 = parseFloat(newDish.querySelector('#meal-dish-carbs-per100').textContent);
+                const calories_per_100 = parseFloat(newDish.querySelector('#meal-dish-calories-per100').textContent);
+
                 newDish.querySelector('#meal-dish-proteins').textContent = (proteins_per_100 * (weight / 100)).toFixed(2);
                 newDish.querySelector('#meal-dish-fats').textContent = (fats_per_100 * (weight / 100)).toFixed(2);
                 newDish.querySelector('#meal-dish-carbs').textContent = (carbs_per_100 * (weight / 100)).toFixed(2);
                 newDish.querySelector('#meal-dish-calories').textContent = (calories_per_100 * (weight / 100)).toFixed(2);
-                updateMealSummary(meal);
+                
+                updateMealSummary(this.closest('.meal-item'));
             })
             // Update meal summary
             updateMealSummary(meal);
@@ -379,36 +573,122 @@
 
         // Function to toggle edit mode for indicators
         function toggleEditMode() {
-            const inputs = document.querySelectorAll('.indicator input');
-            const editButton = document.getElementById('edit-indicators');
-            
-            if (editButton.textContent === 'Изменить') {
-                inputs.forEach(input => {
-                    input.readOnly = false;
-                    input.classList.add('editable');
-                });
-                editButton.textContent = 'Сохранить';
-            } else {
-                inputs.forEach(input => {
-                    input.readOnly = true;
-                    input.classList.remove('editable');
-                    updateProgressBar(input.id + '-bar', input.value);
-                });
-                editButton.textContent = 'Изменить';
-                // Here you would typically send the updated values to the server
-                // to update the cookies or user preferences
-            }
-        }
+    const editButton = document.getElementById('edit-indicators');
+    const indicators = document.querySelectorAll('.indicator');
+    const isEditing = editButton.textContent === 'Сохранить изменения';
 
+    if (isEditing) {
+        // Save changes
+        indicators.forEach(indicator => {
+            const label = indicator.querySelector('label');
+            const input = indicator.querySelector('input');
+            const goalSpan = indicator.querySelector('[id$="_text_goal_value"]');
+            
+            if (input && goalSpan) {
+                const newValue = parseFloat(input.value);
+                if (!isNaN(newValue) && newValue > 0 && newValue < 15000) {
+                    goalSpan.textContent = newValue.toFixed(1);
+                    // Here you would typically send an AJAX request to update the server-side data
+                }
+            }
+            
+            if (input) {
+                input.remove();
+            }
+            if (label) {
+                label.style.display = 'inline';
+            }
+        });
+        editButton.textContent = 'Изменить план БЖУ на день';
+        updateNutrientTotals(); // Update totals and progress bars after saving changes
+    } else {
+        // Enter edit mode
+        indicators.forEach(indicator => {
+            const label = indicator.querySelector('label');
+            const goalSpan = indicator.querySelector('[id$="_text_goal_value"]');
+            
+            if (label && goalSpan) {
+                const currentValue = parseFloat(goalSpan.textContent);
+                label.style.display = 'none';
+                
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.value = currentValue;
+                input.min = '0';
+                input.step = '0.1';
+                input.classList.add('editable');
+                
+                goalSpan.parentNode.insertBefore(input, goalSpan);
+            }
+        });
+        editButton.textContent = 'Сохранить изменения';
+    }
+}
         // Add event listener to the edit button
         document.getElementById('edit-indicators').addEventListener('click', toggleEditMode);
 
         // Initialize progress bars with values from cookies
         window.addEventListener('load', function() {
-            const inputs = document.querySelectorAll('.indicator input');
-            inputs.forEach(input => {
-                updateProgressBar(input.id + '-bar', input.value);
-            });
+            updateNutrientTotals(); //Initial update of nutrient totals on page load
+        });
+
+
+        function updateSaveButtonState() {
+            const weightInput = document.getElementById('current-weight');
+            const saveButton = document.getElementById('saveButton');
+            saveButton.disabled = !weightInput.value;
+        }
+        
+        // Добавляем слушатель события для поля веса
+        document.getElementById('current-weight').addEventListener('input', updateSaveButtonState);
+        
+        async function postData(weight, targetKBZHU, actualKBZHU) {
+            try {
+                const response = await fetch('/day_plan/save_day_plan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', 
+                    },
+                    body: JSON.stringify({
+                        weight: weight,
+                        targetKBZHU: targetKBZHU,
+                        actualKBZHU: actualKBZHU
+                    }),
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                console.log(data.message);
+                return await data;
+            } catch (error){
+                console.error(error);
+                throw error;
+            }
+        }
+        
+        // Обработчик клика по кнопке "Сохранить"
+        document.getElementById('saveButton').addEventListener('click', async function() {
+            const currentWeight = document.getElementById('current-weight').value;
+            const targetKBZHU = {
+                calories: parseFloat(document.getElementById('calories_text_goal_value').textContent),
+                protein: parseFloat(document.getElementById('protein_text_goal_value').textContent),
+                fats: parseFloat(document.getElementById('fats_text_goal_value').textContent),
+                carbs: parseFloat(document.getElementById('carbs_text_goal_value').textContent)
+            };
+            const actualKBZHU = {
+                calories: parseFloat(document.getElementById('calories_text_current_value').textContent),
+                protein: parseFloat(document.getElementById('protein_text_current_value').textContent),
+                fats: parseFloat(document.getElementById('fats_text_current_value').textContent),
+                carbs: parseFloat(document.getElementById('carbs_text_current_value').textContent)
+            };
+            try {
+                await postData(currentWeight, targetKBZHU, actualKBZHU);
+                console.log('Данные успешно сохранены:', { weight: currentWeight, targetKBZHU, actualKBZHU });
+            } catch (error) {
+                console.error('Ошибка при сохранении данных:', error);
+                alert('Произошла ошибка при сохранении данных. Пожалуйста, попробуйте еще раз.');
+            }
         });
     </script>
 </div>

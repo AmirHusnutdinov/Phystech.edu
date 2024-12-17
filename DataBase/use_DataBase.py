@@ -23,3 +23,11 @@ def database_query(sql):
 def get_dishes():
     sql = "SELECT * FROM dish"
     return database_query(sql)
+
+def get_user_data(id):
+    sql = f"SELECT * FROM public.\"User\" WHERE id = {id}"
+    return database_query(sql)[0]
+
+def get_day_data(user, date):
+    sql = f"SELECT * FROM user_daily_metrics WHERE id = {user.id} AND date = {date}"
+    return database_query(sql)
