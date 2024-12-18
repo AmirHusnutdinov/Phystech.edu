@@ -3,6 +3,7 @@
 from flask import render_template, request, jsonify
 from ServiceFiles.links import header_links
 from DataBase.use_DataBase import get_dishes, get_user_data
+from datetime import datetime,date
 
 id = 2
 
@@ -37,7 +38,12 @@ class DayPlan:
         targetKBZHU = data.get("targetKBZHU")
         actualKBZHU = data.get("actualKBZHU")
 
-        sql = """
+        if(not validate_data(data)):
+            return jsonify({"message": "Incorrect Data"}), 400
+        if not validate_date(data.get('date')):
+            return jsonify({"message": "wrong date"}), 400
+        user = formatting_user(get_user_data(id))
+        sql = f"""
             IF NOT EXISTS (
                 SELECT 1
                 FROM your_table
@@ -45,7 +51,7 @@ class DayPlan:
             )
             BEGIN
                 INSERT INTO your_table (id, weight, height, water, date, calories, calories_plan, proteins, proteins_plan, fats, fats_plan, carbs, carbs_plan)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                VALUES ({id}, {weight}, {user['height']}, {user['water']}, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             END
             ELSE
             BEGIN
@@ -70,7 +76,28 @@ class DayPlan:
             header_links=header_links,
             title="Добавить продукт",
         )
+def validate_data(data):
+    weight = data.get('weight')
+    target_kbzhu = data.get('targetKBZHU')
+    actual_kbzhu = data.get('actualKBZHU')
+    try:
+        if not (0 <= float(weight) <= 500):
+            return False
+        
+        for kbzhu in [target_kbzhu, actual_kbzhu]:
+            if not all(0 <= float(kbzhu[key]) <= (10000 if key == 'calories' else 2000) for key in kbzhu):
+                return False
+        
+        return True
+    except ValueError:
+        return False
 
+def validate_date(date_str):
+    try:
+        submitted_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+        return submitted_date == date.today()
+    except ValueError:
+        return False
 
 def formatting_dishes(dishes):
     formatted_dishes = [
