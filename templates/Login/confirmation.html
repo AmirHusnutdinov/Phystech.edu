@@ -1,0 +1,13 @@
+{% extends "Base.html" %}
+{% block content %}
+<h1>Подтверждение кода</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.code.label }} {{ form.code(size=32) }}
+    </div>
+    <div>
+        {{ form.submit() }}
+    </div>
+</form>
+{% endblock %}
