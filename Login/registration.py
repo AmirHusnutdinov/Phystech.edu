@@ -3,13 +3,15 @@ from flask_mail import Message
 from ServiceFiles.links import header_links
 from Login.forms import RegistrationForm, ConfirmationForm  # Импортируйте новую форму
 from settings import mail  # Импортируйте объект mail из вашего приложения
-import celery
+from DataBase.use_DataBase import database_query
+import random
 
-@celery.task
+
 def send_email(subject, recipient, body):
     msg = Message(subject, recipients=[recipient])
     msg.body = body
     mail.send(msg)
+
 
 class Registration:
     @staticmethod
@@ -27,16 +29,27 @@ class Registration:
             username = form.username.data  # Сохраните имя пользователя
             email = form.email.data
             password = form.password.data
+            password = form.password.data
+            count_user = database_query(f"""SELECT COUNT(*) AS user_count 
+                          FROM User 
+                          WHERE email = {email};""")[0]
+            if count_user > 0:
+                flash('Registration failed. Please check your input.', 'danger')
+                return redirect(url_for('show_registration_page'))
 
             # Здесь должна быть ваша логика сохранения пользователя в базе данных
             # Например, сохранение в SQLite или другой БД
 
-            # Генерация кода подтверждения (например, случайный код)
-            confirmation_code = "123456"  # Замените на реальную генерацию кода
+            # Генерация кода подтверждения (случайный код)
+            confirmation_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
 
             # Отправка кода подтверждения на почту
-            send_email.delay('Confirmation Code', email, f'Your confirmation code is: {confirmation_code}')
+            send_email('Confirmation Code', email, f'Your confirmation code is: {confirmation_code}')
             session["code"] = confirmation_code  # Сохраняем код в сессии
+            session["username"] = username
+            session["password"] = password
+            session["email"] = email
+
             flash('Registration successful! Please check your email for the confirmation code.', 'success')
             return redirect(url_for('confirm_code'))  # Перенаправляем на страницу подтверждения кода
 
@@ -58,8 +71,15 @@ class Registration:
             entered_code = form.code.data
             if entered_code == session.get("code"):
                 flash('Code confirmed successfully!', 'success')
-                # Здесь можно добавить логику для дальнейших действий (например, вход пользователя)
-                return redirect(url_for('some_next_page'))  # Перенаправьте на нужную страницу после подтверждения
+                session["login"] = True
+                database_query(f"""INSERT INTO User (username, email, password) 
+                                VALUES ({session["username"]}, {session["email"]}, {session["password"]});
+                                """)
+                session["code"] = None
+                session["username"] = None
+                session["password"] = None
+                session["email"] = None
+                return redirect(url_for('main_page'))  # Перенаправьте на нужную страницу после подтверждения
             else:
                 flash('Invalid confirmation code. Please try again.', 'danger')
                 return redirect(url_for('confirm_code'))  # Перенаправляем обратно на страницу подтверждения

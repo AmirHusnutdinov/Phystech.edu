@@ -13,7 +13,7 @@ all_news =  base_link + '/all_news'
 one_news =  base_link + '/one_news/<int:news_id>'
 process_registration = base_link + '/process_registration'
 confirm_code = base_link + '/confirm_code'
-process_login = base_link + '/process_login',
+process_login = base_link + '/process_login'
 logout = base_link + '/logout'
 
 header_links = ["/", day_plan, calendar, cabinet, all_news, authorization, registration, ]

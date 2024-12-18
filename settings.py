@@ -18,10 +18,10 @@ class Config:
     REGION_NAME = getenv('REGION_NAME')
     BUCKET_MAIN_PATH = getenv('BUCKET_MAIN_PATH')
 
-def make_celery(app):
-    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'], broker=app.config['CELERY_BROKER_URL'])
-    celery.conf.update(app.config)
-    return celery
+# def make_celery(app):
+#     celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'], broker=app.config['CELERY_BROKER_URL'])
+#     celery.conf.update(app.config)
+#     return celery
 
 
 app = Flask(__name__)
@@ -33,12 +33,12 @@ db_name = "food_helper"
 app.config.from_object(Config)
 
 # Настройка вашего приложения
-app.config.update(
-    CELERY_BROKER_URL='redis://localhost:6379/0',  # Замените на ваш брокер
-    CELERY_RESULT_BACKEND='redis://localhost:6379/0'  # Замените на ваш бэкенд
-)
+# app.config.update(
+#     CELERY_BROKER_URL='redis://localhost:6379/0',  # Замените на ваш брокер
+#     CELERY_RESULT_BACKEND='redis://localhost:6379/0'  # Замените на ваш бэкенд
+# )
 
-celery = make_celery(app)
+# celery = make_celery(app)
 
 
 app.config['MAIL_SERVER'] = 'smtp.example.com'  # Замените на ваш SMTP-сервер

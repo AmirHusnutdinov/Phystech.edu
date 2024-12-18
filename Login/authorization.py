@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, flash, session
 from ServiceFiles.links import header_links
 from Login.forms import LoginForm
+from DataBase.use_DataBase import database_query
 
 
 class Authorization:
@@ -18,9 +19,11 @@ class Authorization:
         if form.validate_on_submit():  # Проверка на валидность формы
             username = form.username.data
             password = form.password.data
+            password_prov = database_query(f"""SELECT password FROM User WHERE username = {username}""")[0]
 
             # Здесь должна быть ваша логика проверки пользователя
-            if username == 'admin' and password == 'password':  # Пример проверки
+            if password == password_prov:  # Пример проверки
+                session['login'] = True
                 session['username'] = username  # Сохраняем пользователя в сессии
                 flash('Login successful!', 'success')
                 return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
@@ -33,6 +36,7 @@ class Authorization:
 
     @staticmethod
     def logout():
+        session['Login'] = False
         session.pop('username', None)  # Удаляем пользователя из сессии
         flash('You have been logged out.', 'info')
         return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
