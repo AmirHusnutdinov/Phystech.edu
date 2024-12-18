@@ -1,24 +1,28 @@
 /* Общие стили */
 .body_cabinet {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(244, 244, 244);
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
 }
 
 .container {
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 85%;
+    max-width: 1100px;
+    animation: fadeIn 1s ease;
 }
 
 h1, h2 {
-    color: #333;
+    color: rgb(51, 51, 51);
+    font-family: 'Montserrat', sans-serif;
 }
 
 /* Стили для формы профиля */
@@ -30,11 +34,13 @@ h1, h2 {
     display: flex;
     justify-content: space-between;
     margin-bottom: 15px;
+    flex-wrap: wrap;
 }
 
 .form-group {
-    flex: 1;
+    flex: 1 1 30%;
     margin-right: 10px;
+    margin-bottom: 10px;
 }
 
 .form-group:last-child {
@@ -44,40 +50,42 @@ h1, h2 {
 label {
     display: block;
     margin-bottom: 5px;
-    color: #555;
+    color: rgb(85, 85, 85);
 }
 
 input[type="text"],
 input[type="email"],
 input[type="number"],
 select {
-    width: 90%;
+    width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid rgb(204, 204, 204);
     border-radius: 5px;
     transition: border-color 0.3s ease;
+    animation: fadeIn 1s ease;
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="number"]:focus,
 select:focus {
-    border-color: #777;
+    border-color: rgb(119, 119, 119);
     outline: none;
 }
 
 .btn {
-    background-color: #007bff;
-    color: #fff;
+    background-color: rgb(0, 123, 255);
+    color: rgb(255, 255, 255);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    animation: fadeIn 1s ease;
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: rgb(0, 86, 179);
 }
 
 /* Стили для графика */
@@ -90,6 +98,7 @@ canvas {
     height: auto !important;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease;
 }
 
 /* Анимации */
@@ -102,18 +111,88 @@ canvas {
     }
 }
 
-.container {
-    animation: fadeIn 1s ease;
+/* Темная тема */
+.dark-theme .body_cabinet {
+    background-color: rgb(44, 44, 44);
+    color: rgb(224, 224, 224);
 }
 
-input[type="text"],
-input[type="email"],
-input[type="number"],
-select,
-.btn {
-    animation: fadeIn 1s ease;
+.dark-theme .container {
+    background-color: rgb(51, 51, 51);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-canvas {
-    animation: fadeIn 1s ease;
+.dark-theme h1,
+.dark-theme h2 {
+    color: rgb(224, 224, 224);
+}
+
+.dark-theme label {
+    color: rgb(153, 153, 153);
+}
+
+.dark-theme input[type="text"],
+.dark-theme input[type="email"],
+.dark-theme input[type="number"],
+.dark-theme select {
+    background-color: rgb(68, 68, 68);
+    color: rgb(224, 224, 224);
+    border-color: rgb(85, 85, 85);
+}
+
+.dark-theme input[type="text"]:focus,
+.dark-theme input[type="email"]:focus,
+.dark-theme input[type="number"]:focus,
+.dark-theme select:focus {
+    border-color: rgb(119, 119, 119);
+}
+
+.dark-theme .btn {
+    background-color: rgb(0, 123, 255);
+}
+
+.dark-theme .btn:hover {
+    background-color: rgb(0, 86, 179);
+}
+
+.dark-theme canvas {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Медиа-запросы для адаптивного дизайна */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+
+    .form-group {
+        flex: 1 1 100%;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1, h2 {
+        font-size: 1.5em;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    select {
+        padding: 8px;
+    }
+
+    .btn {
+        padding: 8px 15px;
+    }
 }

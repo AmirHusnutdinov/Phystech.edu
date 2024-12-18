@@ -10,32 +10,39 @@
 
         <div class="indicators">
             <div class="indicator">
-                <label for="protein" style="color: #007bff;">Белки</label>
+                <label for="protein" id="protein_text">Белки</label>
                 <div class="progress-bar">
                     <div id="protein-bar" class="bar" style="width: 0%;"></div>
                 </div>
                 <input type="number" id="protein" placeholder="г" oninput="updateProgressBar('protein-bar', this.value)">
             </div>
             <div class="indicator">
-                <label for="fats" style="color: orange;">Жиры</label>
+                <label for="fats" id="fats_text">Жиры</label>
                 <div class="progress-bar">
                     <div id="fats-bar" class="bar" style="width: 0%;"></div>
                 </div>
                 <input type="number" id="fats" placeholder="г" oninput="updateProgressBar('fats-bar', this.value)">
             </div>
             <div class="indicator">
-                <label for="carbs" style="color: red">Углеводы</label>
+                <label for="carbs" id="carbs_text">Углеводы</label>
                 <div class="progress-bar">
                     <div id="carbs-bar" class="bar" style="width: 0%;"></div>
                 </div>
                 <input type="number" id="carbs" placeholder="г" oninput="updateProgressBar('carbs-bar', this.value)">
             </div>
             <div class="indicator">
-                <label for="calories" style="color: #007bff;">Калории</label>
+                <label for="calories" id="calories_text">Калории</label>
                 <div class="progress-bar">
                     <div id="calories-bar" class="bar" style="width: 0%;"></div>
                 </div>
                 <input type="number" id="calories" placeholder="ккал" oninput="updateProgressBar('calories-bar', this.value)">
+            </div>
+            <div class="indicator">
+                <label for="water" id="water_text">Вода</label>
+                <div class="progress-bar">
+                    <div id="water-bar" class="bar" style="width: 0%;"></div>
+                </div>
+                <input type="number" id="water" placeholder="л" oninput="updateProgressBar('water-bar', this.value)">
             </div>
         </div>
         <a href="/selected_products">Это временная ссылка на выбор продукта</a>
@@ -104,6 +111,7 @@
                         <input type="text" class="dish-name" placeholder="Название блюда">
                         <input type="number" class="dish-weight" placeholder="Масса (г)">
                         <span class="dish-calories">(0 ккал)</span>
+                        <button class="remove-dish">-</button> <!-- Добавляем кнопку удаления блюда -->
                     </div>
                     <div class="dish-nutrients">
                         <input type="number" class="dish-protein" placeholder="Белки (г)">
@@ -116,6 +124,12 @@
 
                 // Добавляем анимацию
                 newDish.classList.add('animate-in');
+
+                // Удаление блюда
+                newDish.querySelector('.remove-dish').addEventListener('click', function() {
+                    dishesContainer.removeChild(newDish);
+                    updateMealSummary(newMeal); // Обновляем итоговую информацию о приеме пищи
+                });
 
                 // Обновляем итоговую информацию о приеме пищи
                 updateMealSummary(newMeal);
@@ -163,6 +177,6 @@
             meal.querySelector('.meal-total').innerText = `Итого: ${totalProtein.toFixed(2)} г белков, ${totalFats.toFixed(2)} г жиров, ${totalCarbs.toFixed(2)} г углеводов, ${totalCalories.toFixed(2)} ккал`;
         }
     </script>
-    </div>
+</div>
 </body>
 {% endblock %}

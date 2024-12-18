@@ -1,125 +1,124 @@
 {% extends "Base.html" %}
-
 {% block content %}
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-<link rel="stylesheet" href="../../static/assets/css/style_main.css">
-<body>
-<!--Блок главного фото-->
-<section class="hero-image" style="background-image: url('{{main_image}}');">
-    <div class="hero-content">
-        <h2>Ваш путь к здоровью и успеху начинается здесь</h2>
-        <p>Мы предлагаем индивидуальные планы питания, разработанные специально для спортсменов любого уровня.</p>
-        <a href="#services" class="btn">Узнать больше</a>
-    </div>
-</section>
-
-<!--Блок услуг-->
-<section id="services" class="services" data-aos="fade-up">
-    <div class="container">
-        <h2>Наши услуги</h2>
-        <div class="service-cards">
-            <div class="service-card" data-aos="fade-up">
-                <h3>Индивидуальный план питания</h3>
-                <p>Создаем персональные планы питания с учетом ваших целей и предпочтений.</p>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="../../static/assets/css/style_main.css">
+    <div class="body_main">
+        <!--Блок главного фото-->
+        <section class="hero-image" style="background-image: url('{{main_image}}');">
+            <div class="hero-content">
+                <h2>Ваш путь к здоровью и успеху начинается здесь</h2>
+                <p>Мы предлагаем индивидуальные планы питания, разработанные специально для спортсменов любого уровня.</p>
+                <a href="#services" class="btn">Узнать больше</a>
             </div>
-            <div class="service-card" data-aos="fade-up">
-                <h3>Консультации с диетологом</h3>
-                <p>Получайте профессиональные советы от опытных диетологов.</p>
+        </section>
+
+        <!--Блок услуг-->
+        <section id="services" class="services" data-aos="fade-up">
+            <div class="container">
+                <h2>Наши услуги</h2>
+                <div class="service-cards">
+                    <div class="service-card" data-aos="fade-up">
+                        <h3>Индивидуальный план питания</h3>
+                        <p>Создаем персональные планы питания с учетом ваших целей и предпочтений.</p>
+                    </div>
+                    <div class="service-card" data-aos="fade-up">
+                        <h3>Консультации с диетологом</h3>
+                        <p>Получайте профессиональные советы от опытных диетологов.</p>
+                    </div>
+                    <div class="service-card" data-aos="fade-up">
+                        <h3>Рецепты и советы</h3>
+                        <p>Доступ к базе рецептов и советов по правильному питанию.</p>
+                    </div>
+                </div>
             </div>
-            <div class="service-card" data-aos="fade-up">
-                <h3>Рецепты и советы</h3>
-                <p>Доступ к базе рецептов и советов по правильному питанию.</p>
+        </section>
+
+        <!--Блок цитат-->
+        <section class="quotes" data-aos="fade-up">
+            <div class="container">
+                <h2>Цитаты о здоровом питании</h2>
+                <div class="quote-container">
+                    <div class="quote-text" id="quote-text"></div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
+            <script>
+            const quotes = [
+                "Здоровое питание — это не диета, это образ жизни. — Эллен ДеДженерес",
+                "Ешьте пищу, а не диету. — Майкл Поллан",
+                "Здоровое питание — это основа здоровья. — Мишель Обама",
+                "Ешьте для того, чтобы жить, а не живите для того, чтобы есть. — Сократ",
+                "Здоровое питание — это инвестиция в себя. — Джек Лалоэ"
+            ];
 
-<!--Блок цитат-->
-<section class="quotes" data-aos="fade-up">
-    <div class="container">
-        <h2>Цитаты о здоровом питании</h2>
-        <div class="quote-container">
-            <div class="quote-text" id="quote-text"></div>
-        </div>
-    </div>
-    <script>
-    const quotes = [
-        "Здоровое питание — это не диета, это образ жизни. — Эллен ДеДженерес",
-        "Ешьте пищу, а не диету. — Майкл Поллан",
-        "Здоровое питание — это основа здоровья. — Мишель Обама",
-        "Ешьте для того, чтобы жить, а не живите для того, чтобы есть. — Сократ",
-        "Здоровое питание — это инвестиция в себя. — Джек Лалоэ"
-    ];
+            const quoteText = document.getElementById('quote-text');
+            let currentIndex = 0;
 
-    const quoteText = document.getElementById('quote-text');
-    let currentIndex = 0;
+            function changeQuote() {
+                quoteText.classList.remove('active');
+                setTimeout(() => {
+                    quoteText.textContent = quotes[currentIndex];
+                    quoteText.classList.add('active');
+                    currentIndex = (currentIndex + 1) % quotes.length;
+                }, 500); // Задержка для анимации
+            }
 
-    function changeQuote() {
-        quoteText.classList.remove('active');
-        setTimeout(() => {
-            quoteText.textContent = quotes[currentIndex];
-            quoteText.classList.add('active');
-            currentIndex = (currentIndex + 1) % quotes.length;
-        }, 500); // Задержка для анимации
-    }
+            changeQuote(); // Показать первую цитату
+            setInterval(changeQuote, 5000); // Менять цитату каждые 5 секунд
 
-    changeQuote(); // Показать первую цитату
-    setInterval(changeQuote, 5000); // Менять цитату каждые 5 секунд
-
-    // Плавный скролл к элементу с id="services"
-    document.querySelector('.btn').addEventListener('click', function(event) {
-        event.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            window.scrollTo({
-                top: target.offsetTop,
-                behavior: 'smooth'
+            // Плавный скролл к элементу с id="services"
+            document.querySelector('.btn').addEventListener('click', function(event) {
+                event.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
             });
-        }
-    });
-    </script>
-</section>
+            </script>
+        </section>
 
-<!--Блок методологии-->
-<section class="methodology" data-aos="fade-up">
-    <div class="container">
-        <h2>Методология расчета калорий</h2>
-        <div class="methodology-content">
-            <h3>Для профессионалов</h3>
-            <p>Для профессионалов мы учитываем следующие параметры:</p>
-            <ul>
-                <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
-                <li><strong>Возраст:</strong> В годах.</li>
-                <li><strong>Сон:</strong> В часах.</li>
-                <li><strong>Рост:</strong> В см.</li>
-                <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
-                <li><strong>Регулярный углублённый мыслительный процесс:</strong> Да/Нет.</li>
-                <li><strong>Пол:</strong> М/Ж.</li>
-                <li><strong>Вес:</strong> В кг.</li>
-                <li><strong>Метаболизм:</strong> Быстрый/Медленный.</li>
-                <li><strong>Экто-эндоморфы:</strong> Выпадающий список.</li>
-                <li><strong>Вредные привычки:</strong> Выпадающий список.</li>
-            </ul>
+        <!--Блок методологии-->
+        <section class="methodology" data-aos="fade-up">
+            <div class="container">
+                <h2>Методология расчета калорий</h2>
+                <div class="methodology-content">
+                    <h3>Для профессионалов</h3>
+                    <p>Для профессионалов мы учитываем следующие параметры:</p>
+                    <ul>
+                        <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
+                        <li><strong>Возраст:</strong> В годах.</li>
+                        <li><strong>Сон:</strong> В часах.</li>
+                        <li><strong>Рост:</strong> В см.</li>
+                        <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
+                        <li><strong>Регулярный углублённый мыслительный процесс:</strong> Да/Нет.</li>
+                        <li><strong>Пол:</strong> М/Ж.</li>
+                        <li><strong>Вес:</strong> В кг.</li>
+                        <li><strong>Метаболизм:</strong> Быстрый/Медленный.</li>
+                        <li><strong>Экто-эндоморфы:</strong> Выпадающий список.</li>
+                        <li><strong>Вредные привычки:</strong> Выпадающий список.</li>
+                    </ul>
 
-            <h3>Для начинающих</h3>
-            <p>Для начинающих мы учитываем следующие параметры:</p>
-            <ul>
-                <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
-                <li><strong>Пол:</strong> М/Ж.</li>
-                <li><strong>Возраст:</strong> В годах.</li>
-                <li><strong>Рост:</strong> В см.</li>
-                <li><strong>Вес:</strong> В кг.</li>
-                <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
-            </ul>
-        </div>
+                    <h3>Для начинающих</h3>
+                    <p>Для начинающих мы учитываем следующие параметры:</p>
+                    <ul>
+                        <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
+                        <li><strong>Пол:</strong> М/Ж.</li>
+                        <li><strong>Возраст:</strong> В годах.</li>
+                        <li><strong>Рост:</strong> В см.</li>
+                        <li><strong>Вес:</strong> В кг.</li>
+                        <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>
+            AOS.init({
+                once: true // Анимация срабатывает только один раз
+            });
+        </script>
     </div>
-</section>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    AOS.init({
-        once: true // Анимация срабатывает только один раз
-    });
-</script>
-</body>
 {% endblock %}

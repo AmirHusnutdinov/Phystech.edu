@@ -1,7 +1,59 @@
-.container_today {
-    flex: 1 0 auto;
+:root {
+    --bg-color: rgb(240, 244, 248);
+    --text-color: rgb(51, 51, 51);
+    --container-bg-color: rgb(255, 255, 255);
+    --date-block-bg-color: rgb(233, 236, 239);
+    --progress-bar-bg-color: rgb(224, 224, 224);
+    --bar-bg-color: rgb(76, 175, 80);
+    --input-border-color: rgb(204, 204, 204);
+    --input-focus-border-color: rgb(33, 150, 243);
+    --button-bg-color: rgb(33, 150, 243);
+    --button-hover-bg-color: rgb(25, 118, 210);
+    --meal-item-bg-color: rgb(249, 249, 249);
+    --meal-item-border-color: rgb(204, 204, 204);
+    --dish-item-bg-color: rgb(255, 255, 255);
+    --dish-item-border-color: rgb(221, 221, 221);
+    --remove-meal-bg-color: rgb(244, 67, 54);
+    --remove-meal-hover-bg-color: rgb(211, 47, 47);
+    --add-dish-bg-color: rgb(76, 175, 80);
+    --add-dish-hover-bg-color: rgb(56, 142, 60);
+    --color_fats: rgb(255, 165, 0);
+    --color_calories: rgb(0, 123, 255);
+    --color_protein: rgb(0, 123, 255);
+    --color_carbs: rgb(255, 0, 0);
+    --time-block-bg-color: rgb(255, 255, 255);
+    --input-block-bg-color: rgb(255, 255, 255);
 }
 
+.dark-theme {
+    --bg-color: rgb(18, 18, 18);
+    --text-color: rgb(224, 224, 224);
+    --container-bg-color: rgb(30, 30, 30);
+    --date-block-bg-color: rgb(44, 44, 44);
+    --progress-bar-bg-color: rgb(51, 51, 51);
+    --bar-bg-color: rgba(0, 255, 0, 0.3);
+    --input-border-color: rgb(68, 68, 68);
+    --input-focus-border-color: rgb(33, 150, 243);
+    --button-bg-color: rgb(63, 81, 181);
+    --button-hover-bg-color: rgb(48, 63, 159);
+    --meal-item-bg-color: rgb(46, 46, 46);
+    --meal-item-border-color: rgb(68, 68, 68);
+    --dish-item-bg-color: rgb(62, 62, 62);
+    --dish-item-border-color: rgb(85, 85, 85);
+    --remove-meal-bg-color: rgb(183, 28, 28);
+    --remove-meal-hover-bg-color: rgb(198, 40, 40);
+    --add-dish-bg-color: rgb(46, 125, 50);
+    --add-dish-hover-bg-color: rgb(56, 142, 60);
+    --color_fats: rgba(255, 167, 38, 0.7);
+    --color_calories: rgba(33, 150, 243, 0.8);
+    --color_protein: rgba(33, 150, 243, 0.8);
+    --color_carbs: rgba(255, 0, 0, 0.5);
+    --time-block-bg-color: rgb(66, 66, 66);
+    --input-block-bg-color: rgb(85, 85, 85);
+    --input-block-font-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Общие стили */
 .body_day_plan {
     display: flex;
     flex-direction: column;
@@ -9,8 +61,8 @@
     align-items: center;
     min-height: 74vh;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f4f4f4, #e0e0e0);
-    color: #333;
+    background: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     animation: fadeIn 1s ease-in-out;
@@ -22,7 +74,7 @@
 }
 
 .container_today {
-    background-color: #fff;
+    background-color: var(--container-bg-color);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -41,8 +93,8 @@
     text-align: center;
     margin-bottom: 20px;
     font-size: 1.2em;
-    color: #555;
-    background-color: #e9ecef;
+    color: var(--text-color);
+    background-color: var(--date-block-bg-color);
     border-radius: 5px;
     padding: 10px;
     animation: slideIn 0.5s ease-in-out;
@@ -69,7 +121,7 @@
 }
 
 .progress-bar {
-    background-color: #e0e0e0;
+    background-color: var(--progress-bar-bg-color);
     border-radius: 5px;
     overflow: hidden;
     overflow-x: hidden;
@@ -79,13 +131,13 @@
 
 .bar {
     height: 100%;
-    background-color: #4caf50;
+    background-color: var(--bar-bg-color);
     transition: width 0.5s ease;
 }
 
 input[type="number"] {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border-color);
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
@@ -93,7 +145,7 @@ input[type="number"] {
 }
 
 input[type="number"]:focus {
-    border-color: #2196f3;
+    border-color: var(--input-focus-border-color);
     outline: none;
 }
 
@@ -105,7 +157,7 @@ input[type="number"]:focus {
 #add-meal {
     width: 100%;
     padding: 10px 20px;
-    background-color: #2196f3;
+    background-color: var(--button-bg-color);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -114,7 +166,7 @@ input[type="number"]:focus {
 }
 
 #add-meal:hover {
-    background-color: #1976d2;
+    background-color: var(--button-hover-bg-color);
     transform: scale(1.05);
 }
 
@@ -123,9 +175,9 @@ input[type="number"]:focus {
     flex-direction: column;
     margin-top: 20px;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--meal-item-border-color);
     border-radius: 10px;
-    background-color: #f9f9f9;
+    background-color: var(--meal-item-bg-color);
     opacity: 0;
     transform: translateY(-20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -150,7 +202,7 @@ input[type="number"]:focus {
 
 .meal-time {
     padding: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border-color);
     border-radius: 5px;
 }
 
@@ -163,12 +215,13 @@ input[type="number"]:focus {
     flex-direction: column;
     margin-bottom: 20px;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--dish-item-border-color);
     border-radius: 5px;
-    background-color: #fff;
+    background-color: var(--dish-item-bg-color);
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    position: relative;
 }
 
 .dish-item.animate-in {
@@ -195,12 +248,82 @@ input[type="number"]:focus {
 
 .dish-calories {
     font-size: 0.9em;
-    color: #777;
+    color: var(--text-color);
 }
 
 .dish-nutrients {
     display: flex;
     justify-content: space-between;
+}
+
+.dish-protein, .dish-fats, .dish-carbs, .dish-calories-per-100, .dish-name, .dish-weight {
+    background-color: var(--input-block-bg-color);
+    color: var(--input-block-font-color);
+}
+
+.remove-dish {
+    background-color: var(--remove-meal-bg-color);
+    border-radius: 50px;
+}
+
+#fats {
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color);
+}
+
+#fats_text {
+    color: var(--color_fats);
+}
+
+#carbs {
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color);
+}
+
+#carbs_text {
+    color: var(--color_carbs);
+}
+
+#protein {
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color);
+}
+
+#protein_text {
+    color: var(--color_protein);
+}
+
+#calories {
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color);
+}
+
+#calories_text {
+    color: var(--color_calories);
+}
+
+#water {
+    background-color: var(--input-block-bg-color);
+    width: 15%;
+    font-size: 30px;
+    color: var(--input-block-font-color);
+}
+
+#water_text {
+    color: var(--color_water);
+}
+
+.meal-time {
+    background-color: var(--time-block-bg-color);
+    color: white;
 }
 
 .dish-nutrients input {
@@ -233,22 +356,22 @@ input[type="number"]:focus {
 }
 
 .remove-meal {
-    background-color: #f44336;
+    background-color: var(--remove-meal-bg-color);
     color: #fff;
 }
 
 .remove-meal:hover {
-    background-color: #d32f2f;
+    background-color: var(--remove-meal-hover-bg-color);
     transform: scale(1.05);
 }
 
 .add-dish {
-    background-color: #4caf50;
+    background-color: var(--add-dish-bg-color);
     color: #fff;
 }
 
 .add-dish:hover {
-    background-color: #388e3c;
+    background-color: var(--add-dish-hover-bg-color);
     transform: scale(1.05);
 }
 
@@ -283,5 +406,4 @@ input[type="number"]:focus {
     .dish-nutrients {
         flex-direction: column;
     }
-
-    .dish
+}

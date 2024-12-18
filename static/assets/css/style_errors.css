@@ -40,7 +40,6 @@
 }
 
 .spin-earth-on-hover{
-    
     transition: ease 200s !important;
     transform: rotate(-3600deg) !important;
 }
@@ -67,22 +66,23 @@ html, body{
 }
 
 .box {
-  position: absolute;
-  top: 0;
-  left: 34%;
-  width: 30%;
-  height: 480%;
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
   border: 1px solid black;
   border-radius: 5px;
+  text-align: center;
 }
 
-.box::before, div#box::after {
+.box::before, .box::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 115%;
+  height: 100%;
   box-shadow: inset 0px 0px 0px 1px #000;
   mix-blend-mode: multiply;
   animation: dance 2s infinite steps(1);
@@ -109,20 +109,39 @@ html, body{
     background-position: left top;
     height: 100%;
     overflow: hidden;
-    
 }
+
 h3 {
-  position: absolute;
+  position: relative;
   font-size: 5vw;
   font-weight: 700;
   text-transform: uppercase;
   animation: blink 1.3s infinite steps(1);
 }
 
-p {
+h3::before, h3::after {
   position: absolute;
-  margin-left: 10px;
-  margin-top: 160px;
+  content: 'ERROR {{error_code}}';
+  top: -1px;
+  left: 0;
+  mix-blend-mode: soft-light;
+  animation: dance 2s infinite steps(2);
+}
+
+h3::before {
+  clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+  color: magenta;
+  animation: shiftright 200ms steps(2) infinite;
+}
+
+h3::after {
+  clip-path: polygon(0 100%, 100% 100%, 100% 50%, 0 50%);
+  color: cyan;
+  animation: shiftleft 200ms steps(2) infinite;
+}
+
+p {
+  margin-top: 20px;
   font-size: 25px;
 }
 
@@ -132,6 +151,14 @@ p span {
   font-weight: bold;
   color: #000;
   animation: blink 3s steps(1) infinite;
+}
+
+p span::before, p span::after {
+  content: '{{error_phrase[1]}}';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  mix-blend-mode: multiply;
 }
 
 p span::before {
@@ -187,6 +214,7 @@ p span::after {
     color: transparent;
   }
 }
+
 .custom-navbar{
     padding-top: 15px;
 }
@@ -202,17 +230,14 @@ p span::after {
     float: right;
     margin-right: 15px;
     text-transform: uppercase;
-    
-    
 }
 
 ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-/*    overflow: hidden;*/
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
 }
 
 li {
@@ -227,7 +252,6 @@ li a {
     text-decoration: none;
     letter-spacing : 2px;
     font-size: 12px;
-    
     -webkit-transition: all 0.3s ease-in;
     -moz-transition: all 0.3s ease-in;
     -ms-transition: all 0.3s ease-in;
@@ -252,13 +276,14 @@ li a:hover {
     transform: scale(1.05);
     box-shadow: 0px 20px 20px rgba(0,0,0,0.1);
 }
+
 .p404{
     font-size: 250px;
     color: white;
     margin-bottom: 30px;
     margin-top: -60px;
-
 }
+
 .btn-go-home{
     position: relative;
     z-index: 200;
@@ -274,7 +299,7 @@ li a:hover {
     text-decoration: none;
     letter-spacing : 2px;
     font-size: 11px;
-    margin-top: 200px;
+    margin-top: 100px;
     -webkit-transition: all 0.3s ease-in;
     -moz-transition: all 0.3s ease-in;
     -ms-transition: all 0.3s ease-in;
@@ -290,7 +315,6 @@ li a:hover {
 }
 
 .central-body{
-/*    width: 100%;*/
     padding: 17% 5% 10% 5%;
     text-align: center;
 }
@@ -314,21 +338,15 @@ li a:hover {
     top: 20%;
     left: 15%;
     z-index: 90;
-/*    animation: spin-earth 100s infinite linear both;*/
 }
 
 .object_moon{
     position: absolute;
     top: 12%;
     left: 25%;
-/*
-    transform: rotate(0deg);
-    transition: transform ease-in 99999999999s;
-*/
 }
 
 .earth-moon{
-    
 }
 
 .object_astronaut{
@@ -397,20 +415,54 @@ li a:hover {
     .navbar-links{
         display: none;
     }
-    
+
     .custom-navbar{
         text-align: center;
     }
-    
+
     .brand-logo img{
         width: 120px;
     }
-    
+
     .box_astronaut{
         top: 70%;
     }
-    
+
     .central-body{
         padding-top: 25%;
+    }
+
+    h3 {
+        font-size: 8vw;
+    }
+
+    p {
+        margin-top: 100px;
+        font-size: 20px;
+    }
+
+    .btn-go-home {
+        margin-top: 100px;
+    }
+
+    .object_rocket {
+        top: 60%;
+    }
+
+    .object_earth {
+        top: 10%;
+        left: 5%;
+        width: 80px;
+    }
+
+    .object_moon {
+        top: 5%;
+        left: 15%;
+        width: 60px;
+    }
+
+    .box_astronaut {
+        top: 50%;
+        right: 10%;
     }
 }
