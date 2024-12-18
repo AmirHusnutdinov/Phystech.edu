@@ -31,7 +31,7 @@ class Registration:
             password = form.password.data
             password = form.password.data
             count_user = database_query(f"""SELECT COUNT(*) AS user_count 
-                          FROM User 
+                          FROM users
                           WHERE email = {email};""")[0]
             if count_user > 0:
                 flash('Registration failed. Please check your input.', 'danger')
@@ -72,7 +72,7 @@ class Registration:
             if entered_code == session.get("code"):
                 flash('Code confirmed successfully!', 'success')
                 session["login"] = True
-                database_query(f"""INSERT INTO User (username, email, password) 
+                database_query(f"""INSERT INTO users (username, email, password) 
                                 VALUES ({session["username"]}, {session["email"]}, {session["password"]});
                                 """)
                 session["code"] = None

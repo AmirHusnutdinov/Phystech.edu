@@ -19,7 +19,7 @@ class Authorization:
         if form.validate_on_submit():  # Проверка на валидность формы
             username = form.username.data
             password = form.password.data
-            password_prov = database_query(f"""SELECT password FROM User WHERE username = {username}""")[0]
+            password_prov = database_query(f"""SELECT password FROM users WHERE username = {username}""")[0]
 
             # Здесь должна быть ваша логика проверки пользователя
             if password == password_prov:  # Пример проверки
