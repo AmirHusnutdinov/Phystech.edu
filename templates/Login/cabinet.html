@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label for="activity">Уровень активности:</label>
                     <select id="activity" name="activity" disabled>
-                        <option value="sedentary" {% if user.activity == 'sedentary' %}selected{% endif %}>Сидячий образ жизни</option>
+                        <option value="sedentary" {% if user.activity =< 'sedentary' %}selected{% endif %}>Сидячий образ жизни</option>
                         <option value="light" {% if user.activity == 'light' %}selected{% endif %}>Легкая активность</option>
                         <option value="moderate" {% if user.activity == 'moderate' %}selected{% endif %}>Умеренная активность</option>
                         <option value="active" {% if user.activity == 'active' %}selected{% endif %}>Активный образ жизни</option>
@@ -63,22 +63,41 @@
             <div class="kbgu-inputs">
                 <div class="form-group">
                     <label for="calories">Калории:</label>
-                    <input type="number" id="calories" name="calories" readonly>
+                    <input type="number" id="calories" name="calories" value = "{{ user['calories'] }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="protein">Белки (г):</label>
-                    <input type="number" id="protein" name="protein" readonly>
+                    <input type="number" id="protein" name="protein" value = "{{ user['proteins'] }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="fats">Жиры (г):</label>
-                    <input type="number" id="fats" name="fats" readonly>
+                    <input type="number" id="fats" name="fats" value = "{{ user['fats'] }}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="carbs">Углеводы (г):</label>
-                    <input type="number" id="carbs" name="carbs" readonly>
+                    <input type="number" id="carbs" name="carbs" value = "{{ user['carbs'] }}" readonly>
                 </div>
             </div>
+            <div class="edit-button-container">
+                <button id="editKBGU" class="btn">Изменить</button>
+            </div>
         </div>
+        
+        <script>
+        const editKBGUButton = document.getElementById('editKBGU');
+        const kbguInputs = document.querySelectorAll('.kbgu-inputs input');
+        
+        editKBGUButton.addEventListener('click', function() {
+            if (this.textContent === 'Изменить') {
+                kbguInputs.forEach(input => input.readOnly = false);
+                this.textContent = 'Сохранить';
+            } else {
+                kbguInputs.forEach(input => input.readOnly = true);
+                this.textContent = 'Изменить';
+                // Здесь можно добавить логику для сохранения значений
+            }
+        });
+        </script>
 
         <div class="calories-chart">
             <h2>График калорий</h2>
