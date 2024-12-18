@@ -1,5 +1,8 @@
 import unittest
+import sys
+import os
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from ServiceFiles.links import admin, authorization, registration, calendar, main_page, selected_products
 from settings import app
 
