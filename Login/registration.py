@@ -32,7 +32,7 @@ class Registration:
             password = form.password.data
             count_user = database_query(f"""SELECT COUNT(*) AS user_count 
                           FROM users
-                          WHERE email = {email};""")[0]
+                          WHERE email = {email};""")["user_count"][0]
             if count_user > 0:
                 flash('Registration failed. Please check your input.', 'danger')
                 return redirect(url_for('show_registration_page'))
