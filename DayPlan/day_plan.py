@@ -2,7 +2,7 @@
 # the day plan, and show an add product page.
 from flask import render_template, request, jsonify
 from ServiceFiles.links import header_links
-from DataBase.use_DataBase import get_dishes, get_user_data
+from DataBase.use_DataBase import get_dishes, get_user_data,database_query
 from datetime import datetime,date
 
 id = 2
@@ -37,6 +37,8 @@ class DayPlan:
         weight = data.get("weight")
         targetKBZHU = data.get("targetKBZHU")
         actualKBZHU = data.get("actualKBZHU")
+        date = data.get("date")
+        print(date)
 
         if(not validate_data(data)):
             return jsonify({"message": "Incorrect Data"}), 400
@@ -44,27 +46,31 @@ class DayPlan:
             return jsonify({"message": "wrong date"}), 400
         user = formatting_user(get_user_data(id))
         sql = f"""
-            IF NOT EXISTS (
-                SELECT 1
-                FROM your_table
-                WHERE id = ? AND date = ?
-            )
-            BEGIN
-                INSERT INTO your_table (id, weight, height, water, date, calories, calories_plan, proteins, proteins_plan, fats, fats_plan, carbs, carbs_plan)
-                VALUES ({id}, {weight}, {user['height']}, {user['water']}, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-            END
-            ELSE
-            BEGIN
-                UPDATE your_table
-                SET weight = ?, height = ?, water = ?, calories = ?, calories_plan = ?, proteins = ?, proteins_plan = ?, fats = ?, fats_plan = ?, carbs = ?, carbs_plan = ?
-                WHERE id = ? AND date = ?;
-            END;
-            """
+        INSERT INTO user_daily_metrics (id, weight, height, water, date, calories, calories_plan, proteins, proteins_plan, fats, fats_plan, carbs, carbs_plan)
+        VALUES ({id}, {weight}, {user['height']}, {user['water']}, '{date}', 
+                {actualKBZHU['calories']}, {targetKBZHU['calories']}, 
+                {actualKBZHU['protein']}, {targetKBZHU['protein']}, 
+                {actualKBZHU['fats']}, {targetKBZHU['fats']}, 
+                {actualKBZHU['carbs']}, {targetKBZHU['carbs']})
+        ON CONFLICT (id, date) DO UPDATE
+        SET weight = {weight}, height = {user['height']}, water = {user['water']}, 
+            calories = {actualKBZHU['calories']}, calories_plan = {targetKBZHU['calories']}, 
+            proteins = {actualKBZHU['protein']}, proteins_plan = {targetKBZHU['protein']}, 
+            fats = {actualKBZHU['fats']}, fats_plan = {targetKBZHU['fats']}, 
+            carbs = {actualKBZHU['carbs']}, carbs_plan = {targetKBZHU['carbs']};
+        """
 
         print(
             f"Received data: Weight: {weight}, Target KBZHU: {
                 targetKBZHU}, Actual KBZHU: {actualKBZHU}"
         )
+
+        try:
+            database_query(sql)
+        except Exception as ex:
+            print(f"Error while saving day plan: {ex}")
+            return jsonify({"message": "Error while saving day plan"}), 500
+        
 
         # Возвращаем ответ
         return jsonify({"message": "Data saved successfully"}), 200
