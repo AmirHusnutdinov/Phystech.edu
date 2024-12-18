@@ -41,7 +41,7 @@ class DayPlan:
             return jsonify({"message": "Incorrect Data"}), 400
         if not validate_date(data.get('date')):
             return jsonify({"message": "wrong date"}), 400
-        user = formatting_user(get_user_data(id))
+        user = get_user_data(id)
         sql = f"""
         INSERT INTO user_daily_metrics (id, weight, height, water, date, calories, calories_plan, proteins, proteins_plan, fats, fats_plan, carbs, carbs_plan)
         VALUES ({id}, {weight}, {user['height']}, {user['water']}, '{date}', 

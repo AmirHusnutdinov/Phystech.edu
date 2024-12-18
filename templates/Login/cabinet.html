@@ -41,7 +41,7 @@
                 <div class="form-group">
                     <label for="activity">Уровень активности:</label>
                     <select id="activity" name="activity" disabled>
-                        <option value="sedentary" {% if user.activity =< 'sedentary' %}selected{% endif %}>Сидячий образ жизни</option>
+                        <option value="sedentary" {% if user.activity == 'sedentary' %}selected{% endif %}>Сидячий образ жизни</option>
                         <option value="light" {% if user.activity == 'light' %}selected{% endif %}>Легкая активность</option>
                         <option value="moderate" {% if user.activity == 'moderate' %}selected{% endif %}>Умеренная активность</option>
                         <option value="active" {% if user.activity == 'active' %}selected{% endif %}>Активный образ жизни</option>
