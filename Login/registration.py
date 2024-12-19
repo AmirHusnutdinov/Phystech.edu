@@ -5,13 +5,35 @@ from Login.forms import RegistrationForm, ConfirmationForm  # Импортиру
 from settings import mail  # Импортируйте объект mail из вашего приложения
 from DataBase.use_DataBase import database_query
 import random
+import smtplib
+import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from settings import *
 
 
 def send_email(subject, recipient, body):
-    msg = Message(subject, recipients=[recipient])
-    msg.body = body
-    print(msg)
-    mail.send(msg)
+    # Создание сообщения
+    msg = MIMEMultipart()
+    msg['From'] = MAIL_USERNAME
+    msg['To'] = recipient
+    msg['Subject'] = subject
+
+    # Добавление текста в сообщение
+    msg.attach(MIMEText(body, 'plain'))
+
+    try:
+        # Подключение к SMTP серверу и отправка письма
+        server = smtplib.SMTP(MAIL_SERVER, MAIL_PORT)
+        server.starttls()  # Защита соединения с помощью TLS
+        server.login(MAIL_USERNAME, MAIL_PASSWORD)  # Логин на сервере
+        server.send_message(msg)  # Отправка сообщения
+        print("Email sent successfully!")
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+    finally:
+        server.quit()  # Закрытие соединения
 
 
 class Registration:

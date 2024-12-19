@@ -41,11 +41,11 @@ app.config.from_object(Config)
 # celery = make_celery(app)
 
 
-app.config['MAIL_SERVER'] = 'smtp.yandex.ru'  # Замените на ваш SMTP-сервер
-app.config['MAIL_PORT'] = 587  # Обычно 587 для TLS
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = getenv('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = getenv('MAIL_PASSWORD') # Ваш пароль
-app.config['MAIL_DEFAULT_SENDER'] = getenv('MAIL_DEFAULT_SENDER')  # Почта отправителя
+MAIL_SERVER = 'smtp.yandex.ru'  # Замените на ваш SMTP-сервер
+MAIL_PORT = 587  # Обычно 587 для TLS
+MAIL_USE_TLS = True
+MAIL_USERNAME = getenv('MAIL_USERNAME')
+MAIL_PASSWORD = getenv('MAIL_PASSWORD') # Ваш пароль
+# app.config['MAIL_DEFAULT_SENDER'] = getenv('MAIL_DEFAULT_SENDER')  # Почта отправителя
 
 mail = Mail(app)
