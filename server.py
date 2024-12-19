@@ -12,7 +12,7 @@ from MainPage.main_page import StartPage
 from News.news import News
 from SelectedProducts.selectedProducts import SelectedProduct
 from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
-    cabinet, all_news, one_news, process_registration, confirm_code, process_login, logout, add_product
+  cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, add_product
 from settings import app, host
 
 app.secret_key = os.urandom(24)
@@ -74,6 +74,9 @@ def open_calendar_page():
 def open_day_plan_page():
     return DayPlan.show_day_plan_page()
 
+@app.route(save_day_plan, methods=['POST'])
+def save_data():
+    return DayPlan.save_day_plan()
 
 @app.route(selected_products)
 def open_selected_products_page():

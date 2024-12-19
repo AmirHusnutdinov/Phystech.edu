@@ -196,3 +196,52 @@ canvas {
         padding: 8px 15px;
     }
 }
+
+/* KBGU input styles */
+.kbgu-inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.kbgu-inputs .form-group {
+    flex: 1;
+    margin-right: 0;
+}
+
+#editKBGU {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .kbgu-inputs {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Стили для кнопок выбора режима */
+.goals-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.goals-buttons .btn {
+    flex: 0 1 30%;
+}
+
+/* Медиа-запрос для мобильных устройств */
+@media (max-width: 768px) {
+    .goals-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .goals-buttons .btn {
+        margin-bottom: 10px;
+    }
+}
+
