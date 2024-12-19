@@ -11,8 +11,8 @@
                 {{ form.hidden_tag() }}
                 <div class="input-group">
                     <label>Email</label>
-                    {{ form.username(size=32) }}<br>
-                    {% for error in form.username.errors %}
+                    {{ form.name(size=32) }}<br>
+                    {% for error in form.name.errors %}
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </div>

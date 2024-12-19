@@ -1,6 +1,9 @@
 import unittest
+import sys
+import os
 
-from ServiceFiles.links import admin, authorization, registration, calendar, main_page, selected_products
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from ServiceFiles.links import admin, authorization, registration, calendar, main_page, selected_products, base_link
 from settings import app
 
 
@@ -16,6 +19,7 @@ class Test(unittest.TestCase):
 
     def test_main_page(self):
         response = self.client.get(main_page)
+
         self.assertEqual(response.status_code, 200)
 
     def test_admin_page(self):

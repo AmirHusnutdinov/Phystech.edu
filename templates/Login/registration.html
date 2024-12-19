@@ -10,9 +10,9 @@
                 <form method="POST" action="{{ url_for('process_registration') }}">
                     {{ form.hidden_tag() }}
                     <div class="input-group">
-                        {{ form.username.label }}<br>
-                        {{ form.username(size=32) }}<br>
-                        {% for error in form.username.errors %}
+                        {{ form.name.label }}<br>
+                        {{ form.name(size=32) }}<br>
+                        {% for error in form.name.errors %}
                         <span style="color: red;">[{{ error }}]</span>
                         {% endfor %}
                     </div>
