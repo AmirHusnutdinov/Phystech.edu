@@ -17,18 +17,19 @@ class Authorization:
     def process_login():
         form = LoginForm()
         if form.validate_on_submit():  # Проверка на валидность формы
-            username = form.username.data
+            name = form.name.data
             password = form.password.data
-            password_prov = database_query(f"""SELECT password FROM users WHERE username = {username}""")[0]
+            password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""")
+            print( password_prov)
 
             # Здесь должна быть ваша логика проверки пользователя
-            if password == password_prov:  # Пример проверки
+            if password_prov and password == password_prov[0][0]:  # Пример проверки
                 session['login'] = True
-                session['username'] = username  # Сохраняем пользователя в сессии
+                session['email'] = name  # Сохраняем пользователя в сессии
                 flash('Login successful!', 'success')
                 return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
             else:
-                flash('Invalid username or password', 'danger')
+                flash('Invalid name or password', 'danger')
                 return redirect(url_for('open_authorization_page'))  # Перенаправление обратно на страницу авторизации
 
         flash('Please fill out the form.', 'danger')
@@ -37,6 +38,6 @@ class Authorization:
     @staticmethod
     def logout():
         session['Login'] = False
-        session.pop('username', None)  # Удаляем пользователя из сессии
+        session.pop('name', None)  # Удаляем пользователя из сессии
         flash('You have been logged out.', 'info')
         return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
