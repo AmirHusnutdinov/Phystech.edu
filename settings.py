@@ -27,8 +27,8 @@ class Config:
 app = Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=365)
 host = "127.0.0.1"
-user = "postgres"
-password = "12345"
+user = getenv('POSTGRES_USER')
+password = getenv('POSTGRES_PASSWORD')
 db_name = "food_helper"
 app.config.from_object(Config)
 
