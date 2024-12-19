@@ -21,6 +21,7 @@ Python
 Flask
 
 PostgreSQL
+Наша база данных:https://erd.dbdesigner.net/designer/schema/1730394254-food_helper
 
 Boto3 (для работы с AWS S3)
 
