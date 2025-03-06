@@ -1,124 +1,264 @@
 {% extends "Base.html" %}
 {% block content %}
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-    <link rel="stylesheet" href="../../static/assets/css/style_main.css">
-    <div class="body_main">
-        <!--Блок главного фото-->
-        <section class="hero-image" style="background-image: url('{{main_image}}');">
-            <div class="hero-content">
-                <h2>Ваш путь к здоровью и успеху начинается здесь</h2>
-                <p>Мы предлагаем индивидуальные планы питания, разработанные специально для спортсменов любого уровня.</p>
-                <a href="#services" class="btn">Узнать больше</a>
-            </div>
-        </section>
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+<link rel="stylesheet" href="../../static/assets/css/style_main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        <!--Блок услуг-->
-        <section id="services" class="services" data-aos="fade-up">
-            <div class="container">
-                <h2>Наши услуги</h2>
-                <div class="service-cards">
-                    <div class="service-card" data-aos="fade-up">
-                        <h3>Индивидуальный план питания</h3>
-                        <p>Создаем персональные планы питания с учетом ваших целей и предпочтений.</p>
-                    </div>
-                    <div class="service-card" data-aos="fade-up">
-                        <h3>Консультации с диетологом</h3>
-                        <p>Получайте профессиональные советы от опытных диетологов.</p>
-                    </div>
-                    <div class="service-card" data-aos="fade-up">
-                        <h3>Рецепты и советы</h3>
-                        <p>Доступ к базе рецептов и советов по правильному питанию.</p>
-                    </div>
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text animate-element">
+                <h1>Отслеживайте свое здоровье, <span>измените</span> свою жизнь</h1>
+                <p>Комплексные инструменты для анализа состава тела, отслеживания гидратации и планирования питания —
+                    все в одном месте.</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">Начать <i class="fas fa-arrow-right"></i></a>
+                    <a href="#features" class="btn btn-outline">Узнать больше</a>
                 </div>
             </div>
-        </section>
-
-        <!--Блок цитат-->
-        <section class="quotes" data-aos="fade-up">
-            <div class="container">
-                <h2>Цитаты о здоровом питании</h2>
-                <div class="quote-container">
-                    <div class="quote-text" id="quote-text"></div>
+            <div class="hero-image animate-element">
+                <div class="app-preview">
+                    <div class="app-screen">
+                        <div class="app-header"></div>
+                        <div class="app-content">
+                            <div class="app-line"></div>
+                            <div class="app-line short"></div>
+                            <div class="app-box"></div>
+                            <div class="app-line short"></div>
+                        </div>
+                    </div>
                 </div>
+                <div class="glow-effect glow-1"></div>
+                <div class="glow-effect glow-2"></div>
             </div>
-            <script>
-            const quotes = [
-                "Здоровое питание — это не диета, это образ жизни. — Эллен ДеДженерес",
-                "Ешьте пищу, а не диету. — Майкл Поллан",
-                "Здоровое питание — это основа здоровья. — Мишель Обама",
-                "Ешьте для того, чтобы жить, а не живите для того, чтобы есть. — Сократ",
-                "Здоровое питание — это инвестиция в себя. — Джек Лалоэ"
-            ];
-
-            const quoteText = document.getElementById('quote-text');
-            let currentIndex = 0;
-
-            function changeQuote() {
-                quoteText.classList.remove('active');
-                setTimeout(() => {
-                    quoteText.textContent = quotes[currentIndex];
-                    quoteText.classList.add('active');
-                    currentIndex = (currentIndex + 1) % quotes.length;
-                }, 500); // Задержка для анимации
-            }
-
-            changeQuote(); // Показать первую цитату
-            setInterval(changeQuote, 5000); // Менять цитату каждые 5 секунд
-
-            // Плавный скролл к элементу с id="services"
-            document.querySelector('.btn').addEventListener('click', function(event) {
-                event.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-            </script>
-        </section>
-
-        <!--Блок методологии-->
-        <section class="methodology" data-aos="fade-up">
-            <div class="container">
-                <h2>Методология расчета калорий</h2>
-                <div class="methodology-content">
-                    <h3>Для профессионалов</h3>
-                    <p>Для профессионалов мы учитываем следующие параметры:</p>
-                    <ul>
-                        <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
-                        <li><strong>Возраст:</strong> В годах.</li>
-                        <li><strong>Сон:</strong> В часах.</li>
-                        <li><strong>Рост:</strong> В см.</li>
-                        <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
-                        <li><strong>Регулярный углублённый мыслительный процесс:</strong> Да/Нет.</li>
-                        <li><strong>Пол:</strong> М/Ж.</li>
-                        <li><strong>Вес:</strong> В кг.</li>
-                        <li><strong>Метаболизм:</strong> Быстрый/Медленный.</li>
-                        <li><strong>Экто-эндоморфы:</strong> Выпадающий список.</li>
-                        <li><strong>Вредные привычки:</strong> Выпадающий список.</li>
-                    </ul>
-
-                    <h3>Для начинающих</h3>
-                    <p>Для начинающих мы учитываем следующие параметры:</p>
-                    <ul>
-                        <li><strong>Набирает/Сбрасывает/Поддержание формы:</strong> Цель пользователя.</li>
-                        <li><strong>Пол:</strong> М/Ж.</li>
-                        <li><strong>Возраст:</strong> В годах.</li>
-                        <li><strong>Рост:</strong> В см.</li>
-                        <li><strong>Вес:</strong> В кг.</li>
-                        <li><strong>Уровень физической активности:</strong> Выпадающий список.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-        <script>
-            AOS.init({
-                once: true // Анимация срабатывает только один раз
-            });
-        </script>
+        </div>
     </div>
+    <div class="grid-pattern"></div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="container">
+        <div class="section-header">
+            <h2>Отслеживайте свой путь к здоровью</h2>
+            <p>Наши комплексные инструменты помогут вам следить за прогрессом, поддерживать здоровые привычки и
+                достигать своих фитнес-целей.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Анализ состава тела</h3>
+                <p>Рассчитывайте и отслеживайте процент жира, мышечную массу и другие ключевые показатели для
+                    мониторинга вашего прогресса.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <h3>Отслеживание гидратации</h3>
+                <p>Контролируйте ежедневное потребление воды и получайте персонализированные рекомендации на основе
+                    вашего уровня активности и веса.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+                <div class="feature-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3>Комплексный дневник питания</h3>
+                <p>Записывайте свои приемы пищи, отслеживайте калории и макроэлементы, чтобы делать осознанные
+                    диетические выборы.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works">
+    <div class="container">
+        <div class="section-header">
+            <h2>Как это работает</h2>
+            <p>Наша платформа упрощает отслеживание вашего фитнес-пути и достижение целей в области здоровья.</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step-card animate-on-scroll">
+                <h3>1. Отслеживайте свои показатели</h3>
+                <div class="step-image">
+                    <img src="https://placehold.co/400x200" alt="Отслеживание показателей">
+                </div>
+                <p>Записывайте свои измерения тела, потребление воды и приемы пищи, чтобы установить базовый
+                    уровень.</p>
+            </div>
+            <div class="step-card step-card-offset animate-on-scroll">
+                <h3>2. Получите персонализированные планы</h3>
+                <div class="step-image">
+                    <img src="https://placehold.co/400x200" alt="Персонализированные планы">
+                </div>
+                <p>Свяжитесь с экспертами, которые создадут индивидуальные планы питания и тренировок для ваших
+                    целей.</p>
+            </div>
+            <div class="step-card animate-on-scroll">
+                <h3>3. Достигайте своих целей</h3>
+                <div class="step-image">
+                    <img src="https://placehold.co/400x200" alt="Достижение целей">
+                </div>
+                <p>Следите за своим прогрессом, корректируйте планы и празднуйте свои достижения.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trainers Section -->
+<section id="trainers" class="trainers">
+    <div class="container">
+        <div class="section-header">
+            <h2>Познакомьтесь с нашими экспертами</h2>
+            <p>Наши сертифицированные профессионалы готовы помочь вам на пути к фитнесу с персонализированными планами и
+                экспертными советами.</p>
+        </div>
+        <div class="trainers-grid">
+            <div class="trainer-card animate-on-scroll">
+                <div class="trainer-image">
+                    <img src="https://placehold.co/300x400" alt="Сара Джонсон">
+                    <div class="trainer-info">
+                        <h3>Сара Джонсон</h3>
+                        <p class="trainer-specialty">Специалист по питанию</p>
+                    </div>
+                </div>
+                <div class="trainer-content">
+                    <p>Специализируется на управлении весом и спортивном питании с более чем 8-летним опытом помощи
+                        клиентам в достижении их диетических целей.</p>
+                    <button class="btn btn-outline full-width">Посмотреть профиль</button>
+                </div>
+            </div>
+            <div class="trainer-card animate-on-scroll">
+                <div class="trainer-image">
+                    <img src="https://placehold.co/300x400" alt="Майкл Чен">
+                    <div class="trainer-info">
+                        <h3>Майкл Чен</h3>
+                        <p class="trainer-specialty">Сила и физическая подготовка</p>
+                    </div>
+                </div>
+                <div class="trainer-content">
+                    <p>Бывший профессиональный спортсмен с опытом в построении функциональной силы и улучшении
+                        спортивных результатов.</p>
+                    <button class="btn btn-outline full-width">Посмотреть профиль</button>
+                </div>
+            </div>
+            <div class="trainer-card animate-on-scroll">
+                <div class="trainer-image">
+                    <img src="https://placehold.co/300x400" alt="Эмма Родригес">
+                    <div class="trainer-info">
+                        <h3>Эмма Родригес</h3>
+                        <p class="trainer-specialty">Холистический коуч по здоровью</p>
+                    </div>
+                </div>
+                <div class="trainer-content">
+                    <p>Сочетает планирование питания, тренировки и практики осознанности для комплексного подхода к
+                        здоровью.</p>
+                    <button class="btn btn-outline full-width">Посмотреть профиль</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Готовы изменить свое здоровье?</h2>
+            <p>Присоединяйтесь к тысячам пользователей, которые уже улучшили свою физическую форму и питание с помощью
+                нашей платформы.</p>
+            <a href="#" class="btn btn-light">Начните бесплатную пробную версию <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Mobile Navigation Menu -->
+<div class="mobile-menu">
+    <div class="mobile-menu-header">
+        <div class="logo">
+            <i class="fas fa-dumbbell"></i>
+            <span>FoodHelper</span>
+        </div>
+        <button class="mobile-menu-close" aria-label="Закрыть меню">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#features">Функции</a></li>
+            <li><a href="#trainers">Тренеры</a></li>
+            <li><a href="#pricing">Цены</a></li>
+            <li><a href="#contact">Контакты</a></li>
+        </ul>
+    </nav>
+    <div class="mobile-menu-footer">
+        <a href="#" class="btn btn-primary full-width">Начать</a>
+    </div>
+</div>
+<div class="mobile-menu-overlay"></div>
+
+<script>
+    // Main page functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set current year in footer
+      const currentYearElement = document.getElementById('current-year');
+      if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
+      }
+
+      // Mobile menu functionality
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const mobileMenuClose = document.querySelector('.mobile-menu-close');
+      const mobileMenu = document.querySelector('.mobile-menu');
+      const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+      const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+
+      function openMobileMenu() {
+        mobileMenu.classList.add('active');
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
+      if (mobileMenuClose) mobileMenuClose.addEventListener('click', closeMobileMenu);
+      if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+      if (mobileMenuLinks) {
+        mobileMenuLinks.forEach(link => {
+          link.addEventListener('click', closeMobileMenu);
+        });
+      }
+
+      // Scroll animations
+      const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+      function checkScroll() {
+        animateElements.forEach(element => {
+          const elementTop = element.getBoundingClientRect().top;
+          const windowHeight = window.innerHeight;
+
+          if (elementTop < windowHeight * 0.9) {
+            element.classList.add('visible');
+          }
+        });
+      }
+
+      // Check elements on initial load
+      checkScroll();
+
+      // Check elements on scroll
+      window.addEventListener('scroll', checkScroll);
+    });
+</script>
 {% endblock %}

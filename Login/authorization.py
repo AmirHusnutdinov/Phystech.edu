@@ -20,7 +20,7 @@ class Authorization:
             name = form.name.data
             password = form.password.data
             password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""")
-            print( password_prov)
+            print(password_prov)
 
             # Здесь должна быть ваша логика проверки пользователя
             if password_prov and password == password_prov[0][0]:  # Пример проверки

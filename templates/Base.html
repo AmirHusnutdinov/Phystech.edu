@@ -7,19 +7,31 @@
     <title>{{title}}</title>
 </head>
 <body>
+
 <nav class="navbar">
     <div class="navbar-brand">
         <a href="{{header_links['/']}}">FoodHelper</a>
     </div>
     <div class="navbar-links">
-        <div class="theme-switch-wrapper">
-            <label class="theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox" />
-                <div class="slider round">
-                    <div class="sun"> ☀️</div>
-                    <div class="moon"> 🌙</div>
-                </div>
-            </label>
+        <div class="theme-toggle">
+            <button id="theme-toggle-btn" aria-label="Toggle dark mode">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
         </div>
         <a href="{{header_links['day_plan']}}">План на день</a>
         <a href="{{header_links['calendar']}}">Календарь</a>
@@ -27,6 +39,7 @@
         <a href="{{header_links['all_news']}}">Новости</a>
         <a href="{{header_links['authorization']}}">Авторизация</a>
         <a href="{{header_links['registration']}}">Регистрация</a>
+        <a href="{{header_links['all_students']}}">Студенты</a>
     </div>
     <div class="navbar-toggle">
         <div class="bar"></div>
@@ -34,29 +47,35 @@
         <div class="bar"></div>
     </div>
 </nav>
+
+<!-- Скрипт для работы мобильного меню -->
 <script>
     document.querySelector('.navbar-toggle').addEventListener('click', function() {
         document.querySelector('.navbar-links').classList.toggle('active');
         document.querySelector('.navbar-toggle').classList.toggle('active');
     });
 </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const themeToggleBtn = document.getElementById('checkbox');
-        const savedTheme = localStorage.getItem('theme');
 
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            themeToggleBtn.checked = true;
+<!-- Скрипт для переключения темы -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const themeToggleBtn = document.getElementById("theme-toggle-btn");
+        const savedTheme = localStorage.getItem("theme");
+
+        // Инициализация текущей темы из localStorage
+        if (savedTheme === "dark") {
+            document.body.classList.add("dark-theme");
         }
 
-        themeToggleBtn.addEventListener('change', function() {
-            document.body.classList.toggle('dark-theme');
-            const isDarkTheme = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
+        // Обработчик клика для переключения темы
+        themeToggleBtn.addEventListener("click", function() {
+            document.body.classList.toggle("dark-theme");
+            const isDarkTheme = document.body.classList.contains("dark-theme");
+            localStorage.setItem("theme", isDarkTheme ? "dark" : "light");
         });
     });
 </script>
+
 {% block content %}
 <!-- Здесь будет основное содержимое страницы -->
 {% endblock %}

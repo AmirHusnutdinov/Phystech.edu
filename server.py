@@ -12,7 +12,9 @@ from MainPage.main_page import StartPage
 from News.news import News
 from SelectedProducts.selectedProducts import SelectedProduct
 from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
-  cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, add_product
+    cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, \
+    add_product, all_students, student
+from Trainer.trainer_students import Students
 from settings import app, host
 
 app.secret_key = os.urandom(24)
@@ -74,9 +76,11 @@ def open_calendar_page():
 def open_day_plan_page():
     return DayPlan.show_day_plan_page()
 
+
 @app.route(save_day_plan, methods=['POST'])
 def save_data():
     return DayPlan.save_day_plan()
+
 
 @app.route(selected_products)
 def open_selected_products_page():
@@ -96,6 +100,17 @@ def open_one_news_page(news_id):
 @app.route(add_product)
 def open_add_product():
     return DayPlan.show_add_product_page()
+
+
+@app.route(all_students)
+def open_all_students_page():
+    return Students.show_students_page()
+
+
+@app.route(student)
+def open_students_page(student_id):
+    return Students.show_one_student_page(student_id)
+
 
 @app.errorhandler(400)
 def page_bad_request(_):
@@ -128,7 +143,7 @@ def page_internal_server_error(_):
 
 
 @app.errorhandler(501)
-def page_internal_server_error(_):
+def page_not_implemented(_):
     error_phrase = ["Не поддерживается функция,", "необходимая", "для выполнения запроса."]
     return render_template("ErrorCodes/errors.html",
                            error_code_name="Not Implemented",

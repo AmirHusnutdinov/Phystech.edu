@@ -1,0 +1,186 @@
+{% extends "Base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="../../static/assets/css/style_students.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+
+<div class="container">
+    <header>
+        <div class="header-content">
+            <h1>Ваши <span>Ученики</span></h1>
+        </div>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Поиск студентов...">
+    </div>
+
+    <main>
+        <div class="students-grid" id="students-grid"></div>
+    </main>
+</div>
+
+<script>
+    // Пример данных учеников
+    const studentsData = [
+      {
+        id: 1,
+        firstName: "Иван",
+        lastName: "Иванов",
+        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+        info: "Опытный теннисист с 5-летним стажем. Специализируется на технике подачи и удара с лёта.",
+        tag: "Продвинутый",
+      },
+      {
+        id: 2,
+        firstName: "Екатерина",
+        lastName: "Петрова",
+        avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+        info: "Пловец среднего уровня, сосредоточен на кроле и баттерфляе. Занимается 3 месяца.",
+        tag: "Средний",
+      },
+      {
+        id: 3,
+        firstName: "Михаил",
+        lastName: "Сидоров",
+        avatar: "https://randomuser.me/api/portraits/men/3.jpg",
+        info: "Начинающий баскетболист с большим потенциалом. Быстро обучается и обладает природной атлетичностью.",
+        tag: "Начинающий",
+      },
+      {
+        id: 4,
+        firstName: "София",
+        lastName: "Кузнецова",
+        avatar: "https://randomuser.me/api/portraits/women/4.jpg",
+        info: "Элитный гимнаст с 10-летним опытом. Чемпион страны в вольных упражнениях.",
+        tag: "Элитный",
+      },
+      {
+        id: 5,
+        firstName: "Алексей",
+        lastName: "Смирнов",
+        avatar: "https://randomuser.me/api/portraits/men/5.jpg",
+        info: "Футболист среднего уровня с сильными защитными навыками. Капитан местной команды.",
+        tag: "Средний",
+      },
+      {
+        id: 6,
+        firstName: "Анна",
+        lastName: "Васильева",
+        avatar: "https://randomuser.me/api/portraits/women/6.jpg",
+        info: "Продвинутый практик йоги, специализирующийся на Аштанге. Также сертифицирован в медитации.",
+        tag: "Продвинутый",
+      },
+      {
+        id: 7,
+        firstName: "Дмитрий",
+        lastName: "Попов",
+        avatar: "https://randomuser.me/api/portraits/men/7.jpg",
+        info: "Начинающий бегун, готовящийся к своему первому забегу на 5 км. Делает отличные успехи в выносливости.",
+        tag: "Начинающий",
+      },
+      {
+        id: 8,
+        firstName: "Мария",
+        lastName: "Соколова",
+        avatar: "https://randomuser.me/api/portraits/women/8.jpg",
+        info: "Элитный пловец с опытом участия в отборочных соревнованиях на Олимпиаду. Специализируется на плавании на спине.",
+        tag: "Элитный",
+      },
+    ]
+
+    // Элементы DOM
+    const studentsGrid = document.getElementById("students-grid");
+    const searchInput = document.getElementById("search-input");
+
+    // Инициализация страницы
+    document.addEventListener("DOMContentLoaded", () => {
+      renderStudents(studentsData);
+      setupScrollAnimation();
+    });
+
+    // Функция поиска
+    searchInput.addEventListener("input", (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filteredStudents = studentsData.filter(student =>
+        `${student.firstName} ${student.lastName}`.toLowerCase().includes(searchTerm) ||
+        student.info.toLowerCase().includes(searchTerm)
+      );
+      renderStudents(filteredStudents);
+    });
+
+    // Отображение учеников в сетке
+    function renderStudents(students) {
+      studentsGrid.innerHTML = "";
+
+      if (students.length === 0) {
+        studentsGrid.innerHTML = '<p class="no-results">Студенты не найдены.</p>';
+        return;
+      }
+
+      students.forEach((student, index) => {
+        // Создаем ссылку
+        const link = document.createElement("a");
+        link.className = "student-card-link";
+        link.href = `/student/${student.id}`; // URL страницы ученика
+        link.style.animationDelay = `${index * 0.1}s`;
+
+        // Создаем карточку внутри ссылки
+        const card = document.createElement("div");
+        card.className = "student-card";
+        card.innerHTML = `
+          <img src="${student.avatar}" alt="${student.firstName} ${student.lastName}" class="student-avatar">
+          <div class="student-info">
+            <h3 class="student-name">${student.lastName} ${student.firstName}</h3>
+            <p class="student-details">${student.info}</p>
+            <span class="student-tag">${student.tag}</span>
+          </div>
+        `;
+
+        link.appendChild(card); // Добавляем карточку в ссылку
+        studentsGrid.appendChild(link);
+      });
+
+      // Анимация появления
+      setTimeout(() => {
+        document.querySelectorAll(".student-card").forEach(card => card.classList.add("visible"));
+      }, 100);
+    }
+
+    // Анимация скролла
+    function setupScrollAnimation() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      document.querySelectorAll(".student-card").forEach(card => observer.observe(card));
+    }
+
+    // Анимация клика
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest(".student-card-link");
+      if (link) {
+        link.style.transform = "scale(1.05)";
+        setTimeout(() => link.style.transform = "", 200);
+      }
+    });
+
+    // Анимация загрузки
+    window.addEventListener("load", () => {
+      document.body.style.opacity = "0";
+      setTimeout(() => {
+        document.body.style.transition = "opacity 0.5s";
+        document.body.style.opacity = "1";
+      }, 200);
+    });
+</script>
+
+{% endblock %}

@@ -1,13 +1,13 @@
 import psycopg2
 
-from settings import host, user, password, db_name
+from settings import host, user, password, db_name, port
 
 
 def database_query(sql):
     connection = []
     try:
         connection = psycopg2.connect(
-            host=host, user=user, password=password, database=db_name
+            host=host, user=user, password=password, database=db_name, port=port
         )
         connection.autocommit = True
         with connection.cursor() as cursor:
@@ -19,6 +19,7 @@ def database_query(sql):
         if connection:
             connection.close()
             print("[INFO] Postgres connection closed")
+
 
 def get_dishes():
     sql = "SELECT * FROM dish"
@@ -36,6 +37,7 @@ def get_dishes():
         for dish in dishes
     ]
     return formatted_dishes
+
 
 def get_user_data(id):
     sql = f"SELECT * FROM public.\"User\" WHERE id = {id}"
@@ -63,6 +65,15 @@ def get_user_data(id):
     }
     return user
 
+
 def get_day_data(user, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user.id} AND date = {date}"
     return database_query(sql)
+
+
+def database_check():
+    sql = "SELECT * FROM user_daily_metrics"
+    return database_query(sql)
+
+
+print(database_check())
