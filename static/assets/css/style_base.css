@@ -153,26 +153,6 @@ body.dark-theme {
     color: rgb(224, 224, 224);
 }
 
-.dark-theme .slider {
-    background-color: rgb(224, 224, 224);
-}
-
-.dark-theme .slider.round {
-    border-color: rgb(224, 224, 224);
-}
-
-.dark-theme .slider.round:before {
-    background-color: rgb(31, 31, 31);
-}
-
-.dark-theme .sun {
-    color: rgb(31, 31, 31);
-}
-
-.dark-theme .moon {
-    color: rgb(224, 224, 224);
-}
-
 /* Стили для футера */
 .footer {
     background-color: black;
