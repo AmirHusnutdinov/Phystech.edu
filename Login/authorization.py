@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, flash, session
 from ServiceFiles.links import header_links
 from Login.forms import LoginForm
 from DataBase.use_DataBase import database_query
+import utils
 
 
 class Authorization:
@@ -11,6 +12,7 @@ class Authorization:
         return render_template("Login/authorization.html",
                                header_links=header_links,
                                form=form,
+                               data=utils.data(),
                                title="Авторизация")
 
     @staticmethod
