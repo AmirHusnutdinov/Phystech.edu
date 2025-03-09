@@ -1,6 +1,6 @@
 from flask import render_template
-from DataBase.use_DataBase import get_user_data
-from ServiceFiles.links import header_links
+from server.database.use_DataBase import get_user_data
+from server.service_files.links import header_links
 
 id = 2
 class Cabinet:

@@ -1,8 +1,8 @@
 # The `DayPlan` class in the Python code provides methods to display a day plan page with dishes, save
 # the day plan, and show an add product page.
 from flask import render_template, request, jsonify
-from ServiceFiles.links import header_links
-from DataBase.use_DataBase import get_dishes, get_user_data,database_query
+from server.service_files.links import header_links
+from server.database.use_DataBase import get_dishes, get_user_data,database_query
 from datetime import datetime,date
 
 id = 2
@@ -58,8 +58,7 @@ class DayPlan:
         """
 
         print(
-            f"Received data: Weight: {weight}, Target KBZHU: {
-                targetKBZHU}, Actual KBZHU: {actualKBZHU}"
+            f"Received data: Weight: {weight}, Target KBZHU: {targetKBZHU}, Actual KBZHU: {actualKBZHU}"
         )
 
         try:

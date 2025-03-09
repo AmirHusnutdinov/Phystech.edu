@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, session
-from ServiceFiles.links import header_links
-from Login.forms import LoginForm
-from DataBase.use_DataBase import database_query
+from server.service_files.links import header_links
+from server.login.forms import LoginForm
+from server.database.use_DataBase import database_query
 
 
 class Authorization:

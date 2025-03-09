@@ -1,9 +1,9 @@
 from flask import render_template, redirect, url_for, flash, session
 from flask_mail import Message
-from ServiceFiles.links import header_links, main_page
-from Login.forms import RegistrationForm, ConfirmationForm  # Импортируйте новую форму
 from settings import mail  # Импортируйте объект mail из вашего приложения
-from DataBase.use_DataBase import database_query
+from server.service_files.links import header_links, main_page
+from server.login.forms import RegistrationForm, ConfirmationForm  # Импортируйте новую форму
+from server.database.use_DataBase import database_query
 import random
 import smtplib
 import os
