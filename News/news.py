@@ -1,11 +1,10 @@
-from flask import render_template
 from ServiceFiles.links import header_links
-
+from utils import render_template_with_user
 
 class News:
     @staticmethod
     def show_all_news_page():
-        return render_template(
+        return render_template_with_user(
             "News/all_news.html",
             header_links=header_links,
             title="Новости"
@@ -21,11 +20,18 @@ class News:
             <p>Здесь будет текст статьи. Это пример текста, который может быть в статье. Здесь будет текст статьи. Это пример текста, который может быть в статье. Здесь будет текст статьи. Это пример текста, который может быть в статье.</p>
             <p>Здесь будет текст статьи. Это пример текста, который может быть в статье. Здесь будет текст статьи. Это пример текста, который может быть в статье. Здесь будет текст статьи. Это пример текста, который может быть в статье.</p>
             """
-        return render_template(
+        return render_template_with_user(
             "News/one_news.html",
             title=f"Новость {str(news_id)}",
             header_links=header_links,
             news_title=news_title,
             news_image_url=news_image_url,
             news_content=news_content
+        )
+
+    @staticmethod
+    def show_make_news():
+        return render_template_with_user(
+            "News/one_news.html",
+            title=f"Новостной редактор",
         )

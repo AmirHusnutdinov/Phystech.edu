@@ -1,18 +1,20 @@
-from flask import render_template, redirect, url_for, flash, session
+from flask import redirect, url_for, flash, session
 from ServiceFiles.links import header_links
-from Login.forms import LoginForm
+from Login.forms import LoginForm, RegistrationForm
 from DataBase.use_DataBase import database_query
 import utils
+from utils import render_template_with_user
 
 
 class Authorization:
     @staticmethod
     def show_authorization_page():
         form = LoginForm()
-        return render_template("Login/authorization.html",
+        form_registration = RegistrationForm()
+        return render_template_with_user("Login/authorization.html",
                                header_links=header_links,
                                form=form,
-                               data=utils.data(),
+                              form_registration = form,
                                title="Авторизация")
 
     @staticmethod
@@ -22,8 +24,6 @@ class Authorization:
             name = form.name.data
             password = form.password.data
             password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""")
-            print(password_prov)
-
             # Здесь должна быть ваша логика проверки пользователя
             if password_prov and password == password_prov[0][0]:  # Пример проверки
                 session['login'] = True

@@ -1,12 +1,12 @@
-from flask import render_template
+
 
 from ServiceFiles.links import header_links
-
+from utils import render_template_with_user
 
 class Students:
     @staticmethod
     def show_students_page():
-        return render_template(
+        return render_template_with_user(
             "Trainer/students.html",
             header_links=header_links,
             title="Мои студенты"
@@ -22,7 +22,7 @@ class Students:
                 <p>Здесь будет текст. Это пример текста, который может быть</p>
                 <p>Здесь будет текст. Это пример текста, который может быть</p>
                 """
-        return render_template(
+        return render_template_with_user(
             "Trainer/student.html",
             title=f"Мое имя {str(student_title)}, а мой id-{str(student_id)}",
             header_links=header_links,

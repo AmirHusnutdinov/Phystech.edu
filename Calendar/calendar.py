@@ -1,12 +1,10 @@
-from flask import render_template
-
 from ServiceFiles.links import header_links
-
+from utils import render_template_with_user
 
 class Calendar:
     @staticmethod
     def show_calendar_page():
-        return render_template(
+        return render_template_with_user(
             "Calendar/calendar.html",
             header_links=header_links,
             title="Календарь",

@@ -1,6 +1,6 @@
 # The `DayPlan` class in the Python code provides methods to display a day plan page with dishes, save
 # the day plan, and show an add product page.
-from flask import render_template, request, jsonify
+from flask import  request, jsonify
 from ServiceFiles.links import header_links
 from DataBase.use_DataBase import get_dishes, get_user_data,database_query
 from datetime import datetime,date
@@ -19,7 +19,7 @@ class DayPlan:
         dishes = get_dishes()
         user = get_user_data(id)
 
-        return render_template(
+        return render_template_with_user(
             "DayPlan/day_plan.html",
             header_links=header_links,
             title="Дневной план",
@@ -74,7 +74,7 @@ class DayPlan:
 
     @staticmethod
     def show_add_product_page():
-        return render_template(
+        return render_template_with_user(
             "DayPlan/add_product.html",
             header_links=header_links,
             title="Добавить продукт",
