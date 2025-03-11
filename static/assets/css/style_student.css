@@ -1,6 +1,4 @@
-/* Variables */
 :root {
-  /* Colors */
   --color-primary: #4f46e5;
   --color-primary-light: #818cf8;
   --color-primary-dark: #4338ca;
@@ -26,13 +24,11 @@
   --color-error: #ef4444;
   --color-info: #3b82f6;
 
-  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  /* Spacing */
   --spacing-1: 0.25rem;
   --spacing-2: 0.5rem;
   --spacing-3: 0.75rem;
@@ -44,7 +40,6 @@
   --spacing-12: 3rem;
   --spacing-16: 4rem;
 
-  /* Border Radius */
   --radius-sm: 0.125rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
@@ -52,12 +47,10 @@
   --radius-2xl: 1rem;
   --radius-full: 9999px;
 
-  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 300ms ease;
   --transition-slow: 500ms ease;
 
-  /* Font Sizes */
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
@@ -68,14 +61,12 @@
   --font-size-4xl: 2.25rem;
 }
 
-/* Base Styles */
 .app-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: var(--spacing-4);
 }
 
-/* Header Styles */
 .header {
   display: flex;
   justify-content: space-between;
@@ -116,7 +107,6 @@
   object-fit: cover;
 }
 
-/* Card Styles */
 .card {
   background-color: var(--color-card);
   border-radius: var(--radius-xl);
@@ -157,7 +147,6 @@
   border-radius: var(--radius-full);
 }
 
-/* Week Section */
 .week-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -233,7 +222,6 @@
   color: var(--color-success);
 }
 
-/* Button Styles */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -271,7 +259,6 @@
   background-color: var(--color-border);
 }
 
-/* Nutrition Today Section */
 .nutrition-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -369,7 +356,6 @@
   color: var(--color-text);
 }
 
-/* Nutrition Stats Section */
 .stats-container {
   display: flex;
   flex-direction: column;
@@ -410,7 +396,6 @@
   font-weight: 600;
 }
 
-/* Monthly Calendar */
 .calendar-header {
   display: flex;
   align-items: center;
@@ -493,7 +478,6 @@
   background-color: var(--color-carbs);
 }
 
-/* Contact Button */
 .contact-btn {
   position: fixed;
   bottom: var(--spacing-6);
@@ -521,7 +505,6 @@
   font-size: var(--font-size-xl);
 }
 
-/* Modal Styles */
 .modal {
   position: fixed;
   top: 0;
@@ -589,7 +572,6 @@
   padding: var(--spacing-6);
 }
 
-/* Form Styles */
 .form-group {
   margin-bottom: var(--spacing-4);
 }
@@ -625,7 +607,6 @@ select:focus {
   border-color: var(--color-primary);
 }
 
-/* Chat Modal */
 .chat-modal-content {
   max-width: 800px;
   height: 80vh;
@@ -725,7 +706,6 @@ select:focus {
   flex: 1;
 }
 
-/* Day Details Modal */
 .day-nutrition-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -842,7 +822,7 @@ select:focus {
   color: var(--color-secondary);
 }
 
-/* Notification */
+/* уведомления */
 .notification {
   position: fixed;
   bottom: 20px;
@@ -871,7 +851,7 @@ select:focus {
   font-size: var(--font-size-xl);
 }
 
-/* Animations */
+/* Анимации */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -895,7 +875,7 @@ select:focus {
   }
 }
 
-/* Dark Theme Compatibility */
+/* темная тема */
 .dark-theme .app-container {
   --color-text: #f9fafb;
   --color-text-light: #d1d5db;
@@ -910,7 +890,7 @@ select:focus {
   filter: brightness(0.9);
 }
 
-/* Media Queries */
+/* Медиа-запросы */
 @media (max-width: 768px) {
   .app-container {
     padding: var(--spacing-3);
@@ -1015,7 +995,6 @@ select:focus {
   }
 }
 
-/* Accessibility focus styles */
 button:focus,
 a:focus,
 input:focus,
@@ -1024,7 +1003,6 @@ select:focus {
   outline-offset: 2px;
 }
 
-/* Animation for day cards */
 .day-card {
   animation: fadeIn 0.5s ease forwards;
   animation-delay: calc(var(--animation-order, 0) * 0.1s);
@@ -1042,7 +1020,6 @@ select:focus {
   }
 }
 
-/* Print styles */
 @media print {
   .contact-btn,
   .btn {
@@ -1054,4 +1031,156 @@ select:focus {
     border: 1px solid #ddd;
     break-inside: avoid;
   }
+}
+
+.modal:target {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal:target .modal-content {
+    transform: scale(1);
+}
+
+/* Анимации для элементов при загрузке страницы */
+.card {
+    animation-name: fadeInUp;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* Задержка анимации для последовательного появления */
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Анимация для прогресс-баров */
+.progress-bar {
+    animation: progressFill 1.5s ease-out forwards;
+    width: 0;
+}
+
+@keyframes progressFill {
+    from { width: 0; }
+    to { width: var(--progress-width, 0%); }
+}
+
+/* Анимация для мини-баров в календаре */
+.mini-bar {
+    animation: heightFill 1s ease-out forwards;
+    height: 0 !important;
+}
+
+@keyframes heightFill {
+    from { height: 0 !important; }
+    to { height: var(--height, 0%) !important; }
+}
+
+/* Анимация для карточек дней */
+.day-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.day-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Анимация для элементов статистики */
+.stat-item {
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Анимация для кнопки контакта */
+.contact-btn {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Анимация для уведомлений */
+.notification {
+    transition: transform 0.3s ease;
+}
+
+.notification.active {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Анимация для элементов питания */
+.nutrition-card {
+    transition: transform 0.3s ease;
+}
+
+.nutrition-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Анимация для элементов приема пищи */
+.meal-item {
+    transition: transform 0.2s ease;
+}
+
+.meal-item:hover {
+    transform: translateX(5px);
+}
+
+/* Стили для модальных окон с CSS-переключением */
+.modal-trigger:checked + .modal {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-trigger:checked + .modal .modal-content {
+    transform: scale(1);
+}
+
+/* Стили для календаря */
+.calendar-day {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.calendar-day:not(.empty):hover {
+    background-color: var(--color-card-hover);
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+/* Анимация для сообщений в чате */
+.message {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Дополнительные стили для темной темы */
+.dark-theme .progress-bar,
+.dark-theme .mini-bar {
+    filter: brightness(1.1);
+}
+
+/* Стили для адаптивности */
+@media (max-width: 768px) {
+    .card {
+        animation-duration: 0.3s;
+    }
+
+    .progress-bar {
+        animation-duration: 1s;
+    }
 }

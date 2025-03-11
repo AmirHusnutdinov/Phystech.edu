@@ -9,7 +9,7 @@ class Students:
         return render_template(
             "Trainer/students.html",
             header_links=header_links,
-            title="Мои студенты"
+            title="Мои ученики"
         )
 
     @staticmethod
