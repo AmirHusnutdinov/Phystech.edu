@@ -14,7 +14,7 @@ from News.news import News
 from SelectedProducts.selectedProducts import SelectedProduct
 from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
     cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, \
-    add_product, all_students, student
+    add_product, all_students, student, make_news, save_news
 from Trainer.trainer_students import Students
 from settings import app, host
 
@@ -96,6 +96,14 @@ def open_all_news_page():
 @app.route(one_news)
 def open_one_news_page(news_id):
     return News.show_one_news_page(news_id)
+
+@app.route(make_news, methods=['GET'])
+def open_make_news_page():
+    return News.show_make_news()
+
+@app.route(save_news, methods=['POST'])
+def handle_make_news():
+    return News.handle_make_news()
 
 
 @app.route(add_product)

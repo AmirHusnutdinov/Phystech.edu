@@ -1,5 +1,8 @@
 from ServiceFiles.links import header_links
 from utils import render_template_with_user
+from flask import request, redirect, url_for
+from DataBase.use_DataBase import save_news
+
 
 class News:
     @staticmethod
@@ -32,6 +35,20 @@ class News:
     @staticmethod
     def show_make_news():
         return render_template_with_user(
-            "News/one_news.html",
+            "News/make_news.html",
             title=f"Новостной редактор",
+            header_links=header_links,
         )
+
+    @staticmethod
+    def handle_make_news():
+        title = request.form.get('news-title')
+        content = request.form.get('news-content')
+        image = request.files.get('news-image')
+        if image:
+            image_path = f"static/uploads/{image.filename}"
+            image.save(image_path)
+        else:
+            image_path = None
+        save_news(title=title, image_path=image_path, content=content)
+        return redirect(url_for('open_all_news_page'))
