@@ -25,9 +25,9 @@ app = Flask(__name__)
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=365)
 host = "localhost" 
 port = 5432
-user = getenv('POSTGRES_USER')
-password = getenv('POSTGRES_PASSWORD')
-db_name = "food_helper"
+user = "postgres" # getenv('POSTGRES_USER')
+password = 1029 # getenv('POSTGRES_PASSWORD')
+db_name = "mipt-health" #"food_helper"
 app.config.from_object(Config)
 
 MAIL_SERVER = 'smtp.yandex.ru'  # Замените на ваш SMTP-сервер

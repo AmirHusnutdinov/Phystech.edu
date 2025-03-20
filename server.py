@@ -15,10 +15,12 @@ from server.service_files.links import main_page, admin, calendar, day_plan, sel
     cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, \
     add_product, all_students, student
 from server.trainer.trainer_students import Students
+from server.food_controler.food_controller import food_blueprint
 from settings import app, host
 
 app.secret_key = os.urandom(24)
 
+app.register_blueprint(food_blueprint)
 
 @app.route(main_page)
 def open_main_page():

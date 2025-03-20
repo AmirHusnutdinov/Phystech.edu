@@ -3,7 +3,7 @@ import psycopg2
 from settings import host, user, password, db_name, port
 
 
-def database_query(sql):
+def database_query(sql, Fetch=False):
     connection = []
     try:
         connection = psycopg2.connect(
@@ -12,7 +12,8 @@ def database_query(sql):
         connection.autocommit = True
         with connection.cursor() as cursor:
             cursor.execute(sql)
-            return cursor.fetchall()
+            if Fetch:
+                return cursor.fetchall()
     except Exception as _ex:
         print("[INFO] Error while working with Postgres", _ex)
     finally:
@@ -20,10 +21,9 @@ def database_query(sql):
             connection.close()
             print("[INFO] Postgres connection closed")
 
-
 def get_dishes():
     sql = "SELECT * FROM dish"
-    dishes = database_query(sql)
+    dishes = database_query(sql, True)
     formatted_dishes = [
         {
             "id": dish[0],
@@ -41,7 +41,7 @@ def get_dishes():
 
 def get_user_data(id):
     sql = f"SELECT * FROM public.\"User\" WHERE id = {id}"
-    user_data = database_query(sql)[0]
+    user_data = database_query(sql, True)[0]
     user = {
         "id": user_data[0],
         "name": user_data[1],

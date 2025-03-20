@@ -24,8 +24,42 @@
 
 ### 3. Возможность добавлять новые рецепты 
 
-В процессе...
+Теперь на пути `/data/dish` можно добавлять новые `dish`! Также на пути `/data/products` можно добавлять продукты
+JSON для `dish` выглядит следующим обзразом:
+```json
+{
+    "name": str,
+    "owner": int,
+    "calories": int,
+    "proteins": int,
+    "carbohydrates": int,
+    "fats": int,
+    "category": str,
+    "products" : {
+        "id_product" : int,
+        "weight": int
+    }
+}
+```
+
+JSON для `product`:
+```json
+{
+    "name": str,
+    "proteins": int,
+    "carbohydrates": int,
+    "fats": int,
+    "calories": int
+}
+```
+
+### 4. Рационы
+
+В процессе
 
 ## Предложения
 
 Название Food Helper уже не актуально, может, стоит его заменить?
+
+Необходимо добавить шифрование паролей
+
