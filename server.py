@@ -15,7 +15,8 @@ from server.service_files.links import main_page, admin, calendar, day_plan, sel
     cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, \
     add_product, all_students, student
 from server.trainer.trainer_students import Students
-from server.food_controler.food_controller import food_blueprint
+from server.food_controler.food_controller import food_blueprint, delete_old_diets
+from apscheduler.schedulers.background import BackgroundScheduler
 from settings import app, host
 
 app.secret_key = os.urandom(24)
@@ -153,6 +154,9 @@ def page_not_implemented(_):
                            error_phrase=error_phrase,
                            main_page=main_page), 501
 
+scheduler = BackgroundScheduler()
+scheduler.add_job(delete_old_diets, 'cron', hour=0, minute=0)
+scheduler.start()
 
 port = int(os.environ.get("PORT", 8080))
 app.run(host=host, port=port, debug=True)
