@@ -1,5 +1,5 @@
 from flask import render_template
-from ServiceFiles.links import header_links
+from server.service_files.links import header_links
 
 
 class News:

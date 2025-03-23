@@ -1,7 +1,7 @@
 from flask import render_template, session
 
-from DataBase.use_DataBase import *
-from ServiceFiles.links import header_links
+from server.database.use_DataBase import *
+from server.service_files.links import header_links
 from settings import app
 
 

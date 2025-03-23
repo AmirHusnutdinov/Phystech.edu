@@ -1,9 +1,10 @@
 from flask import render_template, redirect, url_for, flash, session
 from flask_mail import Message
-from ServiceFiles.links import header_links, main_page
-from Login.forms import RegistrationForm, ConfirmationForm  # Импортируйте новую форму
 from settings import mail  # Импортируйте объект mail из вашего приложения
-from DataBase.use_DataBase import database_query
+from server.service_files.links import header_links, main_page
+from server.login.forms import RegistrationForm, ConfirmationForm  # Импортируйте новую форму
+from server.database.use_DataBase import database_query
+from server.login.utils import hash_password
 import random
 import smtplib
 import os
@@ -51,8 +52,8 @@ class Registration:
         if form.validate_on_submit():
             name = form.name.data  # Сохраните имя пользователя
             email = form.email.data
-            # password = form.password.data
             password = form.password.data
+            hash_password(password)
             count_user = database_query(f"""SELECT COUNT(*) AS user_count 
                           FROM "User"
                           WHERE email = '{email}';""")
