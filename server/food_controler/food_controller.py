@@ -107,6 +107,18 @@ def set_diets_to_user(user_id):
     end_next_week = (datetime.now() + timedelta(days=(13 - datetime.now().weekday()))).date()
     if not (now_date <= date <= end_next_week):
         return jsonify({'error': 'Invalid data'}), 400
+    
+    check_sql_query = f"""
+        SELECT COUNT(*) 
+        FROM users_diets 
+        WHERE diet_id = '{diet_id}' 
+        AND user_id = '{user_id}' 
+        AND date = '{date}'
+    """
+    check_result = database_query(check_sql_query, Fetch=True)
+
+    if check_result and check_result[0][0] > 0:
+        return jsonify({'error': 'Record already exists'}), 400
 
     sql_query = f"INSERT INTO users_diets (diet_id, user_id, date) VALUES ('{diet_id}', '{user_id}', '{date}')"
 
@@ -139,3 +151,18 @@ def get_user_diet(user_id):
     
     return database_query(sql, True)
 
+@food_blueprint.route('/<int:user_id>/diets', methods=['DELETE'])
+def delete_user_diet(user_id):
+    user_diet = request.json
+    json_poles = {'dish_id', 'date'}
+    if not is_json_correct(json=user_diet, poles=json_poles):
+        return jsonify({'error': 'Invalid data'}), 400
+    
+    dish_id = user_diet['dish_id']
+    date = user_diet['date']
+
+    sql = f"DELETE FROM users_diets WHERE user_id = '{user_id}' AND dish_id = '{dish_id}' AND date = '{date}';"
+
+    database_query(sql)
+
+    return jsonify({'message': 'Delete diet is success'}), 201
