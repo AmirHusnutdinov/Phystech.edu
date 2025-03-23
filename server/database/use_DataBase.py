@@ -98,6 +98,10 @@ def database_check():
     sql = "SELECT * FROM user_daily_metrics"
     return database_query(sql)
 
+def save_news(title, content, image_path):
+
+    database_query(f"""INSERT INTO news (title, picture, html, date) VALUES ('{title}', '{image_path}', '{content}', NOW())""")
+
 def check_trener(id):
     sql = f"SELECT role FROM roles WHERE id = {id}"
     data = database_query(sql)[0][0]

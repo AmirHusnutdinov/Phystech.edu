@@ -1,11 +1,12 @@
 from server.service_files.links import header_links
 from utils import render_template_with_user
 
-class SelectedProduct:
+class Calendar:
     @staticmethod
-    def show_selected_product_page():
+    def show_calendar_page():
         return render_template_with_user(
-            "SelectedProducts/selected_product.html",
+            "Calendar/calendar.html",
             header_links=header_links,
-            title="Выбор блюда"
-        )
+            title="Календарь",
+            ca_is_active="active"
+            )

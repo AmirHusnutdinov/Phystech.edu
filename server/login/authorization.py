@@ -3,15 +3,22 @@ from server.service_files.links import header_links
 from server.login.forms import LoginForm
 from server.database.use_DataBase import database_query
 import bcrypt
+from ServiceFiles.links import header_links
+from Login.forms import LoginForm, RegistrationForm
+from DataBase.use_DataBase import database_query
+import utils
+from utils import render_template_with_user
 
 
 class Authorization:
     @staticmethod
     def show_authorization_page():
         form = LoginForm()
-        return render_template("Login/authorization.html",
+        form_registration = RegistrationForm()
+        return render_template_with_user("Login/authorization.html",
                                header_links=header_links,
                                form=form,
+                               form_registration = form,
                                title="Авторизация")
 
     @staticmethod

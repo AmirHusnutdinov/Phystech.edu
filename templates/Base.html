@@ -42,8 +42,11 @@
         <a href="{{header_links['calendar']}}">Календарь</a>
         <a href="{{header_links['cabinet']}}">Кабинет</a>
         <a href="{{header_links['all_news']}}">Новости</a>
-        <a href="{{header_links['authorization']}}">Авторизация</a>
-        <a href="{{header_links['registration']}}">Регистрация</a>
+        {% if data["Login"] %}
+        <a href="{{ header_links['authorization'] }}">Авторизация</a>
+        {% else %}
+        <a>data["name"]</a>
+        {% endif %}
         <a href="{{header_links['all_students']}}">Ученики</a>
     </div>
 
@@ -56,61 +59,61 @@
 
 <!-- Стили для корректного отображения -->
 <style>
-/* Обновленные стили для навбара */
-.navbar {
-    position: relative;
-    padding: 1rem 2rem;
-}
+    /* Обновленные стили для навбара */
+    .navbar {
+        position: relative;
+        padding: 1rem 2rem;
+    }
 
-.theme-toggle-container {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-}
-
-/* Мобильная версия */
-@media (max-width: 768px) {
     .theme-toggle-container {
-        position: absolute;
-        right: 60px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .navbar-toggle {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .navbar-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(0,0,0,0.9);
-        padding: 1rem;
-    }
-
-    .navbar-links.active {
         display: flex;
-    }
-}
-
-/* Десктопная версия */
-@media (min-width: 769px) {
-    .navbar-links {
-        display: flex;
-        gap: 1.5rem;
+        align-items: center;
+        margin-left: auto;
     }
 
-    .navbar-toggle {
-        display: none;
+    /* Мобильная версия */
+    @media (max-width: 768px) {
+        .theme-toggle-container {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .navbar-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .navbar-links {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.9);
+            padding: 1rem;
+        }
+
+        .navbar-links.active {
+            display: flex;
+        }
     }
-}
+
+    /* Десктопная версия */
+    @media (min-width: 769px) {
+        .navbar-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .navbar-toggle {
+            display: none;
+        }
+    }
 </style>
 
 <!-- Скрипты остаются без изменений -->

@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, session
+from flask import redirect, url_for, flash, session
 from flask_mail import Message
 from settings import mail  # Импортируйте объект mail из вашего приложения
 from server.service_files.links import header_links, main_page
@@ -12,7 +12,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from settings import *
-
+from utils import render_template_with_user
 
 def send_email(subject, recipient, body):
     # Создание сообщения
@@ -41,7 +41,7 @@ class Registration:
     @staticmethod
     def show_registration_page():
         form = RegistrationForm()
-        return render_template("Login/registration.html",
+        return render_template_with_user("Login/registration.html",
                                header_links=header_links,
                                title="Авторизация",
                                form=form)
@@ -86,7 +86,7 @@ class Registration:
     @staticmethod
     def show_confirmation_page():
         form = ConfirmationForm()
-        return render_template("Login/confirmation.html",
+        return render_template_with_user("Login/confirmation.html",
                                header_links=header_links,
                                title="Подтверждение кода",
                                form=form)

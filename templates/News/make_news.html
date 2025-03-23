@@ -1,0 +1,30 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../../static/assets/css/style_editor.css">
+
+<div class="editor-container">
+    <h1>Редактор новости</h1>
+    <form action="/save_news" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="news-title">Заголовок новости:</label>
+            <input type="text" id="news-title" name="news-title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="news-content">Текст новости:</label>
+            <textarea id="news-content" name="news-content" rows="10" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="news-image">Изображение новости:</label>
+            <input type="file" id="news-image" name="news-image" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="submit-button">Сохранить новость</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

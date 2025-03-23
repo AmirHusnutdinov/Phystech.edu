@@ -19,7 +19,7 @@ class DayPlan:
         dishes = get_dishes()
         user = get_user_data(id)
 
-        return render_template(
+        return render_template_with_user(
             "DayPlan/day_plan.html",
             header_links=header_links,
             title="Дневной план",
@@ -73,7 +73,7 @@ class DayPlan:
 
     @staticmethod
     def show_add_product_page():
-        return render_template(
+        return render_template_with_user(
             "DayPlan/add_product.html",
             header_links=header_links,
             title="Добавить продукт",

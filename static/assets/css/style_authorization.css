@@ -84,6 +84,20 @@
     animation: fadeIn 1s ease-in-out;
 }
 
+/* Кнопка регистрации */
+.registration-button {
+    width: 100%;
+    padding: 10px;
+    background: rgb(108, 99, 255);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
+}
+
 .auth-button:hover {
     background: rgb(86, 77, 255);
     transform: translateY(-2px);

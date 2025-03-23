@@ -1,6 +1,7 @@
 import os
 
-from flask import render_template, request
+from flask import request, render_template
+from utils import render_template_with_user
 
 from server.admin.admin import Admin
 from server.calendar.calendar import Calendar
@@ -13,7 +14,7 @@ from server.news.news import News
 from server.selected_products.selectedProducts import SelectedProduct
 from server.service_files.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
     cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, \
-    add_product, all_students, student
+    add_product, all_students, student, make_news, save_news
 from server.trainer.trainer_students import Students
 from server.food_controler.food_controller import food_blueprint, delete_old_diets
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -21,7 +22,6 @@ from settings import app, host
 
 app.secret_key = os.urandom(24)
 
-app.register_blueprint(food_blueprint)
 
 @app.route(main_page)
 def open_main_page():
@@ -99,6 +99,14 @@ def open_all_news_page():
 def open_one_news_page(news_id):
     return News.show_one_news_page(news_id)
 
+@app.route(make_news, methods=['GET'])
+def open_make_news_page():
+    return News.show_make_news()
+
+@app.route(save_news, methods=['POST'])
+def handle_make_news():
+    return News.handle_make_news()
+
 
 @app.route(add_product)
 def open_add_product():
@@ -123,7 +131,7 @@ def open_physical_exercises_page():
 @app.errorhandler(400)
 def page_bad_request(_):
     error_phrase = ["Запрос", "неправильный", "."]
-    return render_template("ErrorCodes/errors.html",
+    return render_template_with_user("ErrorCodes/errors.html",
                            error_code_name="Bad request",
                            error_code="400",
                            error_phrase=error_phrase,
@@ -133,7 +141,7 @@ def page_bad_request(_):
 @app.errorhandler(404)
 def page_not_found(_):
     error_phrase = ["Похоже такой", "страницы", "нет"]
-    return render_template("ErrorCodes/errors.html",
+    return render_template_with_user("ErrorCodes/errors.html",
                            error_code_name="Not Found",
                            error_code="404",
                            error_phrase=error_phrase,
@@ -143,7 +151,7 @@ def page_not_found(_):
 @app.errorhandler(500)
 def page_internal_server_error(_):
     error_phrase = ["Похоже что-то", "не очень", "хорошо."]
-    return render_template("ErrorCodes/errors.html",
+    return render_template_with_user("ErrorCodes/errors.html",
                            error_code_name="Internal Server Error",
                            error_code="500",
                            error_phrase=error_phrase,
@@ -153,7 +161,7 @@ def page_internal_server_error(_):
 @app.errorhandler(501)
 def page_not_implemented(_):
     error_phrase = ["Не поддерживается функция,", "необходимая", "для выполнения запроса."]
-    return render_template("ErrorCodes/errors.html",
+    return render_template_with_user("ErrorCodes/errors.html",
                            error_code_name="Not Implemented",
                            error_code="501",
                            error_phrase=error_phrase,
@@ -163,5 +171,6 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(delete_old_diets, 'cron', hour=0, minute=0)
 scheduler.start()
 
-port = int(os.environ.get("PORT", 8080))
-app.run(host=host, port=port, debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host=host, port=port, debug=True)

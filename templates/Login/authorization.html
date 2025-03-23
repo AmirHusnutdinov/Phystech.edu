@@ -25,6 +25,11 @@
                 </div>
                 {{ form.submit(class="auth-button") }}
             </form>
+             <div>Если у Вас нет акаунта, предлагаем Вам зарегистрироваться на нашем прекрасном сайте</div>
+             <form method="POST" action="{{ url_for('show_registration_page')  }}">
+                {{ form_registration.hidden_tag() }}
+                {{ form_registration.submit(label="Register", class="registration-button") }}
+            </form>
         </div>
     </div>
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -33,6 +38,7 @@
                 {% for category, message in messages %}
                     <li class="{{ category }}">{{ message }}</li>
                 {% endfor %}
+
             </ul>
         {% endif %}
     {% endwith %}

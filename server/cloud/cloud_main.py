@@ -1,7 +1,6 @@
 import boto3
 
 from settings import app
-
 # from cloud.configuration import *
 
 # int(timedelta(days = 365).total_seconds()) хз нужно ли
