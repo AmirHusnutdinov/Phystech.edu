@@ -112,6 +112,11 @@ def open_students_page(student_id):
     return Students.show_one_student_page(student_id)
 
 
+@app.route("/physical_exercises")
+def open_physical_exercises_page():
+    return render_template("DayPlan/physical_exercises.html")
+
+
 @app.errorhandler(400)
 def page_bad_request(_):
     error_phrase = ["Запрос", "неправильный", "."]

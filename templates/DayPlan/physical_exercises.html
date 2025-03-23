@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Трекер Физических Упражнений</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap">
+    <link rel="stylesheet" href="../../static/assets/css/style_physical_exercises.css">
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <h1>Трекер Физических Упражнений</h1>
+    </header>
+
+    <div class="content">
+        <div class="main-grid">
+            <!-- Левая колонка -->
+            <div class="column">
+                <!-- Выбор упражнения -->
+                <div class="card fade-in" style="animation-delay: 0.1s;">
+                    <div class="card-header">
+                        <h2 class="card-title">Выберите упражнение</h2>
+                        <p class="card-description">Выберите тип физической активности для отслеживания</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="exercise-grid" id="exercise-grid">
+                            <div class="exercise-item" data-id="walking" data-name="Ходьба">
+
+                                <div class="exercise-icon">
+                                    <img src="C:\Users\Amir\PycharmProjects\Phystech.edu\aboba\walk.png">
+                                </div>
+
+                                <span class="exercise-name">Ходьба</span>
+                                <button class="change-icon-button" data-id="walking">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="running" data-name="Бег">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Бег</span>
+                                <button class="change-icon-button" data-id="running">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="cycling" data-name="Езда на велосипеде">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Езда на велосипеде</span>
+                                <button class="change-icon-button" data-id="cycling">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="ellipsoid" data-name="Эллипсоид">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Эллипсоид</span>
+                                <button class="change-icon-button" data-id="ellipsoid">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="ergometer" data-name="Эргометр">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Эргометр</span>
+                                <button class="change-icon-button" data-id="ergometer">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="stepper" data-name="Степпер">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Степпер</span>
+                                <button class="change-icon-button" data-id="stepper">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="hiit" data-name="HIIT">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">HIIT</span>
+                                <button class="change-icon-button" data-id="hiit">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="hiking" data-name="Пеший туризм">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Пеший туризм</span>
+                                <button class="change-icon-button" data-id="hiking">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="yoga" data-name="Йога">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Йога</span>
+                                <button class="change-icon-button" data-id="yoga">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="strength" data-name="Функционально-силовая тренировка">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Функционально-силовая тренировка</span>
+                                <button class="change-icon-button" data-id="strength">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="dance" data-name="Танцы">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Танцы</span>
+                                <button class="change-icon-button" data-id="dance">
+                                </button>
+                            </div>
+
+                            <div class="exercise-item" data-id="swimming" data-name="Плавание">
+                                <div class="exercise-icon">
+                                </div>
+                                <span class="exercise-name">Плавание</span>
+                                <button class="change-icon-button" data-id="swimming">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Текущая тренировка (под выбором упражнения) -->
+                <div class="card fade-in" style="animation-delay: 0.2s;">
+                    <div class="card-header">
+                        <h2 class="card-title">Текущая тренировка</h2>
+                        <p class="card-description" id="current-exercise-description">Выберите упражнение, чтобы
+                            начать</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="timer-container">
+                            <div class="timer-display" id="timer-display">00:00:00</div>
+                            <button class="timer-button start-button" id="start-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                            </button>
+                            <button class="timer-button stop-button" id="stop-button" style="display: none;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка -->
+            <div class="column">
+                <!-- Статистика -->
+                <div class="card fade-in" style="animation-delay: 0.3s;">
+                    <div class="card-header">
+                        <h2 class="card-title">Статистика</h2>
+                        <p class="card-description">Ваши достижения и прогресс</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-item">
+                            <span class="stats-label">Всего тренировок:</span>
+                            <span class="stats-value" id="total-workouts">0</span>
+                        </div>
+                        <div class="stats-item">
+                            <span class="stats-label">За эту неделю:</span>
+                            <span class="stats-value" id="week-workouts">0</span>
+                        </div>
+                        <div class="stats-item">
+                            <span class="stats-label">Общее время:</span>
+                            <span class="stats-value" id="total-time">00:00:00</span>
+                        </div>
+                        <div class="stats-item">
+                            <span class="stats-label">Сожжено калорий:</span>
+                            <span class="stats-value" id="total-calories">0</span>
+                        </div>
+
+                        <div class="progress-container">
+                            <div class="progress-bar" id="weekly-progress" style="width: 0%;"></div>
+                        </div>
+
+                        <!-- История тренировок -->
+                        <div class="workout-history-container">
+                            <h3 class="workout-history-title">История тренировок</h3>
+                            <div id="workout-history" class="workout-history">
+                                <div class="empty-state" id="empty-state">
+                                    У вас пока нет записей о тренировках. Начните тренировку, чтобы увидеть историю.
+                                </div>
+                                <!-- История тренировок будет добавлена через JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Прошлая тренировка (под статистикой) -->
+                <div class="card fade-in" style="animation-delay: 0.25s;">
+                    <div class="card-header">
+                        <h2 class="card-title">Добавить прошлую тренировку</h2>
+                        <p class="card-description">Добавьте информацию о ранее выполненной тренировке</p>
+                    </div>
+                    <div class="card-content">
+                        <form id="past-workout-form" class="past-workout-form">
+                            <div class="form-group">
+                                <label for="past-exercise-select">Тип упражнения</label>
+                                <select id="past-exercise-select" class="form-control" required>
+                                    <option value="" disabled selected>Выберите тип упражнения</option>
+                                    <!-- Опции будут добавлены через JavaScript -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="past-workout-date">Дата тренировки</label>
+                                <input type="date" id="past-workout-date" class="form-control" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="past-workout-hours">Часы</label>
+                                    <input type="number" id="past-workout-hours" class="form-control" min="0" max="23"
+                                           value="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="past-workout-minutes">Минуты</label>
+                                    <input type="number" id="past-workout-minutes" class="form-control" min="0" max="59"
+                                           value="30" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="past-workout-seconds">Секунды</label>
+                                    <input type="number" id="past-workout-seconds" class="form-control" min="0" max="59"
+                                           value="0" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Добавить тренировку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Скрытый input для загрузки изображений -->
+<input type="file" id="custom-icon-input" accept="image/*" style="display: none;">
+</body>
+</html>

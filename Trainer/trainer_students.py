@@ -24,6 +24,7 @@ class Students:
                 )
             return "You are not trener", 401
         return "You are not logged in", 401
+       
 
     @staticmethod
     def show_one_student_page(student_id):

@@ -1,689 +1,683 @@
+/* Основные стили для страницы плана питания */
 :root {
-    --bg-color: rgb(240, 244, 248);
-    --text-color: rgb(51, 51, 51);
-    --container-bg-color: rgb(255, 255, 255);
-    --date-block-bg-color: rgb(233, 236, 239);
-    --progress-bar-bg-color: rgb(224, 224, 224);
-    --bar-bg-color: rgb(76, 175, 80);
-    --input-border-color: rgb(204, 204, 204);
-    --input-focus-border-color: rgb(33, 150, 243);
-    --button-bg-color: rgb(33, 150, 243);
-    --button-hover-bg-color: rgb(25, 118, 210);
-    --meal-item-bg-color: rgb(249, 249, 249);
-    --meal-item-border-color: rgb(204, 204, 204);
-    --dish-item-bg-color: rgb(255, 255, 255);
-    --dish-item-border-color: rgb(221, 221, 221);
-    --remove-meal-bg-color: rgb(244, 67, 54);
-    --remove-meal-hover-bg-color: rgb(211, 47, 47);
-    --add-dish-bg-color: rgb(76, 175, 80);
-    --add-dish-hover-bg-color: rgb(56, 142, 60);
-    --color_fats: rgb(255, 165, 0);
-    --color_calories: rgb(0, 123, 255);
-    --color_protein: rgb(0, 123, 255);
-    --color_carbs: rgb(255, 0, 0);
-    --time-block-bg-color: rgb(255, 255, 255);
-    --input-block-bg-color: rgb(255, 255, 255);
+    --primary-color: #4caf50;
+    --primary-dark: #388e3c;
+    --primary-light: #c8e6c9;
+    --accent-color: #ff9800;
+    --text-color: #333;
+    --text-light: #757575;
+    --background-color: #f5f5f5;
+    --card-color: #fff;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --progress-bg: #e0e0e0;
+    --protein-color: #3498db;
+    --fat-color: #e74c3c;
+    --carb-color: #f1c40f;
+    --calorie-color: #9b59b6;
+    --water-color: #3498db;
+    --success-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --modal-bg: rgba(0, 0, 0, 0.5);
+    --transition-speed: 0.3s;
 }
 
-html, body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 16px;
-    line-height: 1.5;
+body.dark-theme {
+    --primary-color: #66bb6a;
+    --primary-dark: #43a047;
+    --primary-light: #81c784;
+    --accent-color: #ffb74d;
+    --text-color: #f5f5f5;
+    --text-light: #b0b0b0;
+    --background-color: #121212;
+    --card-color: #1e1e1e;
+    --border-color: #333;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --progress-bg: #333;
 }
 
-* {
-    box-sizing: border-box;
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
-.dark-theme {
-    --bg-color: rgb(18, 18, 18);
-    --text-color: rgb(224, 224, 224);
-    --container-bg-color: rgb(30, 30, 30);
-    --date-block-bg-color: rgb(44, 44, 44);
-    --progress-bar-bg-color: rgb(51, 51, 51);
-    --bar-bg-color: rgba(0, 255, 0, 0.3);
-    --input-border-color: rgb(68, 68, 68);
-    --input-focus-border-color: rgb(33, 150, 243);
-    --button-bg-color: rgb(63, 81, 181);
-    --button-hover-bg-color: rgb(48, 63, 159);
-    --meal-item-bg-color: rgb(46, 46, 46);
-    --meal-item-border-color: rgb(68, 68, 68);
-    --dish-item-bg-color: rgb(62, 62, 62);
-    --dish-item-border-color: rgb(85, 85, 85);
-    --remove-meal-bg-color: rgb(183, 28, 28);
-    --remove-meal-hover-bg-color: rgb(198, 40, 40);
-    --add-dish-bg-color: rgb(46, 125, 50);
-    --add-dish-hover-bg-color: rgb(56, 142, 60);
-    --color_fats: rgba(255, 167, 38, 0.7);
-    --color_calories: rgba(33, 150, 243, 0.8);
-    --color_protein: rgba(33, 150, 243, 0.8);
-    --color_carbs: rgba(255, 0, 0, 0.5);
-    --time-block-bg-color: rgb(66, 66, 66);
-    --input-block-bg-color: rgb(85, 85, 85);
-    --input-block-font-color: rgba(255, 255, 255, 0.8);
+/* Заголовок и переключатель типа плана */
+.plan-header {
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-/* Общие стили */
-body .body_day_plan {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 74vh;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    background: var(--bg-color);
+.plan-header h1 {
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
     color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    animation: fadeIn 1s ease-in-out;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-weight: 600;
+.date-display {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
 }
 
-body {
-    font-size: 16px;
-    line-height: 1.5;
+.plan-type-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.plan-type-btn {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+    color: var(--primary-color);
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all var(--transition-speed);
 }
-.value-container {
+
+.plan-type-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.plan-type-btn:hover:not(.active) {
+    background-color: var(--primary-light);
+}
+
+/* Сводка по питательным веществам */
+.nutrition-summary {
+    background-color: var(--card-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    margin-bottom: 2rem;
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.nutrition-progress {
+    margin-bottom: 2rem;
+}
+
+.progress-item {
+    margin-bottom: 1rem;
+}
+
+.progress-label {
     display: flex;
     justify-content: space-between;
-    margin-top: 5px;
-}
-.value-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-.value-label {
-    font-size: 0.8em;
-    color: #666;
-}
-.percentage-display {
-    text-align: right;
-    font-size: 0.9em;
-    color: var(--text-color);
-    margin-top: 5px;
-}
-.difference-display {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 0.9em;
+    margin-bottom: 0.5rem;
     font-weight: bold;
     color: var(--text-color);
+}
+
+.progress-bar {
+    height: 12px;
+    background-color: var(--progress-bg);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease-in-out;
+}
+
+#protein-fill {
+    background-color: var(--protein-color);
+}
+
+#fat-fill {
+    background-color: var(--fat-color);
+}
+
+#carb-fill {
+    background-color: var(--carb-color);
+}
+
+#calorie-fill {
+    background-color: var(--calorie-color);
+}
+
+/* Трекер воды */
+.water-tracker h3 {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.water-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.water-glasses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.water-glass {
+    width: 40px;
+    height: 50px;
+    background-color: var(--progress-bg);
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.water-glass.filled {
+    background-color: var(--water-color);
+}
+
+.water-glass.filled::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.water-controls {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
 }
 
-.arrow {
-    margin-left: 2px;
-}
-
-.progress-bar {
-    position: relative;
-}
-
-.container_today {
-    background-color: var(--container-bg-color);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    margin-top: 30px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 30px;
-    font-size: 1em;
-}
-
-.container_today:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.date-block {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.25em;
-    color: var(--text-color);
-    background-color: var(--date-block-bg-color);
-    border-radius: 5px;
-    padding: 10px;
-    animation: slideIn 0.5s ease-in-out;
-}
-.top-container{
-    text-align: left;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-    color: var(--text-color);
-    border-radius: 5px;
-    padding: 10px;
-    animation: slideIn 0.5s ease-in-out;
-}
-@keyframes slideIn {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* Показатели */
-.indicators {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.indicator {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 1.5em;
-    animation: fadeIn 0.5s ease-in-out;
-    font-weight: 400;
-}
-/* #protein_text_current_value, #carbs_text_current_value,#fats_text_current_value, #calories_text_current_value,
-#protein_text_goal_value, #fats_text_goal_value, #carbs_text_goal_value, #calories_text_goal_value{
-    font-size: 1.25em;
-    color: var(--text-color);
-    font-weight: 400;
-} */
-
-.indicator
-.progress-bar {
-    background-color: var(--progress-bar-bg-color);
-    border-radius: 5px;
-    overflow: hidden;
-    overflow-x: hidden;
-    height: 20px;
-    position: relative;
-}
-
-.bar {
-    height: 100%;
-    background-color: var(--bar-bg-color);
-    transition: width 0.5s ease;
-}
-
-input[type="number"] {
-    padding: 10px;
-    border: 1px solid var(--input-border-color);
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-    font-size: 1em;
-    font-family: inherit;
-}
-
-input[type="number"]:focus, input[type="text"]:focus, input[type="time"]:focus {
-    border-color: var(--input-focus-border-color);
-    outline: none;
-}
-
-/* Ссылки */
-.links-container {
-    margin-top: 30px;
-}
-
-#add-meal {
-    width: 100%;
-    padding: 10px 20px;
-    background-color: var(--button-bg-color);
-    color: #fff;
+#add-water {
+    background-color: var(--water-color);
+    color: white;
     border: none;
+    padding: 0.5rem 1rem;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-family: inherit;
-    font-size: 1em;
+    transition: background-color 0.3s;
 }
 
-#add-meal:hover {
-    background-color: var(--button-hover-bg-color);
-    transform: scale(1.05);
+#add-water:hover {
+    background-color: #2980b9;
 }
 
-.meal-item {
+.water-value {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Контейнер для приемов пищи */
+.meals-container {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid var(--meal-item-border-color);
-    border-radius: 10px;
-    background-color: var(--meal-item-bg-color);
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.meal-item.animate-in {
-    opacity: 1;
-    transform: translateY(0);
+.meal-card {
+    background-color: var(--card-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px var(--shadow-color);
+    transition: all var(--transition-speed);
+}
+
+.meal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px var(--shadow-color);
 }
 
 .meal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-}
-
-.meal-number {
-    font-size: 1.1em;
-    font-weight: bold;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .meal-time {
-    padding: 5px;
-    border: 1px solid var(--input-border-color);
-    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-color);
 }
 
-.meal-dishes {
-    margin-top: 20px;
+.meal-type {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.meal-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.meal-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: color 0.3s;
+}
+
+.meal-actions button:hover {
+    color: var(--danger-color);
+}
+
+.meal-nutrition {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.meal-nutrition-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.meal-nutrition-item span:first-child {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.meal-nutrition-item span:last-child {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.dishes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .dish-item {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid var(--dish-item-border-color);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: var(--background-color);
     border-radius: 5px;
-    background-color: var(--dish-item-bg-color);
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    position: relative;
+    transition: all 0.3s;
 }
 
-.dish-item.animate-in {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.dish-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.dish-name {
-    flex: 1;
-    margin-right: 10px;
-    font-size: 1em;
-}
-
-.dish-weight {
-    width: 80px;
-    margin-right: 10px;
-}
-
-.dish-calories {
-    font-size: 0.9em;
-    color: var(--text-color);
-}
-
-.dish-nutrients {
-    display: flex;
-    justify-content: space-between;
-}
-
-.dish-protein, .dish-fats, .dish-carbs, .dish-calories-per-100, .dish-name, .dish-weight {
-    background-color: var(--input-block-bg-color);
-    color: var(--input-block-font-color);
-}
-
-.remove-dish {
-    background-color: var(--remove-meal-bg-color);
-    border-radius: 50px;
-}
-
-#fats {
-    background-color: var(--input-block-bg-color);
-    width: 15%;
-    font-size: 30px;
-    color: var(--input-block-font-color);
-}
-
-#fats_text {
-    color: var(--color_fats);
-}
-
-#carbs {
-    background-color: var(--input-block-bg-color);
-    width: 15%;
-    font-size: 30px;
-    color: var(--input-block-font-color);
-}
-
-#carbs_text {
-    color: var(--color_carbs);
-}
-
-#protein {
-    background-color: var(--input-block-bg-color);
-    width: 15%;
-    font-size: 30px;
-    color: var(--input-block-font-color);
-}
-
-#protein_text {
-    color: var(--color_protein);
-}
-
-#calories {
-    background-color: var(--input-block-bg-color);
-    width: 15%;
-    font-size: 30px;
-    color: var(--input-block-font-color);
-}
-
-#calories_text {
-    color: var(--color_calories);
-}
-
-#water {
-    background-color: var(--input-block-bg-color);
-    width: 15%;
-    font-size: 30px;
-    color: var(--input-block-font-color);
-}
-
-#water_text {
-    color: var(--color_water);
-}
-
-.meal-time {
-    background-color: var(--time-block-bg-color);
-    color: white;
-}
-
-.dish-nutrients input {
-    width: 20%;
-    font-size: 0.9em;
-}
-
-.meal-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.meal-total {
-    font-size: 1em;
-    font-weight: bold;
-}
-
-.meal-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.remove-meal, .add-dish {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-family: inherit;
-    font-size: 1em;
-}
-
-.remove-meal {
-    background-color: var(--remove-meal-bg-color);
-    color: #fff;
-}
-
-.remove-meal:hover {
-    background-color: var(--remove-meal-hover-bg-color);
-    transform: scale(1.05);
-}
-
-.add-dish {
-    background-color: var(--add-dish-bg-color);
-    color: #fff;
-}
-
-.add-dish:hover {
-    background-color: var(--add-dish-hover-bg-color);
-    transform: scale(1.05);
-}
-
-/* Адаптивность */
-@media (max-width: 600px) {
-    .container_today {
-        padding: 10px;
-    }
-
-    .date-block {
-        font-size: 1em;
-    }
-
-    .meal-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .meal-time {
-        margin-top: 10px;
-    }
-
-    .dish-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .dish-weight {
-        margin-top: 10px;
-    }
-
-    .dish-nutrients {
-        flex-direction: column;
-    }
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 600px;
-}
-
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#dishList {
-    list-style-type: none;
-    padding: 0;
-}
-
-#dishList li {
-    padding: 10px;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#dishList li:hover {
-    background-color: #f0f0f0;
+.dish-item.consumed {
+    opacity: 0.6;
 }
 
 .dish-info {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dish-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.dish-checkbox:checked {
+    background-color: var(--primary-color);
+}
+
+.dish-checkbox:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .dish-name {
-    font-weight: bold;
-    font-size: 1.1em;
+    font-weight: 500;
+    color: var(--text-color);
 }
 
-.dish-details {
-    font-size: 0.9em;
-    color: #666;
+.dish-weight {
+    color: var(--text-light);
+    font-size: 0.9rem;
 }
 
-#pagination {
+.dish-nutrition {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    gap: 5px;
-    flex-wrap: wrap;
-    padding: 10px;
+    gap: 1rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
 }
 
-#pagination button {
-    min-width: 35px;
-    height: 35px;
-    margin: 0 2px;
-    padding: 5px;
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
+.dish-actions button {
+    background: none;
+    border: none;
+    color: var(--danger-color);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9em;
-    color: #333;
-    transition: all 0.2s ease;
-    font-family: inherit;
+    transition: opacity 0.3s;
 }
 
-#pagination button:hover {
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-    color: #000;
+.dish-actions button:hover {
+    opacity: 0.7;
 }
 
-#pagination button.active {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: white;
-}
-
-#pagination button:disabled {
-    background-color: #e9ecef;
-    border-color: #dee2e6;
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-#pagination .ellipsis {
-    margin: 0 5px;
-    color: #6c757d;
-}
-
-.indicator input.editable {
-border: 1px solid #007bff;
-background-color: #f0f8ff;
-}
-
-#edit-indicators {
-margin-top: 10px;
-padding: 5px 10px;
-background-color: #007bff;
-color: white;
-border: none;
-border-radius: 4px;
-cursor: pointer;
-font-size: 0.9em;
-}
-
-#edit-indicators:hover {
-background-color: #0056b3;
-}
-
-input[type="text"], input[type="time"] {
-    font-size: 1em;
-    font-family: inherit;
-}
-
-button {
-    font-family: inherit;
-    font-size: 1em;
-}
-
-.modal-content h2 {
-    font-size: 1.5em;
-    margin-bottom: 15px;
-}
-
-#dishSearch {
-    font-size: 1em;
-}
-
-.save-button {
+/* Кнопка добавления приема пищи */
+.add-meal-btn {
+    display: block;
     width: 100%;
-    padding: 15px;
-    font-size: 1.2em;
-    background-color: var(--button-bg-color);
+    padding: 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-meal-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Модальные окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--modal-bg);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: var(--card-color);
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s;
+    transition: background-color var(--transition-speed);
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    color: var(--text-color);
+}
+
+.close-modal:hover {
+    color: var(--danger-color);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Форма приема пищи */
+.meal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.meal-nutrition-summary {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--background-color);
+    padding: 1rem;
+    border-radius: 5px;
+    flex-wrap: wrap;
+}
+
+.add-dish-btn {
+    padding: 0.75rem;
+    background-color: var(--accent-color);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
 }
 
-.save-button:hover:not(:disabled) {
-    background-color: var(--button-hover-bg-color);
+.add-dish-btn:hover {
+    background-color: #f57c00;
 }
 
-.save-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-/* Ensure all text inputs and buttons use the correct font */
-input, button, select, textarea {
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
+.cancel-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-/* Force font rendering */
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.cancel-btn:hover {
+    background-color: var(--border-color);
 }
 
+.save-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Поиск блюд */
+.search-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.search-container input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.search-container button {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-results {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+}
+
+.search-result-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: var(--text-color);
+}
+
+.search-result-item:hover {
+    background-color: var(--background-color);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.dish-form {
+    background-color: var(--background-color);
+    padding: 1.5rem;
+    border-radius: 5px;
+}
+
+.dish-form h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.dish-nutrition {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 1rem auto;
+    }
+    
+    .meal-nutrition, 
+    .meal-nutrition-summary,
+    .dish-nutrition {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .dish-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .dish-actions {
+        align-self: flex-end;
+    }
+    
+    .water-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.meal-card {
+    animation: slideIn 0.3s ease-out;
+}
+
+.dish-item {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Дополнительные стили для темной темы */
+body.dark-theme .dish-item {
+    background-color: #2a2a2a;
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group select,
+body.dark-theme .search-container input {
+    background-color: #2a2a2a;
+    border-color: #444;
+}
+
+body.dark-theme .dish-form,
+body.dark-theme .meal-nutrition-summary {
+    background-color: #2a2a2a;
+}
