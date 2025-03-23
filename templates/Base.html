@@ -12,7 +12,9 @@
     <div class="navbar-brand">
         <a href="{{header_links['/']}}">FoodHelper</a>
     </div>
-    <div class="navbar-links">
+
+    <!-- Новый контейнер для кнопки темы -->
+    <div class="theme-toggle-container">
         <div class="theme-toggle">
             <button id="theme-toggle-btn" aria-label="Toggle dark mode">
                 <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -33,14 +35,18 @@
                 </svg>
             </button>
         </div>
+    </div>
+
+    <div class="navbar-links">
         <a href="{{header_links['day_plan']}}">План на день</a>
         <a href="{{header_links['calendar']}}">Календарь</a>
         <a href="{{header_links['cabinet']}}">Кабинет</a>
         <a href="{{header_links['all_news']}}">Новости</a>
         <a href="{{header_links['authorization']}}">Авторизация</a>
         <a href="{{header_links['registration']}}">Регистрация</a>
-        <a href="{{header_links['all_students']}}">Студенты</a>
+        <a href="{{header_links['all_students']}}">Ученики</a>
     </div>
+
     <div class="navbar-toggle">
         <div class="bar"></div>
         <div class="bar"></div>
@@ -48,26 +54,82 @@
     </div>
 </nav>
 
-<!-- Скрипт для работы мобильного меню -->
+<!-- Стили для корректного отображения -->
+<style>
+/* Обновленные стили для навбара */
+.navbar {
+    position: relative;
+    padding: 1rem 2rem;
+}
+
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+/* Мобильная версия */
+@media (max-width: 768px) {
+    .theme-toggle-container {
+        position: absolute;
+        right: 60px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .navbar-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.9);
+        padding: 1rem;
+    }
+
+    .navbar-links.active {
+        display: flex;
+    }
+}
+
+/* Десктопная версия */
+@media (min-width: 769px) {
+    .navbar-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .navbar-toggle {
+        display: none;
+    }
+}
+</style>
+
+<!-- Скрипты остаются без изменений -->
 <script>
+    // Мобильное меню
     document.querySelector('.navbar-toggle').addEventListener('click', function() {
         document.querySelector('.navbar-links').classList.toggle('active');
         document.querySelector('.navbar-toggle').classList.toggle('active');
     });
-</script>
 
-<!-- Скрипт для переключения темы -->
-<script>
+    // Переключатель темы
     document.addEventListener("DOMContentLoaded", function() {
         const themeToggleBtn = document.getElementById("theme-toggle-btn");
         const savedTheme = localStorage.getItem("theme");
 
-        // Инициализация текущей темы из localStorage
         if (savedTheme === "dark") {
             document.body.classList.add("dark-theme");
         }
 
-        // Обработчик клика для переключения темы
         themeToggleBtn.addEventListener("click", function() {
             document.body.classList.toggle("dark-theme");
             const isDarkTheme = document.body.classList.contains("dark-theme");
@@ -77,7 +139,7 @@
 </script>
 
 {% block content %}
-<!-- Здесь будет основное содержимое страницы -->
+<!-- Основное содержимое -->
 {% endblock %}
 
 <footer class="footer">
