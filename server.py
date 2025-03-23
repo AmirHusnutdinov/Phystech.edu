@@ -160,6 +160,6 @@ def page_not_implemented(_):
                            error_phrase=error_phrase,
                            main_page=main_page), 501
 
-
-port = int(os.environ.get("PORT", 8080))
-app.run(host=host, port=port, debug=True)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host=host, port=port, debug=True)
