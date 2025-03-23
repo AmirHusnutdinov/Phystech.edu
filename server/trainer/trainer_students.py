@@ -31,14 +31,14 @@ class Students:
         user_info = get_user_data(student_id)
         student_title = user_info["name"]
         student_image_url = user_info["avatar"]
-        student_content = (f"Возраст: {user_info["age"]}"
-                           f"Пол: {user_info["sex"]}"
-                           f"Почта {user_info["email"]}"
+        student_content = (f"Возраст: {user_info['age']}"
+                           f"Пол: {user_info['sex']}"
+                           f"Почта {user_info['email']}"
                            )
         print(user_info)
         return render_template(
             "Trainer/student.html",
-            title=f"Ученик {user_info["name"]}",
+            title=f"Ученик {user_info['name']}",
             header_links=header_links,
             student_title=student_title,
             student_image_url=student_image_url,

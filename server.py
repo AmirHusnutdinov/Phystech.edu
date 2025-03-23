@@ -2,23 +2,26 @@ import os
 
 from flask import render_template, request
 
-from Admin.admin import Admin
-from Calendar.calendar import Calendar
-from DayPlan.day_plan import DayPlan
-from Login.authorization import Authorization
-from Login.cabinet import Cabinet
-from Login.registration import Registration
-from MainPage.main_page import StartPage
-from News.news import News
-from SelectedProducts.selectedProducts import SelectedProduct
-from ServiceFiles.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
+from server.admin.admin import Admin
+from server.calendar.calendar import Calendar
+from server.day_plan.day_plan import DayPlan
+from server.login.authorization import Authorization
+from server.login.cabinet import Cabinet
+from server.login.registration import Registration
+from server.main_page.main_page import StartPage
+from server.news.news import News
+from server.selected_products.selectedProducts import SelectedProduct
+from server.service_files.links import main_page, admin, calendar, day_plan, selected_products, registration, authorization, \
     cabinet, all_news, one_news, add_product, save_day_plan, process_registration, confirm_code, process_login, logout, \
     add_product, all_students, student
-from Trainer.trainer_students import Students
+from server.trainer.trainer_students import Students
+from server.food_controler.food_controller import food_blueprint, delete_old_diets
+from apscheduler.schedulers.background import BackgroundScheduler
 from settings import app, host
 
 app.secret_key = os.urandom(24)
 
+app.register_blueprint(food_blueprint)
 
 @app.route(main_page)
 def open_main_page():
@@ -156,6 +159,9 @@ def page_not_implemented(_):
                            error_phrase=error_phrase,
                            main_page=main_page), 501
 
+scheduler = BackgroundScheduler()
+scheduler.add_job(delete_old_diets, 'cron', hour=0, minute=0)
+scheduler.start()
 
 port = int(os.environ.get("PORT", 8080))
 app.run(host=host, port=port, debug=True)
