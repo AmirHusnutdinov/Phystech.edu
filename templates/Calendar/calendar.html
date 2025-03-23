@@ -1,6 +1,7 @@
 {% extends "Base.html" %}
 {% block content %}
 <link rel="stylesheet" href="/static/assets/css/style_calendar.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="calendar-page">
     <div class="calendar-container">
         <div class="header_calendar">
@@ -8,8 +9,8 @@
             <div id="currentDate" class="current-date"></div>
             <div class="view-controls">
                 <label class="switch">
-                    <input type="checkbox" id="viewToggle">
-                    <span class="slider"></span>
+                    <input type="checkbox" id="viewToggle" onchange="toggleView()">
+                    <span class="slider" onchange="toggleView()"></span>
                 </label>
             </div>
             <button id="nextBtn" class="nav-btn"></button>
@@ -31,10 +32,10 @@
             <div class="nutrition-columns">
                 <div class="nutrition-column">
                     <h3>Было по плану:</h3>
-                    <p class="protein">Белки: <span id="modalPlanProtein">120</span>г</p>
-                    <p class="fats">Жиры: <span id="modalPlanFats">60</span>г</p>
-                    <p class="carbs">Углеводы: <span id="modalPlanCarbs">280</span>г</p>
-                    <p class="calories">Калории: <span id="modalPlanCalories">2500</span> ккал</p>
+                    <p class="protein">Белки: <span id="modalPlanProtein"></span>г</p>
+                    <p class="fats">Жиры: <span id="modalPlanFats"></span>г</p>
+                    <p class="carbs">Углеводы: <span id="modalPlanCarbs"></span>г</p>
+                    <p class="calories">Калории: <span id="modalPlanCalories"></span> ккал</p>
                 </div>
                 <div class="nutrition-column">
                     <h3>Было съедено:</h3>
@@ -83,9 +84,134 @@
             </div>
         </div>
     </div>
+    <div class="streak-counter">
+    <span>Положительная разница калорий <span id="calorieStreak">0</span> дней подряд в этом месяце</span>
+</div>
 </div>
 
 <script>
+    const cookies = {{ cookies | tojson }};
+
+function generateNutritionData(month, year) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const monthData = {};
+
+    for (let i = 1; i <= daysInMonth; i++) {
+        const date = new Date(year, month + 1, i)
+        const dayData = cookies.find(cookie =>
+            cookie.date[0] === year &&
+            cookie.date[1] === month + 1 &&
+            cookie.date[2] === i
+        );
+        if (dayData) {
+            monthData[i] = {
+                calories: dayData.calories,
+                protein: dayData.proteins,
+                fats: dayData.fats,
+                carbs: dayData.carbs,
+                planCalories: dayData.planCalories,
+                planProtein: dayData.planProteins,
+                planFats: dayData.planFats,
+                planCarbs: dayData.planCarbs
+            };
+        } else {
+            monthData[i] = {
+                calories: 0,
+                protein: 0,
+                fats: 0,
+                carbs: 0,
+                planCalories: 0,
+                planProtein: 0,
+                planFats: 0,
+                planCarbs: 0
+            };
+        }
+    }
+
+    return monthData;
+}
+
+
+function createDetailedDayCell(dayData, day) {
+    const cell = document.createElement('div');
+    cell.className = 'day date detailed';
+
+    const dayNumber = document.createElement('span');
+    dayNumber.className = 'day-number';
+    dayNumber.textContent = day;
+    cell.appendChild(dayNumber);
+
+    if (dayData) {
+        const sections = [
+            {
+                letter: 'Б',
+                value: dayData.protein - dayData.planProtein,
+                max: dayData.planProtein * 0.2
+            },
+            {
+                letter: 'Ж',
+                value: dayData.fats - dayData.planFats,
+                max: dayData.planFats * 0.2
+            },
+            {
+                letter: 'У',
+                value: dayData.carbs - dayData.planCarbs,
+                max: dayData.planCarbs * 0.2
+            },
+            {
+                letter: 'К',
+                value: dayData.calories - dayData.planCalories,
+                max: dayData.planCalories * 0.2
+            }
+        ];
+    } else {
+        const sections = [
+            {
+                letter: 'Б',
+                value: 0,
+                max: 0
+            },
+            {
+                letter: 'Ж',
+                value: 0,
+                max: 0
+            },
+            {
+                letter: 'У',
+                value: 0,
+                max: 0
+            },
+            {
+                letter: 'К',
+                value: 0,
+                max: 0
+            }
+        ];
+    }
+
+    sections.forEach(({ letter, value, max }) => {
+        const section = document.createElement('div');
+        section.className = 'nutrient-section';
+
+        // Add triangle if there's a difference
+        if (value !== 0) {
+            const triangle = document.createElement('div');
+            triangle.className = `triangle ${value > 0 ? 'up' : 'down'}`;
+            section.appendChild(triangle);
+        }
+
+        // Add letter
+        const letterSpan = document.createElement('span');
+        letterSpan.textContent = letter;
+        section.appendChild(letterSpan);
+
+        section.style.backgroundColor = getColorForValue(value, max);
+        cell.appendChild(section);
+    });
+
+    return cell;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -156,82 +282,6 @@ function updateDifferenceArrow(elementId, difference, isDarkTheme) {
     arrowSpan.style.borderBottomColor = difference >= 0 ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 0, 0, 0.5)';
 }
 
-    function generateRandomNutrition(month, year) {
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const monthData = {};
-
-        for (let i = 1; i <= daysInMonth; i++) {
-            const planCalories = 2500;
-            const actualCalories = Math.floor(Math.random() * 1000 + 2000);
-            monthData[i] = {
-                calories: actualCalories,
-                protein: Math.floor(Math.random() * 50 + 80),
-                fats: Math.floor(Math.random() * 30 + 50),
-                carbs: Math.floor(Math.random() * 100 + 250),
-                planCalories: planCalories,
-                planProtein: 120,
-                planFats: 60,
-                planCarbs: 280
-            };
-        }
-        return monthData;
-    }
-
-    function createDetailedDayCell(dayData, day) {
-        const cell = document.createElement('div');
-        cell.className = 'day date detailed';
-
-        const dayNumber = document.createElement('span');
-        dayNumber.className = 'day-number';
-        dayNumber.textContent = day;
-        cell.appendChild(dayNumber);
-
-        const sections = [
-            {
-                letter: 'Б',
-                value: dayData.protein - dayData.planProtein,
-                max: 30
-            },
-            {
-                letter: 'Ж',
-                value: dayData.fats - dayData.planFats,
-                max: 30
-            },
-            {
-                letter: 'У',
-                value: dayData.carbs - dayData.planCarbs,
-                max: 60
-            },
-            {
-                letter: 'К',
-                value: dayData.calories - dayData.planCalories,
-                max: 500
-            }
-        ];
-
-        sections.forEach(({ letter, value, max }) => {
-            const section = document.createElement('div');
-            section.className = 'nutrient-section';
-
-            // Add triangle if there's a difference
-            if (value !== 0) {
-                const triangle = document.createElement('div');
-                triangle.className = `triangle ${value > 0 ? 'up' : 'down'}`;
-                section.appendChild(triangle);
-            }
-
-            // Add letter
-            const letterSpan = document.createElement('span');
-            letterSpan.textContent = letter;
-            section.appendChild(letterSpan);
-
-            section.style.backgroundColor = getColorForValue(value, max);
-            cell.appendChild(section);
-        });
-
-        return cell;
-    }
-
     function createSimpleDayCell(dayData, day) {
         const cell = document.createElement('div');
         cell.className = 'day date';
@@ -254,6 +304,11 @@ function updateDifferenceArrow(elementId, difference, isDarkTheme) {
         document.getElementById('modalFats').textContent = nutrition.fats;
         document.getElementById('modalCarbs').textContent = nutrition.carbs;
 
+        document.getElementById('modalPlanCalories').textContent = nutrition.planCalories;
+        document.getElementById('modalPlanProtein').textContent = nutrition.planProtein;
+        document.getElementById('modalPlanFats').textContent = nutrition.planFats;
+        document.getElementById('modalPlanCarbs').textContent = nutrition.planCarbs;
+
         // Вычисляем и отображаем разницу
         const proteinDiff = nutrition.protein - nutrition.planProtein;
         const fatsDiff = nutrition.fats - nutrition.planFats;
@@ -266,6 +321,27 @@ function updateDifferenceArrow(elementId, difference, isDarkTheme) {
         updateDifferenceArrow('caloriesDiff', caloriesDiff);
 
         modal.classList.add('show');
+    }
+
+    function calculateCalorieStreak(nutritionData, year, month) {
+        const today = new Date();
+        const isCurrentMonth = (today.getMonth() === month + 1 && today.getFullYear() === year);
+        const endDay = isCurrentMonth ? today.getDate() : new Date(year, month + 1, 0).getDate();
+
+        let currentStreak = 0;
+        let maxStreak = 0;
+
+        for (let day = 1; day <= endDay; day++) {
+            const dayData = nutritionData[day];
+            if ((dayData.calories - dayData.planCalories < 0)) {
+                currentStreak++;
+            } else {
+                maxStreak = Math.max(maxStreak, currentStreak);
+                currentStreak = 0;
+            }
+        }
+
+        return Math.max(maxStreak, currentStreak);
     }
 
     function renderCalendar(month, year) {
@@ -284,7 +360,9 @@ function updateDifferenceArrow(elementId, difference, isDarkTheme) {
 
         currentDate.textContent = new Date(year, month).toLocaleString('ru-RU', { month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase());
 
-        currentNutritionData = generateRandomNutrition(month, year);
+        currentNutritionData = generateNutritionData(month, year);
+        const streak = calculateCalorieStreak(currentNutritionData, year, month);
+        document.getElementById('calorieStreak').textContent = streak;
 
         let dayCount = 1;
         for (let i = 0; i < 6; i++) {
@@ -315,6 +393,125 @@ function updateDifferenceArrow(elementId, difference, isDarkTheme) {
         }
     }
 
+    function renderChart(month, year) {
+    calendar.innerHTML = '';
+
+    currentDate.textContent = new Date(year, month)
+        .toLocaleString('ru-RU', { month: 'long', year: 'numeric' })
+        .replace(/^\w/, c => c.toUpperCase());
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const nutritionData = generateNutritionData(month, year);
+
+    const labels = [];
+    const proteins = [];
+    const fats = [];
+    const carbs = [];
+    const proteinsPlan = [];
+    const fatsPlan = [];
+    const carbsPlan = [];
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const data = nutritionData[day];
+
+        labels.push(day);
+        proteins.push(data.proteins);
+        fats.push(data.fats);
+        carbs.push(data.carbs);
+        proteinsPlan.push(data.planProteins);
+        fatsPlan.push(data.planFats);
+        carbsPlan.push(data.planCarbs);
+    }
+
+    const chartContainer = document.createElement('div');
+    chartContainer.classList.add('chart-container');
+    const canvas = document.createElement('canvas');
+    chartContainer.appendChild(canvas);
+    calendar.appendChild(chartContainer);
+
+    const ctx = canvas.getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Белки',
+                    data: proteins,
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    tension: 0
+                },
+                {
+                    label: 'Жиры',
+                    data: fats,
+                    borderColor: 'rgb(255, 205, 86)',
+                    backgroundColor: 'rgba(255, 205, 86, 0.2)',
+                    tension: 0
+                },
+                {
+                    label: 'Углеводы',
+                    data: carbs,
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    tension: 0
+                },
+                 {
+                    label: 'План по белкам',
+                    data: proteinsPlan,
+                    borderColor: 'rgb(120, 170, 240)',
+                    backgroundColor: 'rgba(120, 170, 240, 0.2)',
+                    tension: 0
+                },
+                {
+                    label: 'План по жирам',
+                    data: fatsPlan,
+                    borderColor: 'rgb(200, 215, 100)',
+                    backgroundColor: 'rgba(200, 215, 100, 0.2)',
+                    tension: 0
+                },
+                {
+                    label: 'План по углеводам',
+                    data: carbsPlan,
+                    borderColor: 'rgb(110, 205, 110)',
+                    backgroundColor: 'rgba(110, 205 , 110, 0.2)',
+                    tension: 0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'День месяца'
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Количество (граммы)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: 'Диаграмма питания за месяц'
+                }
+            }
+        }
+    });
+}
+
     prevBtn.addEventListener('click', () => {
         currentMonth--;
         if (currentMonth < 0) {
@@ -333,10 +530,13 @@ function updateDifferenceArrow(elementId, difference, isDarkTheme) {
         renderCalendar(currentMonth, currentYear);
     });
 
-    viewToggle.addEventListener('change', () => {
-        isDetailedView = viewToggle.checked;
+viewToggle.addEventListener('change', () => {
+    if (viewToggle.checked) {
+        renderChart(currentMonth, currentYear);
+    } else {
         renderCalendar(currentMonth, currentYear);
-    });
+    }
+});
 
     closeBtn.onclick = function() {
         modal.classList.remove('show');

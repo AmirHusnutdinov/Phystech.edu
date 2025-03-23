@@ -66,14 +66,49 @@ def get_user_data(id):
     return user
 
 
-def get_day_data(user, date):
-    sql = f"SELECT * FROM user_daily_metrics WHERE id = {user.id} AND date = {date}"
+def get_day_data(id, date):
+    sql = f"SELECT * FROM user_daily_metrics WHERE id = {id} AND date = {date}"
     return database_query(sql)
+
+def get_all_day_data(id):
+    sql = f"SELECT * FROM user_daily_metrics WHERE id = {id}"
+    data = database_query(sql)
+    ans = []
+    for el in data:
+        day_data = {
+            "id": el[0],
+            "weight": el[1],
+            "height": el[2],
+            "water": el[3],
+            "date": [el[4].year, el[4].month, el[4].day],
+            "calories": el[5],
+            "planCalories": el[6],
+            "proteins": el[7],
+            "planProteins": el[8],
+            "fats": el[9],
+            "planFats": el[10],
+            "carbs": el[11],
+            "planCarbs": el[12],
+        }
+        ans.append(day_data)
+    return ans
 
 
 def database_check():
     sql = "SELECT * FROM user_daily_metrics"
     return database_query(sql)
 
+def check_trener(id):
+    sql = f"SELECT role FROM roles WHERE id = {id}"
+    data = database_query(sql)[0][0]
+    if data == 2 or data == 3:
+        return True
+    return False
 
-print(database_check())
+def get_list_of_student(id):
+    sql = f"SELECT student_id FROM student WHERE id = {id}"
+    ans_list = []
+    data = database_query(sql)
+    for el in data:
+        ans_list.append(el[0])
+    return ans_list

@@ -159,7 +159,24 @@
 .date:hover {
     transform: scale(1.05);
 }
+.chart-container {
+    width: 700%;
+    height: 450px;
+    margin-top: 20px;
+}
+.streak-counter {
+   text-align: center;
+   padding: 10px;
+   margin-top: 15px;
+   background-color: #f8f9fa;
+   border-radius: 8px;
+   font-weight: bold;
+}
 
+.calorieStreak {
+    color: #28a745;
+    font-size: 1.2em;
+}
 .empty {
     background: transparent;
     cursor: default;

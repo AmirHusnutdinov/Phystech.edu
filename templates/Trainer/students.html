@@ -21,73 +21,16 @@
 </div>
 
 <script>
-    // Пример данных учеников
-    const studentsData = [
-      {
-        id: 1,
-        firstName: "Иван",
-        lastName: "Иванов",
-        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-        info: "Опытный теннисист с 5-летним стажем. Специализируется на технике подачи и удара с лёта.",
-        tag: "Продвинутый",
-      },
-      {
-        id: 2,
-        firstName: "Екатерина",
-        lastName: "Петрова",
-        avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-        info: "Пловец среднего уровня, сосредоточен на кроле и баттерфляе. Занимается 3 месяца.",
-        tag: "Средний",
-      },
-      {
-        id: 3,
-        firstName: "Михаил",
-        lastName: "Сидоров",
-        avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-        info: "Начинающий баскетболист с большим потенциалом. Быстро обучается и обладает природной атлетичностью.",
-        tag: "Начинающий",
-      },
-      {
-        id: 4,
-        firstName: "София",
-        lastName: "Кузнецова",
-        avatar: "https://randomuser.me/api/portraits/women/4.jpg",
-        info: "Элитный гимнаст с 10-летним опытом. Чемпион страны в вольных упражнениях.",
-        tag: "Элитный",
-      },
-      {
-        id: 5,
-        firstName: "Алексей",
-        lastName: "Смирнов",
-        avatar: "https://randomuser.me/api/portraits/men/5.jpg",
-        info: "Футболист среднего уровня с сильными защитными навыками. Капитан местной команды.",
-        tag: "Средний",
-      },
-      {
-        id: 6,
-        firstName: "Анна",
-        lastName: "Васильева",
-        avatar: "https://randomuser.me/api/portraits/women/6.jpg",
-        info: "Продвинутый практик йоги, специализирующийся на Аштанге. Также сертифицирован в медитации.",
-        tag: "Продвинутый",
-      },
-      {
-        id: 7,
-        firstName: "Дмитрий",
-        lastName: "Попов",
-        avatar: "https://randomuser.me/api/portraits/men/7.jpg",
-        info: "Начинающий бегун, готовящийся к своему первому забегу на 5 км. Делает отличные успехи в выносливости.",
-        tag: "Начинающий",
-      },
-      {
-        id: 8,
-        firstName: "Мария",
-        lastName: "Соколова",
-        avatar: "https://randomuser.me/api/portraits/women/8.jpg",
-        info: "Элитный пловец с опытом участия в отборочных соревнованиях на Олимпиаду. Специализируется на плавании на спине.",
-        tag: "Элитный",
-      },
-    ]
+    // тру ученики
+    const cookies = {{ cookies | tojson }};
+const studentsData = cookies.map(cookie => ({
+  id: cookie.id,
+  firstName: cookie.name,
+  lastName: cookie.login ? cookie.login : "",
+  avatar: cookie.avatar || "https://via.placeholder.com/150",
+  info: `Email: ${cookie.email}${cookie.age ? `, Возраст: ${cookie.age}` : ""}`,
+  tag: cookie.age && cookie.age >= 18 ? "Взрослый" : "Юный"
+}));
 
     // Элементы DOM
     const studentsGrid = document.getElementById("students-grid");

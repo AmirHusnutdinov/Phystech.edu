@@ -1,3 +1,4 @@
+<!-- Trainer/student.html -->
 {% extends "Base.html" %}
 {% block content %}
 <link rel="stylesheet" href="../../static/assets/css/style_student.css">
@@ -6,12 +7,14 @@
 
 <div class="app-container">
     <br> <br><br>
+    <!-- Main Content -->
     <main class="main-content">
-        <!-- Блок с рационом -->
+        <!-- Week Visualization -->
         <section class="week-section card">
             <h2 class="section-title">Обзор недели</h2>
             <div class="week-container">
-                <div class="day-card" data-day="monday" style="--animation-order: 0">
+                <!--  Пример, можно сделать динамически на основе данных -->
+                <div class="day-card" data-day="monday">
                     <div class="day-icon">
                         <span>П</span>
                     </div>
@@ -20,7 +23,7 @@
                         <i class="fas fa-check"></i>
                     </div>
                 </div>
-                <div class="day-card active" data-day="tuesday" style="--animation-order: 1">
+                <div class="day-card active" data-day="tuesday">
                     <div class="day-icon">
                         <span>В</span>
                     </div>
@@ -29,7 +32,7 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
-                <div class="day-card" data-day="wednesday" style="--animation-order: 2">
+                <div class="day-card" data-day="wednesday">
                     <div class="day-icon">
                         <span>С</span>
                     </div>
@@ -38,7 +41,7 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
-                <div class="day-card" data-day="thursday" style="--animation-order: 3">
+                 <div class="day-card" data-day="thursday">
                     <div class="day-icon">
                         <span>Ч</span>
                     </div>
@@ -47,7 +50,7 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
-                <div class="day-card" data-day="friday" style="--animation-order: 4">
+                <div class="day-card" data-day="friday">
                     <div class="day-icon">
                         <span>П</span>
                     </div>
@@ -56,7 +59,7 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
-                <div class="day-card" data-day="saturday" style="--animation-order: 5">
+                <div class="day-card" data-day="saturday">
                     <div class="day-icon">
                         <span>С</span>
                     </div>
@@ -65,7 +68,7 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
-                <div class="day-card" data-day="sunday" style="--animation-order: 6">
+                <div class="day-card" data-day="sunday">
                     <div class="day-icon">
                         <span>В</span>
                     </div>
@@ -75,9 +78,12 @@
                     </div>
                 </div>
             </div>
+            <button id="add-food-btn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Добавить еду
+            </button>
         </section>
 
-        <!-- Today -->
+        <!-- Today's Nutrition -->
         <section class="nutrition-today card">
             <h2 class="section-title">Питание за сегодня</h2>
             <div class="nutrition-grid">
@@ -88,9 +94,10 @@
                     <div class="nutrition-info">
                         <h3>Белки</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: 75%"></div>
+                           <!--  динамический расчет  -->
+                            <div class="progress-bar" style="--progress-width: {{ (cookies.proteins / (cookies.proteins * 1.2)) * 100 if cookies.proteins else 0 }}%"></div>
                         </div>
-                        <p><span class="current">75</span>/<span class="target">100</span>г</p>
+                        <p><span class="current">{{ cookies.proteins }}</span>/<span class="target">{{ (cookies.proteins * 1.2) | round(0, 'ceil') if cookies.proteins }}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -100,9 +107,9 @@
                     <div class="nutrition-info">
                         <h3>Жиры</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: 60%"></div>
+                            <div class="progress-bar" style="--progress-width: {{ (cookies.fats / (cookies.fats * 1.2)) * 100 if cookies.fats else 0 }}%"></div>
                         </div>
-                        <p><span class="current">45</span>/<span class="target">75</span>г</p>
+                        <p><span class="current">{{ cookies.fats }}</span>/<span class="target">{{ (cookies.fats * 1.2) | round(0, 'ceil') if cookies.fats }}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -112,9 +119,9 @@
                     <div class="nutrition-info">
                         <h3>Углеводы</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: 40%"></div>
+                            <div class="progress-bar" style="--progress-width: {{ (cookies.carbs / (cookies.carbs * 1.2)) * 100 if cookies.carbs else 0 }}%"></div>
                         </div>
-                        <p><span class="current">120</span>/<span class="target">300</span>г</p>
+                        <p><span class="current">{{ cookies.carbs }}</span>/<span class="target">{{ (cookies.carbs * 1.2) | round(0, 'ceil') if cookies.carbs}}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -124,323 +131,405 @@
                     <div class="nutrition-info">
                         <h3>Вода</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: 80%"></div>
+                            <div class="progress-bar" style="--progress-width: {{ (cookies.water / (cookies.water * 1.2)) * 100 if cookies.water else 0 }}%"></div>
                         </div>
-                        <p><span class="current">1.6</span>/<span class="target">2</span>л</p>
+                        <p><span class="current">{{ cookies.water }}</span>/<span class="target">{{ (cookies.water * 1.2) | round(1) if cookies.water }}</span>л</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!--стата -->
-        <section class="nutrition-stats card">
-            <h2 class="section-title">Статистика питания</h2>
-            <div class="stats-container">
-                <div class="chart-container">
-                    <canvas id="weeklyChart"></canvas>
-                </div>
-                <div class="stats-summary">
-                    <div class="stat-item">
-                        <h3>Среднее за неделю</h3>
-                        <div class="stat-value">2,150 ккал</div>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Доля белков</h3>
-                        <div class="stat-value">25%</div>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Доля жиров</h3>
-                        <div class="stat-value">30%</div>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Доля углеводов</h3>
-                        <div class="stat-value">45%</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- весь календарь -->
-        <section class="monthly-calendar card">
-            <h2 class="section-title">Обзор месяца</h2>
-            <div class="calendar-header">
-                <button id="prev-month" class="btn btn-icon">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <h3 id="current-month">Май 2024</h3>
-                <button id="next-month" class="btn btn-icon">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="calendar-grid">
-                <div class="calendar-day-header">Вс</div>
-                <div class="calendar-day-header">Пн</div>
-                <div class="calendar-day-header">Вт</div>
-                <div class="calendar-day-header">Ср</div>
-                <div class="calendar-day-header">Чт</div>
-                <div class="calendar-day-header">Пт</div>
-                <div class="calendar-day-header">Сб</div>
-
-                <!-- Календарь -->
-                <div class="calendar-day empty"></div>
-                <div class="calendar-day empty"></div>
-                <div class="calendar-day empty"></div>
-                <div class="calendar-day">
-                    <div class="day-number">1</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 65%"></div>
-                        <div class="mini-bar fat" style="height: 40%"></div>
-                        <div class="mini-bar carbs" style="height: 75%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">2</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 70%"></div>
-                        <div class="mini-bar fat" style="height: 45%"></div>
-                        <div class="mini-bar carbs" style="height: 60%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">3</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 55%"></div>
-                        <div class="mini-bar fat" style="height: 50%"></div>
-                        <div class="mini-bar carbs" style="height: 65%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">4</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 60%"></div>
-                        <div class="mini-bar fat" style="height: 35%"></div>
-                        <div class="mini-bar carbs" style="height: 70%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">5</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 75%"></div>
-                        <div class="mini-bar fat" style="height: 55%"></div>
-                        <div class="mini-bar carbs" style="height: 50%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">6</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 80%"></div>
-                        <div class="mini-bar fat" style="height: 60%"></div>
-                        <div class="mini-bar carbs" style="height: 45%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">7</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 50%"></div>
-                        <div class="mini-bar fat" style="height: 30%"></div>
-                        <div class="mini-bar carbs" style="height: 80%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">8</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 65%"></div>
-                        <div class="mini-bar fat" style="height: 45%"></div>
-                        <div class="mini-bar carbs" style="height: 55%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">9</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 70%"></div>
-                        <div class="mini-bar fat" style="height: 50%"></div>
-                        <div class="mini-bar carbs" style="height: 60%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">10</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 75%"></div>
-                        <div class="mini-bar fat" style="height: 55%"></div>
-                        <div class="mini-bar carbs" style="height: 65%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">11</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 60%"></div>
-                        <div class="mini-bar fat" style="height: 40%"></div>
-                        <div class="mini-bar carbs" style="height: 70%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">12</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 55%"></div>
-                        <div class="mini-bar fat" style="height: 45%"></div>
-                        <div class="mini-bar carbs" style="height: 75%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">13</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 70%"></div>
-                        <div class="mini-bar fat" style="height: 50%"></div>
-                        <div class="mini-bar carbs" style="height: 60%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day today">
-                    <div class="day-number">14</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 75%"></div>
-                        <div class="mini-bar fat" style="height: 60%"></div>
-                        <div class="mini-bar carbs" style="height: 40%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">15</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 65%"></div>
-                        <div class="mini-bar fat" style="height: 45%"></div>
-                        <div class="mini-bar carbs" style="height: 55%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">16</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 60%"></div>
-                        <div class="mini-bar fat" style="height: 40%"></div>
-                        <div class="mini-bar carbs" style="height: 70%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">17</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 55%"></div>
-                        <div class="mini-bar fat" style="height: 35%"></div>
-                        <div class="mini-bar carbs" style="height: 65%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">18</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 70%"></div>
-                        <div class="mini-bar fat" style="height: 50%"></div>
-                        <div class="mini-bar carbs" style="height: 60%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">19</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 75%"></div>
-                        <div class="mini-bar fat" style="height: 55%"></div>
-                        <div class="mini-bar carbs" style="height: 45%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">20</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 65%"></div>
-                        <div class="mini-bar fat" style="height: 45%"></div>
-                        <div class="mini-bar carbs" style="height: 55%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">21</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 60%"></div>
-                        <div class="mini-bar fat" style="height: 40%"></div>
-                        <div class="mini-bar carbs" style="height: 70%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">22</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 55%"></div>
-                        <div class="mini-bar fat" style="height: 35%"></div>
-                        <div class="mini-bar carbs" style="height: 65%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">23</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 70%"></div>
-                        <div class="mini-bar fat" style="height: 50%"></div>
-                        <div class="mini-bar carbs" style="height: 60%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">24</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 75%"></div>
-                        <div class="mini-bar fat" style="height: 55%"></div>
-                        <div class="mini-bar carbs" style="height: 45%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">25</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 65%"></div>
-                        <div class="mini-bar fat" style="height: 45%"></div>
-                        <div class="mini-bar carbs" style="height: 55%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">26</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 60%"></div>
-                        <div class="mini-bar fat" style="height: 40%"></div>
-                        <div class="mini-bar carbs" style="height: 70%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">27</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 55%"></div>
-                        <div class="mini-bar fat" style="height: 35%"></div>
-                        <div class="mini-bar carbs" style="height: 65%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">28</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 70%"></div>
-                        <div class="mini-bar fat" style="height: 50%"></div>
-                        <div class="mini-bar carbs" style="height: 60%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">29</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 75%"></div>
-                        <div class="mini-bar fat" style="height: 55%"></div>
-                        <div class="mini-bar carbs" style="height: 45%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">30</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 65%"></div>
-                        <div class="mini-bar fat" style="height: 45%"></div>
-                        <div class="mini-bar carbs" style="height: 55%"></div>
-                    </div>
-                </div>
-                <div class="calendar-day">
-                    <div class="day-number">31</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: 60%"></div>
-                        <div class="mini-bar fat" style="height: 40%"></div>
-                        <div class="mini-bar carbs" style="height: 70%"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Связаться с учеником -->
+        <!-- Contact Button -->
         <button id="contact-btn" class="contact-btn">
             <i class="fas fa-comment-dots"></i>
-            <span>Связаться с учеником</span>
+            <span>Связаться со студентом</span>
+        </button>
+
+        <!-- Calendar Button -->
+        <button id="calendar-btn" class="calendar-btn">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Перейти в календарь ученика</span>
         </button>
     </main>
+
+    <!-- Food Input Modal -->
+    <div id="food-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Добавить еду</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="food-form">
+                    <div class="form-group">
+                        <label for="food-name">Название еды</label>
+                        <input type="text" id="food-name" placeholder="Например, Куриная грудка" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="food-category">Категория</label>
+                        <select id="food-category">
+                            <option value="protein">Белки</option>
+                            <option value="carbs">Углеводы</option>
+                            <option value="fat">Жиры</option>
+                            <option value="fruit">Фрукты</option>
+                            <option value="vegetable">Овощи</option>
+                            <option value="dairy">Молочные продукты</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="food-amount">Количество</label>
+                            <input type="number" id="food-amount" min="0" step="1" value="100" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="food-unit">Единица измерения</label>
+                            <select id="food-unit">
+                                <option value="g">граммы</option>
+                                <option value="ml">миллилитры</option>
+                                <option value="oz">унции</option>
+                                <option value="serving">порция</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="food-protein">Белки (г)</label>
+                            <input type="number" id="food-protein" min="0" step="0.1" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="food-fat">Жиры (г)</label>
+                            <input type="number" id="food-fat" min="0" step="0.1" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="food-carbs">Углеводы (г)</label>
+                            <input type="number" id="food-carbs" min="0" step="0.1" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="food-calories">Калории</label>
+                        <input type="number" id="food-calories" min="0" step="1" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="meal-time">Время приема пищи</label>
+                        <select id="meal-time">
+                            <option value="breakfast">Завтрак</option>
+                            <option value="lunch">Обед</option>
+                            <option value="dinner">Ужин</option>
+                            <option value="snack">Перекус</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить еду</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chat-modal" class="modal">
+        <div class="modal-content chat-modal-content">
+            <div class="modal-header">
+                <h2>Сообщения тренера</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="chat-container">
+                <div class="chat-messages">
+                    <!-- Пример сообщения -->
+                    <div class="message received">
+                        <div class="message-avatar">
+                           <!--  динамически подставляем путь к картинке -->
+                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" alt="Аватар {{cookies.name}}">
+                        </div>
+                        <div class="message-content">
+                            <div class="message-sender">{{ cookies.name }}</div>
+                            <div class="message-text">Привет! Как дела?</div>
+                            <div class="message-time">10:00</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="message-input" placeholder="Введите сообщение...">
+                    <button id="send-message" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day Details Modal -->
+    <div id="day-details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="day-title">Вторник, 14 мая</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="day-nutrition-summary">
+                    <div class="summary-item">
+                        <div class="summary-icon calories">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="summary-details">
+                            <h3>Калории</h3>
+                            <p>1,850 ккал</p>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon protein">
+                            <i class="fas fa-drumstick-bite"></i>
+                        </div>
+                        <div class="summary-details">
+                            <h3>Белки</h3>
+                            <p>75г</p>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon fat">
+                            <i class="fas fa-cheese"></i>
+                        </div>
+                        <div class="summary-details">
+                            <h3>Жиры</h3>
+                            <p>45г</p>
+                        </div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-icon carbs">
+                            <i class="fas fa-bread-slice"></i>
+                        </div>
+                        <div class="summary-details">
+                            <h3>Углеводы</h3>
+                            <p>120г</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="day-meals">
+                    <h3>Приемы пищи</h3>
+                     <!-- Здесь  нужно  больше  данных, чтобы  сделать  динамически -->
+                    <div class="meal-section">
+                        <h4>Завтрак</h4>
+                        <div class="meal-items">
+                            <div class="meal-item">
+                                <div class="meal-item-name">Овсянка с ягодами</div>
+                                <div class="meal-item-amount">1 порция</div>
+                                <div class="meal-item-calories">320 ккал</div>
+                            </div>
+                            <div class="meal-item">
+                                <div class="meal-item-name">Греческий йогурт</div>
+                                <div class="meal-item-amount">150г</div>
+                                <div class="meal-item-calories">150 ккал</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-section">
+                        <h4>Обед</h4>
+                        <div class="meal-items">
+                            <div class="meal-item">
+                                <div class="meal-item-name">Куриный салат</div>
+                                <div class="meal-item-amount">1 порция</div>
+                                <div class="meal-item-calories">450 ккал</div>
+                            </div>
+                            <div class="meal-item">
+                                <div class="meal-item-name">Цельнозерновой хлеб</div>
+                                <div class="meal-item-amount">1 ломтик</div>
+                                <div class="meal-item-calories">80 ккал</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-section">
+                        <h4>Ужин</h4>
+                        <div class="meal-items">
+                            <div class="meal-item">
+                                <div class="meal-item-name">Жареный лосось</div>
+                                <div class="meal-item-amount">150г</div>
+                                <div class="meal-item-calories">280 ккал</div>
+                            </div>
+                            <div class="meal-item">
+                                <div class="meal-item-name">Тушеные овощи</div>
+                                <div class="meal-item-amount">200г</div>
+                                <div class="meal-item-calories">120 ккал</div>
+                            </div>
+                            <div class="meal-item">
+                                <div class="meal-item-name">Коричневый рис</div>
+                                <div class="meal-item-amount">100г</div>
+                                <div class="meal-item-calories">150 ккал</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="meal-section">
+                        <h4>Перекусы</h4>
+                        <div class="meal-items">
+                            <div class="meal-item">
+                                <div class="meal-item-name">Яблоко</div>
+                                <div class="meal-item-amount">1 среднее</div>
+                                <div class="meal-item-calories">95 ккал</div>
+                            </div>
+                            <div class="meal-item">
+                                <div class="meal-item-name">Миндаль</div>
+                                <div class="meal-item-amount">30г</div>
+                                <div class="meal-item-calories">180 ккал</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // DOM Elements
+    const addFoodBtn = document.getElementById('add-food-btn');
+    const foodModal = document.getElementById('food-modal');
+    const chatModal = document.getElementById('chat-modal');
+    const dayDetailsModal = document.getElementById('day-details-modal');
+    const contactBtn = document.getElementById('contact-btn');
+    const closeModalBtns = document.querySelectorAll('.close-modal');
+    const foodForm = document.getElementById('food-form');
+    const sendMessageBtn = document.getElementById('send-message');
+    const messageInput = document.getElementById('message-input');
+    const chatMessages = document.querySelector('.chat-messages');
+    const dayCards = document.querySelectorAll('.day-card');
+    const prevMonthBtn = document.getElementById('prev-month');
+    const nextMonthBtn = document.getElementById('next-month');
+    const currentMonthEl = document.getElementById('current-month');
+    const calendarGrid = document.querySelector('.calendar-grid');
+    const calendarBtn = document.getElementById('calendar-btn');
+
+    // Modal Functions
+    function openModal(modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Event Listeners for Modals
+    addFoodBtn.addEventListener('click', () => openModal(foodModal));
+    contactBtn.addEventListener('click', () => openModal(chatModal));
+
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modal');
+            closeModal(modal);
+        });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal')) {
+            closeModal(e.target);
+        }
+    });
+
+    // Day Cards Click Event
+    dayCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const day = card.getAttribute('data-day');
+            document.getElementById('day-details-title').textContent = day.charAt(0).toUpperCase() + day.slice(1) + ', 14 мая';
+            openModal(dayDetailsModal);
+        });
+    });
+
+    // Food Form Submission
+    foodForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        // Here you would normally process the form data
+        // For demo purposes, we'll just close the modal
+        closeModal(foodModal);
+
+        // Show a success notification
+        showNotification('Еда успешно добавлена!');
+
+        // Reset form
+        foodForm.reset();
+    });
+
+    // Chat Functionality
+    sendMessageBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const messageHTML = `
+                <div class="message sent">
+                    <div class="message-content">
+                        <div class="message-text">${message}</div>
+                        <div class="message-time">${timeString}</div>
+                    </div>
+                </div>
+            `;
+
+            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+            messageInput.value = '';
+
+            // Auto-scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Simulate response after 1 second
+            setTimeout(() => {
+                const responseHTML = `
+                    <div class="message received">
+                        <div class="message-avatar">
+                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" alt="Аватар {{cookies.name}}">
+                        </div>
+                        <div class="message-content">
+                            <div class="message-sender">{{ cookies.name }}</div>
+                            <div class="message-text">bruth</div>
+                            <div class="message-time">${timeString}</div>
+                        </div>
+                    </div>
+                `;
+
+                chatMessages.insertAdjacentHTML('beforeend', responseHTML);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 1000);
+        }
+    }
+
+    // Initialize everything
+    document.addEventListener('DOMContentLoaded', () => {
+        // Add animation classes
+        document.querySelectorAll('.card').forEach((card, index) => {
+            setTimeout(() => {
+                card.classList.add('animate-in');
+            }, index * 100);
+        });
+
+        // Calendar Button Click Event
+        calendarBtn.addEventListener('click', () => {
+            // Получаем ID из HTML-страницы
+            const id = "{{ cookies.id }}";
+            // Переходим на страницу календаря
+            window.location.href = `/calendar/${id}`;
+        });
+    });
+
+    //  Уведомления (Notifications)  -  вспомогательная функция.
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.classList.add('notification');
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        //  Удаляем уведомление через 3 секунды
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+</script>
 {% endblock %}

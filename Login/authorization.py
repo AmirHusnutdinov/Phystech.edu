@@ -20,12 +20,14 @@ class Authorization:
             name = form.name.data
             password = form.password.data
             password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""")
+            user_id = database_query(f"""SELECT id FROM "User" WHERE email = '{name}';""")
             print(password_prov)
 
             # Здесь должна быть ваша логика проверки пользователя
             if password_prov and password == password_prov[0][0]:  # Пример проверки
                 session['login'] = True
-                session['email'] = name  # Сохраняем пользователя в сессии
+                session['email'] = name
+                session["user_id"] = user_id
                 flash('Login successful!', 'success')
                 return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
             else:
@@ -38,6 +40,7 @@ class Authorization:
     @staticmethod
     def logout():
         session['Login'] = False
-        session.pop('name', None)  # Удаляем пользователя из сессии
+        session.pop('email', None)
+        session.pop('user_id', None)# Удаляем пользователя из сессии
         flash('You have been logged out.', 'info')
         return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
