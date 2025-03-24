@@ -56,7 +56,7 @@ class Registration:
             hash_password(password)
             count_user = database_query(f"""SELECT COUNT(*) AS user_count 
                           FROM "User"
-                          WHERE email = '{email}';""")
+                          WHERE email = '{email}';""", True)
             # print(count_user)
             if count_user[0][0]> 0:
                 flash('Registration failed. Please check your input.', 'danger')

@@ -26,16 +26,14 @@ class Authorization:
         form = LoginForm()
         if form.validate_on_submit():  # Проверка на валидность формы
             name = form.name.data
-            password = form.password.data.encode('utf-8')
-            password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""")
-            user_id = database_query(f"""SELECT id FROM "User" WHERE email = '{name}';""")
-            print(password_prov)
-
+            password = form.password.data
+            password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""", True)
+            user_id = database_query(f"""SELECT id FROM "User" WHERE email = '{name}';""", True)
             # Здесь должна быть ваша логика проверки пользователя
             if password_prov and password == password_prov[0][0]:  # Пример проверки
-                session['login'] = True
+                session['Login'] = True
                 session['email'] = name
-                session["user_id"] = user_id
+                session["user_id"] = user_id[0][0]
                 flash('Login successful!', 'success')
                 return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
             else:

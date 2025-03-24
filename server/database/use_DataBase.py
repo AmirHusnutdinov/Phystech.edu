@@ -68,11 +68,12 @@ def get_user_data(id):
 
 def get_day_data(id, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {id} AND date = {date}"
-    return database_query(sql)
+    return database_query(sql, True)
 
 def get_all_day_data(id):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {id}"
-    data = database_query(sql)
+    data = database_query(sql, True)
+    print(data)
     ans = []
     for el in data:
         day_data = {
@@ -96,7 +97,7 @@ def get_all_day_data(id):
 
 def database_check():
     sql = "SELECT * FROM user_daily_metrics"
-    return database_query(sql)
+    return database_query(sql, True)
 
 def save_news(title, content, image_path):
 
@@ -104,7 +105,7 @@ def save_news(title, content, image_path):
 
 def check_trener(id):
     sql = f"SELECT role FROM roles WHERE id = {id}"
-    data = database_query(sql)[0][0]
+    data = database_query(sql, True)[0][0]
     if data == 2 or data == 3:
         return True
     return False
@@ -112,7 +113,7 @@ def check_trener(id):
 def get_list_of_student(id):
     sql = f"SELECT student_id FROM student WHERE id = {id}"
     ans_list = []
-    data = database_query(sql)
+    data = database_query(sql, True)
     for el in data:
         ans_list.append(el[0])
     return ans_list
