@@ -5,6 +5,7 @@ from settings import app
 from server.service_files.links import header_links
 from utils import render_template_with_user
 
+
 class Calendar:
     @staticmethod
     def show_calendar_page():
@@ -22,6 +23,7 @@ class Calendar:
         return "You are not logged in", 401
 
     def show_calendar_page_with_id(us_id):
+            user_id = us_id
             user_in_all_time = get_all_day_data(user_id)
             print(user_in_all_time)
             return render_template_with_user(
