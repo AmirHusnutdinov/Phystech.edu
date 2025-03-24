@@ -3,9 +3,9 @@ from server.service_files.links import header_links
 from server.login.forms import LoginForm
 from server.database.use_DataBase import database_query
 import bcrypt
-from ServiceFiles.links import header_links
-from Login.forms import LoginForm, RegistrationForm
-from DataBase.use_DataBase import database_query
+from server.service_files.links import header_links
+from server.login.forms import LoginForm, RegistrationForm
+from server.database.use_DataBase import database_query
 import utils
 from utils import render_template_with_user
 

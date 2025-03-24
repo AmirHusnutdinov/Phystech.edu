@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from server.service_files.links import header_links
 from server.database.use_DataBase import save_news
+from utils import render_template_with_user
 
 
 class News:

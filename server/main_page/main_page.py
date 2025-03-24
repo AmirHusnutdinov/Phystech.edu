@@ -1,6 +1,6 @@
 from flask import render_template
-from Cloud.cloud_main import urls_files_cloud_list
-from ServiceFiles.links import header_links
+from server.cloud.cloud_main import urls_files_cloud_list
+from server.service_files.links import header_links
 import utils
 from utils import render_template_with_user
 

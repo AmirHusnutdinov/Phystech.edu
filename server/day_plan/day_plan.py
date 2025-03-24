@@ -4,6 +4,7 @@ from flask import render_template, request, jsonify
 from server.service_files.links import header_links
 from server.database.use_DataBase import get_dishes, get_user_data,database_query
 from datetime import datetime,date
+from utils import render_template_with_user
 
 id = 2
 
@@ -78,6 +79,7 @@ class DayPlan:
             header_links=header_links,
             title="Добавить продукт",
         )
+
 def validate_data(data):
     weight = data.get('weight')
     target_kbzhu = data.get('targetKBZHU')
