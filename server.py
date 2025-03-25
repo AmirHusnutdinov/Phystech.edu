@@ -3,7 +3,7 @@ import os
 from flask import request, render_template
 from utils import render_template_with_user
 
-from server.Hendler.handler import handler
+from server.hendler.handler import handler
 from server.admin.admin import Admin
 from server.calendar.calendar import Calendar
 from server.day_plan.day_plan import DayPlan
@@ -24,6 +24,7 @@ from settings import app, host
 from server.service_files.links import *
 
 app.secret_key = os.urandom(24)
+app.register_blueprint(food_blueprint)
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(delete_old_diets, 'cron', hour=0, minute=0)

@@ -27,7 +27,7 @@ host = "127.0.0.1"
 port = getenv('POSTGRES_PORT')
 user = getenv('POSTGRES_USER')
 password = getenv('POSTGRES_PASSWORD')
-db_name = 'food_helper'
+db_name = getenv('DATABASE_NAME')
 app.config.from_object(Config)
 
 MAIL_SERVER = 'smtp.yandex.ru'  # Замените на ваш SMTP-сервер
