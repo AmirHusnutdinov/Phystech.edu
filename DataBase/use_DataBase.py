@@ -1,4 +1,6 @@
 import psycopg2
+from ServiceFiles.links import *
+from settings import app, host
 
 from settings import host, user, password, db_name, port
 

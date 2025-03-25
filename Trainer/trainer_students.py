@@ -3,6 +3,8 @@ from flask import render_template, session
 from DataBase.use_DataBase import *
 from ServiceFiles.links import header_links
 from settings import app
+from ServiceFiles.links import *
+from settings import app, host
 
 
 class Students:
@@ -46,6 +48,13 @@ class Students:
             cookies=user_info
         )
 
-    @app.route("/student/<int:student_id>")
-    def student_page(student_id):
-        return Students.show_one_student_page(student_id)
+
+
+@app.route(all_students)
+def open_all_students_page():
+    return Students.show_students_page()
+
+
+@app.route(student)
+def open_students_page(student_id):
+    return Students.show_one_student_page(student_id)

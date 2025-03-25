@@ -1,5 +1,7 @@
 from flask import render_template, session, request
 from datetime import datetime, date
+from ServiceFiles.links import *
+from settings import app, host
 
 from ServiceFiles.links import header_links
 import DataBase
@@ -36,3 +38,7 @@ class Calendar:
     @app.route("/calendar/<int:student_id>")
     def calendar_page(student_id):
         return Calendar.show_calendar_page_with_id(student_id)
+
+@app.route(calendar)
+def open_calendar_page():
+    return Calendar.show_calendar_page()

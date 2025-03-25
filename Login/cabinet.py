@@ -1,6 +1,8 @@
 from flask import render_template
 from DataBase.use_DataBase import get_user_data
 from ServiceFiles.links import header_links
+from ServiceFiles.links import *
+from settings import app, host
 
 id = 2
 class Cabinet:
@@ -10,3 +12,8 @@ class Cabinet:
             "Login/cabinet.html",
             header_links=header_links,
             title="Кабинет",user = get_user_data(id))
+
+
+@app.route(cabinet, methods=['GET', 'POST'])
+def open_cabinet_page():
+    return Cabinet.show_cabinet_page()

@@ -1,5 +1,7 @@
 from flask import render_template
 from ServiceFiles.links import header_links
+from ServiceFiles.links import *
+from settings import app, host
 
 
 class News:
@@ -29,3 +31,13 @@ class News:
             news_image_url=news_image_url,
             news_content=news_content
         )
+
+
+@app.route(all_news)
+def open_all_news_page():
+    return News.show_all_news_page()
+
+
+@app.route(one_news)
+def open_one_news_page(news_id):
+    return News.show_one_news_page(news_id)

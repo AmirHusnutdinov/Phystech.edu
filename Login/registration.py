@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, session
+from flask import render_template, redirect, url_for, flash, session, request
 from flask_mail import Message
 from ServiceFiles.links import header_links, main_page
 from Login.forms import RegistrationForm, ConfirmationForm  # Импортируйте новую форму
@@ -11,6 +11,8 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from settings import *
+from ServiceFiles.links import *
+from settings import app, host
 
 
 def send_email(subject, recipient, body):
@@ -112,3 +114,19 @@ class Registration:
 
         flash('Please enter the confirmation code.', 'warning')
         return redirect(url_for('confirm_code'))
+
+@app.route(registration, methods=['GET', 'POST'])
+def show_registration_page():
+    return Registration.show_registration_page()
+
+
+@app.route(process_registration, methods=['POST'])
+def process_registration():
+    return Registration.process_registration()
+
+
+@app.route(confirm_code, methods=['GET', 'POST'])
+def confirm_code():
+    if request.method == 'POST':
+        return Registration.process_confirmation()
+    return Registration.show_confirmation_page()

@@ -1,6 +1,8 @@
 from flask import render_template
 from Cloud.cloud_main import urls_files_cloud_list
 from ServiceFiles.links import header_links
+from ServiceFiles.links import *
+from settings import app, host
 
 class StartPage:
     @staticmethod
@@ -12,3 +14,9 @@ class StartPage:
             urls_files_cloud_list = urls_files_cloud_list,
             header_links=header_links,
             title="Главная страница")
+
+@app.route(main_page)
+def open_main_page():
+    return StartPage.show_the_main_page()
+
+

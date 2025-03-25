@@ -4,6 +4,8 @@ from flask import render_template, request, jsonify
 from ServiceFiles.links import header_links
 from DataBase.use_DataBase import get_dishes, get_user_data,database_query
 from datetime import datetime,date
+from ServiceFiles.links import *
+from settings import app, host
 
 id = 2
 
@@ -97,3 +99,18 @@ def validate_date(date_str):
         return submitted_date == date.today()
     except ValueError:
         return False
+
+
+
+@app.route(day_plan)
+def open_day_plan_page():
+    return DayPlan.show_day_plan_page()
+
+
+@app.route(save_day_plan, methods=['POST'])
+def save_data():
+    return DayPlan.save_day_plan()
+
+@app.route(add_product)
+def open_add_product():
+    return DayPlan.show_add_product_page()
