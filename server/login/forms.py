@@ -1,6 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo
+from flask import request, render_template
+from settings import app, host
+from server.service_files.links import *
 
 
 

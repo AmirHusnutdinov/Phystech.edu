@@ -8,6 +8,9 @@ from server.login.forms import LoginForm, RegistrationForm
 from server.database.use_DataBase import database_query
 import utils
 from utils import render_template_with_user
+from flask import request, render_template
+from settings import app, host
+from server.service_files.links import *
 
 
 class Authorization:
@@ -50,3 +53,19 @@ class Authorization:
         session.pop('user_id', None)# Удаляем пользователя из сессии
         flash('You have been logged out.', 'info')
         return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
+
+
+
+@app.route(authorization, methods=['GET', 'POST'])
+def open_authorization_page():
+    return Authorization.show_authorization_page()
+
+
+@app.route(process_login, methods=['POST'])
+def process_login():
+    return Authorization.process_login()
+
+
+@app.route(logout)
+def logout():
+    return Authorization.logout()

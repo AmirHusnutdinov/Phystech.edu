@@ -4,6 +4,9 @@ from server.database.use_DataBase import get_all_day_data
 from settings import app
 from server.service_files.links import header_links
 from utils import render_template_with_user
+from flask import request, render_template
+from settings import app, host
+from server.service_files.links import *
 
 
 class Calendar:
@@ -36,3 +39,7 @@ class Calendar:
     @app.route("/calendar/<int:student_id>")
     def calendar_page(student_id):
         return Calendar.show_calendar_page_with_id(student_id)
+
+@app.route(calendar)
+def open_calendar_page():
+    return Calendar.show_calendar_page()

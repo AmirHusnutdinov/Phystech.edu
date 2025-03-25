@@ -3,6 +3,9 @@ from flask import render_template, session
 from server.database.use_DataBase import *
 from server.service_files.links import header_links
 from settings import app
+from flask import request, render_template
+from settings import app, host
+from server.service_files.links import *
 
 
 class Students:
@@ -10,14 +13,13 @@ class Students:
     @staticmethod
     def show_students_page():
         if "user_id" in session:
-            user_id = session["user_id"][0][0]
+            user_id = session["user_id"]
             if check_trener(user_id):
                 student_list = get_list_of_student(user_id)
                 students_info = []
                 for el in student_list:
                     students_info.append(get_user_data(el))
-                return render_template(
-                    "Trainer/students.html",
+                return render_template("Trainer/students.html",
                     header_links=header_links,
                     title="Мои студенты",
                     cookies=students_info
@@ -46,6 +48,11 @@ class Students:
             cookies=user_info
         )
 
-    @app.route("/student/<int:student_id>")
-    def student_page(student_id):
-        return Students.show_one_student_page(student_id)
+@app.route(all_students)
+def open_all_students_page():
+    return Students.show_students_page()
+
+
+@app.route(student)
+def open_students_page(student_id):
+    return Students.show_one_student_page(student_id)

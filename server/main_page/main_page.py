@@ -3,6 +3,8 @@ from server.cloud.cloud_main import urls_files_cloud_list
 from server.service_files.links import header_links
 import utils
 from utils import render_template_with_user
+from settings import app, host
+from server.service_files.links import *
 
 class StartPage:
     @staticmethod
@@ -16,3 +18,6 @@ class StartPage:
             header_links=header_links,
             )
 
+@app.route(main_page)
+def open_main_page():
+    return StartPage.show_the_main_page()

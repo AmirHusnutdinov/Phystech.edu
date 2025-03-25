@@ -13,6 +13,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from settings import *
 from utils import render_template_with_user
+from flask import request, render_template
+from settings import app, host
+from server.service_files.links import *
 
 def send_email(subject, recipient, body):
     # Создание сообщения
@@ -113,3 +116,19 @@ class Registration:
 
         flash('Please enter the confirmation code.', 'warning')
         return redirect(url_for('confirm_code'))
+
+@app.route(registration, methods=['GET', 'POST'])
+def show_registration_page():
+    return Registration.show_registration_page()
+
+
+@app.route(process_registration, methods=['POST'])
+def process_registration():
+    return Registration.process_registration()
+
+
+@app.route(confirm_code, methods=['GET', 'POST'])
+def confirm_code():
+    if request.method == 'POST':
+        return Registration.process_confirmation()
+    return Registration.show_confirmation_page()

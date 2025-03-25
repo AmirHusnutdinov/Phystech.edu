@@ -5,6 +5,9 @@ from server.service_files.links import header_links
 from server.database.use_DataBase import get_dishes, get_user_data,database_query
 from datetime import datetime,date
 from utils import render_template_with_user
+from flask import request, render_template
+from settings import app, host
+from server.service_files.links import *
 
 id = 2
 
@@ -102,3 +105,21 @@ def validate_date(date_str):
         return submitted_date == date.today()
     except ValueError:
         return False
+
+
+@app.route(day_plan)
+def open_day_plan_page():
+    return DayPlan.show_day_plan_page()
+
+
+@app.route(save_day_plan, methods=['POST'])
+def save_data():
+    return DayPlan.save_day_plan()
+
+@app.route(add_product)
+def open_add_product():
+    return DayPlan.show_add_product_page()
+
+@app.route("/physical_exercises")
+def open_physical_exercises_page():
+    return render_template("DayPlan/physical_exercises.html")

@@ -2,6 +2,9 @@ from flask import render_template, request, redirect, url_for
 from server.service_files.links import header_links
 from server.database.use_DataBase import save_news
 from utils import render_template_with_user
+from flask import request, render_template
+from settings import app, host
+from server.service_files.links import *
 
 
 class News:
@@ -52,3 +55,21 @@ class News:
             image_path = None
         save_news(title=title, image_path=image_path, content=content)
         return redirect(url_for('open_all_news_page'))
+
+
+@app.route(all_news)
+def open_all_news_page():
+    return News.show_all_news_page()
+
+
+@app.route(one_news)
+def open_one_news_page(news_id):
+    return News.show_one_news_page(news_id)
+
+@app.route(make_news, methods=['GET'])
+def open_make_news_page():
+    return News.show_make_news()
+
+@app.route(save_news, methods=['POST'])
+def handle_make_news():
+    return News.handle_make_news()
