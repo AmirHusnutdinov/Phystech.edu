@@ -57,10 +57,6 @@ class DayPlan:
             carbs = {actualKBZHU['carbs']}, carbs_plan = {targetKBZHU['carbs']};
         """
 
-        print(
-            f"Received data: Weight: {weight}, Target KBZHU: {
-                targetKBZHU}, Actual KBZHU: {actualKBZHU}"
-        )
 
         try:
             database_query(sql)
