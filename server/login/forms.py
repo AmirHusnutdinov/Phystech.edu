@@ -6,7 +6,6 @@ from settings import app, host
 from server.service_files.links import *
 
 
-
 class RegistrationForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = EmailField('Email', validators=[DataRequired(), Email()])

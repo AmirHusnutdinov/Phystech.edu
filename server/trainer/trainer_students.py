@@ -1,11 +1,9 @@
-from flask import render_template, session
+from flask import render_template
+from flask import session
 
 from server.database.use_DataBase import *
-from server.service_files.links import header_links
-from settings import app
-from flask import request, render_template
-from settings import app, host
 from server.service_files.links import *
+from settings import app
 
 
 class Students:
@@ -14,19 +12,18 @@ class Students:
     def show_students_page():
         if "user_id" in session:
             user_id = session["user_id"]
-            if check_trener(user_id):
+            if check_trainer(user_id):
                 student_list = get_list_of_student(user_id)
                 students_info = []
                 for el in student_list:
                     students_info.append(get_user_data(el))
                 return render_template("Trainer/students.html",
-                    header_links=header_links,
-                    title="Мои студенты",
-                    cookies=students_info
-                )
+                                       header_links=header_links,
+                                       title="Мои студенты",
+                                       cookies=students_info
+                                       )
             return "You are not trener", 401
         return "You are not logged in", 401
-       
 
     @staticmethod
     def show_one_student_page(student_id):
@@ -47,6 +44,7 @@ class Students:
             student_content=student_content,
             cookies=user_info
         )
+
 
 @app.route(all_students)
 def open_all_students_page():

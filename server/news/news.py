@@ -1,10 +1,10 @@
-from flask import render_template, request, redirect, url_for
-from server.service_files.links import header_links
+from flask import redirect, url_for
+from flask import request
+
 from server.database.use_DataBase import save_news
-from utils import render_template_with_user
-from flask import request, render_template
-from settings import app, host
 from server.service_files.links import *
+from settings import app
+from utils import render_template_with_user
 
 
 class News:
@@ -66,9 +66,11 @@ def open_all_news_page():
 def open_one_news_page(news_id):
     return News.show_one_news_page(news_id)
 
+
 @app.route(make_news, methods=['GET'])
 def open_make_news_page():
     return News.show_make_news()
+
 
 @app.route(save_news, methods=['POST'])
 def handle_make_news():

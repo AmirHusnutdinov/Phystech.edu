@@ -21,8 +21,6 @@ process_login = base_link + '/process_login'
 logout = base_link + '/logout'
 all_students = base_link + '/all_students'
 student = base_link + '/student/<int:student_id>'
-# header_links = ["/", day_plan, calendar, cabinet, all_news, authorization, registration, save_day_plan] 
-# хз зачем переписал на словарь
 header_links = {
     "/": "/",
     "day_plan": day_plan,

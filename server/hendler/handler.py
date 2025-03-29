@@ -1,13 +1,10 @@
-from flask import request, jsonify, Blueprint
-
-from utils import render_template_with_user
-from ..database.use_DataBase import database_query
-from datetime import datetime, timedelta
-from flask import request, render_template
-from settings import app, host
 from server.service_files.links import *
+from settings import app
+from utils import render_template_with_user
 
-class handler:
+
+class Handler:
+    @staticmethod
     @app.errorhandler(400)
     def page_bad_request(_):
         error_phrase = ["Запрос", "неправильный", "."]
@@ -17,6 +14,7 @@ class handler:
                                          error_phrase=error_phrase,
                                          main_page=main_page), 400
 
+    @staticmethod
     @app.errorhandler(404)
     def page_not_found(_):
         error_phrase = ["Похоже такой", "страницы", "нет"]
@@ -26,6 +24,7 @@ class handler:
                                          error_phrase=error_phrase,
                                          main_page=main_page), 404
 
+    @staticmethod
     @app.errorhandler(500)
     def page_internal_server_error(_):
         error_phrase = ["Похоже что-то", "не очень", "хорошо."]
@@ -35,6 +34,7 @@ class handler:
                                          error_phrase=error_phrase,
                                          main_page=main_page), 500
 
+    @staticmethod
     @app.errorhandler(501)
     def page_not_implemented(_):
         error_phrase = ["Не поддерживается функция,", "необходимая", "для выполнения запроса."]

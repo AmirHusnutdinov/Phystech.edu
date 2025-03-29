@@ -19,26 +19,25 @@ class Authorization:
         form = LoginForm()
         form_registration = RegistrationForm()
         return render_template_with_user("Login/authorization.html",
-                               header_links=header_links,
-                               form=form,
-                               form_registration = form,
-                               title="Авторизация")
+                                         header_links=header_links,
+                                         form=form,
+                                         form_registration=form,
+                                         title="Авторизация")
 
     @staticmethod
     def process_login():
         form = LoginForm()
-        if form.validate_on_submit():  # Проверка на валидность формы
+        if form.validate_on_submit():
             name = form.name.data
             password = form.password.data
             password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""", True)
             user_id = database_query(f"""SELECT id FROM "User" WHERE email = '{name}';""", True)
-            # Здесь должна быть ваша логика проверки пользователя
             if password_prov and password == password_prov[0][0]:  # Пример проверки
                 session['Login'] = True
                 session['email'] = name
                 session["user_id"] = user_id[0][0]
                 flash('Login successful!', 'success')
-                return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
+                return redirect(url_for('open_main_page'))
             else:
                 flash('Invalid name or password', 'danger')
                 return redirect(url_for('open_authorization_page'))
@@ -50,10 +49,9 @@ class Authorization:
     def logout():
         session['Login'] = False
         session.pop('email', None)
-        session.pop('user_id', None)# Удаляем пользователя из сессии
+        session.pop('user_id', None)  # Удаляем пользователя из сессии
         flash('You have been logged out.', 'info')
         return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
-
 
 
 @app.route(authorization, methods=['GET', 'POST'])

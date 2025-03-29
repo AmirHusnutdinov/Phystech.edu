@@ -1,9 +1,7 @@
 import psycopg2
 
-from settings import host, user, password, db_name, port
-from flask import request, render_template
-from settings import app, host
-from server.service_files.links import *
+from settings import host
+from settings import user, password, db_name, port
 
 
 def database_query(sql, Fetch=False):
@@ -23,6 +21,7 @@ def database_query(sql, Fetch=False):
         if connection:
             connection.close()
             print("[INFO] Postgres connection closed")
+
 
 def get_dishes():
     sql = "SELECT * FROM dish"
@@ -73,6 +72,7 @@ def get_day_data(id, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {id} AND date = {date}"
     return database_query(sql, True)
 
+
 def get_all_day_data(id):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {id}"
     data = database_query(sql, True)
@@ -102,16 +102,21 @@ def database_check():
     sql = "SELECT * FROM user_daily_metrics"
     return database_query(sql, True)
 
+
 def save_news(title, content, image_path):
+    database_query(
+        f"""INSERT INTO news (title, picture, html, date) VALUES ('{title}', '{image_path}', '{content}', NOW())""")
 
-    database_query(f"""INSERT INTO news (title, picture, html, date) VALUES ('{title}', '{image_path}', '{content}', NOW())""")
 
-def check_trener(id):
+def check_trainer(id):
     sql = f"SELECT role FROM roles WHERE id = {id}"
+    print(id)
+    print(database_query(sql, True))
     data = database_query(sql, True)[0][0]
     if data == 2 or data == 3:
         return True
     return False
+
 
 def get_list_of_student(id):
     sql = f"SELECT student_id FROM student WHERE id = {id}"
