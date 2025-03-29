@@ -29,10 +29,9 @@ db_name = getenv('DATABASE_NAME')
 app.config.from_object(Config)
 
 MAIL_SERVER = 'smtp.yandex.ru'
-MAIL_PORT = 587  # Обычно 587 для TLS
+MAIL_PORT = 587
 MAIL_USE_TLS = True
 MAIL_USERNAME = getenv('MAIL_USERNAME')
 MAIL_PASSWORD = getenv('MAIL_PASSWORD')
-# app.config['MAIL_DEFAULT_SENDER'] = getenv('MAIL_DEFAULT_SENDER')  # Почта отправителя
 
 mail = Mail(app)

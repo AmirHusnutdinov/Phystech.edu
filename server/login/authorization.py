@@ -1,23 +1,17 @@
-from flask import render_template, redirect, url_for, flash, session
-from server.service_files.links import header_links
-from server.login.forms import LoginForm
+from flask import redirect, url_for, flash, session
+
 from server.database.use_DataBase import database_query
-import bcrypt
-from server.service_files.links import header_links
 from server.login.forms import LoginForm, RegistrationForm
-from server.database.use_DataBase import database_query
-import utils
-from utils import render_template_with_user
-from flask import request, render_template
-from settings import app, host
 from server.service_files.links import *
+from settings import app
+from utils import render_template_with_user
 
 
 class Authorization:
     @staticmethod
     def show_authorization_page():
         form = LoginForm()
-        form_registration = RegistrationForm()
+        RegistrationForm()
         return render_template_with_user("Login/authorization.html",
                                          header_links=header_links,
                                          form=form,

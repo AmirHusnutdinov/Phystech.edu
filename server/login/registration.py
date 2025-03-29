@@ -50,12 +50,11 @@ class Registration:
         if form.validate_on_submit():
             name = form.name.data  # Сохраните имя пользователя
             email = form.email.data
-            password = form.password.data
-            hash_password(password)
+            password_of_user = form.password.data
+            hash_password(password_of_user)
             count_user = database_query(f"""SELECT COUNT(*) AS user_count 
                           FROM "User"
                           WHERE email = '{email}';""", True)
-            # print(count_user)
             if count_user[0][0] > 0:
                 flash('Registration failed. Please check your input.', 'danger')
                 return redirect(url_for('show_registration_page'))
@@ -67,7 +66,7 @@ class Registration:
 
             session["code"] = confirmation_code  # Сохраняем код в сессии
             session["name"] = name
-            session["password"] = password
+            session["password"] = password_of_user
             session["email"] = email
 
             flash('Registration successful! Please check your email for the confirmation code.', 'success')

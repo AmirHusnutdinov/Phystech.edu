@@ -1,10 +1,10 @@
-from flask import request, jsonify, Blueprint
-from ..database.use_DataBase import database_query
-from .utils import is_json_correct
 from datetime import datetime, timedelta
-from flask import request, render_template
-from settings import app, host
-from server.service_files.links import *
+
+from flask import jsonify, Blueprint
+from flask import request
+
+from .utils import is_json_correct
+from ..database.use_DataBase import database_query
 
 food_blueprint = Blueprint('food_blueprint', __name__)
 
@@ -27,19 +27,23 @@ def add_dish():
     category = new_dish['category']
     products = new_dish['products']
 
-    sql_query = f"INSERT INTO dish (name, owner, calories, proteins, carbohydrates, fats, category) VALUES ('{name}', '{owner}', '{calories}', '{proteins}', '{carbohydrates}', '{fats}', '{category}') RETURNING id;"
+    sql_query = (f"INSERT INTO "
+                 f"dish (name, owner, calories, proteins, carbohydrates, fats, category)"
+                 f"VALUES ('{name}', '{owner}', '{calories}', '{proteins}', '{carbohydrates}', '{fats}',"
+                 f" '{category}') RETURNING id;")
 
-    id = database_query(sql_query, True)
-    if id is None:
+    user_id = database_query(sql_query, True)
+    if user_id is None:
         return jsonify({'error': 'Failed to insert diet'}), 500
-    add_product_and_dish_dependence(products=products, diet_id=id[0][0])
+    add_product_and_dish_dependence(products=products, dish_id=user_id[0][0])
 
     return jsonify({'message': 'succsess'}), 201
 
 
 def add_product_and_dish_dependence(products, dish_id):
     for product in products:
-        sql_query = f"INSERT INTO dish_products_relate (id_product, id_dish, weight) VALUES ('{product['id']}', '{dish_id}', '{product['weight']}')"
+        sql_query = (f"INSERT INTO dish_products_relate (id_product, id_dish, weight) VALUES ('{product['id']}',"
+                     f" '{dish_id}', '{product['weight']}')")
         database_query(sql_query)
 
 
@@ -58,7 +62,8 @@ def add_product():
     fats = new_product['fats']
     calories = new_product['calories']
 
-    sql_query = f"INSERT INTO products (name, proteins, carbohydrates, fats, calories) VALUES ('{name}', '{proteins}', '{carbohydrates}', '{fats}', '{calories}')"
+    sql_query = (f"INSERT INTO products (name, proteins, carbohydrates, fats, calories) VALUES ('{name}', '{proteins}',"
+                 f" '{carbohydrates}', '{fats}', '{calories}')")
 
     database_query(sql_query)
 
@@ -79,19 +84,21 @@ def add_diet():
     description = new_diet['description']
     dishes = new_diet['dishes']
 
-    sql_query = f"INSERT INTO diets (name, owner, description) VALUES ('{name}', '{owner}', '{description}') RETURNING id;"
+    sql_query = (f"INSERT INTO diets (name, owner, description) VALUES ('{name}', '{owner}',"
+                 f" '{description}') RETURNING id;")
 
-    id = database_query(sql_query, True)
-    if id is None:
+    user_id = database_query(sql_query, True)
+    if user_id is None:
         return jsonify({'error': 'Failed to insert diet'}), 500
-    add_diet_and_dishes_dependence(dishes=dishes, diet_id=id[0][0])
+    add_diet_and_dishes_dependence(dishes=dishes, diet_id=user_id[0][0])
 
     return jsonify({'message': 'Succsess'}), 201
 
 
 def add_diet_and_dishes_dependence(dishes, diet_id):
     for dish in dishes:
-        sql_query = f"INSERT INTO diet_dish_relate (diet_id, dish_id, weight, time_of_day) VALUES ('{diet_id}', '{dish['id']}', '{dish['weight']}', '{dish['time_of_day']}') "
+        sql_query = (f"INSERT INTO diet_dish_relate (diet_id, dish_id, weight, time_of_day) VALUES ('{diet_id}',"
+                     f" '{dish['id']}', '{dish['weight']}', '{dish['time_of_day']}') ")
         database_query(sql_query)
 
 
@@ -122,7 +129,7 @@ def set_diets_to_user(user_id):
         AND user_id = '{user_id}' 
         AND date = '{date}'
     """
-    check_result = database_query(check_sql_query, Fetch=True)
+    check_result = database_query(check_sql_query, fetch=True)
 
     if check_result and check_result[0][0] > 0:
         return jsonify({'error': 'Record already exists'}), 400

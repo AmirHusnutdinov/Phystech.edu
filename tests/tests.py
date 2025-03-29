@@ -1,11 +1,10 @@
-import unittest
-import sys
 import os
+import sys
+import unittest
+from server.service_files.links import admin, authorization, registration, calendar, main_page, selected_products
+from settings import app
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from ServiceFiles.links import admin, authorization, registration, calendar, main_page, selected_products, base_link
-from settings import app
-from server import *
 
 
 class Test(unittest.TestCase):

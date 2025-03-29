@@ -4,7 +4,7 @@ from settings import host
 from settings import user, password, db_name, port
 
 
-def database_query(sql, Fetch=False):
+def database_query(sql, fetch=False):
     connection = []
     try:
         connection = psycopg2.connect(
@@ -13,7 +13,7 @@ def database_query(sql, Fetch=False):
         connection.autocommit = True
         with connection.cursor() as cursor:
             cursor.execute(sql)
-            if Fetch:
+            if fetch:
                 return cursor.fetchall()
     except Exception as _ex:
         print("[INFO] Error while working with Postgres", _ex)
@@ -41,10 +41,10 @@ def get_dishes():
     return formatted_dishes
 
 
-def get_user_data(id):
-    sql = f"SELECT * FROM public.\"User\" WHERE id = {id}"
+def get_user_data(user_id):
+    sql = f"SELECT * FROM public.\"User\" WHERE id = {user_id}"
     user_data = database_query(sql, True)[0]
-    user = {
+    user_info = {
         "id": user_data[0],
         "name": user_data[1],
         "login": user_data[2],
@@ -65,18 +65,17 @@ def get_user_data(id):
         "fats": user_data[17],
         "eating_times": user_data[18],
     }
-    return user
+    return user_info
 
 
-def get_day_data(id, date):
-    sql = f"SELECT * FROM user_daily_metrics WHERE id = {id} AND date = {date}"
+def get_day_data(user_id, date):
+    sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = {date}"
     return database_query(sql, True)
 
 
-def get_all_day_data(id):
-    sql = f"SELECT * FROM user_daily_metrics WHERE id = {id}"
+def get_all_day_data(user_id):
+    sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id}"
     data = database_query(sql, True)
-    print(data)
     ans = []
     for el in data:
         day_data = {
@@ -108,18 +107,17 @@ def save_news(title, content, image_path):
         f"""INSERT INTO news (title, picture, html, date) VALUES ('{title}', '{image_path}', '{content}', NOW())""")
 
 
-def check_trainer(id):
-    sql = f"SELECT role FROM roles WHERE id = {id}"
-    print(id)
-    print(database_query(sql, True))
+def check_trainer(user_id):
+    sql = f"SELECT role FROM roles WHERE id = {user_id}"
+
     data = database_query(sql, True)[0][0]
     if data == 2 or data == 3:
         return True
     return False
 
 
-def get_list_of_student(id):
-    sql = f"SELECT student_id FROM student WHERE id = {id}"
+def get_list_of_student(user_id):
+    sql = f"SELECT student_id FROM student WHERE id = {user_id}"
     ans_list = []
     data = database_query(sql, True)
     for el in data:
