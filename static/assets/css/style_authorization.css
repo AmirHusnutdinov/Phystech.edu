@@ -1,202 +1,365 @@
 /* Общие стили */
+body {
+  overflow-y:hidden;
+}
+
 .body_login {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, rgb(245, 247, 250), rgb(195, 207, 226));
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 76vh;
-    overflow: hidden;
-    perspective: 1000px;
+  margin-top: -10vh;
+  margin-bottom: -10vh;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(135deg, rgb(245, 247, 250), rgb(195, 207, 226));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  perspective: 1000px;
+  position: relative;
 }
 
 /* Контейнер формы */
 .auth-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 55px;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out, rotateIn 1s ease-in-out;
-    max-width: 500px;
-    width: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.5s ease-in-out;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 55px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out, rotateIn 0.67s ease-in-out; /* Sped up by 1.5x (from 1s to 0.67s) */
+  max-width: 500px;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-in-out;
+  z-index: 1;
 }
 
 /* Убираем поворот при наведении */
 .auth-container:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* Заголовок формы */
 .auth-title {
-    text-align: center;
-    color: rgb(51, 51, 51);
-    margin-bottom: 30px;
-    font-size: 2em;
-    animation: slideInDown 1s ease-in-out;
-    font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  color: rgb(51, 51, 51);
+  margin-bottom: 30px;
+  font-size: 2em;
+  animation: slideInDown 1s ease-in-out;
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Группа полей ввода */
 .input-group {
-    margin-bottom: 20px;
-    position: relative;
-    animation: fadeIn 1s ease-in-out;
+  margin-bottom: 20px;
+  position: relative;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .input-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: rgb(85, 85, 85);
-    font-size: 1em;
-    animation: fadeIn 1s ease-in-out;
+  display: block;
+  margin-bottom: 5px;
+  color: rgb(85, 85, 85);
+  font-size: 1em;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgb(204, 204, 204);
-    border-radius: 5px;
-    font-size: 1em;
-    transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 5px;
+  font-size: 1em;
+  transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .input-group input:focus {
-    border-color: rgb(108, 99, 255);
-    outline: none;
-    transform: scale(1.05);
+  border-color: rgb(108, 99, 255);
+  outline: none;
+  transform: scale(1.05);
 }
 
 /* Кнопка входа */
 .auth-button {
-    width: 100%;
-    padding: 10px;
-    background: rgb(108, 99, 255);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
-    animation: fadeIn 1s ease-in-out;
-}
-
-/* Кнопка регистрации */
-.registration-button {
-    width: 100%;
-    padding: 10px;
-    background: rgb(108, 99, 255);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
-    animation: fadeIn 1s ease-in-out;
+  width: 100%;
+  padding: 10px;
+  background: rgb(108, 99, 255);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .auth-button:hover {
-    background: rgb(86, 77, 255);
-    transform: translateY(-2px);
+  background: rgb(86, 77, 255);
+  transform: translateY(-2px);
+}
+
+/* Текст для регистрации */
+.registration-text {
+  margin: 25px 0 15px;
+  text-align: center;
+  color: rgb(85, 85, 85);
+  font-size: 0.95em;
+  line-height: 1.5;
+  padding: 10px;
+  border-top: 1px solid rgba(108, 99, 255, 0.2);
+  border-bottom: 1px solid rgba(108, 99, 255, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.register-button {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  color: rgb(108, 99, 255);
+  border: 2px solid rgb(108, 99, 255);
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+}
+
+.register-button:hover {
+  background: rgba(108, 99, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Стили для flash-сообщений */
+.flash-container {
+  margin-top: 10vh;
+
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 350px;
+  max-width: 90vw;
+}
+
+.flash-message {
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.5s forwards;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(10px);
+}
+
+.flash-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.flash-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-weight: bold;
+}
+
+.flash-text {
+  font-size: 0.95em;
+}
+
+.flash-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.flash-close:hover {
+  opacity: 1;
+}
+
+.success {
+  background-color: rgba(76, 175, 80, 0.95);
+  color: white;
+  border-left: 4px solid rgb(56, 142, 60);
+}
+
+.success .flash-icon {
+  background: rgb(56, 142, 60);
+  color: white;
+}
+
+.danger {
+  background-color: rgba(244, 67, 54, 0.95);
+  color: white;
+  border-left: 4px solid rgb(198, 40, 40);
+}
+
+.danger .flash-icon {
+  background: rgb(198, 40, 40);
+  color: white;
+}
+
+.info {
+  background-color: rgba(33, 150, 243, 0.95);
+  color: white;
+  border-left: 4px solid rgb(21, 101, 192);
+}
+
+.info .flash-icon {
+  background: rgb(21, 101, 192);
+  color: white;
 }
 
 /* Адаптивность */
 @media (max-width: 600px) {
-    .auth-container {
-        padding: 20px;
-    }
+  .auth-container {
+    padding: 20px;
+  }
 
-    .auth-title {
-        font-size: 1.5em;
-    }
+  .auth-title {
+    font-size: 1.5em;
+  }
 
-    .input-group input, .auth-button {
-        font-size: 0.9em;
-    }
+  .input-group input,
+  .auth-button,
+  .register-button {
+    font-size: 0.9em;
+  }
+
+  .flash-container {
+    width: calc(100% - 40px);
+    right: 20px;
+  }
 }
 
 @media (max-width: 480px) {
-    .auth-container {
-        padding: 15px;
-    }
+  .auth-container {
+    padding: 15px;
+  }
 
-    .auth-title {
-        font-size: 1.2em;
-    }
+  .auth-title {
+    font-size: 1.2em;
+  }
 
-    .input-group input, .auth-button {
-        font-size: 0.8em;
-    }
+  .input-group input,
+  .auth-button,
+  .register-button {
+    font-size: 0.8em;
+  }
 }
 
 /* Анимации */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInDown {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes rotateIn {
-    from {
-        transform: rotateY(90deg);
-        opacity: 0;
-    }
-    to {
-        transform: rotateY(0deg);
-        opacity: 1;
-    }
+  from {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
+  to {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 /* Темная тема */
 .dark-theme .body_login {
-    background: linear-gradient(135deg, rgb(30, 30, 30), rgb(51, 51, 51));
-    color: rgb(224, 224, 224);
+  background: linear-gradient(135deg, rgb(30, 30, 30), rgb(51, 51, 51));
+  color: rgb(224, 224, 224);
 }
 
 .dark-theme .auth-container {
-    background: rgba(51, 51, 51, 0.9);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  background: rgba(51, 51, 51, 0.9);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 
 .dark-theme .auth-title {
-    color: rgb(224, 224, 224);
+  color: rgb(224, 224, 224);
 }
 
 .dark-theme .input-group label {
-    color: rgb(153, 153, 153);
+  color: rgb(153, 153, 153);
 }
 
 .dark-theme .input-group input {
-    background: rgb(68, 68, 68);
-    color: rgb(224, 224, 224);
-    border-color: rgb(85, 85, 85);
+  background: rgb(68, 68, 68);
+  color: rgb(224, 224, 224);
+  border-color: rgb(85, 85, 85);
 }
 
 .dark-theme .input-group input:focus {
-    border-color: rgb(108, 99, 255);
+  border-color: rgb(108, 99, 255);
 }
 
 .dark-theme .auth-button {
-    background: rgb(108, 99, 255);
+  background: rgb(108, 99, 255);
 }
 
 .dark-theme .auth-button:hover {
-    background: rgb(86, 77, 255);
+  background: rgb(86, 77, 255);
+}
+
+.dark-theme .registration-text {
+  color: rgb(180, 180, 180);
+  border-color: rgba(108, 99, 255, 0.3);
+}
+
+.dark-theme .register-button {
+  color: rgb(150, 140, 255);
+  border-color: rgb(150, 140, 255);
+}
+
+.dark-theme .register-button:hover {
+  background: rgba(150, 140, 255, 0.15);
 }

@@ -595,15 +595,20 @@ window.addEventListener('resize', function() {
     }
 
     function renderCalendar(month, year) {
-        calendar.innerHTML = `
-            <div class="day names">Пн</div>
-            <div class="day names">Вт</div>
-            <div class="day names">Ср</div>
-            <div class="day names">Чт</div>
-            <div class="day names">Пт</div>
-            <div class="day names">Сб</div>
-            <div class="day names">Вс</div>
-        `;
+    // Reset calendar layout
+    calendar.classList.remove('chart-view');
+    calendar.style.display = 'grid';
+    calendar.style.gridTemplateColumns = 'repeat(7, minmax(80px, 1fr))';
+
+    calendar.innerHTML = `
+        <div class="day names">Пн</div>
+        <div class="day names">Вт</div>
+        <div class="day names">Ср</div>
+        <div class="day names">Чт</div>
+        <div class="day names">Пт</div>
+        <div class="day names">Сб</div>
+        <div class="day names">Вс</div>
+    `;
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -665,6 +670,11 @@ viewToggle.addEventListener('change', () => {
     if (viewToggle.checked) {
         renderChart(currentMonth, currentYear);
     } else {
+        // Remove chart-view class first
+        calendar.classList.remove('chart-view');
+        // Reset the calendar's display style
+        calendar.style.display = 'grid';
+        // Now render the calendar
         renderCalendar(currentMonth, currentYear);
     }
 });
