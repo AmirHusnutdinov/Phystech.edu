@@ -24,7 +24,7 @@ body {
   padding: 55px;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 1s ease-in-out, rotateIn 0.67s ease-in-out; /* Sped up by 1.5x (from 1s to 0.67s) */
+  animation: fadeIn 1s ease-in-out, rotateIn 0.67s ease-in-out;
   max-width: 500px;
   width: 100%;
   transform-style: preserve-3d;

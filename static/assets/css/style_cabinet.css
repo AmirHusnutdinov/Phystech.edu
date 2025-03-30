@@ -1,4 +1,3 @@
-/* Base styles */
 .body_cabinet {
     font-family: "Roboto", sans-serif;
     background-color: #f8f9fa;
@@ -13,8 +12,7 @@
     margin: 0 auto;
     animation: fadeIn 0.5s ease;
   }
-  
-  /* Typography */
+
   .page-title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -54,8 +52,7 @@
     background: linear-gradient(180deg, #4a90e2, #50e3c2);
     border-radius: 3px;
   }
-  
-  /* Card styles */
+
   .card {
     background-color: #fff;
     border-radius: 15px;
@@ -69,8 +66,7 @@
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   }
-  
-  /* Form styles */
+
   .row {
     display: flex;
     flex-wrap: wrap;
@@ -83,8 +79,7 @@
     position: relative;
     min-width: 200px;
   }
-  
-  /* Field styling */
+
   .field-label {
     font-size: 0.85rem;
     font-weight: 600;
@@ -144,8 +139,7 @@
     margin-top: 5px;
     cursor: pointer;
   }
-  
-  /* Button styles */
+
   .button-container {
     display: flex;
     justify-content: flex-end;
@@ -198,8 +192,7 @@
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
   }
-  
-  /* Nutrition goals section */
+
   .nutrition-goals {
     position: relative;
   }
@@ -241,7 +234,7 @@
     margin-bottom: 5px;
   }
   
-  /* KBGU input styles */
+
   .kbgu-container {
     background-color: #f9f9f9;
     border-radius: 10px;
@@ -260,8 +253,7 @@
     margin: 0;
     min-width: 120px;
   }
-  
-  /* Notification system */
+
   .notification {
     position: fixed;
     top: 20px;
@@ -295,8 +287,7 @@
   .notification.error {
     background: linear-gradient(90deg, #dc3545, #e35d6a);
   }
-  
-  /* Animations */
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -307,8 +298,7 @@
       transform: translateY(0);
     }
   }
-  
-  /* Dark theme styles */
+
   body.dark-theme .body_cabinet {
     background-color: #1a1a1a;
   }
@@ -370,8 +360,7 @@
   body.dark-theme .kbgu-container {
     background-color: #333;
   }
-  
-  /* Avatar styles */
+
   .avatar-row {
     display: flex;
     flex-direction: row-reverse;
@@ -426,8 +415,7 @@
     border-color: #5a9ee2;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
-  
-  /* Responsive styles */
+
   @media (max-width: 992px) {
     .form-group {
       flex: 1 0 calc(50% - 20px);
@@ -473,8 +461,7 @@
       width: 100%;
       margin-bottom: 10px;
     }
-  
-    /* Responsive styles for avatar */
+
     .avatar-row {
       flex-direction: column;
     }

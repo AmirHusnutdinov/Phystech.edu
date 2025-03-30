@@ -48,7 +48,7 @@
   align-items: center;
 }
 
-/* Adjust calendar page to fit viewport */
+
 .calendar-page {
   min-height: calc(79vh);
   width: 100%;
@@ -58,29 +58,28 @@
   margin: 0;
 }
 
-/* Ensure the calendar container takes appropriate space */
 .calendar-container {
   background: var(--card-bg-color);
   border-radius: 20px;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
   width: 95%;
   max-width: 1200px;
-  padding: 15px; /* Reduced from 20px */
+  padding: 15px;
   animation: fadeIn 1s ease-in-out;
   display: flex;
   flex-direction: column;
-  margin: 10px auto; /* Reduced from 15px */
+  margin: 10px auto;
   flex: 1;
   min-height: auto;
 }
 
-/* Adjust header spacing */
+
 .header_calendar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin-bottom: 10px; /* Reduced from 18px */
+  margin-bottom: 10px;
   height: 45px;
 }
 
@@ -174,7 +173,6 @@
   transform: scale(1.05);
 }
 
-/* Fix chart container to take full width and proper height */
 .chart-container {
   width: 100%;
   height: 100%;
@@ -191,7 +189,6 @@
   background-color: var(--card-bg-color);
 }
 
-/* Ensure streak counter has minimal margin */
 .streak-counter {
   text-align: center;
   padding: 8px;
@@ -394,7 +391,6 @@
   color: var(--text-color);
 }
 
-/* Make day detail text colors even dimmer in dark theme */
 .dark-theme .protein {
   color: rgba(107, 0, 246, 0.4);
 }
@@ -567,7 +563,6 @@ input:checked + .slider:before {
   }
 }
 
-/* Enhance responsive design for all device sizes */
 @media (max-width: 1200px) {
   .calendar {
     grid-template-columns: repeat(7, minmax(70px, 1fr));
@@ -781,7 +776,6 @@ input:checked + .slider:before {
   }
 }
 
-/* For very small mobile devices */
 @media (max-width: 375px) {
   .calendar {
     grid-template-columns: repeat(7, minmax(25px, 1fr));
@@ -814,7 +808,6 @@ input:checked + .slider:before {
   }
 }
 
-/* For chart responsiveness */
 @media (max-width: 576px) {
   .chart-container {
     height: 60vh;
