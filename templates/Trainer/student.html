@@ -41,7 +41,7 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
-                 <div class="day-card" data-day="thursday">
+                <div class="day-card" data-day="thursday">
                     <div class="day-icon">
                         <span>Ч</span>
                     </div>
@@ -94,10 +94,12 @@
                     <div class="nutrition-info">
                         <h3>Белки</h3>
                         <div class="progress-container">
-                           <!--  динамический расчет  -->
-                            <div class="progress-bar" style="--progress-width: {{ (cookies.proteins / (cookies.proteins * 1.2)) * 100 if cookies.proteins else 0 }}%"></div>
+                            <!--  динамический расчет  -->
+                            <div class="progress-bar"
+                                 style="--progress-width: {{ (cookies.proteins / (cookies.proteins * 1.2)) * 100 if cookies.proteins else 0 }}%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.proteins }}</span>/<span class="target">{{ (cookies.proteins * 1.2) | round(0, 'ceil') if cookies.proteins }}</span>г</p>
+                        <p><span class="current">{{ cookies.proteins }}</span>/<span class="target">{{ (cookies.proteins * 1.2) | round(0, 'ceil') if cookies.proteins }}</span>г
+                        </p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -107,9 +109,11 @@
                     <div class="nutrition-info">
                         <h3>Жиры</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: {{ (cookies.fats / (cookies.fats * 1.2)) * 100 if cookies.fats else 0 }}%"></div>
+                            <div class="progress-bar"
+                                 style="--progress-width: {{ (cookies.fats / (cookies.fats * 1.2)) * 100 if cookies.fats else 0 }}%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.fats }}</span>/<span class="target">{{ (cookies.fats * 1.2) | round(0, 'ceil') if cookies.fats }}</span>г</p>
+                        <p><span class="current">{{ cookies.fats }}</span>/<span class="target">{{ (cookies.fats * 1.2) | round(0, 'ceil') if cookies.fats }}</span>г
+                        </p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -119,9 +123,11 @@
                     <div class="nutrition-info">
                         <h3>Углеводы</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: {{ (cookies.carbs / (cookies.carbs * 1.2)) * 100 if cookies.carbs else 0 }}%"></div>
+                            <div class="progress-bar"
+                                 style="--progress-width: {{ (cookies.carbs / (cookies.carbs * 1.2)) * 100 if cookies.carbs else 0 }}%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.carbs }}</span>/<span class="target">{{ (cookies.carbs * 1.2) | round(0, 'ceil') if cookies.carbs}}</span>г</p>
+                        <p><span class="current">{{ cookies.carbs }}</span>/<span class="target">{{ (cookies.carbs * 1.2) | round(0, 'ceil') if cookies.carbs}}</span>г
+                        </p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -131,9 +137,11 @@
                     <div class="nutrition-info">
                         <h3>Вода</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: {{ (cookies.water / (cookies.water * 1.2)) * 100 if cookies.water else 0 }}%"></div>
+                            <div class="progress-bar"
+                                 style="--progress-width: {{ (cookies.water / (cookies.water * 1.2)) * 100 if cookies.water else 0 }}%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.water }}</span>/<span class="target">{{ (cookies.water * 1.2) | round(1) if cookies.water }}</span>л</p>
+                        <p><span class="current">{{ cookies.water }}</span>/<span class="target">{{ (cookies.water * 1.2) | round(1) if cookies.water }}</span>л
+                        </p>
                     </div>
                 </div>
             </div>
@@ -146,7 +154,7 @@
         </button>
 
         <!-- Calendar Button -->
-        <button id="calendar-btn" class="calendar-btn">
+        <button id="calendar-btn" class="calendar-btn enhanced-calendar-btn">
             <i class="fas fa-calendar-alt"></i>
             <span>Перейти в календарь ученика</span>
         </button>
@@ -237,8 +245,9 @@
                     <!-- Пример сообщения -->
                     <div class="message received">
                         <div class="message-avatar">
-                           <!--  динамически подставляем путь к картинке -->
-                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" alt="Аватар {{cookies.name}}">
+                            <!--  динамически подставляем путь к картинке -->
+                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
+                                 alt="Аватар {{cookies.name}}">
                         </div>
                         <div class="message-content">
                             <div class="message-sender">{{ cookies.name }}</div>
@@ -246,136 +255,136 @@
                             <div class="message-time">10:00</div>
                         </div>
                     </div>
-                    </div>
                 </div>
-                <div class="chat-input">
-                    <input type="text" id="message-input" placeholder="Введите сообщение...">
-                    <button id="send-message" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Введите сообщение...">
+                <button id="send-message" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Day Details Modal -->
-    <div id="day-details-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="day-title">Вторник, 14 мая</h2>
-                <button class="close-modal">&times;</button>
+<!-- Day Details Modal -->
+<div id="day-details-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="day-title">Вторник, 14 мая</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="day-nutrition-summary">
+                <div class="summary-item">
+                    <div class="summary-icon calories">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="summary-details">
+                        <h3>Калории</h3>
+                        <p>1,850 ккал</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon protein">
+                        <i class="fas fa-drumstick-bite"></i>
+                    </div>
+                    <div class="summary-details">
+                        <h3>Белки</h3>
+                        <p>75г</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon fat">
+                        <i class="fas fa-cheese"></i>
+                    </div>
+                    <div class="summary-details">
+                        <h3>Жиры</h3>
+                        <p>45г</p>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon carbs">
+                        <i class="fas fa-bread-slice"></i>
+                    </div>
+                    <div class="summary-details">
+                        <h3>Углеводы</h3>
+                        <p>120г</p>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="day-nutrition-summary">
-                    <div class="summary-item">
-                        <div class="summary-icon calories">
-                            <i class="fas fa-fire"></i>
+            <div class="day-meals">
+                <h3>Приемы пищи</h3>
+                <!-- Здесь  нужно  больше  данных, чтобы  сделать  динамически -->
+                <div class="meal-section">
+                    <h4>Завтрак</h4>
+                    <div class="meal-items">
+                        <div class="meal-item">
+                            <div class="meal-item-name">Овсянка с ягодами</div>
+                            <div class="meal-item-amount">1 порция</div>
+                            <div class="meal-item-calories">320 ккал</div>
                         </div>
-                        <div class="summary-details">
-                            <h3>Калории</h3>
-                            <p>1,850 ккал</p>
-                        </div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-icon protein">
-                            <i class="fas fa-drumstick-bite"></i>
-                        </div>
-                        <div class="summary-details">
-                            <h3>Белки</h3>
-                            <p>75г</p>
-                        </div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-icon fat">
-                            <i class="fas fa-cheese"></i>
-                        </div>
-                        <div class="summary-details">
-                            <h3>Жиры</h3>
-                            <p>45г</p>
-                        </div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-icon carbs">
-                            <i class="fas fa-bread-slice"></i>
-                        </div>
-                        <div class="summary-details">
-                            <h3>Углеводы</h3>
-                            <p>120г</p>
+                        <div class="meal-item">
+                            <div class="meal-item-name">Греческий йогурт</div>
+                            <div class="meal-item-amount">150г</div>
+                            <div class="meal-item-calories">150 ккал</div>
                         </div>
                     </div>
                 </div>
-                <div class="day-meals">
-                    <h3>Приемы пищи</h3>
-                     <!-- Здесь  нужно  больше  данных, чтобы  сделать  динамически -->
-                    <div class="meal-section">
-                        <h4>Завтрак</h4>
-                        <div class="meal-items">
-                            <div class="meal-item">
-                                <div class="meal-item-name">Овсянка с ягодами</div>
-                                <div class="meal-item-amount">1 порция</div>
-                                <div class="meal-item-calories">320 ккал</div>
-                            </div>
-                            <div class="meal-item">
-                                <div class="meal-item-name">Греческий йогурт</div>
-                                <div class="meal-item-amount">150г</div>
-                                <div class="meal-item-calories">150 ккал</div>
-                            </div>
+                <div class="meal-section">
+                    <h4>Обед</h4>
+                    <div class="meal-items">
+                        <div class="meal-item">
+                            <div class="meal-item-name">Куриный салат</div>
+                            <div class="meal-item-amount">1 порция</div>
+                            <div class="meal-item-calories">450 ккал</div>
+                        </div>
+                        <div class="meal-item">
+                            <div class="meal-item-name">Цельнозерновой хлеб</div>
+                            <div class="meal-item-amount">1 ломтик</div>
+                            <div class="meal-item-calories">80 ккал</div>
                         </div>
                     </div>
-                    <div class="meal-section">
-                        <h4>Обед</h4>
-                        <div class="meal-items">
-                            <div class="meal-item">
-                                <div class="meal-item-name">Куриный салат</div>
-                                <div class="meal-item-amount">1 порция</div>
-                                <div class="meal-item-calories">450 ккал</div>
-                            </div>
-                            <div class="meal-item">
-                                <div class="meal-item-name">Цельнозерновой хлеб</div>
-                                <div class="meal-item-amount">1 ломтик</div>
-                                <div class="meal-item-calories">80 ккал</div>
-                            </div>
+                </div>
+                <div class="meal-section">
+                    <h4>Ужин</h4>
+                    <div class="meal-items">
+                        <div class="meal-item">
+                            <div class="meal-item-name">Жареный лосось</div>
+                            <div class="meal-item-amount">150г</div>
+                            <div class="meal-item-calories">280 ккал</div>
+                        </div>
+                        <div class="meal-item">
+                            <div class="meal-item-name">Тушеные овощи</div>
+                            <div class="meal-item-amount">200г</div>
+                            <div class="meal-item-calories">120 ккал</div>
+                        </div>
+                        <div class="meal-item">
+                            <div class="meal-item-name">Коричневый рис</div>
+                            <div class="meal-item-amount">100г</div>
+                            <div class="meal-item-calories">150 ккал</div>
                         </div>
                     </div>
-                    <div class="meal-section">
-                        <h4>Ужин</h4>
-                        <div class="meal-items">
-                            <div class="meal-item">
-                                <div class="meal-item-name">Жареный лосось</div>
-                                <div class="meal-item-amount">150г</div>
-                                <div class="meal-item-calories">280 ккал</div>
-                            </div>
-                            <div class="meal-item">
-                                <div class="meal-item-name">Тушеные овощи</div>
-                                <div class="meal-item-amount">200г</div>
-                                <div class="meal-item-calories">120 ккал</div>
-                            </div>
-                            <div class="meal-item">
-                                <div class="meal-item-name">Коричневый рис</div>
-                                <div class="meal-item-amount">100г</div>
-                                <div class="meal-item-calories">150 ккал</div>
-                            </div>
+                </div>
+                <div class="meal-section">
+                    <h4>Перекусы</h4>
+                    <div class="meal-items">
+                        <div class="meal-item">
+                            <div class="meal-item-name">Яблоко</div>
+                            <div class="meal-item-amount">1 среднее</div>
+                            <div class="meal-item-calories">95 ккал</div>
                         </div>
-                    </div>
-                    <div class="meal-section">
-                        <h4>Перекусы</h4>
-                        <div class="meal-items">
-                            <div class="meal-item">
-                                <div class="meal-item-name">Яблоко</div>
-                                <div class="meal-item-amount">1 среднее</div>
-                                <div class="meal-item-calories">95 ккал</div>
-                            </div>
-                            <div class="meal-item">
-                                <div class="meal-item-name">Миндаль</div>
-                                <div class="meal-item-amount">30г</div>
-                                <div class="meal-item-calories">180 ккал</div>
-                            </div>
+                        <div class="meal-item">
+                            <div class="meal-item-name">Миндаль</div>
+                            <div class="meal-item-amount">30г</div>
+                            <div class="meal-item-calories">180 ккал</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 </div>
 

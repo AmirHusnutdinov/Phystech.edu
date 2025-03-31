@@ -23,13 +23,13 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </div>
-                {{ form.submit(class="auth-button", value="Log in") }}
+                {{ form.submit(class="auth-button", value="Войти") }}
             </form>
 
             <div class="registration-text">Если у Вас нет акаунта, предлагаем Вам зарегистрироваться на нашем прекрасном сайте</div>
             <form method="POST" action="{{ url_for('show_registration_page')  }}">
                 {{ form_registration.hidden_tag() }}
-                {{ form_registration.submit(value="Register", class="register-button") }}
+                {{ form_registration.submit(value="Зарегистрироваться", class="register-button") }}
             </form>
         </div>
     </div>

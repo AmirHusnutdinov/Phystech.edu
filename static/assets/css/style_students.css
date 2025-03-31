@@ -28,6 +28,7 @@
 }
 
 body {
+  height: 100vh;
   font-family: "Poppins", sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
