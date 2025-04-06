@@ -5,14 +5,9 @@ from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user
 
-lesha_fixed_auth = False
-
-
 class Cabinet:
     @staticmethod
     def show_cabinet_page():
-        if not lesha_fixed_auth:
-            session['user_id'] = 1
         if 'user_id' in session:
             return render_template_with_user(
                 "Login/cabinet.html",
