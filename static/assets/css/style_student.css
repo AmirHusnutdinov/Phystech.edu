@@ -1184,3 +1184,64 @@ select:focus {
         animation-duration: 1s;
     }
 }
+
+/* В стилях (CSS) */
+.enhanced-calendar-btn {
+    /* Базовые стили */
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* Градиентный фон */
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+
+    /* Тень */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                0 1px 3px rgba(0, 0, 0, 0.08);
+
+    /* Цвета текста и иконки */
+    color: white;
+}
+
+.enhanced-calendar-btn:hover {
+    /* Эффект при наведении */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15),
+                0 3px 5px rgba(0, 0, 0, 0.1);
+
+    /* Анимация градиента */
+    background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+}
+
+.enhanced-calendar-btn:active {
+    /* Эффект при нажатии */
+    transform: translateY(0);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1),
+                0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.enhanced-calendar-btn .fas {
+    /* Анимация иконки */
+    transition: transform 0.3s;
+}
+
+.enhanced-calendar-btn:hover .fas {
+    transform: rotate(-5deg) scale(1.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .enhanced-calendar-btn {
+        padding: 12px 24px;
+        font-size: 14px;
+        gap: 8px;
+    }
+}

@@ -1,8 +1,7 @@
-from server.service_files.links import header_links
-from utils import render_template_with_user
-from flask import request, render_template
-from settings import app, host
 from server.service_files.links import *
+from settings import app
+from utils import render_template_with_user
+
 
 class SelectedProduct:
     @staticmethod
@@ -17,4 +16,3 @@ class SelectedProduct:
 @app.route(selected_products)
 def open_selected_products_page():
     return SelectedProduct.show_selected_product_page()
-

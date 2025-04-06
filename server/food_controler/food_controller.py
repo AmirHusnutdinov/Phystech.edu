@@ -1,12 +1,13 @@
-from flask import request, jsonify, Blueprint
-from ..database.use_DataBase import database_query
-from .utils import is_json_correct
 from datetime import datetime, timedelta
-from flask import request, render_template
-from settings import app, host
-from server.service_files.links import *
+
+from flask import jsonify, Blueprint
+from flask import request
+
+from .utils import is_json_correct
+from ..database.use_DataBase import database_query
 
 food_blueprint = Blueprint('food_blueprint', __name__)
+
 
 @food_blueprint.route('/data/dish', methods=['POST'])
 def add_dish():
@@ -16,7 +17,7 @@ def add_dish():
 
     if not is_json_correct(json=new_dish, poles=dish_poles):
         return jsonify({'error': 'Invalid data'}), 400
-    
+
     name = new_dish['name']
     owner = new_dish['owner']
     calories = new_dish['calories']
@@ -26,19 +27,25 @@ def add_dish():
     category = new_dish['category']
     products = new_dish['products']
 
-    sql_query = f"INSERT INTO dish (name, owner, calories, proteins, carbohydrates, fats, category) VALUES ('{name}', '{owner}', '{calories}', '{proteins}', '{carbohydrates}', '{fats}', '{category}') RETURNING id;" 
+    sql_query = (f"INSERT INTO "
+                 f"dish (name, owner, calories, proteins, carbohydrates, fats, category)"
+                 f"VALUES ('{name}', '{owner}', '{calories}', '{proteins}', '{carbohydrates}', '{fats}',"
+                 f" '{category}') RETURNING id;")
 
-    id = database_query(sql_query, True)
-    if id is None:
+    user_id = database_query(sql_query, True)
+    if user_id is None:
         return jsonify({'error': 'Failed to insert diet'}), 500
-    add_product_and_dish_dependence(products=products, diet_id=id[0][0])
+    add_product_and_dish_dependence(products=products, dish_id=user_id[0][0])
 
     return jsonify({'message': 'succsess'}), 201
 
+
 def add_product_and_dish_dependence(products, dish_id):
     for product in products:
-        sql_query = f"INSERT INTO dish_products_relate (id_product, id_dish, weight) VALUES ('{product['id']}', '{dish_id}', '{product['weight']}')"
+        sql_query = (f"INSERT INTO dish_products_relate (id_product, id_dish, weight) VALUES ('{product['id']}',"
+                     f" '{dish_id}', '{product['weight']}')")
         database_query(sql_query)
+
 
 @food_blueprint.route('/data/products', methods=['POST'])
 def add_product():
@@ -48,18 +55,20 @@ def add_product():
 
     if not is_json_correct(json=new_product, poles=product_poles):
         return jsonify({'error': 'Invalid data'}), 400
-    
+
     name = new_product['name']
     proteins = new_product['proteins']
     carbohydrates = new_product['carbohydrates']
     fats = new_product['fats']
     calories = new_product['calories']
 
-    sql_query = f"INSERT INTO products (name, proteins, carbohydrates, fats, calories) VALUES ('{name}', '{proteins}', '{carbohydrates}', '{fats}', '{calories}')"
+    sql_query = (f"INSERT INTO products (name, proteins, carbohydrates, fats, calories) VALUES ('{name}', '{proteins}',"
+                 f" '{carbohydrates}', '{fats}', '{calories}')")
 
     database_query(sql_query)
 
     return jsonify({'message': 'Succsess'}), 201
+
 
 @food_blueprint.route('/diets', methods=['POST'])
 def add_diet():
@@ -69,25 +78,27 @@ def add_diet():
 
     if not is_json_correct(json=new_diet, poles=diet_poles):
         return jsonify({'error': 'Invalid data'}), 400
-    
+
     name = new_diet['name']
     owner = new_diet['owner']
     description = new_diet['description']
     dishes = new_diet['dishes']
 
-    sql_query = f"INSERT INTO diets (name, owner, description) VALUES ('{name}', '{owner}', '{description}') RETURNING id;"
+    sql_query = (f"INSERT INTO diets (name, owner, description) VALUES ('{name}', '{owner}',"
+                 f" '{description}') RETURNING id;")
 
-    id = database_query(sql_query, True)
-    if id is None:
+    user_id = database_query(sql_query, True)
+    if user_id is None:
         return jsonify({'error': 'Failed to insert diet'}), 500
-    add_diet_and_dishes_dependence(dishes=dishes, diet_id=id[0][0])
-
+    add_diet_and_dishes_dependence(dishes=dishes, diet_id=user_id[0][0])
 
     return jsonify({'message': 'Succsess'}), 201
 
+
 def add_diet_and_dishes_dependence(dishes, diet_id):
     for dish in dishes:
-        sql_query = f"INSERT INTO diet_dish_relate (diet_id, dish_id, weight, time_of_day) VALUES ('{diet_id}', '{dish['id']}', '{dish['weight']}', '{dish['time_of_day']}') "
+        sql_query = (f"INSERT INTO diet_dish_relate (diet_id, dish_id, weight, time_of_day) VALUES ('{diet_id}',"
+                     f" '{dish['id']}', '{dish['weight']}', '{dish['time_of_day']}') ")
         database_query(sql_query)
 
 
@@ -99,7 +110,7 @@ def set_diets_to_user(user_id):
 
     if not is_json_correct(diets_to_user, dtu_poles):
         return jsonify({'error': 'Invalid data'}), 400
-    
+
     diet_id = diets_to_user['diet_id']
     try:
         date = datetime.strptime(diets_to_user['date'], '%Y-%m-%d').date()
@@ -110,7 +121,7 @@ def set_diets_to_user(user_id):
     end_next_week = (datetime.now() + timedelta(days=(13 - datetime.now().weekday()))).date()
     if not (now_date <= date <= end_next_week):
         return jsonify({'error': 'Invalid data'}), 400
-    
+
     check_sql_query = f"""
         SELECT COUNT(*) 
         FROM users_diets 
@@ -118,7 +129,7 @@ def set_diets_to_user(user_id):
         AND user_id = '{user_id}' 
         AND date = '{date}'
     """
-    check_result = database_query(check_sql_query, Fetch=True)
+    check_result = database_query(check_sql_query, fetch=True)
 
     if check_result and check_result[0][0] > 0:
         return jsonify({'error': 'Record already exists'}), 400
@@ -131,12 +142,13 @@ def set_diets_to_user(user_id):
 
 
 def delete_old_diets():
-        delta = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-    
-        sql = f"DELETE FROM users_diets WHERE date < '{delta}';"
-    
-        database_query(sql)
-        print("[INFO] Old diets was deleted for all users")
+    delta = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
+
+    sql = f"DELETE FROM users_diets WHERE date < '{delta}';"
+
+    database_query(sql)
+    print("[INFO] Old diets was deleted for all users")
+
 
 @food_blueprint.route('/<int:user_id>/diets', methods=['GET'])
 def get_user_diet(user_id):
@@ -148,11 +160,12 @@ def get_user_diet(user_id):
             return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
 
         sql = f"SELECT * FROM users_diets WHERE user_id = '{user_id}' AND date ='{date}'"
-        
+
     else:
         sql = f"SELECT * FROM users_diets WHERE user_id = {user_id}"
-    
+
     return database_query(sql, True)
+
 
 @food_blueprint.route('/<int:user_id>/diets', methods=['DELETE'])
 def delete_user_diet(user_id):
@@ -160,7 +173,7 @@ def delete_user_diet(user_id):
     json_poles = {'dish_id', 'date'}
     if not is_json_correct(json=user_diet, poles=json_poles):
         return jsonify({'error': 'Invalid data'}), 400
-    
+
     dish_id = user_diet['dish_id']
     date = user_diet['date']
 
