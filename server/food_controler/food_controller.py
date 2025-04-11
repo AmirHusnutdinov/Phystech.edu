@@ -6,26 +6,23 @@ from flask import request
 from .utils import is_json_correct
 from ..database.use_DataBase import database_query
 
+from .forms import AddDishForm, AddProductForm
+
 food_blueprint = Blueprint('food_blueprint', __name__)
 
 
 @food_blueprint.route('/data/dish', methods=['POST'])
 def add_dish():
-    new_dish = request.json
+    form = AddDishForm()
 
-    dish_poles = {'name', 'owner', 'calories', 'proteins', 'carbohydrates', 'fats', 'category', 'products'}
-
-    if not is_json_correct(json=new_dish, poles=dish_poles):
-        return jsonify({'error': 'Invalid data'}), 400
-
-    name = new_dish['name']
-    owner = new_dish['owner']
-    calories = new_dish['calories']
-    proteins = new_dish['proteins']
-    carbohydrates = new_dish['carbohydrates']
-    fats = new_dish['fats']
-    category = new_dish['category']
-    products = new_dish['products']
+    name = form.name.data
+    owner = form.owner.data
+    calories = form.calories.data
+    proteins = form.proteins.data
+    carbohydrates = form.carbohydrates.data
+    fats = form.fats.data
+    category = form.category.data
+    products = form.products
 
     sql_query = (f"INSERT INTO "
                  f"dish (name, owner, calories, proteins, carbohydrates, fats, category)"
@@ -42,25 +39,20 @@ def add_dish():
 
 def add_product_and_dish_dependence(products, dish_id):
     for product in products:
-        sql_query = (f"INSERT INTO dish_products_relate (id_product, id_dish, weight) VALUES ('{product['id']}',"
-                     f" '{dish_id}', '{product['weight']}')")
+        sql_query = (f"INSERT INTO dish_products_relate (id_product, id_dish, weight) VALUES ('{product.product_id.data}',"
+                     f" '{dish_id}', '{product.weight.data}')")
         database_query(sql_query)
 
 
 @food_blueprint.route('/data/products', methods=['POST'])
 def add_product():
-    new_product = request.json
+    form = AddProductForm()
 
-    product_poles = {'name', 'proteins', 'carbohydrates', 'fats', 'calories'}
-
-    if not is_json_correct(json=new_product, poles=product_poles):
-        return jsonify({'error': 'Invalid data'}), 400
-
-    name = new_product['name']
-    proteins = new_product['proteins']
-    carbohydrates = new_product['carbohydrates']
-    fats = new_product['fats']
-    calories = new_product['calories']
+    name = form.name.data
+    calories = form.calories.data
+    proteins = form.proteins.data
+    carbohydrates = form.carbohydrates.data
+    fats = form.fats.data
 
     sql_query = (f"INSERT INTO products (name, proteins, carbohydrates, fats, calories) VALUES ('{name}', '{proteins}',"
                  f" '{carbohydrates}', '{fats}', '{calories}')")
@@ -102,10 +94,11 @@ def add_diet_and_dishes_dependence(dishes, diet_id):
         database_query(sql_query)
 
 
-@food_blueprint.route('/<int:user_id>/diets', methods=['PUT'])
+@food_blueprint.route('/<int:user_id>/diets', methods=['PUT']) 
 def set_diets_to_user(user_id):
     diets_to_user = request.json
 
+    # Добавить проверку на роль отправляемого запрос и может ли он добавить юзеру рацион
     dtu_poles = {'diet_id', 'date'}
 
     if not is_json_correct(diets_to_user, dtu_poles):
