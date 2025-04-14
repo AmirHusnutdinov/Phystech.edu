@@ -1,5 +1,4 @@
-from flask import redirect, url_for
-from flask import request
+from flask import redirect, url_for, request, session
 
 from server.database.use_DataBase import save_news
 from server.service_files.links import *
@@ -10,6 +9,11 @@ from utils import render_template_with_user
 class News:
     @staticmethod
     def show_all_news_page():
+        if "user_id" in session:
+            header_links = choose_header_links("authorized")
+        else:
+            header_links = choose_header_links("not-authorized")
+
         return render_template_with_user(
             "News/all_news.html",
             header_links=header_links,
@@ -18,6 +22,10 @@ class News:
 
     @staticmethod
     def show_one_news_page(news_id):
+        if "user_id" in session:
+            header_links = choose_header_links("authorized")
+        else:
+            header_links = choose_header_links("not-authorized")
         news_title = "Заголовок новости"
         news_image_url = "https://via.placeholder.com/800x400"
         news_content = """
@@ -43,6 +51,10 @@ class News:
 
     @staticmethod
     def show_make_news():
+        if "user_id" in session:
+            header_links = choose_header_links("authorized")
+        else:
+            header_links = choose_header_links("not-authorized")
         return render_template_with_user(
             "News/make_news.html",
             title=f"Новостной редактор",

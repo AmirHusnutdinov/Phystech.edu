@@ -1,9 +1,10 @@
-from flask import session
+from flask import session, redirect
 
 from server.database.use_DataBase import get_user_data
 from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user
+
 
 class Cabinet:
     @staticmethod
@@ -11,10 +12,10 @@ class Cabinet:
         if 'user_id' in session:
             return render_template_with_user(
                 "Login/cabinet.html",
-                header_links=header_links,
+                header_links=choose_header_links("authorized"),
                 title="Кабинет", user=get_user_data(session['user_id']))
         else:
-            return "You are not logged in", 401
+            return redirect(main_page)
 
 
 @app.route(cabinet, methods=['GET', 'POST'])

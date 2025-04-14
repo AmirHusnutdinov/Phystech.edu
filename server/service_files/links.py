@@ -21,13 +21,23 @@ process_login = base_link + '/process_login'
 logout = base_link + '/logout'
 all_students = base_link + '/all_students'
 student = base_link + '/student/<int:student_id>'
-header_links = {
-    "/": "/",
-    "day_plan": day_plan,
-    "calendar": calendar,
-    "cabinet": cabinet,
-    "all_news": all_news,
-    "authorization": authorization,
-    "registration": registration,
-    "all_students": all_students
-}
+
+
+def choose_header_links(role):
+    if role == "authorized":
+        return {
+            "role": "authorized",
+            "/": "/",
+            "day_plan": day_plan,
+            "calendar": calendar,
+            "cabinet": cabinet,
+            "all_news": all_news,
+            "all_students": all_students
+        }
+    elif role == "not-authorized":
+        return {
+            "role": "not-authorized",
+            "/": "/",
+            "all_news": all_news,
+            "authorization": authorization,
+        }

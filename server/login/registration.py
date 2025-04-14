@@ -38,14 +38,19 @@ def send_email(subject, recipient, body):
 class Registration:
     @staticmethod
     def show_registration_page():
+        if "user_id" in session:
+            return redirect(main_page)
+
         form = RegistrationForm()
         return render_template_with_user("Login/registration.html",
-                                         header_links=header_links,
+                                         header_links=choose_header_links("not-authorized"),
                                          title="Авторизация",
                                          form=form)
 
     @staticmethod
     def process_registration():
+        if "user_id" in session:
+            return redirect(main_page)
         form = RegistrationForm()
         if form.validate_on_submit():
             name = form.name.data  # Сохраните имя пользователя
@@ -77,14 +82,19 @@ class Registration:
 
     @staticmethod
     def show_confirmation_page():
+        if "user_id" in session:
+            return redirect(main_page)
         form = ConfirmationForm()
         return render_template_with_user("Login/confirmation.html",
-                                         header_links=header_links,
+                                         header_links=choose_header_links("not-authorized"),
                                          title="Подтверждение кода",
                                          form=form)
 
     @staticmethod
     def process_confirmation():
+        if "user_id" in session:
+            return redirect(main_page)
+
         form = ConfirmationForm()
         if form.validate_on_submit():
             entered_code = form.code.data
