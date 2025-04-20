@@ -109,7 +109,9 @@ def save_news(title, content, image_path):
 
 def check_trainer(user_id):
     sql = f"SELECT role FROM roles WHERE id = {user_id}"
-
+    query = database_query(sql, True)
+    if query == []:
+        return False
     data = database_query(sql, True)[0][0]
     if data == 2 or data == 3:
         return True
@@ -121,5 +123,45 @@ def get_list_of_student(user_id):
     ans_list = []
     data = database_query(sql, True)
     for el in data:
-        ans_list.append(el[0])
+        ans_list.append(int(el[0]))
     return ans_list
+
+def get_message_history(first_id, second_id, since=None):
+    if since:
+        sql = f"""
+        SELECT id_from, id_to, content, time
+        FROM messages
+        WHERE ((id_from = {first_id} AND id_to = {second_id}) 
+               OR (id_from = {second_id} AND id_to = {first_id}))
+        AND time > '{since}'
+        ORDER BY time
+        """
+    else:
+        sql = f"""
+        SELECT id_from, id_to, content, time
+        FROM messages
+        WHERE (id_from = {first_id} AND id_to = {second_id}) 
+               OR (id_from = {second_id} AND id_to = {first_id})
+        ORDER BY time
+        """
+    
+    data = database_query(sql, True)
+    print(data)
+    print(database_query('SELECT * FROM messages', True))
+    message_history = []
+    for el in data:
+        message = {
+            "id_from": el[0],
+            "id_to": el[1],
+            "content": el[2],
+            "time": el[3]
+        }
+        message_history.append(message)
+    return message_history
+
+def add_message(id_from, id_to, content):
+    sql = f"""
+    INSERT INTO messages (id_from, id_to, content, time)
+    VALUES ({id_from}, {id_to}, '{content}', NOW())
+    """
+    return database_query(sql)
