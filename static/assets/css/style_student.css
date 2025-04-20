@@ -620,18 +620,22 @@ select:focus {
   height: 100%;
 }
 
+/* Chat specific styles */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-4);
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-4);
+  gap: 0.75rem;
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
 }
 
 .message {
   display: flex;
   max-width: 80%;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .message.sent {
@@ -648,12 +652,13 @@ select:focus {
   height: 40px;
   border-radius: var(--radius-full);
   overflow: hidden;
-  margin-right: var(--spacing-3);
+  margin-right: 0.75rem;
+  flex-shrink: 0;
 }
 
 .message.sent .message-avatar {
   margin-right: 0;
-  margin-left: var(--spacing-3);
+  margin-left: 0.75rem;
 }
 
 .message-avatar img {
@@ -664,9 +669,10 @@ select:focus {
 
 .message-content {
   background-color: var(--color-card-hover);
-  padding: var(--spacing-3) var(--spacing-4);
+  padding: 0.75rem 1rem;
   border-radius: var(--radius-lg);
   position: relative;
+  word-break: break-word;
 }
 
 .message.sent .message-content {
@@ -676,34 +682,84 @@ select:focus {
 
 .message-sender {
   font-weight: 600;
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--spacing-1);
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+  color: var(--color-text-light);
+}
+
+.message.sent .message-sender {
+  display: none;
 }
 
 .message-text {
-  font-size: var(--font-size-base);
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
 .message-time {
-  font-size: var(--font-size-xs);
+  font-size: 0.625rem;
   color: var(--color-text-lighter);
-  margin-top: var(--spacing-2);
+  margin-top: 0.25rem;
   text-align: right;
 }
 
 .message.sent .message-time {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .chat-input {
   display: flex;
-  padding: var(--spacing-4);
+  padding: 1rem;
   border-top: 1px solid var(--color-border);
-  gap: var(--spacing-3);
+  gap: 0.5rem;
+  background-color: var(--color-card);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
 }
 
 .chat-input input {
   flex: 1;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-card);
+  transition: border-color 0.2s;
+}
+
+.chat-input input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* Анимация для новых сообщений */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Стили для скроллбара */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--color-text-light);
+  border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text);
 }
 
 .day-nutrition-summary {
