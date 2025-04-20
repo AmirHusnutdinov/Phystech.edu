@@ -1,10 +1,10 @@
-<!-- Trainer/student.html -->
 {% extends "Base.html" %}
 {% block content %}
 <link rel="stylesheet" href="../../static/assets/css/style_student.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+<body>
 <div class="app-container">
     <br> <br><br>
     <!-- Main Content -->
@@ -12,9 +12,17 @@
         <!-- Week Visualization -->
         <section class="week-section card">
             <h2 class="section-title">Обзор недели</h2>
-            <div class="week-container">
-                <!--  Пример, можно сделать динамически на основе данных -->
-                <div class="day-card" data-day="monday">
+
+            <!-- Week Tabs -->
+            <div class="week-tabs">
+                <button class="week-tab active" data-week="current">Текущая неделя</button>
+                <button class="week-tab" data-week="next">Следующая неделя</button>
+                <button class="week-tab" data-week="third">Через неделю</button>
+            </div>
+
+            <!-- Week Containers -->
+            <div class="week-container current active">
+                <a href="/day/monday" class="day-card" data-day="monday">
                     <div class="day-icon">
                         <span>П</span>
                     </div>
@@ -22,8 +30,8 @@
                     <div class="day-status complete">
                         <i class="fas fa-check"></i>
                     </div>
-                </div>
-                <div class="day-card active" data-day="tuesday">
+                </a>
+                <a href="/day/tuesday" class="day-card active" data-day="tuesday">
                     <div class="day-icon">
                         <span>В</span>
                     </div>
@@ -31,8 +39,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="wednesday">
+                </a>
+                <a href="/day/wednesday" class="day-card" data-day="wednesday">
                     <div class="day-icon">
                         <span>С</span>
                     </div>
@@ -40,8 +48,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="thursday">
+                </a>
+                <a href="/day/thursday" class="day-card" data-day="thursday">
                     <div class="day-icon">
                         <span>Ч</span>
                     </div>
@@ -49,8 +57,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="friday">
+                </a>
+                <a href="/day/friday" class="day-card" data-day="friday">
                     <div class="day-icon">
                         <span>П</span>
                     </div>
@@ -58,8 +66,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="saturday">
+                </a>
+                <a href="/day/saturday" class="day-card" data-day="saturday">
                     <div class="day-icon">
                         <span>С</span>
                     </div>
@@ -67,8 +75,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="sunday">
+                </a>
+                <a href="/day/sunday" class="day-card" data-day="sunday">
                     <div class="day-icon">
                         <span>В</span>
                     </div>
@@ -76,11 +84,140 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
+                </a>
             </div>
-            <button id="add-food-btn" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Добавить еду
-            </button>
+
+            <div class="week-container next">
+                <a href="/day/next-monday" class="day-card" data-day="monday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Понедельник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-tuesday" class="day-card" data-day="tuesday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Вторник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-wednesday" class="day-card" data-day="wednesday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Среда</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-thursday" class="day-card" data-day="thursday">
+                    <div class="day-icon">
+                        <span>Ч</span>
+                    </div>
+                    <span class="day-name">Четверг</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-friday" class="day-card" data-day="friday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Пятница</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-saturday" class="day-card" data-day="saturday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Суббота</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-sunday" class="day-card" data-day="sunday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Воскресенье</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+            </div>
+
+            <div class="week-container third">
+                <a href="/day/third-monday" class="day-card" data-day="monday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Понедельник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-tuesday" class="day-card" data-day="tuesday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Вторник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-wednesday" class="day-card" data-day="wednesday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Среда</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-thursday" class="day-card" data-day="thursday">
+                    <div class="day-icon">
+                        <span>Ч</span>
+                    </div>
+                    <span class="day-name">Четверг</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-friday" class="day-card" data-day="friday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Пятница</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-saturday" class="day-card" data-day="saturday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Суббота</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-sunday" class="day-card" data-day="sunday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Воскресенье</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+            </div>
         </section>
 
         <!-- Today's Nutrition -->
@@ -94,12 +231,9 @@
                     <div class="nutrition-info">
                         <h3>Белки</h3>
                         <div class="progress-container">
-                            <!--  динамический расчет  -->
-                            <div class="progress-bar"
-                                 style="--progress-width: {{ (cookies.proteins / (cookies.proteins * 1.2)) * 100 if cookies.proteins else 0 }}%"></div>
+                            <div class="progress-bar" style="--progress-width: 70%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.proteins }}</span>/<span class="target">{{ (cookies.proteins * 1.2) | round(0, 'ceil') if cookies.proteins }}</span>г
-                        </p>
+                        <p><span class="current">120</span>/<span class="target">150</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -109,11 +243,9 @@
                     <div class="nutrition-info">
                         <h3>Жиры</h3>
                         <div class="progress-container">
-                            <div class="progress-bar"
-                                 style="--progress-width: {{ (cookies.fats / (cookies.fats * 1.2)) * 100 if cookies.fats else 0 }}%"></div>
+                            <div class="progress-bar" style="--progress-width: 60%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.fats }}</span>/<span class="target">{{ (cookies.fats * 1.2) | round(0, 'ceil') if cookies.fats }}</span>г
-                        </p>
+                        <p><span class="current">45</span>/<span class="target">75</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -123,11 +255,9 @@
                     <div class="nutrition-info">
                         <h3>Углеводы</h3>
                         <div class="progress-container">
-                            <div class="progress-bar"
-                                 style="--progress-width: {{ (cookies.carbs / (cookies.carbs * 1.2)) * 100 if cookies.carbs else 0 }}%"></div>
+                            <div class="progress-bar" style="--progress-width: 80%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.carbs }}</span>/<span class="target">{{ (cookies.carbs * 1.2) | round(0, 'ceil') if cookies.carbs}}</span>г
-                        </p>
+                        <p><span class="current">200</span>/<span class="target">250</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -137,11 +267,9 @@
                     <div class="nutrition-info">
                         <h3>Вода</h3>
                         <div class="progress-container">
-                            <div class="progress-bar"
-                                 style="--progress-width: {{ (cookies.water / (cookies.water * 1.2)) * 100 if cookies.water else 0 }}%"></div>
+                            <div class="progress-bar" style="--progress-width: 50%"></div>
                         </div>
-                        <p><span class="current">{{ cookies.water }}</span>/<span class="target">{{ (cookies.water * 1.2) | round(1) if cookies.water }}</span>л
-                        </p>
+                        <p><span class="current">1.5</span>/<span class="target">3</span>л</p>
                     </div>
                 </div>
             </div>
@@ -160,79 +288,6 @@
         </button>
     </main>
 
-    <!-- Food Input Modal -->
-    <div id="food-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Добавить еду</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="food-form">
-                    <div class="form-group">
-                        <label for="food-name">Название еды</label>
-                        <input type="text" id="food-name" placeholder="Например, Куриная грудка" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="food-category">Категория</label>
-                        <select id="food-category">
-                            <option value="protein">Белки</option>
-                            <option value="carbs">Углеводы</option>
-                            <option value="fat">Жиры</option>
-                            <option value="fruit">Фрукты</option>
-                            <option value="vegetable">Овощи</option>
-                            <option value="dairy">Молочные продукты</option>
-                            <option value="other">Другое</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="food-amount">Количество</label>
-                            <input type="number" id="food-amount" min="0" step="1" value="100" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="food-unit">Единица измерения</label>
-                            <select id="food-unit">
-                                <option value="g">граммы</option>
-                                <option value="ml">миллилитры</option>
-                                <option value="oz">унции</option>
-                                <option value="serving">порция</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="food-protein">Белки (г)</label>
-                            <input type="number" id="food-protein" min="0" step="0.1" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="food-fat">Жиры (г)</label>
-                            <input type="number" id="food-fat" min="0" step="0.1" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="food-carbs">Углеводы (г)</label>
-                            <input type="number" id="food-carbs" min="0" step="0.1" value="0">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="food-calories">Калории</label>
-                        <input type="number" id="food-calories" min="0" step="1" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="meal-time">Время приема пищи</label>
-                        <select id="meal-time">
-                            <option value="breakfast">Завтрак</option>
-                            <option value="lunch">Обед</option>
-                            <option value="dinner">Ужин</option>
-                            <option value="snack">Перекус</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Добавить еду</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Chat Modal -->
     <div id="chat-modal" class="modal">
         <div class="modal-content chat-modal-content">
@@ -245,12 +300,10 @@
                     <!-- Пример сообщения -->
                     <div class="message received">
                         <div class="message-avatar">
-                            <!--  динамически подставляем путь к картинке -->
-                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
-                                 alt="Аватар {{cookies.name}}">
+                            <img src="../../static/assets/images/default_avatar.png" alt="Аватар">
                         </div>
                         <div class="message-content">
-                            <div class="message-sender">{{ cookies.name }}</div>
+                            <div class="message-sender">Тренер</div>
                             <div class="message-text">Привет! Как дела?</div>
                             <div class="message-time">10:00</div>
                         </div>
@@ -315,7 +368,6 @@
             </div>
             <div class="day-meals">
                 <h3>Приемы пищи</h3>
-                <!-- Здесь  нужно  больше  данных, чтобы  сделать  динамически -->
                 <div class="meal-section">
                     <h4>Завтрак</h4>
                     <div class="meal-items">
@@ -386,43 +438,96 @@
     </div>
 </div>
 
-</div>
+<script>// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all week tabs and week containers
+    const weekTabs = document.querySelectorAll('.week-tab');
+    const weekContainers = document.querySelectorAll('.week-container');
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // DOM Elements
-    const addFoodBtn = document.getElementById('add-food-btn');
-    const foodModal = document.getElementById('food-modal');
-    const chatModal = document.getElementById('chat-modal');
-    const dayDetailsModal = document.getElementById('day-details-modal');
+    // Add click event listeners to week tabs
+    weekTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            weekTabs.forEach(t => t.classList.remove('active'));
+
+            // Add active class to clicked tab
+            this.classList.add('active');
+
+            // Get the week data attribute
+            const weekType = this.getAttribute('data-week');
+
+            // Hide all week containers
+            weekContainers.forEach(container => {
+                container.classList.remove('active');
+            });
+
+            // Show the selected week container
+            document.querySelector(`.week-container.${weekType}`).classList.add('active');
+        });
+    });
+
+    // Set up the current day highlighting
+    function highlightCurrentDay() {
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+        // Map JavaScript day of week to our data-day attributes
+        const dayMap = {
+            0: 'sunday',
+            1: 'monday',
+            2: 'tuesday',
+            3: 'wednesday',
+            4: 'thursday',
+            5: 'friday',
+            6: 'saturday'
+        };
+
+        // Get today's day name
+        const todayName = dayMap[dayOfWeek];
+
+        // Remove active class from all day cards
+        document.querySelectorAll('.day-card').forEach(card => {
+            card.classList.remove('active');
+        });
+
+        // Add active class to today's day card in the current week
+        const todayCard = document.querySelector(`.week-container.current .day-card[data-day="${todayName}"]`);
+        if (todayCard) {
+            todayCard.classList.add('active');
+        }
+    }
+
+    // Call the function to highlight the current day
+    highlightCurrentDay();
+
+    // Modal functionality
     const contactBtn = document.getElementById('contact-btn');
+    const chatModal = document.getElementById('chat-modal');
     const closeModalBtns = document.querySelectorAll('.close-modal');
-    const foodForm = document.getElementById('food-form');
-    const sendMessageBtn = document.getElementById('send-message');
-    const messageInput = document.getElementById('message-input');
-    const chatMessages = document.querySelector('.chat-messages');
     const dayCards = document.querySelectorAll('.day-card');
-    const prevMonthBtn = document.getElementById('prev-month');
-    const nextMonthBtn = document.getElementById('next-month');
-    const currentMonthEl = document.getElementById('current-month');
-    const calendarGrid = document.querySelector('.calendar-grid');
-    const calendarBtn = document.getElementById('calendar-btn');
+    const dayDetailsModal = document.getElementById('day-details-modal');
+    const dayTitle = document.getElementById('day-title');
 
-    // Modal Functions
+    // Function to open modal
     function openModal(modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
+    // Function to close modal
     function closeModal(modal) {
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
 
-    // Event Listeners for Modals
-    addFoodBtn.addEventListener('click', () => openModal(foodModal));
-    contactBtn.addEventListener('click', () => openModal(chatModal));
+    // Open chat modal when contact button is clicked
+    if (contactBtn) {
+        contactBtn.addEventListener('click', () => {
+            openModal(chatModal);
+        });
+    }
 
+    // Close modals when close button is clicked
     closeModalBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const modal = btn.closest('.modal');
@@ -437,108 +542,22 @@
         }
     });
 
-    // Day Cards Click Event
-    dayCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const day = card.getAttribute('data-day');
-            document.getElementById('day-details-title').textContent = day.charAt(0).toUpperCase() + day.slice(1) + ', 14 мая';
-            openModal(dayDetailsModal);
-        });
-    });
-
-    // Food Form Submission
-    foodForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Here you would normally process the form data
-        // For demo purposes, we'll just close the modal
-        closeModal(foodModal);
-
-        // Show a success notification
-        showNotification('Еда успешно добавлена!');
-
-        // Reset form
-        foodForm.reset();
-    });
-
-    // Chat Functionality
-    sendMessageBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-
-    function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            const messageHTML = `
-                <div class="message sent">
-                    <div class="message-content">
-                        <div class="message-text">${message}</div>
-                        <div class="message-time">${timeString}</div>
-                    </div>
-                </div>
-            `;
-
-            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
-            messageInput.value = '';
-
-            // Auto-scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Simulate response after 1 second
-            setTimeout(() => {
-                const responseHTML = `
-                    <div class="message received">
-                        <div class="message-avatar">
-                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" alt="Аватар {{cookies.name}}">
-                        </div>
-                        <div class="message-content">
-                            <div class="message-sender">{{ cookies.name }}</div>
-                            <div class="message-text">bruth</div>
-                            <div class="message-time">${timeString}</div>
-                        </div>
-                    </div>
-                `;
-
-                chatMessages.insertAdjacentHTML('beforeend', responseHTML);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 1000);
-        }
-    }
-
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', () => {
-        // Add animation classes
-        document.querySelectorAll('.card').forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('animate-in');
-            }, index * 100);
-        });
-
-        // Calendar Button Click Event
+    // Calendar button functionality
+    const calendarBtn = document.getElementById('calendar-btn');
+    if (calendarBtn) {
         calendarBtn.addEventListener('click', () => {
-            // Получаем ID из HTML-страницы
-            const id = "{{ cookies.id }}";
-            // Переходим на страницу календаря
-            window.location.href = `/calendar/${id}`;
+            // Redirect to calendar page
+            window.location.href = '/calendar';
         });
-    });
-
-    //  Уведомления (Notifications)  -  вспомогательная функция.
-    function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.classList.add('notification');
-        notification.textContent = message;
-        document.body.appendChild(notification);
-
-        //  Удаляем уведомление через 3 секунды
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
     }
+
+    // Add animation classes to cards
+    document.querySelectorAll('.card').forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('animate-in');
+        }, index * 100);
+    });
+});
 </script>
+</body>
 {% endblock %}
