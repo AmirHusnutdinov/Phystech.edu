@@ -69,7 +69,7 @@ def get_user_data(user_id):
 
 
 def get_day_data(user_id, date):
-    sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = {date}"
+    sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = '{date}'"
     return database_query(sql, True)
 
 
@@ -114,7 +114,6 @@ def check_trainer(user_id):
     if data == 2 or data == 3:
         return True
     return False
-
 
 def get_list_of_student(user_id):
     sql = f"SELECT student_id FROM student WHERE id = {user_id}"
