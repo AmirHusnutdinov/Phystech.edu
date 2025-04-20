@@ -1,5 +1,12 @@
+import bcrypt
 from flask import render_template
 from flask import session
+
+
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed_password.decode('utf-8')
 
 
 def is_login():
@@ -15,5 +22,5 @@ def render_template_with_user(template_name_ot_list, **kwargs):
     return render_template(
         template_name_ot_list,
         data=data(),
-        **kwargs  # Передаем именованные аргументы
+        **kwargs
     )

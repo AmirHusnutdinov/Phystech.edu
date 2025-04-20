@@ -3,216 +3,142 @@
 <link rel="stylesheet" href="../../static/assets/css/style_cabinet.css">
 <div class="body_cabinet">
     <div class="container">
-        <h1>Личный кабинет</h1>
+        <h1 class="page-title">Личный кабинет</h1>
 
-        <form id="profileForm">
-            <div class="row">
-                <div class="form-group">
-                    <label for="name">Имя:</label>
-                    <input type="text" id="name" name="name" value="{{ user.name }}" readonly>
+        <div class="card profile-card">
+            <h2 class="section-title">Персональные данные</h2>
+            <form id="profileForm">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="field-label">Логин</div>
+                        <div class="field-value" data-field="login" data-original="{{ user.login }}">{{ user.login }}</div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Почта:</label>
-                    <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+                <div class="row avatar-row">
+                    <div class="form-group name-fields">
+                        <div class="field-label">Имя</div>
+                        <div class="field-value" data-field="firstName" data-original="{{ user.firstName }}">{{ user.firstName }}</div>
+                        
+                        <div class="field-label mt-3">Фамилия</div>
+                        <div class="field-value" data-field="lastName" data-original="{{ user.lastName }}">{{ user.lastName }}</div>
+                    </div>
+                    <div class="form-group avatar-container">
+                        <div class="field-label">Аватар</div>
+                        <div class="avatar-wrapper">
+                            <img id="avatar-image" src="{{ user.avatar|default('/static/assets/img/default-avatar.png') }}" alt="Аватар пользователя">
+                            <button type="button" id="changeAvatarBtn" class="btn avatar-btn" style="display: none;">Изменить</button>
+                            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="age">Возраст:</label>
-                    <input type="number" id="age" name="age" value="{{ user.age }}" readonly>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="field-label">Почта</div>
+                        <div class="field-value" data-field="email" data-original="{{ user.email }}">{{ user.email }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="field-label">Возраст</div>
+                        <div class="field-value" data-field="age" data-type="number" data-original="{{ user.age }}">{{ user.age }}</div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="weight">Вес (кг):</label>
-                    <input type="number" id="weight" name="weight" value="{{ user.weight }}" readonly>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="field-label">Вес (кг)</div>
+                        <div class="field-value" data-field="weight" data-type="number" data-original="{{ user.weight }}">{{ user.weight }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="field-label">Рост (см)</div>
+                        <div class="field-value" data-field="height" data-type="number" data-original="{{ user.height }}">{{ user.height }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="field-label">Пол</div>
+                        <div class="field-value" data-field="gender" data-type="select" data-original="{{ user.gender }}">
+                            {% if user.gender == 'male' %}Мужской{% else %}Женский{% endif %}
+                        </div>
+                        <select id="gender-select" class="dropdown-select" style="display: none;">
+                            <option value="male">Мужской</option>
+                            <option value="female">Женский</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="height">Рост (см):</label>
-                    <input type="number" id="height" name="height" value="{{ user.height }}" readonly>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="field-label">Уровень активности</div>
+                        <div class="field-value" data-field="activity" data-type="select" data-original="{{ user.activity }}">
+                            {% if user.activity == 'sedentary' %}
+                                Сидячий образ жизни
+                            {% elif user.activity == 'light' %}
+                                Легкая активность
+                            {% elif user.activity == 'moderate' %}
+                                Умеренная активность
+                            {% elif user.activity == 'active' %}
+                                Активный образ жизни
+                            {% elif user.activity == 'very_active' %}
+                                Очень активный образ жизни
+                            {% endif %}
+                        </div>
+                        <select id="activity-select" class="dropdown-select" style="display: none;">
+                            <option value="sedentary">Сидячий образ жизни</option>
+                            <option value="light">Легкая активность</option>
+                            <option value="moderate">Умеренная активность</option>
+                            <option value="active">Активный образ жизни</option>
+                            <option value="very_active">Очень активный образ жизни</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="gender">Пол:</label>
-                    <select id="gender" name="gender" disabled>
-                        <option value="male" {% if user.gender == 'male' %}selected{% endif %}>Мужской</option>
-                        <option value="female" {% if user.gender == 'female' %}selected{% endif %}>Женский</option>
-                    </select>
+                <div class="button-container">
+                    <button type="button" id="editButton" class="btn primary-btn">Изменить</button>
+                    <button type="submit" id="saveButton" class="btn success-btn" style="display: none;">Сохранить</button>
+                    <button type="button" id="cancelButton" class="btn cancel-btn" style="display: none;">Отмена</button>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
-                    <label for="activity">Уровень активности:</label>
-                    <select id="activity" name="activity" disabled>
-                        <option value="sedentary" {% if user.activity == 'sedentary' %}selected{% endif %}>Сидячий образ жизни</option>
-                        <option value="light" {% if user.activity == 'light' %}selected{% endif %}>Легкая активность</option>
-                        <option value="moderate" {% if user.activity == 'moderate' %}selected{% endif %}>Умеренная активность</option>
-                        <option value="active" {% if user.activity == 'active' %}selected{% endif %}>Активный образ жизни</option>
-                        <option value="very_active" {% if user.activity == 'very_active' %}selected{% endif %}>Очень активный образ жизни</option>
-                    </select>
-                </div>
-            </div>
-            <button type="button" id="editButton" class="btn">Изменить</button>
-            <button type="submit" id="saveButton" class="btn" style="display: none;">Сохранить</button>
-        </form>
-
-        <div class="nutrition-goals">
-            <h2>Цели питания</h2>
-            <div class="goals-buttons">
-                <button id="weightLoss" class="btn">Похудение</button>
-                <button id="weightMaintenance" class="btn">Поддержание веса</button>
-                <button id="weightGain" class="btn">Набор массы</button>
-            </div>
-            <div class="kbgu-inputs">
-                <div class="form-group">
-                    <label for="calories">Калории:</label>
-                    <input type="number" id="calories" name="calories" value = "{{ user['calories'] }}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="protein">Белки (г):</label>
-                    <input type="number" id="protein" name="protein" value = "{{ user['proteins'] }}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="fats">Жиры (г):</label>
-                    <input type="number" id="fats" name="fats" value = "{{ user['fats'] }}" readonly>
-                </div>
-                <div class="form-group">
-                    <label for="carbs">Углеводы (г):</label>
-                    <input type="number" id="carbs" name="carbs" value = "{{ user['carbs'] }}" readonly>
-                </div>
-            </div>
-            <div class="edit-button-container">
-                <button id="editKBGU" class="btn">Изменить</button>
-            </div>
+            </form>
         </div>
-        
-        <script>
-        const editKBGUButton = document.getElementById('editKBGU');
-        const kbguInputs = document.querySelectorAll('.kbgu-inputs input');
-        
-        editKBGUButton.addEventListener('click', function() {
-            if (this.textContent === 'Изменить') {
-                kbguInputs.forEach(input => input.readOnly = false);
-                this.textContent = 'Сохранить';
-            } else {
-                kbguInputs.forEach(input => input.readOnly = true);
-                this.textContent = 'Изменить';
-                // Здесь можно добавить логику для сохранения значений
-            }
-        });
-        </script>
 
-        <div class="calories-chart">
-            <h2>График калорий</h2>
-            <canvas id="caloriesChart"></canvas>
+        <div class="card nutrition-goals">
+            <h2 class="section-title">Цели питания</h2>
+            <div class="goals-buttons">
+                <button id="weightLoss" class="btn goal-btn">
+                    <span class="goal-icon">📉</span>
+                    <span>Похудение</span>
+                </button>
+                <button id="weightMaintenance" class="btn goal-btn">
+                    <span class="goal-icon">⚖️</span>
+                    <span>Поддержание веса</span>
+                </button>
+                <button id="weightGain" class="btn goal-btn">
+                    <span class="goal-icon">📈</span>
+                    <span>Набор массы</span>
+                </button>
+            </div>
+            <div class="kbgu-container">
+                <div class="kbgu-inputs">
+                    <div class="form-group">
+                        <div class="field-label">Калории</div>
+                        <div class="field-value nutrition-value" data-field="calories" data-type="number" data-original="{{ user['calories'] }}">{{ user['calories'] }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="field-label">Белки (г)</div>
+                        <div class="field-value nutrition-value" data-field="protein" data-type="number" data-original="{{ user['proteins'] }}">{{ user['proteins'] }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="field-label">Жиры (г)</div>
+                        <div class="field-value nutrition-value" data-field="fats" data-type="number" data-original="{{ user['fats'] }}">{{ user['fats'] }}</div>
+                    </div>
+                    <div class="form-group">
+                        <div class="field-label">Углеводы (г)</div>
+                        <div class="field-value nutrition-value" data-field="carbs" data-type="number" data-original="{{ user['carbs'] }}">{{ user['carbs'] }}</div>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button id="editKBGU" class="btn primary-btn">Изменить</button>
+                    <button id="saveKBGU" class="btn success-btn" style="display: none;">Сохранить</button>
+                    <button id="cancelKBGU" class="btn cancel-btn" style="display: none;">Отмена</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('profileForm');
-        const editButton = document.getElementById('editButton');
-        const saveButton = document.getElementById('saveButton');
-        const inputs = form.querySelectorAll('input, select');
-        
-        const weightLossBtn = document.getElementById('weightLoss');
-        const weightMaintenanceBtn = document.getElementById('weightMaintenance');
-        const weightGainBtn = document.getElementById('weightGain');
-        
-        const caloriesInput = document.getElementById('calories');
-        const proteinInput = document.getElementById('protein');
-        const fatsInput = document.getElementById('fats');
-        const carbsInput = document.getElementById('carbs');
-
-        editButton.addEventListener('click', function() {
-            inputs.forEach(input => input.readOnly = false);
-            inputs.forEach(input => input.disabled = false);
-            editButton.style.display = 'none';
-            saveButton.style.display = 'inline-block';
-        });
-
-        saveButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Here you would typically send the form data to the server
-            inputs.forEach(input => input.readOnly = true);
-            inputs.forEach(input => input.disabled = true);
-            editButton.style.display = 'inline-block';
-            saveButton.style.display = 'none';
-        });
-
-        function calculateKBGU(goal) {
-            const weight = parseFloat(document.getElementById('weight').value);
-            const height = parseFloat(document.getElementById('height').value);
-            const age = parseFloat(document.getElementById('age').value);
-            const gender = document.getElementById('gender').value;
-            const activity = document.getElementById('activity').value;
-
-            let bmr;
-            if (gender === 'male') {
-                bmr = 88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age);
-            } else {
-                bmr = 447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age);
-            }
-
-            const activityMultipliers = {
-                sedentary: 1.2,
-                light: 1.375,
-                moderate: 1.55,
-                active: 1.725,
-                very_active: 1.9
-            };
-
-            let calories = bmr * activityMultipliers[activity];
-
-            if (goal === 'loss') {
-                calories *= 0.85;
-            } else if (goal === 'gain') {
-                calories *= 1.15;
-            }
-
-            const protein = weight * 2;
-            const fats = (calories * 0.25) / 9;
-            const carbs = (calories - (protein * 4) - (fats * 9)) / 4;
-
-            caloriesInput.value = Math.round(calories);
-            proteinInput.value = Math.round(protein);
-            fatsInput.value = Math.round(fats);
-            carbsInput.value = Math.round(carbs);
-        }
-
-        weightLossBtn.addEventListener('click', () => calculateKBGU('loss'));
-        weightMaintenanceBtn.addEventListener('click', () => calculateKBGU('maintenance'));
-        weightGainBtn.addEventListener('click', () => calculateKBGU('gain'));
-
-        // Пример данных для графика
-        const data = {
-            labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-            datasets: [{
-                label: 'Калории',
-                data: [2000, 1800, 2100, 1900, 2200, 1700, 2300],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        };
-
-        // Настройка графика
-        const config = {
-            type: 'line',
-            data: data,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        };
-
-        // Создание графика
-        const myChart = new Chart(
-            document.getElementById('caloriesChart'),
-            config
-        );
-    });
-</script>
+<script type="module" src="../../static/assets/js/cabinet.js"></script>
 {% endblock %}
+

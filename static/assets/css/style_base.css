@@ -2,10 +2,17 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    position: relative;
 }
 
 /* Переключатель темы */
-
 .theme-toggle button {
   background: none;
   border: none;
@@ -42,13 +49,14 @@ body {
 .dark-theme .moon-icon {
   display: none;
 }
-/* Стили для навигационной панели */
+
+/* Навбар */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: black;
-    padding: 4vh 20px;
+    padding: 1rem 2rem;
     color: white;
     position: relative;
     z-index: 1000;
@@ -61,9 +69,17 @@ body {
     font-weight: bold;
 }
 
+/* Контейнер переключателя темы */
+.theme-toggle-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+/* Ссылки навбара */
 .navbar-links {
     display: flex;
-    gap: 20px;
+    gap: 1.5rem;
     font-size: 1.1em;
 }
 
@@ -74,13 +90,12 @@ body {
 }
 
 .navbar-links a:hover {
-    color: #ffcc00; /* Желтый оттенок */
+    color: #ffcc00;
 }
 
-/* Стили для мобильного меню */
+/* Мобильное меню */
 .navbar-toggle {
     display: none;
-    flex-direction: column;
     cursor: pointer;
 }
 
@@ -92,7 +107,7 @@ body {
     transition: 0.4s;
 }
 
-/* Стили для активного состояния мобильного меню */
+/* Анимация бургер-меню */
 .navbar-toggle.active .bar:nth-child(1) {
     transform: rotate(-45deg) translate(-5px, 6px);
 }
@@ -105,31 +120,52 @@ body {
     transform: rotate(45deg) translate(-5px, -6px);
 }
 
-.navbar-links.active {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 60px;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    width: 100%;
-    text-align: center;
-    z-index: 999;
-}
-
-/* Медиа-запрос для мобильных устройств */
+/* Медиа-запросы */
 @media (max-width: 768px) {
-    .navbar-links {
-        display: none;
+    .navbar {
+        padding: 1rem;
+    }
+
+    .theme-toggle-container {
+        position: absolute;
+        right: 60px;
+        top: 50%;
+        transform: translateY(-50%);
     }
 
     .navbar-toggle {
         display: flex;
+        flex-direction: column;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .navbar-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.9);
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .navbar-links.active {
+        display: flex;
     }
 }
 
-/* Основные стили для темной темы */
+@media (min-width: 769px) {
+    .navbar-toggle {
+        display: none;
+    }
+}
+
+/* Темная тема */
 body.dark-theme {
     background-color: rgb(44, 44, 44);
     color: rgb(224, 224, 224);
@@ -148,18 +184,19 @@ body.dark-theme {
     color: rgb(0, 123, 255);
 }
 
+/* Футер */
+.footer {
+    background-color: black;
+  color: white;
+  text-align: center;
+  padding: 2rem 0;
+  position: relative;
+  z-index: 100;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
 .dark-theme .footer {
     background-color: rgb(31, 31, 31);
     color: rgb(224, 224, 224);
-}
-
-/* Стили для футера */
-.footer {
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 3vh 0;
-    position: relative;
-    bottom: 0;
-    width: 100%;
 }

@@ -1,5 +1,4 @@
 :root {
-  /* Colors */
   --color-primary: #3b82f6;
   --color-primary-dark: #2563eb;
   --color-primary-light: #60a5fa;
@@ -11,7 +10,6 @@
   --color-card: #ffffff;
   --color-card-hover: #f9fafb;
 
-  /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -20,7 +18,6 @@
   --spacing-2xl: 3rem;
   --spacing-3xl: 4rem;
 
-  /* Typography */
   --font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
     "Helvetica Neue", sans-serif;
   --font-size-sm: 0.875rem;
@@ -32,7 +29,6 @@
   --font-size-4xl: 2.25rem;
   --font-size-5xl: 3rem;
 
-  /* Border Radius */
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
@@ -40,22 +36,18 @@
   --radius-2xl: 1rem;
   --radius-full: 9999px;
 
-  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-normal: 300ms ease;
   --transition-slow: 500ms ease;
 
-  /* Container */
   --container-width: 1200px;
 }
 
-/* Dark Theme Variables */
 .dark-theme {
   --color-primary: #60a5fa;
   --color-primary-dark: #3b82f6;
@@ -69,7 +61,6 @@
   --color-card-hover: #2d3748;
 }
 
-/* Reset & Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -80,7 +71,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -134,7 +124,6 @@ html {
   width: 100%;
 }
 
-/* Mobile Menu */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -210,13 +199,12 @@ html {
   visibility: visible;
 }
 
-/* Hero Section */
 .hero {
   position: relative;
   padding: var(--spacing-3xl) 0;
   background: linear-gradient(to bottom, var(--color-background), var(--color-background-muted));
   overflow: hidden;
-  margin-top: 0; /* Ensure no gap after navbar */
+  margin-top: 0;
 }
 
 .hero-content {
@@ -359,7 +347,6 @@ html {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
 
-/* Features Section */
 .features {
   padding: var(--spacing-3xl) 0;
 }
@@ -427,7 +414,6 @@ html {
   color: var(--color-text-light);
 }
 
-/* How It Works Section */
 .how-it-works {
   padding: var(--spacing-3xl) 0;
   background-color: var(--color-background-muted);
@@ -481,7 +467,6 @@ html {
   transform: translateY(0);
 }
 
-/* Trainers Section */
 .trainers {
   padding: var(--spacing-3xl) 0;
 }
@@ -547,7 +532,6 @@ html {
   color: var(--color-text-light);
 }
 
-/* CTA Section */
 .cta {
   padding: var(--spacing-3xl) 0;
   background-color: var(--color-primary);
@@ -571,7 +555,6 @@ html {
   opacity: 0.9;
 }
 
-/* Container */
 .container {
   width: 100%;
   max-width: var(--container-width);
@@ -579,7 +562,6 @@ html {
   padding: 0 var(--spacing-xl);
 }
 
-/* Animations */
 .animate-element {
   opacity: 0;
   transform: translateY(30px);
@@ -608,7 +590,6 @@ html {
   }
 }
 
-/* Media Queries */
 @media (min-width: 640px) {
   .hero-buttons {
     flex-direction: row;
