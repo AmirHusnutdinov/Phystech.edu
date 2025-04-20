@@ -69,17 +69,13 @@ class Students:
 
     @staticmethod
     def send_message():
-        print('sendin 1')
         if "user_id" not in session:
             return jsonify({"status": "error", "message": "Not logged in"}), 401
 
         trainer_id = session["user_id"]
         if not check_trainer(trainer_id):
-            print('222')
             return jsonify({"status": "error", "message": "Not a trainer"}), 403
-        print('123123123')
         data = request.json
-        print(data)
         student_id = int(data.get("student_id"))
         message = data.get("message")
 
@@ -88,9 +84,7 @@ class Students:
 
         # Проверяем, что студент действительно принадлежит тренеру
         student_list = get_list_of_student(trainer_id)
-        print('student list ', student_list, 'student_id ', student_id)
         if student_id not in student_list:
-            print('hehe!!!')
             return jsonify({"status": "error", "message": "Student not found"}), 404
 
         # Сохраняем сообщение
