@@ -23,6 +23,5 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(delete_old_diets, 'cron', hour=0, minute=0)
 scheduler.start()
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))
-    app.run(host=host, port=port, debug=True)
+port = int(os.environ.get("PORT", 8080))
+app.run(host=host, port=port, debug=True)
