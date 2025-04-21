@@ -2,12 +2,18 @@ from datetime import datetime, date
 
 from flask import request, render_template, session, jsonify, redirect
 
-from server.database.use_DataBase import get_dishes, get_user_data, database_query, get_day_data
+from server.database.use_DataBase import (
+    get_dishes,
+    get_user_data,
+    database_query,
+    get_day_data,
+    get_message_history,
+    add_message,
+    get_trainer_id,
+)
 from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user
-
-
 
 
 class DayPlan:
@@ -17,17 +23,23 @@ class DayPlan:
             dishes = get_dishes()
             user = get_user_data(session["user_id"])
             daily = get_day_data(session["user_id"], date.today())
-            print(date.today())
-            print(daily)
-            print(user)
+
             cookies2 = {"water": 0, "carbs": 0, "calories": 0, "protein": 0, "fats": 0}
-            if (daily):
+            if daily:
                 cookies2["water"] = daily[0][3]
                 cookies2["calories"] = daily[0][5]
                 cookies2["protein"] = daily[0][7]
                 cookies2["carbs"] = daily[0][9]
                 cookies2["fats"] = daily[0][11]
 
+            # Получаем ID тренера
+            trainer_id = get_trainer_id(session["user_id"])
+            has_trainer = trainer_id > 0
+
+            # Получаем сообщения чата, если есть тренер
+            messages = []
+            if has_trainer:
+                messages = get_message_history(session["user_id"], trainer_id)
 
             return render_template_with_user(
                 "DayPlan/day_plan.html",
@@ -35,7 +47,9 @@ class DayPlan:
                 title="Дневной план",
                 dishes=dishes,
                 cookies=user,
-                cookies2=cookies2
+                cookies2=cookies2,
+                messages=messages,
+                has_trainer=has_trainer,
             )
         return redirect(main_page)
 
@@ -53,7 +67,7 @@ class DayPlan:
 
             if not validate_data(data):
                 return jsonify({"message": "Incorrect Data"}), 400
-            if not validate_date(data.get('date')):
+            if not validate_date(data.get("date")):
                 return jsonify({"message": "wrong date"}), 400
             user = get_user_data(id)
             sql = f"""
@@ -87,22 +101,94 @@ class DayPlan:
 
     @staticmethod
     def show_add_product_page():
-        if "user_id" in session:
-            return render_template_with_user(
-                "DayPlan/add_product.html",
-                header_links=choose_header_links("authorized"),
-                title="Добавить продукт",
+        if "user_id" not in session:
+            return jsonify({"status": "error", "message": "Not logged in"}), 401
+        student_id = session["user_id"]
+        trainer_id = get_trainer_id(student_id)
+        if not (student_id):
+            return jsonify({"status": "error", "message": "Not a trainer"}), 403
+
+        last_update = request.args.get("last_update")
+        messages = get_message_history(student_id, student_id, since=last_update)
+
+        formatted_messages = []
+        for msg in messages:
+            if msg["id_from"] == student_id:  # Только новые сообщения от студента
+                user_info = get_user_data(student_id)
+                formatted_messages.append(
+                    {
+                        "content": msg["content"],
+                        "time": msg["time"].strftime("%H:%M"),
+                        "sender_name": user_info["name"],
+                    }
+                )
+
+        return jsonify(
+            {
+                "status": "success",
+                "messages": formatted_messages,
+                "last_update": datetime.now().isoformat(),
+            }
+        )
+
+    @staticmethod
+    def send_message():
+        if "user_id" not in session:
+            return jsonify({"status": "error", "message": "Not authorized"}), 401
+
+        data = request.json
+        message_text = data.get("message")
+        trainer_id = get_trainer_id(session["user_id"])
+
+        if not message_text or not trainer_id:
+            return jsonify({"status": "error", "message": "Invalid data"}), 400
+
+        try:
+            add_message(
+                sender_id=session["user_id"],
+                receiver_id=trainer_id,
+                content=message_text,
             )
-        return redirect(main_page)
+            return jsonify({"status": "success"})
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 500
+
+    @staticmethod
+    def get_new_messages():
+        if "user_id" not in session:
+            return jsonify({"status": "error", "message": "Not authorized"}), 401
+
+        trainer_id = get_trainer_id(session["user_id"])
+        last_update = request.args.get("last_update")
+
+        if not trainer_id:
+            return jsonify({"status": "error", "message": "No trainer assigned"}), 400
+
+        try:
+            messages = get_message_history(
+                user_id=session["user_id"], trainer_id=trainer_id, since=last_update
+            )
+            return jsonify(
+                {
+                    "status": "success",
+                    "messages": messages,
+                    "last_update": datetime.now().isoformat(),
+                }
+            )
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 500
 
 
 def validate_data(data):
     if "user_id" in session:
-        target_kbzhu = data.get('targetKBZHU')
-        actual_kbzhu = data.get('actualKBZHU')
+        target_kbzhu = data.get("targetKBZHU")
+        actual_kbzhu = data.get("actualKBZHU")
         try:
             for kbzhu in [target_kbzhu, actual_kbzhu]:
-                if not all(0 <= float(kbzhu[key]) <= (10000 if key == 'calories' else 2000) for key in kbzhu):
+                if not all(
+                    0 <= float(kbzhu[key]) <= (10000 if key == "calories" else 2000)
+                    for key in kbzhu
+                ):
                     return False
 
             return True
@@ -126,7 +212,7 @@ def open_day_plan_page():
     return DayPlan.show_day_plan_page()
 
 
-@app.route(save_day_plan, methods=['POST'])
+@app.route(save_day_plan, methods=["POST"])
 def save_data():
     return DayPlan.save_day_plan()
 
@@ -139,3 +225,13 @@ def open_add_product():
 @app.route("/physical_exercises")
 def open_physical_exercises_page():
     return render_template("DayPlan/physical_exercises.html")
+
+
+@app.route("/day_plan/get_chat_messages", methods=["GET"])
+def get_chat_messages_route():
+    return DayPlan.get_chat_messages()
+
+
+@app.route("/day_plan/send_message", methods=["POST"])
+def send_message_route():
+    return DayPlan.send_message()
