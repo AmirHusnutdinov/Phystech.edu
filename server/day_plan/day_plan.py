@@ -2,14 +2,12 @@ from datetime import datetime, date
 
 from flask import request, render_template, session, jsonify, redirect
 
-from server.database.use_DataBase import get_dishes, get_user_data, database_query
+from server.database.use_DataBase import get_dishes, get_user_data, database_query, get_day_data
 from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user
 
-id = 2
 
-previous_weight = 75
 
 
 class DayPlan:
@@ -17,7 +15,19 @@ class DayPlan:
     def show_day_plan_page():
         if "user_id" in session:
             dishes = get_dishes()
-            user = get_user_data(id)
+            user = get_user_data(session["user_id"])
+            daily = get_day_data(session["user_id"], date.today())
+            print(date.today())
+            print(daily)
+            print(user)
+            cookies2 = {"water": 0, "carbs": 0, "calories": 0, "protein": 0, "fats": 0}
+            if (daily):
+                cookies2["water"] = daily[0][3]
+                cookies2["calories"] = daily[0][5]
+                cookies2["protein"] = daily[0][7]
+                cookies2["carbs"] = daily[0][9]
+                cookies2["fats"] = daily[0][11]
+
 
             return render_template_with_user(
                 "DayPlan/day_plan.html",
@@ -25,15 +35,18 @@ class DayPlan:
                 title="Дневной план",
                 dishes=dishes,
                 cookies=user,
-                previous_weight=previous_weight,
+                cookies2=cookies2
             )
         return redirect(main_page)
 
     @staticmethod
     def save_day_plan():
         if "user_id" in session:
+            id = session["user_id"]
             data = request.json
+            print(data)
             weight = data.get("weight")
+            water = data.get("water")
             target_kbzhu = data.get("targetKBZHU")
             actual_kbzhu = data.get("actualKBZHU")
             today = data.get("date")
@@ -46,13 +59,13 @@ class DayPlan:
             sql = f"""
             INSERT INTO user_daily_metrics (id, weight, height, water, date, calories, calories_plan, proteins,
              proteins_plan, fats, fats_plan, carbs, carbs_plan)
-            VALUES ({id}, {weight}, {user['height']}, {user['water']}, '{today}', 
+            VALUES ({id}, {weight}, {user['height']}, {water}, '{today}', 
                     {actual_kbzhu['calories']}, {target_kbzhu['calories']}, 
                     {actual_kbzhu['protein']}, {target_kbzhu['protein']}, 
                     {actual_kbzhu['fats']}, {target_kbzhu['fats']}, 
                     {actual_kbzhu['carbs']}, {target_kbzhu['carbs']})
             ON CONFLICT (id, date) DO UPDATE
-            SET weight = {weight}, height = {user['height']}, water = {user['water']}, 
+            SET weight = {weight}, height = {user['height']}, water = {water}, 
                 calories = {actual_kbzhu['calories']}, calories_plan = {target_kbzhu['calories']}, 
                 proteins = {actual_kbzhu['protein']}, proteins_plan = {target_kbzhu['protein']}, 
                 fats = {actual_kbzhu['fats']}, fats_plan = {target_kbzhu['fats']}, 
@@ -85,13 +98,9 @@ class DayPlan:
 
 def validate_data(data):
     if "user_id" in session:
-        weight = data.get('weight')
         target_kbzhu = data.get('targetKBZHU')
         actual_kbzhu = data.get('actualKBZHU')
         try:
-            if not (0 <= float(weight) <= 500):
-                return False
-
             for kbzhu in [target_kbzhu, actual_kbzhu]:
                 if not all(0 <= float(kbzhu[key]) <= (10000 if key == 'calories' else 2000) for key in kbzhu):
                     return False
