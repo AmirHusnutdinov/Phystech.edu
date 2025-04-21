@@ -7,7 +7,7 @@ from server.service_files.links import admin, authorization, registration, calen
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from settings import app
-from server import
+from server import *
 
 class Test(unittest.TestCase):
 
