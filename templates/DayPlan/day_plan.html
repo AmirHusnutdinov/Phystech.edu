@@ -4,220 +4,262 @@
 <link rel="stylesheet" href="../../static/assets/css/style_day_plan.css">
 
 <main class="container">
-    <div class="plan-header">
-        <h1>План питания на день</h1>
-        <div class="date-display" id="current-date"></div>
+  <div class="plan-header">
+    <h1>План питания на день</h1>
+    <div class="date-display" id="current-date"></div>
 
-        <div class="plan-type-toggle">
-            <button class="plan-type-btn active" data-type="custom">Свободный режим</button>
-            <button class="plan-type-btn" data-type="diet">Диета</button>
+    <div class="plan-type-toggle">
+      <button class="plan-type-btn active" data-type="custom">Свободный режим</button>
+      <button class="plan-type-btn" data-type="diet">Диета</button>
+    </div>
+  </div>
+
+  <div class="nutrition-summary">
+    <div class="nutrition-progress">
+      <div class="progress-item">
+        <div class="progress-label">
+          <span>Белки</span>
+          <span class="progress-value" id="protein-value">0/120 г</span>
         </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="protein-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="progress-item">
+        <div class="progress-label">
+          <span>Жиры</span>
+          <span class="progress-value" id="fat-value">0/50 г</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="fat-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="progress-item">
+        <div class="progress-label">
+          <span>Углеводы</span>
+          <span class="progress-value" id="carb-value">0/250 г</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="carb-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="progress-item">
+        <div class="progress-label">
+          <span>Калории</span>
+          <span class="progress-value" id="calorie-value">0/2000 ккал</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="calorie-fill" style="width: 0%"></div>
+        </div>
+      </div>
     </div>
 
-    <div class="nutrition-summary">
-        <div class="nutrition-progress">
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span>Белки</span>
-                    <span class="progress-value" id="protein-value">0/120 г</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="protein-fill" style="width: 0%"></div>
-                </div>
-            </div>
+    <div class="water-tracker">
+      <h3>Вода</h3>
+      <div class="water-progress">
+        <div class="water-glasses" id="water-glasses">
+          <!-- Glasses will be added dynamically -->
+        </div>
+        <div class="water-controls">
+          <button id="add-water">+ Добавить стакан (250 мл)</button>
+          <div class="water-value" id="water-value">0/2000 мл</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span>Жиры</span>
-                    <span class="progress-value" id="fat-value">0/50 г</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="fat-fill" style="width: 0%"></div>
-                </div>
-            </div>
+  <div class="meals-container" id="meals-container">
+    <!-- Meals will be added here -->
+  </div>
 
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span>Углеводы</span>
-                    <span class="progress-value" id="carb-value">0/250 г</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="carb-fill" style="width: 0%"></div>
-                </div>
-            </div>
+  <button class="add-meal-btn" id="add-meal-btn">+ Добавить прием пищи</button>
 
-            <div class="progress-item">
-                <div class="progress-label">
-                    <span>Калории</span>
-                    <span class="progress-value" id="calorie-value">0/2000 ккал</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="calorie-fill" style="width: 0%"></div>
-                </div>
+  <div class="save-plan-container">
+    <button class="save-plan-btn" id="save-plan-btn">Сохранить план</button>
+    <div id="save-status-message" class="status-message"></div>
+  </div>
+
+  <!-- Meal Form Modal -->
+  <div class="modal" id="meal-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Добавить прием пищи</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="meal-form">
+          <div class="form-group">
+            <label for="meal-time">Время приема пищи:</label>
+            <input type="time" id="meal-time" value="12:00">
+          </div>
+
+          <div class="form-group meal-type-group" id="meal-type-group" style="display: none;">
+            <label for="meal-type">Тип приема пищи:</label>
+            <select id="meal-type">
+              <option value="breakfast">Завтрак</option>
+              <option value="lunch">Обед</option>
+              <option value="dinner">Ужин</option>
+              <option value="snack">Перекус</option>
+            </select>
+          </div>
+
+          <div class="meal-nutrition-summary">
+            <div class="meal-nutrition-item">
+              <span>Белки:</span>
+              <span id="meal-protein">0 г</span>
             </div>
+            <div class="meal-nutrition-item">
+              <span>Жиры:</span>
+              <span id="meal-fat">0 г</span>
+            </div>
+            <div class="meal-nutrition-item">
+              <span>Углеводы:</span>
+              <span id="meal-carb">0 г</span>
+            </div>
+            <div class="meal-nutrition-item">
+              <span>Калории:</span>
+              <span id="meal-calories">0 ккал</span>
+            </div>
+          </div>
+
+          <div class="dishes-container" id="dishes-container">
+            <!-- Dishes will be added here -->
+          </div>
+
+          <button class="add-dish-btn" id="add-dish-btn">+ Добавить блюдо</button>
+
+          <div class="form-actions">
+            <button class="cancel-btn" id="cancel-meal-btn">Отмена</button>
+            <button class="save-btn" id="save-meal-btn">Сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dish Search Modal -->
+  <div class="modal" id="dish-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Добавить блюдо</h2>
+        <span class="close-modal" id="close-dish-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="search-container">
+          <input type="text" id="dish-search" placeholder="Поиск блюда...">
+          <button id="search-btn">Поиск</button>
         </div>
 
-        <div class="water-tracker">
-            <h3>Вода</h3>
-            <div class="water-progress">
-                <div class="water-glasses" id="water-glasses">
-                    <!-- Glasses will be added dynamically -->
-                </div>
-                <div class="water-controls">
-                    <button id="add-water">+ Добавить стакан (250 мл)</button>
-                    <div class="water-value" id="water-value">0/2000 мл</div>
-                </div>
-            </div>
+        <div class="search-results" id="search-results">
+          <!-- Search results will be added here -->
         </div>
-    </div>
 
-    <div class="meals-container" id="meals-container">
-        <!-- Meals will be added here -->
-    </div>
+        <div class="dish-form" id="dish-form" style="display: none;">
+          <h3 id="selected-dish-name">Название блюда</h3>
 
-    <button class="add-meal-btn" id="add-meal-btn">+ Добавить прием пищи</button>
+          <div class="form-group">
+            <label for="dish-weight">Вес (г):</label>
+            <input type="number" id="dish-weight" min="1" value="100">
+          </div>
 
-    <div class="save-plan-container">
-        <button class="save-plan-btn" id="save-plan-btn">Сохранить план</button>
-        <div id="save-status-message" class="status-message"></div>
-    </div>
-
-    <!-- Meal Form Modal -->
-    <div class="modal" id="meal-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Добавить прием пищи</h2>
-                <span class="close-modal">&times;</span>
+          <div class="dish-nutrition">
+            <div class="dish-nutrition-item">
+              <span>Белки:</span>
+              <span id="dish-protein">0 г</span>
             </div>
-            <div class="modal-body">
-                <div class="meal-form">
-                    <div class="form-group">
-                        <label for="meal-time">Время приема пищи:</label>
-                        <input type="time" id="meal-time" value="12:00">
-                    </div>
-
-                    <div class="form-group meal-type-group" id="meal-type-group" style="display: none;">
-                        <label for="meal-type">Тип приема пищи:</label>
-                        <select id="meal-type">
-                            <option value="breakfast">Завтрак</option>
-                            <option value="lunch">Обед</option>
-                            <option value="dinner">Ужин</option>
-                            <option value="snack">Перекус</option>
-                        </select>
-                    </div>
-
-                    <div class="meal-nutrition-summary">
-                        <div class="meal-nutrition-item">
-                            <span>Белки:</span>
-                            <span id="meal-protein">0 г</span>
-                        </div>
-                        <div class="meal-nutrition-item">
-                            <span>Жиры:</span>
-                            <span id="meal-fat">0 г</span>
-                        </div>
-                        <div class="meal-nutrition-item">
-                            <span>Углеводы:</span>
-                            <span id="meal-carb">0 г</span>
-                        </div>
-                        <div class="meal-nutrition-item">
-                            <span>Калории:</span>
-                            <span id="meal-calories">0 ккал</span>
-                        </div>
-                    </div>
-
-                    <div class="dishes-container" id="dishes-container">
-                        <!-- Dishes will be added here -->
-                    </div>
-
-                    <button class="add-dish-btn" id="add-dish-btn">+ Добавить блюдо</button>
-
-                    <div class="form-actions">
-                        <button class="cancel-btn" id="cancel-meal-btn">Отмена</button>
-                        <button class="save-btn" id="save-meal-btn">Сохранить</button>
-                    </div>
-                </div>
+            <div class="dish-nutrition-item">
+              <span>Жиры:</span>
+              <span id="dish-fat">0 г</span>
             </div>
+            <div class="dish-nutrition-item">
+              <span>Углеводы:</span>
+              <span id="dish-carb">0 г</span>
+            </div>
+            <div class="dish-nutrition-item">
+              <span>Калории:</span>
+              <span id="dish-calories">0 ккал</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="cancel-btn" id="cancel-dish-btn">Отмена</button>
+            <button class="save-btn" id="add-dish-to-meal-btn">Добавить в прием пищи</button>
+          </div>
         </div>
+      </div>
     </div>
-
-    <!-- Dish Search Modal -->
-    <div class="modal" id="dish-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Добавить блюдо</h2>
-                <span class="close-modal" id="close-dish-modal">&times;</span>
+  </div>
+  <!-- Chat Modal -->
+  <div id="chat-modal" class="modal">
+    <div class="modal-content chat-modal-content">
+      <div class="modal-header">
+        <h2>Чат с {{ cookies.name }}</h2>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="chat-container">
+        <div class="chat-messages">
+          {% for message in messages %}
+          <div class="message {{ message.type }}">
+            {% if message.type == 'received' %}
+            <div class="message-avatar">
+              <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
+                alt="Аватар {{ cookies.name }}">
             </div>
-            <div class="modal-body">
-                <div class="search-container">
-                    <input type="text" id="dish-search" placeholder="Поиск блюда...">
-                    <button id="search-btn">Поиск</button>
-                </div>
-
-                <div class="search-results" id="search-results">
-                    <!-- Search results will be added here -->
-                </div>
-
-                <div class="dish-form" id="dish-form" style="display: none;">
-                    <h3 id="selected-dish-name">Название блюда</h3>
-
-                    <div class="form-group">
-                        <label for="dish-weight">Вес (г):</label>
-                        <input type="number" id="dish-weight" min="1" value="100">
-                    </div>
-
-                    <div class="dish-nutrition">
-                        <div class="dish-nutrition-item">
-                            <span>Белки:</span>
-                            <span id="dish-protein">0 г</span>
-                        </div>
-                        <div class="dish-nutrition-item">
-                            <span>Жиры:</span>
-                            <span id="dish-fat">0 г</span>
-                        </div>
-                        <div class="dish-nutrition-item">
-                            <span>Углеводы:</span>
-                            <span id="dish-carb">0 г</span>
-                        </div>
-                        <div class="dish-nutrition-item">
-                            <span>Калории:</span>
-                            <span id="dish-calories">0 ккал</span>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button class="cancel-btn" id="cancel-dish-btn">Отмена</button>
-                        <button class="save-btn" id="add-dish-to-meal-btn">Добавить в прием пищи</button>
-                    </div>
-                </div>
+            {% endif %}
+            <div class="message-content">
+              {% if message.type == 'received' %}
+              <div class="message-sender">{{ message.sender_name }}</div>
+              {% endif %}
+              <div class="message-text">{{ message.content }}</div>
+              <div class="message-time">{{ message.time }}</div>
             </div>
+          </div>
+          {% endfor %}
         </div>
+        <div class="chat-input">
+          <input type="text" id="message-input" placeholder="Введите сообщение...">
+          <button id="send-message" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Contact Button -->
+  <button id="contact-btn" class="contact-btn">
+    <i class="fas fa-comment-dots"></i>
+    <span>Связаться с тренером</span>
+  </button>
 </main>
 
 <script>
-const cookies = {{ cookies | tojson }};
-const cookies2 = {{ cookies2 | tojson }};
-const DEMO_DISHES = {{ dishes | tojson }};
+  const cookies = {{ cookies | tojson }};
+  const cookies2 = {{ cookies2 | tojson }};
+  const DEMO_DISHES = {{ dishes | tojson }};
 
-const DAILY_GOALS = {
+  const DAILY_GOALS = {
     protein: cookies.proteins, // г
     fats: cookies.fats, // г
     carbs: cookies.carbs, // г
     calories: cookies.calories, // ккал
     water: cookies.water // мл
-};
+  };
 
-const GLASS_SIZE = 250; // мл
+  const GLASS_SIZE = 250; // мл
 
-// Глобальные переменные
-let meals = [];
-let waterAmount = 0;
-let planType = 'custom'; // 'custom' или 'diet'
-let selectedDishId = null;
-let currentMealIndex = null;
+  // Глобальные переменные
+  let meals = [];
+  let waterAmount = 0;
+  let planType = 'custom'; // 'custom' или 'diet'
+  let selectedDishId = null;
+  let currentMealIndex = null;
 
-// DOM элементы
-document.addEventListener('DOMContentLoaded', function() {
+  // DOM элементы
+  document.addEventListener('DOMContentLoaded', function () {
     // Инициализация даты
     updateCurrentDate();
 
@@ -232,9 +274,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обновление прогресс-баров
     updateNutritionSummary();
-});
+  });
 
-function updateWaterDisplay() {
+  function updateWaterDisplay() {
     // Обновляем текстовое значение
     updateWaterValue();
 
@@ -243,99 +285,99 @@ function updateWaterDisplay() {
     const filledGlasses = Math.floor(waterAmount / GLASS_SIZE);
 
     glasses.forEach((glass, index) => {
-        if (index < filledGlasses) {
-            glass.classList.add('filled');
-        } else {
-            glass.classList.remove('filled');
-        }
+      if (index < filledGlasses) {
+        glass.classList.add('filled');
+      } else {
+        glass.classList.remove('filled');
+      }
     });
-}
+  }
 
-// Функция для обновления текущей даты
-function updateCurrentDate() {
+  // Функция для обновления текущей даты
+  function updateCurrentDate() {
     const dateElement = document.getElementById('current-date');
     const now = new Date();
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     dateElement.textContent = now.toLocaleDateString('ru-RU', options);
-}
+  }
 
-// Инициализация стаканов воды
-function initWaterGlasses() {
+  // Инициализация стаканов воды
+  function initWaterGlasses() {
     const waterGlassesContainer = document.getElementById('water-glasses');
     waterGlassesContainer.innerHTML = '';
 
     const glassCount = Math.ceil(DAILY_GOALS.water / GLASS_SIZE);
 
     for (let i = 0; i < glassCount; i++) {
-        const glass = document.createElement('div');
-        glass.className = 'water-glass';
-        glass.dataset.index = i;
+      const glass = document.createElement('div');
+      glass.className = 'water-glass';
+      glass.dataset.index = i;
 
-        glass.addEventListener('click', function() {
-            toggleWaterGlass(i);
-        });
+      glass.addEventListener('click', function () {
+        toggleWaterGlass(i);
+      });
 
-        waterGlassesContainer.appendChild(glass);
+      waterGlassesContainer.appendChild(glass);
     }
-}
+  }
 
-// Переключение стакана воды
-function toggleWaterGlass(index) {
+  // Переключение стакана воды
+  function toggleWaterGlass(index) {
     const glasses = document.querySelectorAll('.water-glass');
     const clickedGlass = glasses[index];
 
     if (clickedGlass.classList.contains('filled')) {
-        // Если стакан уже заполнен, опустошаем его и все последующие
-        for (let i = index; i < glasses.length; i++) {
-            glasses[i].classList.remove('filled');
-        }
-        waterAmount = GLASS_SIZE * index;
+      // Если стакан уже заполнен, опустошаем его и все последующие
+      for (let i = index; i < glasses.length; i++) {
+        glasses[i].classList.remove('filled');
+      }
+      waterAmount = GLASS_SIZE * index;
     } else {
-        // Если стакан пуст, заполняем его и все предыдущие
-        for (let i = 0; i <= index; i++) {
-            glasses[i].classList.add('filled');
-        }
-        waterAmount = GLASS_SIZE * (index + 1);
+      // Если стакан пуст, заполняем его и все предыдущие
+      for (let i = 0; i <= index; i++) {
+        glasses[i].classList.add('filled');
+      }
+      waterAmount = GLASS_SIZE * (index + 1);
     }
 
     updateWaterValue();
-}
+  }
 
-// Добавление стакана воды
-function addWaterGlass() {
+  // Добавление стакана воды
+  function addWaterGlass() {
     const glasses = document.querySelectorAll('.water-glass');
     const filledGlasses = document.querySelectorAll('.water-glass.filled');
 
     if (filledGlasses.length < glasses.length) {
-        const nextIndex = filledGlasses.length;
-        toggleWaterGlass(nextIndex);
+      const nextIndex = filledGlasses.length;
+      toggleWaterGlass(nextIndex);
     }
-}
+  }
 
-// Обновление значения воды
-function updateWaterValue() {
+  // Обновление значения воды
+  function updateWaterValue() {
     const waterValueElement = document.getElementById('water-value');
     waterValueElement.textContent = `${waterAmount}/${DAILY_GOALS.water} мл`;
-}
+  }
 
-// Настройка обработчиков событий
-function setupEventListeners() {
+  // Настройка обработчиков событий
+  function setupEventListeners() {
     // Переключение типа плана
     const planTypeButtons = document.querySelectorAll('.plan-type-btn');
     planTypeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            planTypeButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            planType = this.dataset.type;
+      button.addEventListener('click', function () {
+        planTypeButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        planType = this.dataset.type;
 
-            const mealTypeGroup = document.getElementById('meal-type-group');
-            if (planType === 'diet') {
-                mealTypeGroup.style.display = 'block';
-            } else {
-                mealTypeGroup.style.display = 'none';
-            }
-        });
+        const mealTypeGroup = document.getElementById('meal-type-group');
+        if (planType === 'diet') {
+          mealTypeGroup.style.display = 'block';
+        } else {
+          mealTypeGroup.style.display = 'none';
+        }
+      });
     });
 
     // Добавление стакана воды
@@ -346,15 +388,15 @@ function setupEventListeners() {
 
     // Закрытие модальных окон
     document.querySelectorAll('.close-modal').forEach(closeBtn => {
-        closeBtn.addEventListener('click', function() {
-            document.getElementById('meal-modal').style.display = 'none';
-            document.getElementById('dish-modal').style.display = 'none';
-        });
+      closeBtn.addEventListener('click', function () {
+        document.getElementById('meal-modal').style.display = 'none';
+        document.getElementById('dish-modal').style.display = 'none';
+      });
     });
 
     // Отмена добавления приема пищи
-    document.getElementById('cancel-meal-btn').addEventListener('click', function() {
-        document.getElementById('meal-modal').style.display = 'none';
+    document.getElementById('cancel-meal-btn').addEventListener('click', function () {
+      document.getElementById('meal-modal').style.display = 'none';
     });
 
     // Сохранение приема пищи
@@ -364,24 +406,24 @@ function setupEventListeners() {
     document.getElementById('add-dish-btn').addEventListener('click', openDishModal);
 
     // Закрытие модального окна для добавления блюда
-    document.getElementById('close-dish-modal').addEventListener('click', function() {
-        document.getElementById('dish-modal').style.display = 'none';
+    document.getElementById('close-dish-modal').addEventListener('click', function () {
+      document.getElementById('dish-modal').style.display = 'none';
     });
 
     // Отмена добавления блюда
-    document.getElementById('cancel-dish-btn').addEventListener('click', function() {
-        document.getElementById('dish-form').style.display = 'none';
-        document.getElementById('search-results').style.display = 'block';
+    document.getElementById('cancel-dish-btn').addEventListener('click', function () {
+      document.getElementById('dish-form').style.display = 'none';
+      document.getElementById('search-results').style.display = 'block';
     });
 
     // Поиск блюд
     document.getElementById('search-btn').addEventListener('click', searchDishes);
 
     // Обработка нажатия Enter в поле поиска
-    document.getElementById('dish-search').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            searchDishes();
-        }
+    document.getElementById('dish-search').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        searchDishes();
+      }
     });
 
     // Изменение веса блюда
@@ -389,10 +431,10 @@ function setupEventListeners() {
 
     // Добавление блюда в прием пищи
     document.getElementById('add-dish-to-meal-btn').addEventListener('click', addDishToMeal);
-}
+  }
 
-// Открытие модального окна для добавления приема пищи
-function openMealModal(event, mealIndex = null) {
+  // Открытие модального окна для добавления приема пищи
+  function openMealModal(event, mealIndex = null) {
     currentMealIndex = mealIndex;
 
     const modal = document.getElementById('meal-modal');
@@ -405,38 +447,38 @@ function openMealModal(event, mealIndex = null) {
 
     // Установка текущего времени, если это новый прием пищи
     if (mealIndex === null) {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        mealTimeInput.value = `${hours}:${minutes}`;
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      mealTimeInput.value = `${hours}:${minutes}`;
 
-        // Сброс значений питательных веществ
-        document.getElementById('meal-protein').textContent = '0 г';
-        document.getElementById('meal-fat').textContent = '0 г';
-        document.getElementById('meal-carb').textContent = '0 г';
-        document.getElementById('meal-calories').textContent = '0 ккал';
+      // Сброс значений питательных веществ
+      document.getElementById('meal-protein').textContent = '0 г';
+      document.getElementById('meal-fat').textContent = '0 г';
+      document.getElementById('meal-carb').textContent = '0 г';
+      document.getElementById('meal-calories').textContent = '0 ккал';
     } else {
-        // Заполнение данными существующего приема пищи
-        const meal = meals[mealIndex];
-        mealTimeInput.value = meal.time;
+      // Заполнение данными существующего приема пищи
+      const meal = meals[mealIndex];
+      mealTimeInput.value = meal.time;
 
-        if (planType === 'diet' && meal.type) {
-            mealTypeSelect.value = meal.type;
-        }
+      if (planType === 'diet' && meal.type) {
+        mealTypeSelect.value = meal.type;
+      }
 
-        // Отображение блюд
-        meal.dishes.forEach((dish, index) => {
-            addDishToContainer(dish, index);
-        });
+      // Отображение блюд
+      meal.dishes.forEach((dish, index) => {
+        addDishToContainer(dish, index);
+      });
 
-        // Обновление значений питательных веществ
-        updateMealNutrition();
+      // Обновление значений питательных веществ
+      updateMealNutrition();
     }
 
     modal.style.display = 'block';
-}
+  }
 
-function saveDayPlan() {
+  function saveDayPlan() {
     const saveBtn = document.getElementById('save-plan-btn');
     const statusMessage = document.getElementById('save-status-message');
 
@@ -451,14 +493,14 @@ function saveDayPlan() {
     let actualWater = parseFloat(cookies2.water);
 
     meals.forEach(meal => {
-        meal.dishes.forEach(dish => {
-            if (dish.consumed) {
-                actualProtein += parseFloat(dish.protein);
-                actualFats += parseFloat(dish.fats);
-                actualCarbs += parseFloat(dish.carbs);
-                actualCalories += dish.calories;
-            }
-        });
+      meal.dishes.forEach(dish => {
+        if (dish.consumed) {
+          actualProtein += parseFloat(dish.protein);
+          actualFats += parseFloat(dish.fats);
+          actualCarbs += parseFloat(dish.carbs);
+          actualCalories += dish.calories;
+        }
+      });
     });
     actualWater += waterAmount;
     const today = new Intl.DateTimeFormat('fr-CA', {
@@ -468,111 +510,111 @@ function saveDayPlan() {
     }).format(new Date()).replace(/\//g, '-');
 
     const data = {
-        height: cookies.height,
-        weight: cookies.weight,
-        water: waterAmount,
-        targetKBZHU: {
-            protein: DAILY_GOALS.protein,
-            fats: DAILY_GOALS.fats,
-            carbs: DAILY_GOALS.carbs,
-            calories: DAILY_GOALS.calories
-        },
-        actualKBZHU: {
-            protein: actualProtein.toFixed(1),
-            fats: actualFats.toFixed(1),
-            carbs: actualCarbs.toFixed(1),
-            calories: actualCalories
-        },
-        date: today
+      height: cookies.height,
+      weight: cookies.weight,
+      water: waterAmount,
+      targetKBZHU: {
+        protein: DAILY_GOALS.protein,
+        fats: DAILY_GOALS.fats,
+        carbs: DAILY_GOALS.carbs,
+        calories: DAILY_GOALS.calories
+      },
+      actualKBZHU: {
+        protein: actualProtein.toFixed(1),
+        fats: actualFats.toFixed(1),
+        carbs: actualCarbs.toFixed(1),
+        calories: actualCalories
+      },
+      date: today
     };
 
     fetch('/day_plan/save_day_plan', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(data)
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
     })
-    .then(response => {
+      .then(response => {
         if (!response.ok) {
-            throw new Error('Ошибка сервера: ' + response.status);
+          throw new Error('Ошибка сервера: ' + response.status);
         }
         return response.json();
-    })
-    .then(data => {
+      })
+      .then(data => {
         statusMessage.textContent = data.message || 'План успешно сохранен!';
         statusMessage.className = 'status-message success';
         statusMessage.style.display = 'block';
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         statusMessage.textContent = 'Ошибка при сохранении: ' + error.message;
         statusMessage.className = 'status-message error';
         statusMessage.style.display = 'block';
         console.error('Ошибка:', error);
-    })
-    .finally(() => {
+      })
+      .finally(() => {
         saveBtn.disabled = false;
         saveBtn.textContent = 'Сохранить план';
-    });
-}
+      });
+  }
 
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('save-plan-btn').addEventListener('click', saveDayPlan);
-});
+  });
 
-// Сохранение приема пищи
-function saveMeal() {
+  // Сохранение приема пищи
+  function saveMeal() {
     const mealTimeInput = document.getElementById('meal-time');
     const mealTypeSelect = document.getElementById('meal-type');
     const dishesContainer = document.getElementById('dishes-container');
 
     // Проверка наличия блюд
     if (dishesContainer.children.length === 0) {
-        alert('Добавьте хотя бы одно блюдо');
-        return;
+      alert('Добавьте хотя бы одно блюдо');
+      return;
     }
 
     // Создание объекта приема пищи
     const meal = {
-        time: mealTimeInput.value,
-        dishes: [],
-        protein: 0,
-        fats: 0,
-        carbs: 0,
-        calories: 0
+      time: mealTimeInput.value,
+      dishes: [],
+      protein: 0,
+      fats: 0,
+      carbs: 0,
+      calories: 0
     };
 
     // Если это диета, добавляем тип приема пищи
     if (planType === 'diet') {
-        meal.type = mealTypeSelect.value;
+      meal.type = mealTypeSelect.value;
     }
 
     // Сбор данных о блюдах
     const dishItems = dishesContainer.querySelectorAll('.dish-item');
     dishItems.forEach(item => {
-        const dishId = parseInt(item.dataset.id);
-        const weight = parseInt(item.dataset.weight);
-        const dish = DEMO_DISHES.find(d => d.id === dishId);
+      const dishId = parseInt(item.dataset.id);
+      const weight = parseInt(item.dataset.weight);
+      const dish = DEMO_DISHES.find(d => d.id === dishId);
 
-        if (dish) {
-            const dishData = {
-                id: dish.id,
-                name: dish.name,
-                weight: weight,
-                protein: (dish.protein * weight / 100).toFixed(1),
-                fats: (dish.fats * weight / 100).toFixed(1),
-                carbs: (dish.carbs * weight / 100).toFixed(1),
-                calories: Math.round(dish.calories * weight / 100),
-                consumed: false
-            };
+      if (dish) {
+        const dishData = {
+          id: dish.id,
+          name: dish.name,
+          weight: weight,
+          protein: (dish.protein * weight / 100).toFixed(1),
+          fats: (dish.fats * weight / 100).toFixed(1),
+          carbs: (dish.carbs * weight / 100).toFixed(1),
+          calories: Math.round(dish.calories * weight / 100),
+          consumed: false
+        };
 
-            meal.dishes.push(dishData);
-            meal.protein += parseFloat(dishData.protein);
-            meal.fats += parseFloat(dishData.fats);
-            meal.carbs += parseFloat(dishData.carbs);
-            meal.calories += dishData.calories;
-        }
+        meal.dishes.push(dishData);
+        meal.protein += parseFloat(dishData.protein);
+        meal.fats += parseFloat(dishData.fats);
+        meal.carbs += parseFloat(dishData.carbs);
+        meal.calories += dishData.calories;
+      }
     });
 
     // Округление значений
@@ -582,9 +624,9 @@ function saveMeal() {
 
     // Добавление или обновление приема пищи
     if (currentMealIndex !== null) {
-        meals[currentMealIndex] = meal;
+      meals[currentMealIndex] = meal;
     } else {
-        meals.push(meal);
+      meals.push(meal);
     }
 
     // Закрытие модального окна
@@ -595,10 +637,10 @@ function saveMeal() {
 
     // Обновление сводки по питательным веществам
     updateNutritionSummary();
-}
+  }
 
-// Открытие модального окна для добавления блюда
-function openDishModal() {
+  // Открытие модального окна для добавления блюда
+  function openDishModal() {
     document.getElementById('dish-modal').style.display = 'block';
     document.getElementById('dish-search').value = '';
     document.getElementById('dish-form').style.display = 'none';
@@ -607,12 +649,12 @@ function openDishModal() {
 
     // Фокус на поле поиска
     setTimeout(() => {
-        document.getElementById('dish-search').focus();
+      document.getElementById('dish-search').focus();
     }, 100);
-}
+  }
 
-// Поиск блюд
-function searchDishes() {
+  // Поиск блюд
+  function searchDishes() {
     const searchInput = document.getElementById('dish-search');
     const searchResults = document.getElementById('search-results');
     const query = searchInput.value.trim().toLowerCase();
@@ -621,25 +663,25 @@ function searchDishes() {
     searchResults.innerHTML = '';
 
     if (query.length < 2) {
-        searchResults.innerHTML = '<p>Введите минимум 2 символа для поиска</p>';
-        return;
+      searchResults.innerHTML = '<p>Введите минимум 2 символа для поиска</p>';
+      return;
     }
 
     // Фильтрация блюд
     const filteredDishes = DEMO_DISHES.filter(dish =>
-        dish.name.toLowerCase().includes(query)
+      dish.name.toLowerCase().includes(query)
     );
 
     if (filteredDishes.length === 0) {
-        searchResults.innerHTML = '<p>Ничего не найдено</p>';
-        return;
+      searchResults.innerHTML = '<p>Ничего не найдено</p>';
+      return;
     }
 
     // Отображение результатов
     filteredDishes.forEach(dish => {
-        const dishElement = document.createElement('div');
-        dishElement.className = 'search-result-item';
-        dishElement.innerHTML = `
+      const dishElement = document.createElement('div');
+      dishElement.className = 'search-result-item';
+      dishElement.innerHTML = `
             <div class="dish-name">${dish.name}</div>
             <div class="dish-nutrition">
                 <span>Б: ${dish.protein}г</span>
@@ -649,87 +691,87 @@ function searchDishes() {
             </div>
         `;
 
-        dishElement.addEventListener('click', function() {
-            selectDish(dish.id);
-        });
+      dishElement.addEventListener('click', function () {
+        selectDish(dish.id);
+      });
 
-        searchResults.appendChild(dishElement);
+      searchResults.appendChild(dishElement);
     });
-}
+  }
 
-// Выбор блюда
-function selectDish(dishId) {
+  // Выбор блюда
+  function selectDish(dishId) {
     selectedDishId = dishId;
     const dish = DEMO_DISHES.find(d => d.id === dishId);
 
     if (dish) {
-        document.getElementById('search-results').style.display = 'none';
-        document.getElementById('dish-form').style.display = 'block';
-        document.getElementById('selected-dish-name').textContent = dish.name;
-        document.getElementById('dish-weight').value = 100;
+      document.getElementById('search-results').style.display = 'none';
+      document.getElementById('dish-form').style.display = 'block';
+      document.getElementById('selected-dish-name').textContent = dish.name;
+      document.getElementById('dish-weight').value = 100;
 
-        updateDishNutrition();
+      updateDishNutrition();
     }
-}
+  }
 
-// Обновление питательных веществ блюда при изменении веса
-function updateDishNutrition() {
+  // Обновление питательных веществ блюда при изменении веса
+  function updateDishNutrition() {
     const weightInput = document.getElementById('dish-weight');
     const weight = parseInt(weightInput.value) || 0;
 
     if (weight <= 0) {
-        weightInput.value = 1;
-        return updateDishNutrition();
+      weightInput.value = 1;
+      return updateDishNutrition();
     }
 
     const dish = DEMO_DISHES.find(d => d.id === selectedDishId);
 
     if (dish) {
-        document.getElementById('dish-protein').textContent = `${(dish.protein * weight / 100).toFixed(1)} г`;
-        document.getElementById('dish-fat').textContent = `${(dish.fats * weight / 100).toFixed(1)} г`;
-        document.getElementById('dish-carb').textContent = `${(dish.carbs * weight / 100).toFixed(1)} г`;
-        document.getElementById('dish-calories').textContent = `${Math.round(dish.calories * weight / 100)} ккал`;
+      document.getElementById('dish-protein').textContent = `${(dish.protein * weight / 100).toFixed(1)} г`;
+      document.getElementById('dish-fat').textContent = `${(dish.fats * weight / 100).toFixed(1)} г`;
+      document.getElementById('dish-carb').textContent = `${(dish.carbs * weight / 100).toFixed(1)} г`;
+      document.getElementById('dish-calories').textContent = `${Math.round(dish.calories * weight / 100)} ккал`;
     }
-}
+  }
 
-// Добавление блюда в прием пищи
-function addDishToMeal() {
+  // Добавление блюда в прием пищи
+  function addDishToMeal() {
     const weight = parseInt(document.getElementById('dish-weight').value) || 0;
 
     if (weight <= 0) {
-        alert('Вес должен быть больше 0');
-        return;
+      alert('Вес должен быть больше 0');
+      return;
     }
 
     const dish = DEMO_DISHES.find(d => d.id === selectedDishId);
 
     if (dish) {
-        const dishData = {
-            id: dish.id,
-            name: dish.name,
-            weight: weight,
-            protein: (dish.protein * weight / 100).toFixed(1),
-            fats: (dish.fats * weight / 100).toFixed(1),
-            carbs: (dish.carbs * weight / 100).toFixed(1),
-            calories: Math.round(dish.calories * weight / 100),
-            consumed: false
-        };
+      const dishData = {
+        id: dish.id,
+        name: dish.name,
+        weight: weight,
+        protein: (dish.protein * weight / 100).toFixed(1),
+        fats: (dish.fats * weight / 100).toFixed(1),
+        carbs: (dish.carbs * weight / 100).toFixed(1),
+        calories: Math.round(dish.calories * weight / 100),
+        consumed: false
+      };
 
-        // Добавление блюда в контейнер
-        const dishesContainer = document.getElementById('dishes-container');
-        const dishIndex = dishesContainer.children.length;
-        addDishToContainer(dishData, dishIndex);
+      // Добавление блюда в контейнер
+      const dishesContainer = document.getElementById('dishes-container');
+      const dishIndex = dishesContainer.children.length;
+      addDishToContainer(dishData, dishIndex);
 
-        // Обновление питательных веществ приема пищи
-        updateMealNutrition();
+      // Обновление питательных веществ приема пищи
+      updateMealNutrition();
 
-        // Закрытие модального окна блюда
-        document.getElementById('dish-modal').style.display = 'none';
+      // Закрытие модального окна блюда
+      document.getElementById('dish-modal').style.display = 'none';
     }
-}
+  }
 
-// Добавление блюда в контейнер
-function addDishToContainer(dishData, index) {
+  // Добавление блюда в контейнер
+  function addDishToContainer(dishData, index) {
     const dishesContainer = document.getElementById('dishes-container');
 
     const dishElement = document.createElement('div');
@@ -755,35 +797,35 @@ function addDishToContainer(dishData, index) {
     `;
 
     // Обработчик удаления блюда
-    dishElement.querySelector('.remove-dish-btn').addEventListener('click', function(e) {
-        e.stopPropagation();
-        removeDishFromContainer(index);
+    dishElement.querySelector('.remove-dish-btn').addEventListener('click', function (e) {
+      e.stopPropagation();
+      removeDishFromContainer(index);
     });
 
     dishesContainer.appendChild(dishElement);
-}
+  }
 
-// Удаление блюда из контейнера
-function removeDishFromContainer(index) {
+  // Удаление блюда из контейнера
+  function removeDishFromContainer(index) {
     const dishesContainer = document.getElementById('dishes-container');
     const dishElements = dishesContainer.querySelectorAll('.dish-item');
 
     if (index < dishElements.length) {
-        dishElements[index].remove();
+      dishElements[index].remove();
 
-        // Обновление индексов
-        dishesContainer.querySelectorAll('.dish-item').forEach((item, i) => {
-            item.dataset.index = i;
-            item.querySelector('.remove-dish-btn').dataset.index = i;
-        });
+      // Обновление индексов
+      dishesContainer.querySelectorAll('.dish-item').forEach((item, i) => {
+        item.dataset.index = i;
+        item.querySelector('.remove-dish-btn').dataset.index = i;
+      });
 
-        // Обновление питательных веществ приема пищи
-        updateMealNutrition();
+      // Обновление питательных веществ приема пищи
+      updateMealNutrition();
     }
-}
+  }
 
-// Обновление питательных веществ приема пищи
-function updateMealNutrition() {
+  // Обновление питательных веществ приема пищи
+  function updateMealNutrition() {
     const dishesContainer = document.getElementById('dishes-container');
     const dishElements = dishesContainer.querySelectorAll('.dish-item');
 
@@ -793,46 +835,46 @@ function updateMealNutrition() {
     let calories = 0;
 
     dishElements.forEach(item => {
-        const dishId = parseInt(item.dataset.id);
-        const weight = parseInt(item.dataset.weight);
-        const dish = DEMO_DISHES.find(d => d.id === dishId);
+      const dishId = parseInt(item.dataset.id);
+      const weight = parseInt(item.dataset.weight);
+      const dish = DEMO_DISHES.find(d => d.id === dishId);
 
-        if (dish) {
-            protein += dish.protein * weight / 100;
-            fats += dish.fats * weight / 100;
-            carbs += dish.carbs * weight / 100;
-            calories += Math.round(dish.calories * weight / 100);
-        }
+      if (dish) {
+        protein += dish.protein * weight / 100;
+        fats += dish.fats * weight / 100;
+        carbs += dish.carbs * weight / 100;
+        calories += Math.round(dish.calories * weight / 100);
+      }
     });
 
     document.getElementById('meal-protein').textContent = `${protein.toFixed(1)} г`;
     document.getElementById('meal-fat').textContent = `${fats.toFixed(1)} г`;
     document.getElementById('meal-carb').textContent = `${carbs.toFixed(1)} г`;
     document.getElementById('meal-calories').textContent = `${calories} ккал`;
-}
+  }
 
-// Отображение приемов пищи
-function renderMeals() {
+  // Отображение приемов пищи
+  function renderMeals() {
     const mealsContainer = document.getElementById('meals-container');
     mealsContainer.innerHTML = '';
 
     // Сортировка приемов пищи по времени
     const sortedMeals = [...meals].sort((a, b) => {
-        return a.time.localeCompare(b.time);
+      return a.time.localeCompare(b.time);
     });
 
     sortedMeals.forEach((meal, index) => {
-        const mealElement = document.createElement('div');
-        mealElement.className = 'meal-card';
+      const mealElement = document.createElement('div');
+      mealElement.className = 'meal-card';
 
-        let headerContent = '';
-        if (planType === 'diet' && meal.type) {
-            headerContent = `<div class="meal-type">${getMealTypeName(meal.type)}</div>`;
-        } else {
-            headerContent = `<div class="meal-time">${meal.time}</div>`;
-        }
+      let headerContent = '';
+      if (planType === 'diet' && meal.type) {
+        headerContent = `<div class="meal-type">${getMealTypeName(meal.type)}</div>`;
+      } else {
+        headerContent = `<div class="meal-time">${meal.time}</div>`;
+      }
 
-        mealElement.innerHTML = `
+      mealElement.innerHTML = `
             <div class="meal-header">
                 ${headerContent}
                 <div class="meal-actions">
@@ -879,66 +921,66 @@ function renderMeals() {
             </div>
         `;
 
-        // Обработчики событий
-        mealElement.querySelector('.edit-meal-btn').addEventListener('click', function() {
-            openMealModal(null, index);
+      // Обработчики событий
+      mealElement.querySelector('.edit-meal-btn').addEventListener('click', function () {
+        openMealModal(null, index);
+      });
+
+      mealElement.querySelector('.delete-meal-btn').addEventListener('click', function () {
+        if (confirm('Вы уверены, что хотите удалить этот прием пищи?')) {
+          meals.splice(index, 1);
+          renderMeals();
+          updateNutritionSummary();
+        }
+      });
+
+      // Обработчики для чекбоксов блюд
+      const checkboxes = mealElement.querySelectorAll('.dish-checkbox');
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+          const dishItem = this.closest('.dish-item');
+          const mealIndex = parseInt(dishItem.dataset.mealIndex);
+          const dishIndex = parseInt(dishItem.dataset.dishIndex);
+
+          meals[mealIndex].dishes[dishIndex].consumed = this.checked;
+          dishItem.classList.toggle('consumed', this.checked);
+
+          updateNutritionSummary();
         });
+      });
 
-        mealElement.querySelector('.delete-meal-btn').addEventListener('click', function() {
-            if (confirm('Вы уверены, что хотите удалить этот прием пищи?')) {
-                meals.splice(index, 1);
-                renderMeals();
-                updateNutritionSummary();
-            }
-        });
-
-        // Обработчики для чекбоксов блюд
-        const checkboxes = mealElement.querySelectorAll('.dish-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const dishItem = this.closest('.dish-item');
-                const mealIndex = parseInt(dishItem.dataset.mealIndex);
-                const dishIndex = parseInt(dishItem.dataset.dishIndex);
-
-                meals[mealIndex].dishes[dishIndex].consumed = this.checked;
-                dishItem.classList.toggle('consumed', this.checked);
-
-                updateNutritionSummary();
-            });
-        });
-
-        mealsContainer.appendChild(mealElement);
+      mealsContainer.appendChild(mealElement);
     });
-}
+  }
 
-// Получение названия типа приема пищи
-function getMealTypeName(type) {
+  // Получение названия типа приема пищи
+  function getMealTypeName(type) {
     const types = {
-        'breakfast': 'Завтрак',
-        'lunch': 'Обед',
-        'dinner': 'Ужин',
-        'snack': 'Перекус'
+      'breakfast': 'Завтрак',
+      'lunch': 'Обед',
+      'dinner': 'Ужин',
+      'snack': 'Перекус'
     };
 
     return types[type] || type;
-}
+  }
 
-// Обновление сводки по питательным веществам
-function updateNutritionSummary() {
+  // Обновление сводки по питательным веществам
+  function updateNutritionSummary() {
     let consumedProtein = parseFloat(cookies2.protein);
     let consumedFats = parseFloat(cookies2.fats);
     let consumedCarbs = parseFloat(cookies2.carbs);
     let consumedCalories = parseFloat(cookies2.calories);
 
     meals.forEach(meal => {
-        meal.dishes.forEach(dish => {
-            if (dish.consumed) {
-                consumedProtein += parseFloat(dish.protein);
-                consumedFats += parseFloat(dish.fats);
-                consumedCarbs += parseFloat(dish.carbs);
-                consumedCalories += dish.calories;
-            }
-        });
+      meal.dishes.forEach(dish => {
+        if (dish.consumed) {
+          consumedProtein += parseFloat(dish.protein);
+          consumedFats += parseFloat(dish.fats);
+          consumedCarbs += parseFloat(dish.carbs);
+          consumedCalories += dish.calories;
+        }
+      });
     });
 
     // Округление значений
@@ -957,63 +999,63 @@ function updateNutritionSummary() {
     document.getElementById('fat-fill').style.width = `${Math.min(100, (consumedFats / DAILY_GOALS.fats) * 100)}%`;
     document.getElementById('carb-fill').style.width = `${Math.min(100, (consumedCarbs / DAILY_GOALS.carbs) * 100)}%`;
     document.getElementById('calorie-fill').style.width = `${Math.min(100, (consumedCalories / DAILY_GOALS.calories) * 100)}%`;
-}
+  }
 
-// Закрытие модальных окон при клике вне их содержимого
-window.addEventListener('click', function(event) {
+  // Закрытие модальных окон при клике вне их содержимого
+  window.addEventListener('click', function (event) {
     const mealModal = document.getElementById('meal-modal');
     const dishModal = document.getElementById('dish-modal');
 
     if (event.target === mealModal) {
-        mealModal.style.display = 'none';
+      mealModal.style.display = 'none';
     }
 
     if (event.target === dishModal) {
-        dishModal.style.display = 'none';
+      dishModal.style.display = 'none';
     }
-});
+  });
 
-// Инициализация демо-данных (для тестирования)
-function initDemoData() {
+  // Инициализация демо-данных (для тестирования)
+  function initDemoData() {
     // Добавление демо-приема пищи
     meals = [
-        {
-            time: '08:00',
-            type: 'breakfast',
-            dishes: [
-                {
-                    id: 3,
-                    name: 'Овсянка',
-                    weight: 200,
-                    protein: '6.4',
-                    fats: '3.6',
-                    carbs: '24.6',
-                    calories: 136,
-                    consumed: true
-                },
-                {
-                    id: 10,
-                    name: 'Банан',
-                    weight: 150,
-                    protein: '2.3',
-                    fats: '0.3',
-                    carbs: '32.7',
-                    calories: 144,
-                    consumed: true
-                }
-            ],
-            protein: '8.7',
-            fats: '3.9',
-            carbs: '57.3',
-            calories: 280
-        }
+      {
+        time: '08:00',
+        type: 'breakfast',
+        dishes: [
+          {
+            id: 3,
+            name: 'Овсянка',
+            weight: 200,
+            protein: '6.4',
+            fats: '3.6',
+            carbs: '24.6',
+            calories: 136,
+            consumed: true
+          },
+          {
+            id: 10,
+            name: 'Банан',
+            weight: 150,
+            protein: '2.3',
+            fats: '0.3',
+            carbs: '32.7',
+            calories: 144,
+            consumed: true
+          }
+        ],
+        protein: '8.7',
+        fats: '3.9',
+        carbs: '57.3',
+        calories: 280
+      }
     ];
 
     // Добавление воды
     waterAmount = 500;
     const glasses = document.querySelectorAll('.water-glass');
     for (let i = 0; i < waterAmount / GLASS_SIZE; i++) {
-        glasses[i].classList.add('filled');
+      glasses[i].classList.add('filled');
     }
     updateWaterValue();
 
@@ -1022,9 +1064,175 @@ function initDemoData() {
 
     // Обновление сводки по питательным веществам
     updateNutritionSummary();
-}
+  }
 
-// Раскомментируйте для демонстрации
-// setTimeout(initDemoData, 500);
+  // Раскомментируйте для демонстрации
+  // setTimeout(initDemoData, 500);
+
+
+
+  // Chat
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const contactBtn = document.getElementById('contact-btn');
+    const chatModal = document.getElementById('chat-modal');
+    const closeModalBtns = document.querySelectorAll('.close-modal');
+    const chatMessages = document.querySelector('.chat-messages');
+    const messageInput = document.getElementById('message-input');
+    const sendMessageBtn = document.getElementById('send-message');
+
+    // Get student ID and initialize lastUpdate
+    const studentId = "{{ student_id }}";
+    let lastUpdate = new Date().toISOString();
+    let messageCheckInterval = null;
+
+    // Modal functions
+    function openModal(modal) {
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      if (modal === chatModal) {
+        startMessageChecking();
+        setTimeout(() => {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 100);
+      }
+    }
+
+    function closeModal(modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+      if (modal === chatModal) {
+        stopMessageChecking();
+      }
+    }
+
+    function startMessageChecking() {
+      checkForNewMessages();
+      messageCheckInterval = setInterval(checkForNewMessages, 3000);
+    }
+
+    function stopMessageChecking() {
+      if (messageCheckInterval) {
+        clearInterval(messageCheckInterval);
+        messageCheckInterval = null;
+      }
+    }
+
+    // Event listeners
+    if (contactBtn) {
+      contactBtn.addEventListener('click', () => openModal(chatModal));
+    }
+
+    closeModalBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modal = btn.closest('.modal');
+        closeModal(modal);
+      });
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        closeModal(e.target);
+      }
+    });
+
+    // Chat functionality
+    sendMessageBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    async function sendMessage() {
+      const message = messageInput.value.trim();
+      if (message) {
+        try {
+          const response = await fetch('/day_plan/send_message', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              student_id: studentId,
+              message: message
+            })
+          });
+
+          const data = await response.json();
+
+          if (data.status === 'success') {
+            const messageHTML = `
+                        <div class="message sent">
+                            <div class="message-content">
+                                <div class="message-text">${message}</div>
+                                <div class="message-time">${data.time}</div>
+                            </div>
+                        </div>
+                    `;
+
+            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+            messageInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            lastUpdate = new Date().toISOString();
+          } else {
+            showNotification('Ошибка при отправке сообщения');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showNotification('Ошибка соединения');
+        }
+      }
+    }
+
+    async function checkForNewMessages() {
+      try {
+        const response = await fetch(`/day_plan/get_new_messages`);
+        const data = await response.json();
+
+        if (data.status === 'success' && data.messages.length > 0) {
+          lastUpdate = data.last_update;
+
+          data.messages.forEach(msg => {
+            const messageHTML = `
+                        <div class="message received">
+                            <div class="message-avatar">
+                                <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" 
+                                     alt="Аватар {{ cookies.name }}">
+                            </div>
+                            <div class="message-content">
+                                <div class="message-sender">{{ cookies.name }}</div>
+                                <div class="message-text">${msg.content}</div>
+                                <div class="message-time">${msg.time}</div>
+                            </div>
+                        </div>
+                    `;
+
+            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+          });
+
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      } catch (error) {
+        console.error('Error checking for new messages:', error);
+      }
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.classList.add('notification');
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Start message checking if chat is open
+    if (chatModal.classList.contains('active')) {
+      startMessageChecking();
+    }
+  });
 </script>
 {% endblock %}
