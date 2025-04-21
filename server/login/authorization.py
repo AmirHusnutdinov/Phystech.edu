@@ -10,16 +10,22 @@ from utils import render_template_with_user
 class Authorization:
     @staticmethod
     def show_authorization_page():
+        if "user_id" in session:
+            return redirect(main_page)
+
         form = LoginForm()
         RegistrationForm()
         return render_template_with_user("Login/authorization.html",
-                                         header_links=header_links,
+                                         header_links=choose_header_links("not-authorized"),
                                          form=form,
                                          form_registration=form,
                                          title="Авторизация")
 
     @staticmethod
     def process_login():
+        if "user_id" in session:
+            return redirect(main_page)
+
         form = LoginForm()
         if form.validate_on_submit():
             name = form.name.data
@@ -41,11 +47,13 @@ class Authorization:
 
     @staticmethod
     def logout():
-        session['Login'] = False
-        session.pop('email', None)
-        session.pop('user_id', None)  # Удаляем пользователя из сессии
-        flash('You have been logged out.', 'info')
-        return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
+        if "user_id" in session:
+            session['Login'] = False
+            session.pop('email', None)
+            session.pop('user_id', None)  # Удаляем пользователя из сессии
+            flash('You have been logged out.', 'info')
+            return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
+        return redirect(main_page)
 
 
 @app.route(authorization, methods=['GET', 'POST'])

@@ -23,14 +23,14 @@
 <script>
     // тру ученики
     const cookies = {{ cookies | tojson }};
-const studentsData = cookies.map(cookie => ({
-  id: cookie.id,
-  firstName: cookie.name,
-  lastName: cookie.login ? cookie.login : "",
-  avatar: cookie.avatar || "https://via.placeholder.com/150",
-  info: `Email: ${cookie.email}${cookie.age ? `, Возраст: ${cookie.age}` : ""}`,
-  tag: cookie.age && cookie.age >= 18 ? "Взрослый" : "Юный"
-}));
+    const studentsData = cookies.map(cookie => ({
+      id: cookie.id,
+      firstName: cookie.name,
+      lastName: cookie.login ? cookie.login : "",
+      avatar: cookie.avatar || "https://via.placeholder.com/150",
+      info: `Email: ${cookie.email}${cookie.age ? `, Возраст: ${cookie.age}` : ""}`,
+      tag: cookie.age && cookie.age >= 18 ? "Взрослый" : "Юный"
+    }));
 
     // Элементы DOM
     const studentsGrid = document.getElementById("students-grid");
