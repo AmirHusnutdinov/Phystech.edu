@@ -1,0 +1,126 @@
+/* Основные стили для контейнера редактора */
+.editor-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок редактора */
+.editor-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #333333;
+}
+
+/* Стили для группы элементов формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Стили для меток (labels) */
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #555555;
+}
+
+/* Стили для текстовых полей ввода */
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #333333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Фокус на текстовых полях */
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Стили для текстовой области (textarea) */
+.form-group textarea {
+    resize: vertical;
+    min-height: 200px;
+}
+
+/* Стили для поля загрузки файла */
+.form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    color: #555555;
+}
+
+/* Стили для кнопки отправки */
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Эффект при наведении на кнопку */
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* Стили для сообщений об ошибках (если нужно) */
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Стили для успешного сообщения (если нужно) */
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Адаптивные стили для мобильных устройств */
+@media (max-width: 768px) {
+    .editor-container {
+        padding: 15px;
+        margin: 20px auto;
+    }
+
+    .editor-container h1 {
+        font-size: 24px;
+    }
+
+    .form-group input[type="text"],
+    .form-group textarea {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .submit-button {
+        font-size: 16px;
+        padding: 10px;
+    }
+}

@@ -13,7 +13,6 @@
         <a href="{{header_links['/']}}">FoodHelper</a>
     </div>
 
-    <!-- Новый контейнер для кнопки темы -->
     <div class="theme-toggle-container">
         <div class="theme-toggle">
             <button id="theme-toggle-btn" aria-label="Toggle dark mode">
@@ -36,15 +35,17 @@
             </button>
         </div>
     </div>
-
     <div class="navbar-links">
+    {% if header_links['role'] == 'authorized' %}
         <a href="{{header_links['day_plan']}}">План на день</a>
         <a href="{{header_links['calendar']}}">Календарь</a>
         <a href="{{header_links['cabinet']}}">Кабинет</a>
         <a href="{{header_links['all_news']}}">Новости</a>
-        <a href="{{header_links['authorization']}}">Авторизация</a>
-        <a href="{{header_links['registration']}}">Регистрация</a>
-        <a href="{{header_links['all_students']}}">Студенты</a>
+        <a href="{{header_links['all_students']}}">Ученики</a>
+    {% elif header_links['role'] == 'not-authorized' %}
+        <a href="{{header_links['all_news']}}">Новости</a>
+        <a href="{{ header_links['authorization'] }}">Авторизация</a>
+    {% endif %}
     </div>
 
     <div class="navbar-toggle">
@@ -53,65 +54,6 @@
         <div class="bar"></div>
     </div>
 </nav>
-
-<!-- Стили для корректного отображения -->
-<style>
-/* Обновленные стили для навбара */
-.navbar {
-    position: relative;
-    padding: 1rem 2rem;
-}
-
-.theme-toggle-container {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-}
-
-/* Мобильная версия */
-@media (max-width: 768px) {
-    .theme-toggle-container {
-        position: absolute;
-        right: 60px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .navbar-toggle {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .navbar-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(0,0,0,0.9);
-        padding: 1rem;
-    }
-
-    .navbar-links.active {
-        display: flex;
-    }
-}
-
-/* Десктопная версия */
-@media (min-width: 769px) {
-    .navbar-links {
-        display: flex;
-        gap: 1.5rem;
-    }
-
-    .navbar-toggle {
-        display: none;
-    }
-}
-</style>
 
 <!-- Скрипты остаются без изменений -->
 <script>
@@ -137,11 +79,11 @@
         });
     });
 </script>
-
+<main>
 {% block content %}
 <!-- Основное содержимое -->
 {% endblock %}
-
+</main>
 <footer class="footer">
     <p>Food Helper 2024 Все права защищены</p>
 </footer>

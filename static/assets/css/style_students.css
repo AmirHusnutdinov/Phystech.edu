@@ -1,5 +1,4 @@
 :root {
-  /* Light theme variables */
   --bg-primary: #f8f9fa;
   --bg-secondary: #ffffff;
   --text-primary: #333333;
@@ -11,7 +10,6 @@
 }
 
 .dark-theme {
-  /* Dark theme variables */
   --bg-primary: #121212;
   --bg-secondary: #1e1e1e;
   --text-primary: #e0e0e0;
@@ -30,6 +28,7 @@
 }
 
 body {
+  height: 100vh;
   font-family: "Poppins", sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -42,7 +41,6 @@ body {
   padding: 20px;
 }
 
-/* Header Styles */
 header {
   display: flex;
   justify-content: space-between;
@@ -63,7 +61,6 @@ header {
   color: var(--accent-color);
 }
 
-/* Search Container */
 .search-container {
   margin-bottom: 30px;
   animation: fadeIn 0.8s ease-out;
@@ -87,7 +84,6 @@ header {
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
 }
 
-/* Students Grid */
 .students-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -95,7 +91,6 @@ header {
   margin-bottom: 40px;
 }
 
-/* Стили для ссылки и карточки */
 .student-card-link {
   text-decoration: none;
   color: inherit;
@@ -168,17 +163,14 @@ header {
   background-color: #2a4bdf;
 }
 
-/* Анимация наведения на ссылку */
 .student-card-link:hover .student-card {
   transform: scale(1.02);
 }
 
-/* Анимация клика */
 .student-card-link:active .student-card {
   transform: scale(0.98);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .header-content h1 {
     font-size: 2rem;
@@ -204,7 +196,6 @@ header {
   }
 }
 
-/* Анимации */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
