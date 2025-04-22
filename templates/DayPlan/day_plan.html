@@ -204,9 +204,9 @@
 <!-- Chat Modal -->
 <div id="coach-chat-modal" class="modal">
   <div class="modal-content chat-modal-content">
-    <div class="modal-header">
+    <div class="modal-header chat-modal-header">
       <h2>Чат с тренером</h2>
-      <button class="close-modal">&times;</button>
+      <span class="close-modal">&times;</span>
     </div>
     <div class="chat-container">
       <div class="chat-messages" id="coach-chat-messages">
@@ -393,6 +393,7 @@
       closeBtn.addEventListener('click', function () {
         document.getElementById('meal-modal').style.display = 'none';
         document.getElementById('dish-modal').style.display = 'none';
+        document.getElementById('coach-chat-modal').style.display = 'none';
       });
     });
 
@@ -1007,6 +1008,7 @@
   window.addEventListener('click', function (event) {
     const mealModal = document.getElementById('meal-modal');
     const dishModal = document.getElementById('dish-modal');
+    const coachChatModal = document.getElementById('coach-chat-modal');
 
     if (event.target === mealModal) {
       mealModal.style.display = 'none';
@@ -1014,6 +1016,10 @@
 
     if (event.target === dishModal) {
       dishModal.style.display = 'none';
+    }
+
+    if (event.target === coachChatModal) {
+      coachChatModal.style.display = 'none';
     }
   });
 
@@ -1119,7 +1125,9 @@
 
     // Event listeners
     if (coachChatBtn) {
-      coachChatBtn.addEventListener('click', () => openModal(coachChatModal));
+      coachChatBtn.addEventListener('click', function() {
+        openModal(coachChatModal);
+      });
     }
 
     closeModalBtns.forEach(btn => {
