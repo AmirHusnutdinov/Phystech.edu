@@ -3,6 +3,7 @@ import psycopg2
 from settings import host
 from settings import user, password, db_name, port
 
+from datetime import datetime
 
 def database_query(sql, fetch=False):
     connection = []
@@ -42,7 +43,7 @@ def get_dishes():
 
 
 def get_user_data(user_id):
-    sql = f"SELECT * FROM public.\"User\" WHERE id = {user_id}"
+    sql = f'SELECT * FROM public."User" WHERE id = {user_id}'
     user_data = database_query(sql, True)[0]
     user_info = {
         "id": user_data[0],
@@ -104,7 +105,8 @@ def database_check():
 
 def save_news(title, content, image_path):
     database_query(
-        f"""INSERT INTO news (title, picture, html, date) VALUES ('{title}', '{image_path}', '{content}', NOW())""")
+        f"""INSERT INTO news (title, picture, html, date) VALUES ('{title}', '{image_path}', '{content}', NOW())"""
+    )
 
 
 def check_trainer(user_id):
@@ -117,6 +119,15 @@ def check_trainer(user_id):
         return True
     return False
 
+
+def get_trainer_id(user_id):
+    sql = f"SELECT id FROM student WHERE student_id = {user_id}"
+    query = database_query(sql, True)
+    if query == []:
+        return 0
+    return int(query[0][0])
+
+
 def get_list_of_student(user_id):
     sql = f"SELECT student_id FROM student WHERE id = {user_id}"
     ans_list = []
@@ -125,42 +136,38 @@ def get_list_of_student(user_id):
         ans_list.append(int(el[0]))
     return ans_list
 
+
 def get_message_history(first_id, second_id, since=None):
+    
     if since:
         sql = f"""
-        SELECT id_from, id_to, content, time
+        SELECT id_from, id_to, content, message_time
         FROM messages
         WHERE ((id_from = {first_id} AND id_to = {second_id}) 
                OR (id_from = {second_id} AND id_to = {first_id}))
-        AND time > '{since}'
-        ORDER BY time
+        AND message_time AT TIME ZONE 'UTC' > '{since}'
+        ORDER BY message_time
         """
     else:
         sql = f"""
-        SELECT id_from, id_to, content, time
+        SELECT id_from, id_to, content, message_time
         FROM messages
         WHERE (id_from = {first_id} AND id_to = {second_id}) 
                OR (id_from = {second_id} AND id_to = {first_id})
-        ORDER BY time
+        ORDER BY message_time
         """
-    
+
     data = database_query(sql, True)
-    print(data)
-    print(database_query('SELECT * FROM messages', True))
     message_history = []
     for el in data:
-        message = {
-            "id_from": el[0],
-            "id_to": el[1],
-            "content": el[2],
-            "time": el[3]
-        }
+        message = {"id_from": el[0], "id_to": el[1], "content": el[2], "time": el[3]}
         message_history.append(message)
     return message_history
 
+
 def add_message(id_from, id_to, content):
     sql = f"""
-    INSERT INTO messages (id_from, id_to, content, time)
+    INSERT INTO messages (id_from, id_to, content, message_time)
     VALUES ({id_from}, {id_to}, '{content}', NOW())
     """
     return database_query(sql)
