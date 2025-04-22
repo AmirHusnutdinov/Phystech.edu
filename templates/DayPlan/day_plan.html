@@ -192,50 +192,52 @@
       </div>
     </div>
   </div>
-  <!-- Chat Modal -->
-  <div id="chat-modal" class="modal">
-    <div class="modal-content chat-modal-content">
-      <div class="modal-header">
-        <h2>Чат с {{ cookies.name }}</h2>
-        <button class="close-modal">&times;</button>
-      </div>
-      <div class="chat-container">
-        <div class="chat-messages">
-          {% for message in messages %}
-          <div class="message {{ message.type }}">
-            {% if message.type == 'received' %}
-            <div class="message-avatar">
-              <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
-                alt="Аватар {{ cookies.name }}">
-            </div>
-            {% endif %}
-            <div class="message-content">
-              {% if message.type == 'received' %}
-              <div class="message-sender">{{ message.sender_name }}</div>
-              {% endif %}
-              <div class="message-text">{{ message.content }}</div>
-              <div class="message-time">{{ message.time }}</div>
-            </div>
+  {% if has_trainer %}
+  <!-- Chat Button -->
+  <button id="coach-chat-btn" class="coach-chat-btn">
+    <i class="fas fa-comment-dots"></i>
+    <span>Чат с тренером</span>
+  </button>
+  {% endif %}
+</main>
+{% if has_trainer %}
+<!-- Chat Modal -->
+<div id="coach-chat-modal" class="modal">
+  <div class="modal-content chat-modal-content">
+    <div class="modal-header">
+      <h2>Чат с тренером</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div class="chat-container">
+      <div class="chat-messages" id="coach-chat-messages">
+        {% for message in messages %}
+        <div class="message {{ message.type }}">
+          {% if message.type == 'received' %}
+          <div class="message-avatar">
+            <img src="{{ coach_avatar if coach_avatar else '../../static/assets/images/default_avatar.png' }}" 
+                 alt="Аватар тренера">
           </div>
-          {% endfor %}
+          {% endif %}
+          <div class="message-content">
+            {% if message.type == 'received' %}
+            <div class="message-sender">Тренер</div>
+            {% endif %}
+            <div class="message-text">{{ message.content }}</div>
+            <div class="message-time">{{ message.time }}</div>
+          </div>
         </div>
-        <div class="chat-input">
-          <input type="text" id="message-input" placeholder="Введите сообщение...">
-          <button id="send-message" class="btn btn-primary">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
+        {% endfor %}
+      </div>
+      <div class="chat-input">
+        <input type="text" id="coach-message-input" placeholder="Введите сообщение...">
+        <button id="send-coach-message" class="btn btn-primary">
+          <i class="fas fa-paper-plane"></i>
+        </button>
       </div>
     </div>
   </div>
-
-  <!-- Contact Button -->
-  <button id="contact-btn" class="contact-btn">
-    <i class="fas fa-comment-dots"></i>
-    <span>Связаться с тренером</span>
-  </button>
-</main>
-
+</div>
+{% endif %}
 <script>
   const cookies = {{ cookies | tojson }};
   const cookies2 = {{ cookies2 | tojson }};
@@ -1069,31 +1071,28 @@
   // Раскомментируйте для демонстрации
   // setTimeout(initDemoData, 500);
 
-
-
   // Chat
-
-  document.addEventListener('DOMContentLoaded', function () {
-    const contactBtn = document.getElementById('contact-btn');
-    const chatModal = document.getElementById('chat-modal');
+  {% if has_trainer %}
+  document.addEventListener('DOMContentLoaded', function() {
+    // Chat elements
+    const coachChatBtn = document.getElementById('coach-chat-btn');
+    const coachChatModal = document.getElementById('coach-chat-modal');
+    const coachChatMessages = document.getElementById('coach-chat-messages');
+    const coachMessageInput = document.getElementById('coach-message-input');
+    const sendCoachMessageBtn = document.getElementById('send-coach-message');
     const closeModalBtns = document.querySelectorAll('.close-modal');
-    const chatMessages = document.querySelector('.chat-messages');
-    const messageInput = document.getElementById('message-input');
-    const sendMessageBtn = document.getElementById('send-message');
-
-    // Get student ID and initialize lastUpdate
-    const studentId = "{{ student_id }}";
-    let lastUpdate = new Date().toISOString();
-    let messageCheckInterval = null;
+    
+    let coachLastUpdate = new Date().toISOString();
+    let coachMessageCheckInterval = null;
 
     // Modal functions
     function openModal(modal) {
       modal.style.display = 'block';
       document.body.style.overflow = 'hidden';
-      if (modal === chatModal) {
-        startMessageChecking();
+      if (modal === coachChatModal) {
+        startCoachMessageChecking();
         setTimeout(() => {
-          chatMessages.scrollTop = chatMessages.scrollHeight;
+          coachChatMessages.scrollTop = coachChatMessages.scrollHeight;
         }, 100);
       }
     }
@@ -1101,31 +1100,31 @@
     function closeModal(modal) {
       modal.style.display = 'none';
       document.body.style.overflow = '';
-      if (modal === chatModal) {
-        stopMessageChecking();
+      if (modal === coachChatModal) {
+        stopCoachMessageChecking();
       }
     }
 
-    function startMessageChecking() {
-      checkForNewMessages();
-      messageCheckInterval = setInterval(checkForNewMessages, 3000);
+    function startCoachMessageChecking() {
+      checkForNewCoachMessages();
+      coachMessageCheckInterval = setInterval(checkForNewCoachMessages, 3000);
     }
 
-    function stopMessageChecking() {
-      if (messageCheckInterval) {
-        clearInterval(messageCheckInterval);
-        messageCheckInterval = null;
+    function stopCoachMessageChecking() {
+      if (coachMessageCheckInterval) {
+        clearInterval(coachMessageCheckInterval);
+        coachMessageCheckInterval = null;
       }
     }
 
     // Event listeners
-    if (contactBtn) {
-      contactBtn.addEventListener('click', () => openModal(chatModal));
+    if (coachChatBtn) {
+      coachChatBtn.addEventListener('click', () => openModal(coachChatModal));
     }
 
     closeModalBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const modal = btn.closest('.modal');
+      btn.addEventListener('click', function() {
+        const modal = this.closest('.modal');
         closeModal(modal);
       });
     });
@@ -1137,44 +1136,43 @@
     });
 
     // Chat functionality
-    sendMessageBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
+    sendCoachMessageBtn.addEventListener('click', sendCoachMessage);
+    coachMessageInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
-        sendMessage();
+        sendCoachMessage();
       }
     });
 
-    async function sendMessage() {
-      const message = messageInput.value.trim();
+    async function sendCoachMessage() {
+      const message = coachMessageInput.value.trim();
       if (message) {
         try {
-          const response = await fetch('/day_plan/send_message', {
+          const response = await fetch('day_plan/send_message', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              student_id: studentId,
               message: message
             })
           });
-
+          
           const data = await response.json();
-
+          
           if (data.status === 'success') {
             const messageHTML = `
-                        <div class="message sent">
-                            <div class="message-content">
-                                <div class="message-text">${message}</div>
-                                <div class="message-time">${data.time}</div>
-                            </div>
-                        </div>
-                    `;
-
-            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
-            messageInput.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            lastUpdate = new Date().toISOString();
+              <div class="message sent">
+                <div class="message-content">
+                  <div class="message-text">${message}</div>
+                  <div class="message-time">${data.time}</div>
+                </div>
+              </div>
+            `;
+            
+            coachChatMessages.insertAdjacentHTML('beforeend', messageHTML);
+            coachMessageInput.value = '';
+            coachChatMessages.scrollTop = coachChatMessages.scrollHeight;
+            coachLastUpdate = new Date().toISOString();
           } else {
             showNotification('Ошибка при отправке сообщения');
           }
@@ -1185,36 +1183,35 @@
       }
     }
 
-    async function checkForNewMessages() {
+    async function checkForNewCoachMessages() {
       try {
-        const response = await fetch(`/day_plan/get_new_messages`);
+        const response = await fetch(`/day_plan/get_new_messages?last_update=${coachLastUpdate}`);
         const data = await response.json();
-
         if (data.status === 'success' && data.messages.length > 0) {
-          lastUpdate = data.last_update;
-
+          coachLastUpdate = data.last_update;
+          
           data.messages.forEach(msg => {
             const messageHTML = `
-                        <div class="message received">
-                            <div class="message-avatar">
-                                <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" 
-                                     alt="Аватар {{ cookies.name }}">
-                            </div>
-                            <div class="message-content">
-                                <div class="message-sender">{{ cookies.name }}</div>
-                                <div class="message-text">${msg.content}</div>
-                                <div class="message-time">${msg.time}</div>
-                            </div>
-                        </div>
-                    `;
-
-            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+              <div class="message received">
+                <div class="message-avatar">
+                  <img src="{{ coach_avatar if coach_avatar else '../../static/assets/images/default_avatar.png' }}" 
+                       alt="Аватар тренера">
+                </div>
+                <div class="message-content">
+                  <div class="message-sender">Тренер</div>
+                  <div class="message-text">${msg.content}</div>
+                  <div class="message-time">${msg.time}</div>
+                </div>
+              </div>
+            `;
+            
+            coachChatMessages.insertAdjacentHTML('beforeend', messageHTML);
           });
-
-          chatMessages.scrollTop = chatMessages.scrollHeight;
+          
+          coachChatMessages.scrollTop = coachChatMessages.scrollHeight;
         }
       } catch (error) {
-        console.error('Error checking for new messages:', error);
+        console.error('Error checking for new coach messages:', error);
       }
     }
 
@@ -1230,9 +1227,10 @@
     }
 
     // Start message checking if chat is open
-    if (chatModal.classList.contains('active')) {
-      startMessageChecking();
+    if (coachChatModal.style.display === 'block') {
+      startCoachMessageChecking();
     }
   });
+  {% endif %}
 </script>
 {% endblock %}

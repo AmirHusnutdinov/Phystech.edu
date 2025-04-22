@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 
 from flask import request, render_template, session, jsonify, redirect
 
@@ -13,7 +13,7 @@ from server.database.use_DataBase import (
 )
 from server.service_files.links import *
 from settings import app
-from utils import render_template_with_user
+from utils import render_template_with_user, debug_print
 
 
 class DayPlan:
@@ -24,7 +24,8 @@ class DayPlan:
             user = get_user_data(session["user_id"])
             daily = get_day_data(session["user_id"], date.today())
 
-            cookies2 = {"water": 0, "carbs": 0, "calories": 0, "protein": 0, "fats": 0}
+            cookies2 = {"water": 0, "carbs": 0,
+                        "calories": 0, "protein": 0, "fats": 0}
             if daily:
                 cookies2["water"] = daily[0][3]
                 cookies2["calories"] = daily[0][5]
@@ -34,12 +35,26 @@ class DayPlan:
 
             # Получаем ID тренера
             trainer_id = get_trainer_id(session["user_id"])
-            has_trainer = trainer_id > 0
+            has_trainer = trainer_id != 0
 
             # Получаем сообщения чата, если есть тренер
             messages = []
+            formatted_messages=[]
             if has_trainer:
+                user_info = get_user_data(trainer_id)
                 messages = get_message_history(session["user_id"], trainer_id)
+                
+                formatted_messages = []
+                for msg in messages:
+                    sender = "received" if msg["id_from"] == trainer_id else "sent"
+                    formatted_messages.append(
+                        {
+                            "type": sender,
+                            "content": msg["content"],
+                            "time": msg["time"].strftime("%H:%M"),
+                            "sender_name": user_info["name"] if sender == "received" else "Вы",
+                        }
+                    )
 
             return render_template_with_user(
                 "DayPlan/day_plan.html",
@@ -48,7 +63,7 @@ class DayPlan:
                 dishes=dishes,
                 cookies=user,
                 cookies2=cookies2,
-                messages=messages,
+                messages=formatted_messages,
                 has_trainer=has_trainer,
             )
         return redirect(main_page)
@@ -73,16 +88,16 @@ class DayPlan:
             sql = f"""
             INSERT INTO user_daily_metrics (id, weight, height, water, date, calories, calories_plan, proteins,
              proteins_plan, fats, fats_plan, carbs, carbs_plan)
-            VALUES ({id}, {weight}, {user['height']}, {water}, '{today}', 
-                    {actual_kbzhu['calories']}, {target_kbzhu['calories']}, 
-                    {actual_kbzhu['protein']}, {target_kbzhu['protein']}, 
-                    {actual_kbzhu['fats']}, {target_kbzhu['fats']}, 
+            VALUES ({id}, {weight}, {user['height']}, {water}, '{today}',
+                    {actual_kbzhu['calories']}, {target_kbzhu['calories']},
+                    {actual_kbzhu['protein']}, {target_kbzhu['protein']},
+                    {actual_kbzhu['fats']}, {target_kbzhu['fats']},
                     {actual_kbzhu['carbs']}, {target_kbzhu['carbs']})
             ON CONFLICT (id, date) DO UPDATE
-            SET weight = {weight}, height = {user['height']}, water = {water}, 
-                calories = {actual_kbzhu['calories']}, calories_plan = {target_kbzhu['calories']}, 
-                proteins = {actual_kbzhu['protein']}, proteins_plan = {target_kbzhu['protein']}, 
-                fats = {actual_kbzhu['fats']}, fats_plan = {target_kbzhu['fats']}, 
+            SET weight = {weight}, height = {user['height']}, water = {water},
+                calories = {actual_kbzhu['calories']}, calories_plan = {target_kbzhu['calories']},
+                proteins = {actual_kbzhu['protein']}, proteins_plan = {target_kbzhu['protein']},
+                fats = {actual_kbzhu['fats']}, fats_plan = {target_kbzhu['fats']},
                 carbs = {actual_kbzhu['carbs']}, carbs_plan = {target_kbzhu['carbs']};
             """
 
@@ -101,35 +116,13 @@ class DayPlan:
 
     @staticmethod
     def show_add_product_page():
-        if "user_id" not in session:
-            return jsonify({"status": "error", "message": "Not logged in"}), 401
-        student_id = session["user_id"]
-        trainer_id = get_trainer_id(student_id)
-        if not (student_id):
-            return jsonify({"status": "error", "message": "Not a trainer"}), 403
-
-        last_update = request.args.get("last_update")
-        messages = get_message_history(student_id, student_id, since=last_update)
-
-        formatted_messages = []
-        for msg in messages:
-            if msg["id_from"] == student_id:  # Только новые сообщения от студента
-                user_info = get_user_data(student_id)
-                formatted_messages.append(
-                    {
-                        "content": msg["content"],
-                        "time": msg["time"].strftime("%H:%M"),
-                        "sender_name": user_info["name"],
-                    }
-                )
-
-        return jsonify(
-            {
-                "status": "success",
-                "messages": formatted_messages,
-                "last_update": datetime.now().isoformat(),
-            }
-        )
+        if "user_id" in session:
+            return render_template_with_user(
+                "DayPlan/add_product.html",
+                header_links=choose_header_links("authorized"),
+                title="Добавить продукт",
+            )
+        return redirect(main_page)
 
     @staticmethod
     def send_message():
@@ -139,18 +132,26 @@ class DayPlan:
         data = request.json
         message_text = data.get("message")
         trainer_id = get_trainer_id(session["user_id"])
-
+        if trainer_id == 0:
+            return jsonify({"status": "error", "message": "User have no trainer"}), 403
         if not message_text or not trainer_id:
             return jsonify({"status": "error", "message": "Invalid data"}), 400
 
         try:
             add_message(
-                sender_id=session["user_id"],
-                receiver_id=trainer_id,
+                id_from=session["user_id"],
+                id_to=trainer_id,
                 content=message_text,
             )
-            return jsonify({"status": "success"})
+            return jsonify(
+                {
+                    "status": "success",
+                    "message": "Message sent",
+                    "time": datetime.now().strftime("%H:%M"),
+                }
+            )
         except Exception as e:
+            debug_print('error', e)
             return jsonify({"status": "error", "message": str(e)}), 500
 
     @staticmethod
@@ -159,23 +160,44 @@ class DayPlan:
             return jsonify({"status": "error", "message": "Not authorized"}), 401
 
         trainer_id = get_trainer_id(session["user_id"])
+        if trainer_id == 0:
+            return jsonify({"status": "error", "message": "User has no trainer"}), 403
         last_update = request.args.get("last_update")
 
+        since_dt = datetime.strptime(last_update, "%Y-%m-%dT%H:%M:%S.%fZ")
+        since_sql = since_dt.strftime("%Y-%m-%d %H:%M:%S.%f")
+        last_update = since_sql
+        # debug_print('LAST TIME UPDATE', last_update)
         if not trainer_id:
             return jsonify({"status": "error", "message": "No trainer assigned"}), 400
 
         try:
             messages = get_message_history(
-                user_id=session["user_id"], trainer_id=trainer_id, since=last_update
+                first_id=session["user_id"], second_id=trainer_id, since=last_update
             )
+            formatted_messages = []
+            for msg in messages:
+                if str(msg["id_from"]) == str(trainer_id):  # Только новые сообщения от trainer
+                    user_info = get_user_data(trainer_id)
+                    formatted_messages.append(
+                        {
+                            "content": msg["content"],
+                            "time": msg["time"].strftime("%H:%M"),
+                            "sender_name": user_info["name"],
+                        }
+                    )
+            # debug_print('MESSAGES', formatted_messages)
+            current_time = datetime.now(timezone.utc).strftime(
+                '%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
             return jsonify(
                 {
                     "status": "success",
-                    "messages": messages,
-                    "last_update": datetime.now().isoformat(),
+                    "messages": formatted_messages,
+                    "last_update": current_time,
                 }
             )
         except Exception as e:
+            print(e)
             return jsonify({"status": "error", "message": str(e)}), 500
 
 
@@ -186,7 +208,8 @@ def validate_data(data):
         try:
             for kbzhu in [target_kbzhu, actual_kbzhu]:
                 if not all(
-                    0 <= float(kbzhu[key]) <= (10000 if key == "calories" else 2000)
+                    0 <= float(kbzhu[key]) <= (
+                        10000 if key == "calories" else 2000)
                     for key in kbzhu
                 ):
                     return False
@@ -227,11 +250,12 @@ def open_physical_exercises_page():
     return render_template("DayPlan/physical_exercises.html")
 
 
-@app.route("/day_plan/get_chat_messages", methods=["GET"])
+@app.route("/day_plan/get_new_messages", methods=["GET"])
 def get_chat_messages_route():
-    return DayPlan.get_chat_messages()
+    return DayPlan.get_new_messages()
 
 
 @app.route("/day_plan/send_message", methods=["POST"])
 def send_message_route():
+    # debug_print('test')
     return DayPlan.send_message()

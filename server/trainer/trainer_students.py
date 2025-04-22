@@ -106,7 +106,7 @@ class Students:
             return jsonify({"status": "error", "message": "Not a trainer"}), 403
 
         last_update = request.args.get("last_update")
-        debug_print('request for new messages, last update', last_update)
+        #debug_print('request for new messages, last update', last_update)
 
         since_dt = datetime.strptime(last_update, "%Y-%m-%dT%H:%M:%S.%fZ")
         since_sql = since_dt.strftime("%Y-%m-%d %H:%M:%S.%f")

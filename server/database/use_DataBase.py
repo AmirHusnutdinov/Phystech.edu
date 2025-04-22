@@ -145,7 +145,7 @@ def get_message_history(first_id, second_id, since=None):
         FROM messages
         WHERE ((id_from = {first_id} AND id_to = {second_id}) 
                OR (id_from = {second_id} AND id_to = {first_id}))
-        AND message_time > '{since}'
+        AND message_time AT TIME ZONE 'UTC' > '{since}'
         ORDER BY message_time
         """
     else:
