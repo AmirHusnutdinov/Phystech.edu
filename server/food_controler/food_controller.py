@@ -6,7 +6,7 @@ from flask import request
 from .utils import is_json_correct
 from ..database.use_DataBase import database_query
 
-from .forms import AddDishForm, AddProductForm
+from .forms import AddDishForm, AddProductForm, AddDietForm, DTUForm
 
 food_blueprint = Blueprint('food_blueprint', __name__)
 
@@ -64,17 +64,12 @@ def add_product():
 
 @food_blueprint.route('/diets', methods=['POST'])
 def add_diet():
-    new_diet = request.json
+    form = AddDietForm()
 
-    diet_poles = {'name', 'owner', 'description', 'dishes'}
-
-    if not is_json_correct(json=new_diet, poles=diet_poles):
-        return jsonify({'error': 'Invalid data'}), 400
-
-    name = new_diet['name']
-    owner = new_diet['owner']
-    description = new_diet['description']
-    dishes = new_diet['dishes']
+    name = form.name.data
+    owner = form.owner.data
+    description = form.owner.description
+    dishes = form.dishes
 
     sql_query = (f"INSERT INTO diets (name, owner, description) VALUES ('{name}', '{owner}',"
                  f" '{description}') RETURNING id;")
@@ -90,23 +85,25 @@ def add_diet():
 def add_diet_and_dishes_dependence(dishes, diet_id):
     for dish in dishes:
         sql_query = (f"INSERT INTO diet_dish_relate (diet_id, dish_id, weight, time_of_day) VALUES ('{diet_id}',"
-                     f" '{dish['id']}', '{dish['weight']}', '{dish['time_of_day']}') ")
+                     f" '{dish.dish_id.data}', '{dish.weight.data}', '{dish.time_of_day.data}') ")
         database_query(sql_query)
 
 
 @food_blueprint.route('/<int:user_id>/diets', methods=['PUT']) 
 def set_diets_to_user(user_id):
-    diets_to_user = request.json
+    form = DTUForm()
 
-    # Добавить проверку на роль отправляемого запрос и может ли он добавить юзеру рацион
-    dtu_poles = {'diet_id', 'date'}
+    trainer_id = form.trainer_id.data
 
-    if not is_json_correct(diets_to_user, dtu_poles):
-        return jsonify({'error': 'Invalid data'}), 400
+    is_trainer_have_access = sql_query(f"SELECT 1 WHERE EXISTS ( SELECT 1 FROM users_trainers WHERE tainer_id = '{trainer_id}' AND user_id = '{user_id}'", Fetch=True)
+    if not is_trainer_have_access:
+         return jsonify({'error': 'Access denied'}), 403
 
-    diet_id = diets_to_user['diet_id']
+    diet_id = form.diet_id.data
+    date = form.date.data
+
     try:
-        date = datetime.strptime(diets_to_user['date'], '%Y-%m-%d').date()
+        date = datetime.strptime(date, '%Y-%m-%d').date()
     except ValueError:
         return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
 
@@ -162,15 +159,16 @@ def get_user_diet(user_id):
 
 @food_blueprint.route('/<int:user_id>/diets', methods=['DELETE'])
 def delete_user_diet(user_id):
-    user_diet = request.json
-    json_poles = {'dish_id', 'date'}
-    if not is_json_correct(json=user_diet, poles=json_poles):
-        return jsonify({'error': 'Invalid data'}), 400
+    form = DTUForm()
 
-    dish_id = user_diet['dish_id']
-    date = user_diet['date']
+    diet_id = form.diet_id.data
+    date = form.date.data
+    try:
+        date = datetime.strptime(date, '%Y-%m-%d').date()
+    except ValueError:
+        return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
 
-    sql = f"DELETE FROM users_diets WHERE user_id = '{user_id}' AND dish_id = '{dish_id}' AND date = '{date}';"
+    sql = f"DELETE FROM users_diets WHERE user_id = '{user_id}' AND dish_id = '{diet_id}' AND date = '{date}';"
 
     database_query(sql)
 
