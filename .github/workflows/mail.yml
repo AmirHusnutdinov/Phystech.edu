@@ -46,6 +46,7 @@ jobs:
         DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:${{ secrets.POSTGRES_PORT }}/${{ secrets.DATABASE_NAME }}
       run: |
         echo "Running tests with environment variables"
+        echo $SECRET
         pytest -v tests/test_200.py
 
     - name: Check PEP8 compliance
