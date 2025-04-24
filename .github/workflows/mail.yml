@@ -11,7 +11,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    environment: test_environment  # This should match your environment name in GitHub
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -27,7 +28,7 @@ jobs:
         pip install -r requirements.txt
         pip install pytest flake8
 
-    - name: Setup environment
+    - name: Run tests
       env:
         ACC_ACCESS_KEY: ${{ secrets.ACC_ACCESS_KEY }}
         ACC_SECRET_KEY: ${{ secrets.ACC_SECRET_KEY }}
@@ -42,13 +43,10 @@ jobs:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
         TESTING: 'True'
-      run: |
-        echo "Environment variables set for testing"
-
-    - name: Run tests
-      env:
         DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:${{ secrets.POSTGRES_PORT }}/${{ secrets.DATABASE_NAME }}
       run: |
+        echo "Running tests with environment variables"
+        echo $SECRET
         pytest -v tests/test_200.py
 
     - name: Check PEP8 compliance
