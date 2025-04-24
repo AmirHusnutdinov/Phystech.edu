@@ -4,8 +4,8 @@ from flask import session
 from server.database.use_DataBase import *
 from server.service_files.links import *
 from settings import app
-from datetime import datetime
-
+from datetime import datetime, timezone
+from utils import debug_print
 
 class Students:
     @staticmethod
@@ -99,21 +99,25 @@ class Students:
 
     @staticmethod
     def get_new_messages(student_id):
-        print('got new messages')
         if "user_id" not in session:
             return jsonify({"status": "error", "message": "Not logged in"}), 401
         trainer_id = session["user_id"]
         if not check_trainer(trainer_id):
             return jsonify({"status": "error", "message": "Not a trainer"}), 403
 
-        # Получаем последние сообщения (например, после определенного timestamp)
         last_update = request.args.get("last_update")
+        #debug_print('request for new messages, last update', last_update)
+
+        since_dt = datetime.strptime(last_update, "%Y-%m-%dT%H:%M:%S.%fZ")
+        since_sql = since_dt.strftime("%Y-%m-%d %H:%M:%S.%f")
+        last_update = since_sql
+
         messages = get_message_history(
             trainer_id, student_id, since=last_update)
-
         formatted_messages = []
+        # debug_print('student_id', student_id)
         for msg in messages:
-            if msg["id_from"] == student_id:  # Только новые сообщения от студента
+            if str(msg["id_from"]) == str(student_id):  # Только новые сообщения от студента
                 user_info = get_user_data(student_id)
                 formatted_messages.append(
                     {
@@ -122,12 +126,16 @@ class Students:
                         "sender_name": user_info["name"],
                     }
                 )
+        # reducing to form 2025-04-22T13:54:07.343Z
+        current_time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z' 
 
+        # debug_print('CURRENT TIME', current_time)
+        # debug_print('MESSAGES', formatted_messages)
         return jsonify(
             {
                 "status": "success",
                 "messages": formatted_messages,
-                "last_update": datetime.now().isoformat(),
+                "last_update": current_time,
             }
         )
 
@@ -149,4 +157,5 @@ def send_message():
 
 @app.route("/get_new_messages/<student_id>")
 def get_new_messages(student_id):
+    pass
     return Students.get_new_messages(student_id)
