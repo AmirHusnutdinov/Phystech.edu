@@ -27,7 +27,7 @@ class News:
         else:
             header_links = choose_header_links("not-authorized")
         news_title = "Заголовок новости"
-        news_image_url = "https://via.placeholder.com/800x400"
+        news_image_url = "https://i.pinimg.com/originals/e6/2b/d9/e62bd91e2aff6226e877e6eb3a610df7.jpg"
         news_content = """
             <p>Я знаю, что id этой странички""" + str(news_id) + """</p>
             <p>Здесь будет текст статьи. Это пример текста, который может быть в статье. Здесь будет текст статьи. 
