@@ -128,18 +128,32 @@ class Cloud:
         except ClientError as e:
             raise Exception(f"Ошибка при получении списка файлов из папки {folder_path}: {str(e)}")
 
-    def add_picture(self, file_path: str, file_key: str) -> str:
+    def upload_file(self, file_path: str, file_key: str, replace: bool = False) -> str:
         """
         Загружает файл в хранилище и возвращает его URL
         
         Args:
             file_path: Локальный путь к файлу
             file_key: Путь назначения в хранилище
-            
+            replace: Флаг, указывающий нужно ли заменять существующий файл (по умолчанию False)
+                
         Returns:
             URL загруженного файла
+            
+        Raises:
+            Exception: Если файл уже существует и replace=False,
+                    или если произошла ошибка при загрузке
         """
         try:
+            # Проверяем существует ли файл, если replace=False
+            if not replace:
+                try:
+                    self.s3_client.head_object(Bucket=self.BUCKET_MAIN_PATH, Key=file_key)
+                    raise Exception(f"Файл уже существует: {file_key}. Используйте replace=True для замены")
+                except ClientError as e:
+                    if e.response['Error']['Code'] != '404':
+                        raise
+            
             self.s3_client.upload_file(
                 Filename=file_path,
                 Bucket=self.BUCKET_MAIN_PATH,

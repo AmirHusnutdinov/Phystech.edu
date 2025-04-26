@@ -65,9 +65,45 @@ def get_user_data(user_id):
         "carbs": user_data[16],
         "fats": user_data[17],
         "eating_times": user_data[18],
+        'is_trainer': user_data[19],
+        'is_admin': user_data[20],
+        'activity': user_data[21]
     }
     return user_info
 
+
+def update_user_data(user_id, data):
+    # Проверяем, что словарь данных не пустой
+    if not data:
+        return False
+    # Формируем SET часть SQL запроса
+    set_parts = []
+    for key in data:
+        if key in ['id', 'password', 'email', 'login']:
+            print('Error while updating user data: unaccesible field')
+            return False
+        # Экранируем специальные символы и обрабатываем разные типы данных
+        value = data[key]
+        if isinstance(value, str):
+            value = f"'{value.replace("'", "''")}'"
+        elif value is None:
+            value = 'NULL'
+        else:
+            value = str(value)
+        set_parts.append(f'"{key}" = {value}')
+    
+    set_clause = ', '.join(set_parts)
+    
+    # Формируем полный SQL запрос
+    sql = f'UPDATE public."User" SET {set_clause} WHERE id = {user_id}'
+    
+    try:
+        # Выполняем запрос
+        database_query(sql)
+        return True
+    except Exception as e:
+        print(f"Error updating user data: {e}")
+        return False
 
 def get_day_data(user_id, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = '{date}'"
@@ -110,12 +146,12 @@ def save_news(title, content, image_path):
 
 
 def check_trainer(user_id):
-    sql = f"SELECT role FROM roles WHERE id = {user_id}"
+    sql = f'SELECT is_trainer FROM "User" WHERE id = {user_id}'
     query = database_query(sql, True)
     if query == []:
         return False
     data = database_query(sql, True)[0][0]
-    if data == 2 or data == 3:
+    if data:
         return True
     return False
 
