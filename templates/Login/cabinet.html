@@ -1,144 +1,824 @@
-{% extends "Base.html" %}
-{% block content %}
-<link rel="stylesheet" href="../../static/assets/css/style_cabinet.css">
-<div class="body_cabinet">
-    <div class="container">
-        <h1 class="page-title">Личный кабинет</h1>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #5e72e4;
+            --primary-light: #7795f8;
+            --primary-dark: #324cdd;
+            --secondary-color: #f7fafc;
+            --text-color: #32325d;
+            --text-light: #525f7f;
+            --border-color: #e9ecef;
+            --success-color: #2dce89;
+            --danger-color: #f5365c;
+            --warning-color: #fb6340;
+            --info-color: #11cdef;
+            --card-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s;
+        }
 
-        <div class="card profile-card">
-            <h2 class="section-title">Персональные данные</h2>
-            <form id="profileForm">
-                <div class="row">
-                    <div class="form-group">
-                        <div class="field-label">Логин</div>
-                        <div class="field-value" data-field="login" data-original="{{ user.login }}">{{ user.login }}</div>
-                    </div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fe;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 30px 15px;
+        }
+
+        .page-header {
+            position: relative;
+            padding: 70px 0 120px;
+            background: linear-gradient(87deg, var(--primary-color) 0, var(--primary-light) 100%);
+            margin-bottom: -80px;
+        }
+
+        .page-title {
+            color: white;
+            font-size: 1.625rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .cabinet-header {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cabinet-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(87deg, rgba(94, 114, 228, 0.1) 0, rgba(119, 149, 248, 0.1) 100%);
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
+            z-index: 0;
+        }
+
+        .avatar-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 30px;
+            border: 4px solid white;
+            box-shadow: 0 0 20px rgba(50, 50, 93, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--transition-speed);
+        }
+
+        .avatar-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .user-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-info h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .user-info p {
+            color: var(--text-light);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info p i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .cabinet-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .cabinet-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(50, 50, 93, 0.15), 0 5px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all var(--transition-speed);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(87deg, var(--primary-color) 0, var(--primary-light) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+            background: linear-gradient(87deg, var(--primary-light) 0, var(--primary-color) 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(87deg, var(--success-color) 0, #2dcecc 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .btn-danger {
+            background: linear-gradient(87deg, var(--danger-color) 0, #f56036 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 15px;
+            color: var(--text-color);
+            transition: all var(--transition-speed);
+            background-color: white;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+            outline: none;
+        }
+
+        .form-control:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+            color: var(--text-light);
+            border-color: #e9ecef;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+
+        .form-col {
+            flex: 1;
+            padding: 0 15px;
+            min-width: 200px;
+        }
+
+        .action-buttons {
+            display: none;
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .action-buttons button {
+            margin-left: 15px;
+        }
+
+        .flash-messages {
+            margin-bottom: 30px;
+        }
+
+        .flash-message {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .flash-message i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .flash-success {
+            background-color: rgba(45, 206, 137, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .flash-error {
+            background-color: rgba(245, 54, 92, 0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .form-icon {
+            position: absolute;
+            top: 40px;
+            right: 15px;
+            color: var(--text-light);
+        }
+
+        .avatar-upload {
+            background-color: #f8f9fe;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--primary-color);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .avatar-upload label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .avatar-upload .form-control {
+            background-color: white;
+            border: 1px solid var(--border-color);
+        }
+
+        .nutrition-stats {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 0 10px 20px;
+            box-shadow: 0 2px 5px rgba(50, 50, 93, 0.1);
+            text-align: center;
+            transition: transform var(--transition-speed);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card:first-child {
+            margin-left: 0;
+        }
+
+        .stat-card:last-child {
+            margin-right: 0;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .calories-icon {
+            background: linear-gradient(87deg, var(--primary-color) 0, var(--primary-light) 100%);
+        }
+
+        .protein-icon {
+            background: linear-gradient(87deg, var(--success-color) 0, #2dcecc 100%);
+        }
+
+        .fats-icon {
+            background: linear-gradient(87deg, var(--warning-color) 0, #fbb140 100%);
+        }
+
+        .carbs-icon {
+            background: linear-gradient(87deg, var(--info-color) 0, #1171ef 100%);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 5px 0;
+            color: var(--text-color);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23525f7f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .form-col {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .cabinet-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .avatar-container {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .nutrition-stats {
+                flex-direction: column;
+            }
+
+            .stat-card {
+                margin: 0 0 15px 0;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cabinet-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #profile-section {
+            animation-delay: 0.1s;
+        }
+
+        #nutrition-section {
+            animation-delay: 0.2s;
+        }
+
+        /* Стилизация полей ввода при фокусе */
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.15);
+        }
+
+        /* Стилизация кнопок при нажатии */
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title">Личный кабинет</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="row avatar-row">
-                    <div class="form-group name-fields">
-                        <div class="field-label">Имя</div>
-                        <div class="field-value" data-field="firstName" data-original="{{ user.firstName }}">{{ user.firstName }}</div>
-                        
-                        <div class="field-label mt-3">Фамилия</div>
-                        <div class="field-value" data-field="lastName" data-original="{{ user.lastName }}">{{ user.lastName }}</div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Cabinet Header -->
+        <div class="cabinet-header">
+            <div class="avatar-container">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar }}" alt="Аватар пользователя">
+                {% else %}
+                    <img src="/static/images/default-avatar.png" alt="Аватар по умолчанию">
+                {% endif %}
+            </div>
+            <div class="user-info">
+                <h1>{{ user.name }}</h1>
+                <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                <p><i class="fas fa-user"></i> {{ user.login }}</p>
+            </div>
+        </div>
+
+        <!-- Personal Data Section -->
+        <div class="cabinet-section" id="profile-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-id-card"></i> Личные данные</h2>
+                <button class="btn btn-primary edit-btn" data-target="profile-form">
+                    <i class="fas fa-edit"></i> Изменить
+                </button>
+            </div>
+            
+            <form id="profile-form" action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data">
+                {{ profile_form.csrf_token }}
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="name">{{ profile_form.name.label.text }}</label>
+                            {{ profile_form.name(class="form-control", disabled=True, value=user.name) }}
+                            <i class="fas fa-user form-icon"></i>
+                        </div>
                     </div>
-                    <div class="form-group avatar-container">
-                        <div class="field-label">Аватар</div>
-                        <div class="avatar-wrapper">
-                            <img id="avatar-image" src="{{ user.avatar|default('/static/assets/img/default-avatar.png') }}" alt="Аватар пользователя">
-                            <button type="button" id="changeAvatarBtn" class="btn avatar-btn" style="display: none;">Изменить</button>
-                            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="login">{{ profile_form.login.label.text }}</label>
+                            {{ profile_form.login(class="form-control", disabled=True, value=user.login) }}
+                            <i class="fas fa-user-tag form-icon"></i>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="field-label">Почта</div>
-                        <div class="field-value" data-field="email" data-original="{{ user.email }}">{{ user.email }}</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="field-label">Возраст</div>
-                        <div class="field-value" data-field="age" data-type="number" data-original="{{ user.age }}">{{ user.age }}</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="field-label">Вес (кг)</div>
-                        <div class="field-value" data-field="weight" data-type="number" data-original="{{ user.weight }}">{{ user.weight }}</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="field-label">Рост (см)</div>
-                        <div class="field-value" data-field="height" data-type="number" data-original="{{ user.height }}">{{ user.height }}</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="field-label">Пол</div>
-                        <div class="field-value" data-field="gender" data-type="select" data-original="{{ user.gender }}">
-                            {% if user.gender == 'male' %}Мужской{% else %}Женский{% endif %}
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="email">{{ profile_form.email.label.text }}</label>
+                            {{ profile_form.email(class="form-control", disabled=True, value=user.email) }}
+                            <i class="fas fa-envelope form-icon"></i>
                         </div>
-                        <select id="gender-select" class="dropdown-select" style="display: none;">
-                            <option value="male">Мужской</option>
-                            <option value="female">Женский</option>
-                        </select>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <div class="field-label">Уровень активности</div>
-                        <div class="field-value" data-field="activity" data-type="select" data-original="{{ user.activity }}">
-                            {% if user.activity == 'sedentary' %}
-                                Сидячий образ жизни
-                            {% elif user.activity == 'light' %}
-                                Легкая активность
-                            {% elif user.activity == 'moderate' %}
-                                Умеренная активность
-                            {% elif user.activity == 'active' %}
-                                Активный образ жизни
-                            {% elif user.activity == 'very_active' %}
-                                Очень активный образ жизни
-                            {% endif %}
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="age">{{ profile_form.age.label.text }}</label>
+                            {{ profile_form.age(class="form-control", disabled=True, value=user.age) }}
+                            <i class="fas fa-birthday-cake form-icon"></i>
                         </div>
-                        <select id="activity-select" class="dropdown-select" style="display: none;">
-                            <option value="sedentary">Сидячий образ жизни</option>
-                            <option value="light">Легкая активность</option>
-                            <option value="moderate">Умеренная активность</option>
-                            <option value="active">Активный образ жизни</option>
-                            <option value="very_active">Очень активный образ жизни</option>
-                        </select>
                     </div>
                 </div>
-                <div class="button-container">
-                    <button type="button" id="editButton" class="btn primary-btn">Изменить</button>
-                    <button type="submit" id="saveButton" class="btn success-btn" style="display: none;">Сохранить</button>
-                    <button type="button" id="cancelButton" class="btn cancel-btn" style="display: none;">Отмена</button>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="weight">{{ profile_form.weight.label.text }}</label>
+                            {{ profile_form.weight(class="form-control", disabled=True, value=user.weight) }}
+                            <i class="fas fa-weight form-icon"></i>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="height">{{ profile_form.height.label.text }}</label>
+                            {{ profile_form.height(class="form-control", disabled=True, value=user.height) }}
+                            <i class="fas fa-ruler-vertical form-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="gender">{{ profile_form.gender.label.text }}</label>
+                            {{ profile_form.gender(class="form-control", disabled=True) }}
+                            <i class="fas fa-venus-mars form-icon"></i>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="activity">{{ profile_form.activity.label.text }}</label>
+                            {{ profile_form.activity(class="form-control", disabled=True) }}
+                            <i class="fas fa-running form-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="avatar-upload" style="display: none;">
+                    <label for="avatar"><i class="fas fa-image"></i> {{ profile_form.avatar.label.text }}</label>
+                    {{ profile_form.avatar(class="form-control") }}
+                    <p style="margin-top: 10px; color: var(--text-light); font-size: 14px;">
+                        <i class="fas fa-info-circle"></i> Поддерживаемые форматы: JPG, PNG, JPEG
+                    </p>
+                </div>
+                
+                <div class="action-buttons" id="profile-actions">
+                    <button type="button" class="btn btn-danger cancel-btn" data-target="profile-form">
+                        <i class="fas fa-times"></i> Отмена
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Сохранить
+                    </button>
                 </div>
             </form>
         </div>
 
-        <div class="card nutrition-goals">
-            <h2 class="section-title">Цели питания</h2>
-            <div class="goals-buttons">
-                <button id="weightLoss" class="btn goal-btn">
-                    <span class="goal-icon">📉</span>
-                    <span>Похудение</span>
-                </button>
-                <button id="weightMaintenance" class="btn goal-btn">
-                    <span class="goal-icon">⚖️</span>
-                    <span>Поддержание веса</span>
-                </button>
-                <button id="weightGain" class="btn goal-btn">
-                    <span class="goal-icon">📈</span>
-                    <span>Набор массы</span>
+        <!-- Nutrition Data Section -->
+        <div class="cabinet-section" id="nutrition-section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-utensils"></i> Данные КБЖУ</h2>
+                <button class="btn btn-primary edit-btn" data-target="nutrition-form">
+                    <i class="fas fa-edit"></i> Изменить
                 </button>
             </div>
-            <div class="kbgu-container">
-                <div class="kbgu-inputs">
-                    <div class="form-group">
-                        <div class="field-label">Калории</div>
-                        <div class="field-value nutrition-value" data-field="calories" data-type="number" data-original="{{ user['calories'] }}">{{ user['calories'] }}</div>
+            
+            <!-- Nutrition Stats Cards -->
+            <div class="nutrition-stats">
+                <div class="stat-card">
+                    <div class="stat-icon calories-icon">
+                        <i class="fas fa-fire"></i>
                     </div>
-                    <div class="form-group">
-                        <div class="field-label">Белки (г)</div>
-                        <div class="field-value nutrition-value" data-field="protein" data-type="number" data-original="{{ user['proteins'] }}">{{ user['proteins'] }}</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="field-label">Жиры (г)</div>
-                        <div class="field-value nutrition-value" data-field="fats" data-type="number" data-original="{{ user['fats'] }}">{{ user['fats'] }}</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="field-label">Углеводы (г)</div>
-                        <div class="field-value nutrition-value" data-field="carbs" data-type="number" data-original="{{ user['carbs'] }}">{{ user['carbs'] }}</div>
-                    </div>
+                    <div class="stat-value">{{ user.calories }}</div>
+                    <div class="stat-label">Калории</div>
                 </div>
-                <div class="button-container">
-                    <button id="editKBGU" class="btn primary-btn">Изменить</button>
-                    <button id="saveKBGU" class="btn success-btn" style="display: none;">Сохранить</button>
-                    <button id="cancelKBGU" class="btn cancel-btn" style="display: none;">Отмена</button>
+                
+                <div class="stat-card">
+                    <div class="stat-icon protein-icon">
+                        <i class="fas fa-drumstick-bite"></i>
+                    </div>
+                    <div class="stat-value">{{ user.proteins }}</div>
+                    <div class="stat-label">Белки (г)</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon fats-icon">
+                        <i class="fas fa-cheese"></i>
+                    </div>
+                    <div class="stat-value">{{ user.fats }}</div>
+                    <div class="stat-label">Жиры (г)</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon carbs-icon">
+                        <i class="fas fa-bread-slice"></i>
+                    </div>
+                    <div class="stat-value">{{ user.carbs }}</div>
+                    <div class="stat-label">Углеводы (г)</div>
                 </div>
             </div>
+            
+            <form id="nutrition-form" action="{{ url_for('update_nutrition') }}" method="POST">
+                {{ nutrition_form.csrf_token }}
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="calories">{{ nutrition_form.calories.label.text }}</label>
+                            {{ nutrition_form.calories(class="form-control", disabled=True, value=user.calories) }}
+                            <i class="fas fa-fire form-icon"></i>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="protein">{{ nutrition_form.protein.label.text }}</label>
+                            {{ nutrition_form.protein(class="form-control", disabled=True, value=user.proteins) }}
+                            <i class="fas fa-drumstick-bite form-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="fats">{{ nutrition_form.fats.label.text }}</label>
+                            {{ nutrition_form.fats(class="form-control", disabled=True, value=user.fats) }}
+                            <i class="fas fa-cheese form-icon"></i>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="carbs">{{ nutrition_form.carbs.label.text }}</label>
+                            {{ nutrition_form.carbs(class="form-control", disabled=True, value=user.carbs) }}
+                            <i class="fas fa-bread-slice form-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons" id="nutrition-actions">
+                    <button type="button" class="btn btn-danger cancel-btn" data-target="nutrition-form">
+                        <i class="fas fa-times"></i> Отмена
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Сохранить
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
 
-<script type="module" src="../../static/assets/js/cabinet.js"></script>
-{% endblock %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Edit buttons
+            const editButtons = document.querySelectorAll('.edit-btn');
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const formId = this.getAttribute('data-target');
+                    enableFormEditing(formId);
+                });
+            });
+            
+            // Cancel buttons
+            const cancelButtons = document.querySelectorAll('.cancel-btn');
+            cancelButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const formId = this.getAttribute('data-target');
+                    disableFormEditing(formId);
+                });
+            });
+            
+            // Function to enable form editing
+            function enableFormEditing(formId) {
+                const form = document.getElementById(formId);
+                const inputs = form.querySelectorAll('input, select');
+                const actionButtons = form.querySelector('.action-buttons');
+                
+                // Enable all inputs except readonly ones
+                inputs.forEach(input => {
+                    if (!input.hasAttribute('readonly')) {
+                        input.disabled = false;
+                    }
+                });
+                
+                // Show action buttons
+                actionButtons.style.display = 'block';
+                
+                // Show avatar upload if it's the profile form
+                if (formId === 'profile-form') {
+                    const avatarUpload = form.querySelector('.avatar-upload');
+                    if (avatarUpload) {
+                        avatarUpload.style.display = 'block';
+                    }
+                }
+                
+                // Hide edit button
+                const sectionId = formId.replace('-form', '-section');
+                const editBtn = document.querySelector(`#${sectionId} .edit-btn`);
+                editBtn.style.display = 'none';
+            }
+            
+            // Function to disable form editing
+            function disableFormEditing(formId) {
+                const form = document.getElementById(formId);
+                const inputs = form.querySelectorAll('input, select');
+                const actionButtons = form.querySelector('.action-buttons');
+                
+                // Disable all inputs
+                inputs.forEach(input => {
+                    input.disabled = true;
+                });
+                
+                // Hide action buttons
+                actionButtons.style.display = 'none';
+                
+                // Hide avatar upload if it's the profile form
+                if (formId === 'profile-form') {
+                    const avatarUpload = form.querySelector('.avatar-upload');
+                    if (avatarUpload) {
+                        avatarUpload.style.display = 'none';
+                    }
+                }
+                
+                // Show edit button
+                const sectionId = formId.replace('-form', '-section');
+                const editBtn = document.querySelector(`#${sectionId} .edit-btn`);
+                editBtn.style.display = 'block';
+                
+                // Reset form to original values
+                form.reset();
+                
+                // Restore original values after reset
+                if (formId === 'profile-form') {
+                    document.querySelector('#profile-form [name="name"]').value = '{{ user.name }}';
+                    document.querySelector('#profile-form [name="login"]').value = '{{ user.login }}';
+                    document.querySelector('#profile-form [name="email"]').value = '{{ user.email }}';
+                    document.querySelector('#profile-form [name="age"]').value = '{{ user.age }}';
+                    document.querySelector('#profile-form [name="weight"]').value = '{{ user.weight }}';
+                    document.querySelector('#profile-form [name="height"]').value = '{{ user.height }}';
+                    
+                    // Для select элементов нужно установить выбранное значение
+                    const genderSelect = document.querySelector('#profile-form [name="gender"]');
+                    for (let i = 0; i < genderSelect.options.length; i++) {
+                        if (genderSelect.options[i].value === '{{ user.gender }}') {
+                            genderSelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    
+                    const activitySelect = document.querySelector('#profile-form [name="activity"]');
+                    for (let i = 0; i < activitySelect.options.length; i++) {
+                        if (activitySelect.options[i].value === '{{ user.activity }}') {
+                            activitySelect.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+                
+                if (formId === 'nutrition-form') {
+                    document.querySelector('#nutrition-form [name="calories"]').value = '{{ user.calories }}';
+                    document.querySelector('#nutrition-form [name="protein"]').value = '{{ user.proteins }}';
+                    document.querySelector('#nutrition-form [name="fats"]').value = '{{ user.fats }}';
+                    document.querySelector('#nutrition-form [name="carbs"]').value = '{{ user.carbs }}';
+                }
+            }
 
+            // Добавляем анимацию для flash-сообщений
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach((message, index) => {
+                message.style.animationDelay = `${index * 0.1}s`;
+                message.style.animation = 'fadeIn 0.5s ease-out forwards';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, SelectField, FileField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, Email
 from werkzeug.utils import secure_filename
+from flask_wtf.file import FileField, FileAllowed
 
 import os
 from server.database.use_DataBase import get_user_data, update_user_data
@@ -40,7 +41,7 @@ class Cabinet:
     def show_cabinet_page():
         if 'user_id' in session:
             user = get_user_data(session['user_id'])
-            form = ProfileForm(obj=user)
+            profile_form = ProfileForm(obj=user)
             nutrition_form = NutritionForm(obj=user)
             
             return render_template_with_user(
@@ -48,7 +49,7 @@ class Cabinet:
                 header_links=choose_header_links("authorized"),
                 title="Кабинет",
                 user=user,
-                form=form,
+                profile_form=profile_form,
                 nutrition_form=nutrition_form)
         else:
             return redirect(main_page)
@@ -59,27 +60,27 @@ class Cabinet:
             return redirect(main_page)
             
         user = get_user_data(session['user_id'])
-        form = ProfileForm(obj=user)
-        print(form)
-        if form.validate_on_submit():
-            print('form validated')
+        profile_form = ProfileForm(obj=user)
+        print(profile_form)
+        if profile_form.validate_on_submit():
+            print('profile_form validated')
             # Загружаем аватар в облако
             avatar_url = None
-            if form.avatar.data:
+            if profile_form.avatar.data:
                 avatar_url = Cabinet._upload_avatar(
-                    form.avatar.data, 
+                    profile_form.avatar.data, 
                     session['user_id'],
                     Cabinet.cloud
                 )
             
             # Подготавливаем данные для обновления
             update_data = {
-                'name': form.name.data,
-                'age': form.age.data,
-                'weight': form.weight.data,
-                'height': form.height.data,
-                'gender': form.gender.data,
-                'activity': form.activity.data
+                'name': profile_form.name.data,
+                'age': profile_form.age.data,
+                'weight': profile_form.weight.data,
+                'height': profile_form.height.data,
+                'gender': profile_form.gender.data,
+                'activity': profile_form.activity.data
             }
             
             if avatar_url:
@@ -91,16 +92,16 @@ class Cabinet:
             return redirect(cabinet)
         
         # Если форма не валидна, показываем ошибки
-        for field, errors in form.errors.items():
+        for field, errors in profile_form.errors.items():
             for error in errors:
-                flash(f"{getattr(form, field).label.text}: {error}", 'error')
-        
+                flash(f"{getattr(profile_form, field).label.text}: {error}", 'error')
+        nutrition_form = NutritionForm(obj=user)
         return render_template_with_user(
             "Login/cabinet.html",
             header_links=choose_header_links("authorized"),
             title="Кабинет",
             user=user,
-            form=form)
+            profile_form=profile_form, nutrition_form=nutrition_form)
 
     @staticmethod
     def update_nutrition():
@@ -108,14 +109,14 @@ class Cabinet:
             return redirect(main_page)
             
         user = get_user_data(session['user_id'])
-        form = NutritionForm(obj=user)
+        nutrition_form = NutritionForm(obj=user)
         
-        if form.validate_on_submit():
+        if nutrition_form.validate_on_submit():
             update_data = {
-                'calories': form.calories.data,
-                'proteins': form.protein.data,
-                'fats': form.fats.data,
-                'carbs': form.carbs.data
+                'calories': nutrition_form.calories.data,
+                'proteins': nutrition_form.protein.data,
+                'fats': nutrition_form.fats.data,
+                'carbs': nutrition_form.carbs.data
             }
             
             update_user_data(session['user_id'], update_data)
@@ -123,16 +124,17 @@ class Cabinet:
             return redirect(cabinet)
         
         # Если форма не валидна, показываем ошибки
-        for field, errors in form.errors.items():
+        for field, errors in nutrition_form.errors.items():
             for error in errors:
-                flash(f"{getattr(form, field).label.text}: {error}", 'error')
-        
+                flash(f"{getattr(nutrition_form, field).label.text}: {error}", 'error')
+        profile_form = ProfileForm(obj=user)
         return render_template_with_user(
             "Login/cabinet.html",
             header_links=choose_header_links("authorized"),
             title="Кабинет",
             user=user,
-            nutrition_form=form)
+            profile_form = profile_form,
+            nutrition_form= nutrition_form)
 
 
 # Routes
@@ -150,7 +152,9 @@ def update_nutrition():
 
 # Forms
 class ProfileForm(FlaskForm):
+    login = StringField('Логин', render_kw={'readonly': True})
     name = StringField('Имя', validators=[DataRequired()])
+    email = StringField('Почта', validators=[DataRequired(), Email()], render_kw={'readonly': True})
     age = IntegerField('Возраст', validators=[DataRequired(), NumberRange(min=1, max=120)])
     weight = IntegerField('Вес (кг)', validators=[DataRequired(), NumberRange(min=30, max=300)])
     height = IntegerField('Рост (см)', validators=[DataRequired(), NumberRange(min=100, max=250)])
@@ -165,7 +169,7 @@ class ProfileForm(FlaskForm):
         ('active', 'Активный образ жизни'),
         ('very_active', 'Очень активный образ жизни')
     ], validators=[DataRequired()])
-    avatar = FileField('Аватар')
+    avatar = FileField('Аватар', validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Только изображения!')])
     submit = SubmitField('Сохранить')
 
 class NutritionForm(FlaskForm):
