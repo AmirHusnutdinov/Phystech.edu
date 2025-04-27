@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from flask_wtf.file import FileField, FileAllowed
 
 import os
-from server.database.use_DataBase import get_user_data, update_user_data, get_trainer_id, get_trainer_request, add_trainer_request, check_trainer
+from server.database.use_DataBase import get_user_data, get_request, add_student, update_user_data, get_trainer_id, get_my_request, update_trainer_request, add_trainer_request, check_trainer, get_trainer_request, update_trainer_request
 from server.service_files.links import *
 from settings import app, UPLOAD_FOLDER
 from utils import render_template_with_user
@@ -50,19 +50,22 @@ class Cabinet:
             trainer_request_form = TrainerRequestForm()
             trainer_id = get_trainer_id(session['user_id'])
             has_trainer = (trainer_id != 0)
-            
+
             trainer = {}
             trainer_avatar = None
+            trainer_request = {}
+            if user['is_trainer']:
+                trainer_request = get_trainer_request(session['user_id'])
+            # print(trainer_request)
             if has_trainer:
                 trainer = get_user_data(trainer_id)
                 trainer_avatar = Cabinet.cloud.get_url(f'avatars/{trainer_id}')
             avatar = Cabinet.cloud.get_url(f'avatars/{session['user_id']}')
-
-            request = get_trainer_request(session['user_id'])
+            request = get_my_request(session['user_id'])
             has_request = True
             if request == []:
                 has_request = False
-            
+
             return render_template_with_user(
                 "Login/cabinet.html",
                 header_links=choose_header_links("authorized"),
@@ -73,10 +76,11 @@ class Cabinet:
                 trainer_form=trainer_form,
                 trainer_request_form=trainer_request_form,
                 avatar=avatar,
-                has_trainer = has_trainer,
-                has_request = has_request,
-                trainer = trainer,
-                trainer_avatar = trainer_avatar)
+                has_trainer=has_trainer,
+                has_request=has_request,
+                trainer=trainer,
+                trainer_avatar=trainer_avatar,
+                trainer_request=trainer_request)
         else:
             return redirect(main_page)
 
@@ -145,13 +149,13 @@ class Cabinet:
                 flash(
                     f"{getattr(nutrition_form, field).label.text}: {error}", 'error')
         return redirect(cabinet)
-    
+
     @staticmethod
     def request_trainer():
         """Обработка запроса на добавление тренера"""
         if 'user_id' not in session:
             return redirect(main_page)
-        
+
         form = TrainerRequestForm()
         if form.validate_on_submit():
             trainer_id = form.trainer_id.data
@@ -161,19 +165,50 @@ class Cabinet:
             # Проверяем существование тренера с указанным ID
             # Здесь должна быть ваша логика проверки существования тренера
             # Например: trainer = get_trainer_data(trainer_id)
-            
+
             # Добавляем запрос в базу данных
             add_trainer_request(session['user_id'], trainer_id, 'no_desc')
-            
+
             flash('Запрос тренеру успешно отправлен!', 'success')
         else:
             # Если форма не валидна, показываем ошибки
             for field, errors in form.errors.items():
                 for error in errors:
                     flash(f"{getattr(form, field).label.text}: {error}", 'error')
-                    
+
+        return redirect(cabinet)
+
+    @staticmethod
+    def approve_request(request_id):
+        if 'user_id' not in session:
+            return redirect(main_page)
+
+        # Check if the current user is a trainer
+        user = get_user_data(session['user_id'])
+        if not user.get('is_trainer', False):
+            flash('Только тренеры могут выполнять это действие', 'error')
+            return redirect(cabinet)
+        
+        update_trainer_request(request_id, 'approved')
+        student_id = get_request(request_id)['id_from']
+        add_student(session['user_id'], student_id)
+        flash('Запрос успешно одобрен', 'success')
         return redirect(cabinet)
     @staticmethod
+    def reject_request(request_id):
+        if 'user_id' not in session:
+            return redirect(main_page)
+        
+        # Check if the current user is a trainer
+        user = get_user_data(session['user_id'])
+        if not user.get('is_trainer', False):
+            flash('Только тренеры могут выполнять это действие', 'error')
+            return redirect(cabinet)
+        
+        update_trainer_request(request_id, 'rejected')
+        flash('Запрос отклонен', 'success')
+        return redirect(cabinet)
+    
     def submit_trainer_application():
         if 'user_id' not in session:
             return redirect(main_page)
@@ -210,7 +245,8 @@ class Cabinet:
             #     application_date=datetime.now()
             # )
 
-            flash('Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success')
+            flash(
+                'Ваша заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.', 'success')
             return redirect(cabinet)
 
         # Если форма не валидна, показываем ошибки
@@ -241,11 +277,19 @@ def update_nutrition():
 def submit_trainer_application():
     return Cabinet.submit_trainer_application()
 
+
 @app.route(cabinet + '/request_trainer', methods=['POST'])
 def request_trainer():
     return Cabinet.request_trainer()
 
+@app.route(cabinet + '/approve_request/<int:request_id>', methods=['POST'])
+def approve_request(request_id):
+    return Cabinet.approve_request(request_id)
+@app.route(cabinet + '/reject_request/<int:request_id>', methods=['POST'])
+def reject_request(request_id):
+    return Cabinet.reject_request(request_id)
 # Forms
+
 class ProfileForm(FlaskForm):
     login = StringField('Логин', render_kw={'readonly': True})
     name = StringField('Имя', validators=[DataRequired()])
@@ -291,6 +335,7 @@ class TrainerApplicationForm(FlaskForm):
                           validators=[FileAllowed(['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'],
                                                   'Поддерживаются только документы и изображения!')])
     submit = SubmitField('Отправить')
+
 
 class TrainerRequestForm(FlaskForm):
     trainer_id = StringField('ID тренера', validators=[DataRequired()])

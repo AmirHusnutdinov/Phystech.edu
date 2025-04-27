@@ -278,6 +278,52 @@
             </div>
         </form>
     </div>
+    {% if user.is_trainer %}
+    <div class="cabinet-section" id="trainer-requests-section">
+        <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Заявки пользователей</h2>
+        </div>
+        
+        {% if trainer_request != [] %}
+            <div class="trainer-requests-list">
+                {% for request in trainer_request %}
+                    <div class="request-card">
+                        <div class="request-user-info">
+                            <div class="request-avatar">
+                                {% if request.avatar_url %}
+                                    <img src="{{ request.avatar_url }}" alt="Аватар пользователя">
+                                {% else %}
+                                    <i class="fas fa-user"></i>
+                                {% endif %}
+                            </div>
+                            <div class="request-details">
+                                <h3>{{ request.id_from}}</h3>
+                                <p><i class="fas fa-calendar-alt"></i> Дата запроса: {{ request.time }}</p>
+                            </div>
+                        </div>
+                        <div class="request-actions">
+                            <form action="{{ url_for('approve_request', request_id=request.request_id) }}" method="POST" class="inline-form">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check"></i> Подтвердить
+                                </button>
+                            </form>
+                            <form action="{{ url_for('reject_request', request_id=request.request_id) }}" method="POST" class="inline-form">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-times"></i> Отклонить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-requests">
+                <i class="fas fa-inbox"></i>
+                <p>У вас нет новых заявок от пользователей</p>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
     <!-- Trainer Request Section - NEW SECTION -->
     <div class="cabinet-section" id="trainer-request-section">
         <div class="section-header">
@@ -371,8 +417,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Edit buttons
-        const editButtons = document.  function() {
         // Edit buttons
         const editButtons = document.querySelectorAll('.edit-btn');
         editButtons.forEach(button => {

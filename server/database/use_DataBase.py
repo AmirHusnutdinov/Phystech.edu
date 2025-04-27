@@ -106,7 +106,7 @@ def get_day_data(user_id, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = '{date}'"
     return database_query(sql, True)
 
-def get_trainer_request(user_id):
+def get_my_request(user_id):
     sql = f"SELECT * FROM trainer_requests WHERE id_from = {user_id} AND status = 'in process'"
     data = database_query(sql, True)
     
@@ -121,6 +121,35 @@ def get_trainer_request(user_id):
             'time': req[5]
         })
     
+    return result
+
+def get_trainer_request(user_id):
+    sql = f"SELECT * FROM trainer_requests WHERE id_to = {user_id} AND status = 'in process'"
+    data = database_query(sql, True)
+    
+    result = []
+    for req in data:
+        result.append({
+            'request_id': req[0],
+            'id_from': req[1],
+            'id_to': req[2],
+            'description': req[3],
+            'status': req[4],
+            'time': req[5]
+        })
+    return result
+
+def get_request(request_id):
+    sql = f"SELECT * FROM trainer_requests WHERE request_id = {request_id}"
+    data = database_query(sql, True)[0]
+    result = {
+            'request_id': data[0],
+            'id_from': data[1],
+            'id_to': data[2],
+            'description': data[3],
+            'status': data[4],
+            'time': data[5]
+    }
     return result
 
 def add_trainer_request(id_from, id_to, description):
@@ -196,6 +225,8 @@ def get_list_of_student(user_id):
         ans_list.append(int(el[0]))
     return ans_list
 
+def add_student(trainer_id, student_id):
+    sql = f"INSERT INTO student (id, student_id) VALUES ({trainer_id}, {student_id})"
 
 def get_message_history(first_id, second_id, since=None):
     
