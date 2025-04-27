@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
+{% extends "Base.html" %}
+
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,10 +45,13 @@
 
         .page-header {
             position: relative;
-            padding: 70px 0 120px;
+            /* было padding: 70px 0 120px; */
+            padding: -15px 0 30px;        /* меньше сверху и снизу */
             background: linear-gradient(87deg, var(--primary-color) 0, var(--primary-light) 100%);
-            margin-bottom: -80px;
+            /* было margin-bottom: -80px; */
+            margin-bottom: -15px;        /* перекрытие секций уменьшено */
         }
+        
 
         .page-title {
             color: white;
@@ -492,8 +496,8 @@
         <!-- Cabinet Header -->
         <div class="cabinet-header">
             <div class="avatar-container">
-                {% if user.avatar %}
-                    <img src="{{ user.avatar }}" alt="Аватар пользователя">
+                {% if avatar %}
+                    <img src="{{ avatar }}" alt="Аватар пользователя">
                 {% else %}
                     <img src="/static/images/default-avatar.png" alt="Аватар по умолчанию">
                 {% endif %}
@@ -521,7 +525,7 @@
                     <div class="form-col">
                         <div class="form-group">
                             <label for="name">{{ profile_form.name.label.text }}</label>
-                            {{ profile_form.name(class="form-control", disabled=True, value=user.name) }}
+                            {{ profile_form.name(class="form-control", readOnly=True, value=user.name) }}
                             <i class="fas fa-user form-icon"></i>
                         </div>
                     </div>
@@ -545,7 +549,7 @@
                     <div class="form-col">
                         <div class="form-group">
                             <label for="age">{{ profile_form.age.label.text }}</label>
-                            {{ profile_form.age(class="form-control", disabled=True, value=user.age) }}
+                            {{ profile_form.age(class="form-control", readOnly=True, value=user.age) }}
                             <i class="fas fa-birthday-cake form-icon"></i>
                         </div>
                     </div>
@@ -555,14 +559,14 @@
                     <div class="form-col">
                         <div class="form-group">
                             <label for="weight">{{ profile_form.weight.label.text }}</label>
-                            {{ profile_form.weight(class="form-control", disabled=True, value=user.weight) }}
+                            {{ profile_form.weight(class="form-control", readOnly=True, value=user.weight) }}
                             <i class="fas fa-weight form-icon"></i>
                         </div>
                     </div>
                     <div class="form-col">
                         <div class="form-group">
                             <label for="height">{{ profile_form.height.label.text }}</label>
-                            {{ profile_form.height(class="form-control", disabled=True, value=user.height) }}
+                            {{ profile_form.height(class="form-control", readOnly=True, value=user.height) }}
                             <i class="fas fa-ruler-vertical form-icon"></i>
                         </div>
                     </div>
@@ -572,7 +576,7 @@
                     <div class="form-col">
                         <div class="form-group">
                             <label for="gender">{{ profile_form.gender.label.text }}</label>
-                            {{ profile_form.gender(class="form-control", disabled=True) }}
+                            {{ profile_form.gender(class="form-control", readOnly=True) }}
                             <i class="fas fa-venus-mars form-icon"></i>
                         </div>
                     </div>
@@ -726,6 +730,9 @@
                 // Enable all inputs except readonly ones
                 inputs.forEach(input => {
                     if (!input.hasAttribute('readonly')) {
+                        input.readOnly = false;
+                    }
+                    if (input.tagName == 'SELECT'){
                         input.disabled = false;
                     }
                 });
@@ -755,8 +762,11 @@
                 
                 // Disable all inputs
                 inputs.forEach(input => {
-                    input.disabled = true;
+                    input.readOnly = true;
                 });
+                if (input.tagName == 'SELECT'){
+                    input.disabled = true;
+                }
                 
                 // Hide action buttons
                 actionButtons.style.display = 'none';
@@ -822,3 +832,4 @@
     </script>
 </body>
 </html>
+{% endblock %}

@@ -1,6 +1,6 @@
 from flask import session, redirect, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SelectField, FileField, SubmitField
+from wtforms import StringField, IntegerField, SelectField, FileField, SubmitField, FloatField
 from wtforms.validators import DataRequired, NumberRange, Email
 from werkzeug.utils import secure_filename
 from flask_wtf.file import FileField, FileAllowed
@@ -43,6 +43,9 @@ class Cabinet:
             user = get_user_data(session['user_id'])
             profile_form = ProfileForm(obj=user)
             nutrition_form = NutritionForm(obj=user)
+
+            avatar = Cabinet.cloud.get_url(f'avatars/{session['user_id']}')
+            print(avatar)
             
             return render_template_with_user(
                 "Login/cabinet.html",
@@ -50,7 +53,8 @@ class Cabinet:
                 title="Кабинет",
                 user=user,
                 profile_form=profile_form,
-                nutrition_form=nutrition_form)
+                nutrition_form=nutrition_form,
+                avatar = avatar)
         else:
             return redirect(main_page)
         
@@ -60,10 +64,9 @@ class Cabinet:
             return redirect(main_page)
             
         user = get_user_data(session['user_id'])
-        profile_form = ProfileForm(obj=user)
-        print(profile_form)
+
+        profile_form = ProfileForm()
         if profile_form.validate_on_submit():
-            print('profile_form validated')
             # Загружаем аватар в облако
             avatar_url = None
             if profile_form.avatar.data:
@@ -79,7 +82,7 @@ class Cabinet:
                 'age': profile_form.age.data,
                 'weight': profile_form.weight.data,
                 'height': profile_form.height.data,
-                'gender': profile_form.gender.data,
+                'sex': profile_form.gender.data,
                 'activity': profile_form.activity.data
             }
             
@@ -95,13 +98,8 @@ class Cabinet:
         for field, errors in profile_form.errors.items():
             for error in errors:
                 flash(f"{getattr(profile_form, field).label.text}: {error}", 'error')
-        nutrition_form = NutritionForm(obj=user)
-        return render_template_with_user(
-            "Login/cabinet.html",
-            header_links=choose_header_links("authorized"),
-            title="Кабинет",
-            user=user,
-            profile_form=profile_form, nutrition_form=nutrition_form)
+                print(field, error)
+        return redirect(cabinet)
 
     @staticmethod
     def update_nutrition():
@@ -127,14 +125,7 @@ class Cabinet:
         for field, errors in nutrition_form.errors.items():
             for error in errors:
                 flash(f"{getattr(nutrition_form, field).label.text}: {error}", 'error')
-        profile_form = ProfileForm(obj=user)
-        return render_template_with_user(
-            "Login/cabinet.html",
-            header_links=choose_header_links("authorized"),
-            title="Кабинет",
-            user=user,
-            profile_form = profile_form,
-            nutrition_form= nutrition_form)
+        return redirect(cabinet)
 
 
 # Routes
@@ -154,9 +145,9 @@ def update_nutrition():
 class ProfileForm(FlaskForm):
     login = StringField('Логин', render_kw={'readonly': True})
     name = StringField('Имя', validators=[DataRequired()])
-    email = StringField('Почта', validators=[DataRequired(), Email()], render_kw={'readonly': True})
+    email = StringField('Почта', render_kw={'readonly': True})
     age = IntegerField('Возраст', validators=[DataRequired(), NumberRange(min=1, max=120)])
-    weight = IntegerField('Вес (кг)', validators=[DataRequired(), NumberRange(min=30, max=300)])
+    weight = FloatField('Вес (кг)', validators=[DataRequired(), NumberRange(min=30, max=300)])
     height = IntegerField('Рост (см)', validators=[DataRequired(), NumberRange(min=100, max=250)])
     gender = SelectField('Пол', choices=[
         ('male', 'Мужской'),
