@@ -22,7 +22,7 @@
     <div class="cabinet-header">
         <div class="avatar-container">
             {% if avatar %}
-                <img src="{{ user.avatar }}" alt="Аватар пользователя">
+                <img src="{{ avatar }}" alt="Аватар пользователя">
             {% else %}
                 <img src="/static/images/default-avatar.png" alt="Аватар по умолчанию">
             {% endif %}
@@ -31,6 +31,7 @@
             <h1>{{ user.name }}</h1>
             <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
             <p><i class="fas fa-user"></i> {{ user.login }}</p>
+            <p><i class="fas fa-user"></i> id: {{ user.id}}</p>
         </div>
     </div>
 
@@ -180,6 +181,59 @@
         <form id="nutrition-form" action="{{ url_for('update_nutrition') }}" method="POST">
             {{ nutrition_form.csrf_token }}
             
+            <div class="recommended-section">
+                <h3>Рекомендуемые показатели</h3>
+                
+                <div class="goal-buttons">
+                    <button type="button" class="btn btn-outline goal-btn" data-goal="lose">Сбросить вес</button>
+                    <button type="button" class="btn btn-outline goal-btn" data-goal="maintain">Поддержание веса</button>
+                    <button type="button" class="btn btn-outline goal-btn" data-goal="gain">Набор массы</button>
+                </div>
+                
+                <div class="calculated-values">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="calc_calories">Расчетные калории</label>
+                                <input type="text" id="calc_calories" class="form-control" readonly>
+                                <i class="fas fa-fire form-icon"></i>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="calc_protein">Расчетные белки (г)</label>
+                                <input type="text" id="calc_protein" class="form-control" readonly>
+                                <i class="fas fa-drumstick-bite form-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="calc_fats">Расчетные жиры (г)</label>
+                                <input type="text" id="calc_fats" class="form-control" readonly>
+                                <i class="fas fa-cheese form-icon"></i>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="calc_carbs">Расчетные углеводы (г)</label>
+                                <input type="text" id="calc_carbs" class="form-control" readonly>
+                                <i class="fas fa-bread-slice form-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insert-button">
+                        <button type="button" class="btn btn-primary" id="insert-values">
+                            <i class="fas fa-arrow-down"></i> Вставить значения
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Original form fields continue here -->
             <div class="form-row">
                 <div class="form-col">
                     <div class="form-group">
@@ -224,10 +278,101 @@
             </div>
         </form>
     </div>
+    <!-- Trainer Request Section - NEW SECTION -->
+    <div class="cabinet-section" id="trainer-request-section">
+        <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-user-friends"></i> Мой тренер</h2>
+        </div>
+        
+        {% if has_trainer %}
+            <!-- User has a trainer -->
+            <div class="trainer-info">
+                <div class="trainer-avatar">
+                    {% if trainer_avatar %}
+                    <img src="{{ trainer_avatar }}" alt="Аватар пользователя">
+                    {% else %}
+                    <i class="fas fa-user-tie"></i>
+                    {% endif %}
+                </div>
+                <div class="trainer-details">
+                    <h3>{{ trainer.name }}</h3>
+                    <p><i class="fas fa-id-card"></i> ID: {{ trainer.id }}</p>
+                </div>
+            </div>
+        {% elif has_request %}
+            <!-- User has a pending request -->
+            <div class="trainer-request-pending">
+                <i class="fas fa-hourglass-half"></i>
+                <p>Тренер получил ваш запрос</p>
+            </div>
+        {% else %}
+            <!-- User has no trainer - Using Flask-WTF form -->
+            <form id="trainer-request-form" action="{{ url_for('request_trainer') }}" method="POST">
+                {{ trainer_request_form.csrf_token }}
+                <div class="form-group">
+                    <label for="trainer_id">{{ trainer_request_form.trainer_id.label.text }}</label>
+                    {{ trainer_request_form.trainer_id(class="form-control", required=True) }}
+                    <i class="fas fa-id-card form-icon"></i>
+                </div>
+                {{ trainer_request_form.submit(class="btn btn-primary") }}
+            </form>
+        {% endif %}
+    </div>
+    {%if not user.is_trainer %}
+    <div class="cabinet-section" id="trainer-section">
+        <div class="section-header">
+            <h2 class="section-title"><i class="fas fa-dumbbell"></i> Хотите стать тренером?</h2>
+        </div>
+        
+        <div class="trainer-application">
+            <p>Станьте частью нашей команды профессиональных тренеров и помогайте другим достигать их целей!</p>
+            <button id="open-trainer-modal" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Стать
+            </button>
+        </div>
+    </div>
+
+    <!-- Trainer Application Modal -->
+    <div id="trainer-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-dumbbell"></i> Заявка на позицию тренера</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="trainer-form" action="{{ url_for('submit_trainer_application') }}" method="POST" enctype="multipart/form-data">
+                {{ trainer_form.csrf_token }}
+                
+                <div class="form-group">
+                    <label for="experience">{{ trainer_form.experience.label.text }}</label>
+                    {{ trainer_form.experience(class="form-control", rows=5) }}
+                    <i class="fas fa-file-alt form-icon"></i>
+                </div>
+                
+                <div class="form-group file-upload">
+                    <label for="documents">{{ trainer_form.documents.label.text }}</label>
+                    {{ trainer_form.documents(class="form-control") }}
+                    <i class="fas fa-file-upload form-icon"></i>
+                    <p class="file-hint">Поддерживаемые форматы: PDF, DOC, DOCX, JPG, PNG</p>
+                </div>
+                
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-danger cancel-modal">
+                        <i class="fas fa-times"></i> Отмена
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-paper-plane"></i> Отправить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {%endif%}
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Edit buttons
+        const editButtons = document.  function() {
         // Edit buttons
         const editButtons = document.querySelectorAll('.edit-btn');
         editButtons.forEach(button => {
@@ -347,6 +492,190 @@
             message.style.animationDelay = `${index * 0.1}s`;
             message.style.animation = 'fadeIn 0.5s ease-out forwards';
         });
+
+        const trainerRequestSection = document.getElementById('trainer-request-section');
+        if (trainerRequestSection) {
+            trainerRequestSection.style.animationDelay = '0.15s';
+        }
+        // advice_goal
+
+        const goalButtons = document.querySelectorAll('.goal-btn');
+        const insertButton = document.getElementById('insert-values');
+        let currentGoal = null;
+        
+        // Goal button click handler
+        goalButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                goalButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Store the selected goal
+                currentGoal = this.getAttribute('data-goal');
+                
+                // Calculate nutrition values based on user data and selected goal
+                calculateNutrition(currentGoal);
+            });
+        });
+        
+        // Insert button click handler
+        if (insertButton) {
+            insertButton.addEventListener('click', function() {
+                if (!currentGoal) {
+                    alert('Пожалуйста, выберите цель перед вставкой значений');
+                    return;
+                }
+                
+                // Get calculated values
+                const calcCalories = document.getElementById('calc_calories').value;
+                const calcProtein = document.getElementById('calc_protein').value;
+                const calcFats = document.getElementById('calc_fats').value;
+                const calcCarbs = document.getElementById('calc_carbs').value;
+                
+                // Insert values into the form fields
+                const caloriesInput = document.querySelector('#nutrition-form [name="calories"]');
+                const proteinInput = document.querySelector('#nutrition-form [name="protein"]');
+                const fatsInput = document.querySelector('#nutrition-form [name="fats"]');
+                const carbsInput = document.querySelector('#nutrition-form [name="carbs"]');
+                
+                caloriesInput.value = calcCalories;
+                proteinInput.value = calcProtein;
+                fatsInput.value = calcFats;
+                carbsInput.value = calcCarbs;
+                
+                // Enable form editing
+                enableFormEditing('nutrition-form');
+            });
+        }
+        
+        // Function to calculate nutrition values based on user data and goal
+        function calculateNutrition(goal) {
+            // Get user data
+            const weight = parseFloat('{{ user.weight }}');
+            const height = parseFloat('{{ user.height }}');
+            const age = parseFloat('{{ user.age }}');
+            const gender = '{{ user.gender }}';
+            const activity = '{{ user.activity }}';
+            
+            // Calculate BMR (Basal Metabolic Rate) using Harris-Benedict equation
+            let bmr = 0;
+            if (gender === 'male') {
+                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+            } else {
+                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+            }
+            
+            // Apply activity multiplier
+            let activityMultiplier = 1.2; // Default: sedentary
+            switch (activity) {
+                case 'sedentary':
+                    activityMultiplier = 1.2;
+                    break;
+                case 'light':
+                    activityMultiplier = 1.375;
+                    break;
+                case 'moderate':
+                    activityMultiplier = 1.55;
+                    break;
+                case 'active':
+                    activityMultiplier = 1.725;
+                    break;
+                case 'very_active':
+                    activityMultiplier = 1.9;
+                    break;
+            }
+            
+            let tdee = bmr * activityMultiplier; // Total Daily Energy Expenditure
+            
+            // Apply goal modifier
+            let calories = tdee;
+            switch (goal) {
+                case 'lose':
+                    calories = tdee * 0.8; // 20% deficit for weight loss
+                    break;
+                case 'maintain':
+                    calories = tdee; // Maintenance calories
+                    break;
+                case 'gain':
+                    calories = tdee * 1.15; // 15% surplus for weight gain
+                    break;
+            }
+            
+            // Calculate macronutrients
+            let protein = 0, fats = 0, carbs = 0;
+            
+            switch (goal) {
+                case 'lose':
+                    protein = weight * 2.2; // Higher protein for weight loss (2.2g per kg)
+                    fats = weight * 1; // 1g per kg of bodyweight
+                    carbs = (calories - (protein * 4) - (fats * 9)) / 4;
+                    break;
+                case 'maintain':
+                    protein = weight * 1.8; // 1.8g per kg of bodyweight
+                    fats = weight * 1; // 1g per kg of bodyweight
+                    carbs = (calories - (protein * 4) - (fats * 9)) / 4;
+                    break;
+                case 'gain':
+                    protein = weight * 2; // 2g per kg of bodyweight
+                    fats = weight * 1; // 1g per kg of bodyweight
+                    carbs = (calories - (protein * 4) - (fats * 9)) / 4;
+                    break;
+            }
+            
+            // Round values
+            calories = Math.round(calories);
+            protein = Math.round(protein);
+            fats = Math.round(fats);
+            carbs = Math.round(carbs);
+            
+            // Update calculated fields
+            document.getElementById('calc_calories').value = calories;
+            document.getElementById('calc_protein').value = protein;
+            document.getElementById('calc_fats').value = fats;
+            document.getElementById('calc_carbs').value = carbs;
+        }
+
+
+        // modal
+        const modal = document.getElementById('trainer-modal');
+        const openModalBtn = document.getElementById('open-trainer-modal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const cancelModalBtn = document.querySelector('.cancel-modal');
+        
+        openModalBtn.addEventListener('click', function() {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+        
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        }
+        
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelModalBtn.addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        });
+        
+        // File upload preview
+        const fileInput = document.querySelector('#trainer-form [name="documents"]');
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                const fileHint = this.parentElement.querySelector('.file-hint');
+                if (this.files.length > 0) {
+                    fileHint.textContent = `Выбрано файлов: ${this.files.length}`;
+                } else {
+                    fileHint.textContent = 'Поддерживаемые форматы: PDF, DOC, DOCX, JPG, PNG';
+                }
+            });
+        }
     });
 </script>
 {% endblock %}

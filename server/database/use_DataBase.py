@@ -43,31 +43,28 @@ def get_dishes():
 
 
 def get_user_data(user_id):
-    sql = f'SELECT * FROM public."User" WHERE id = {user_id}'
+    sql = f'SELECT * FROM users WHERE id = {user_id}'
     user_data = database_query(sql, True)[0]
     user_info = {
         "id": user_data[0],
-        "name": user_data[1],
+        "email": user_data[1],
         "login": user_data[2],
         "password": user_data[3],
-        "avatar": user_data[4],
-        "email": user_data[5],
-        "sex": user_data[6],
-        "age": user_data[7],
-        "language": user_data[8],
-        "koef": user_data[9],
-        "water": user_data[10],
-        "physical_activities": user_data[11],
-        "weight": user_data[12],
-        "height": user_data[13],
-        "calories": user_data[14],
-        "proteins": user_data[15],
-        "carbs": user_data[16],
-        "fats": user_data[17],
-        "eating_times": user_data[18],
-        'is_trainer': user_data[19],
-        'is_admin': user_data[20],
-        'activity': user_data[21]
+        "name": user_data[4],
+        "sex": user_data[5],
+        "age": user_data[6],
+        "language": user_data[7],
+        "activity": user_data[8],
+        "water": user_data[9],
+        "weight": user_data[10],
+        "height": user_data[11],
+        "calories": user_data[12],
+        "proteins": user_data[13],
+        "carbs": user_data[14],
+        "fats": user_data[15],
+        'is_admin': user_data[16],
+        'is_trainer': user_data[17],
+        'is_activated': user_data[18]
     }
     return user_info
 
@@ -95,7 +92,7 @@ def update_user_data(user_id, data):
     set_clause = ', '.join(set_parts)
     
     # Формируем полный SQL запрос
-    sql = f'UPDATE public."User" SET {set_clause} WHERE id = {user_id}'
+    sql = f'UPDATE users SET {set_clause} WHERE id = {user_id}'
     
     try:
         # Выполняем запрос
@@ -109,6 +106,33 @@ def get_day_data(user_id, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = '{date}'"
     return database_query(sql, True)
 
+def get_trainer_request(user_id):
+    sql = f"SELECT * FROM trainer_requests WHERE id_from = {user_id} AND status = 'in process'"
+    data = database_query(sql, True)
+    
+    result = []
+    for req in data:
+        result.append({
+            'request_id': req[0],
+            'id_from': req[1],
+            'id_to': req[2],
+            'description': req[3],
+            'status': req[4],
+            'time': req[5]
+        })
+    
+    return result
+
+def add_trainer_request(id_from, id_to, description):
+    sql = f"""
+        INSERT INTO trainer_requests (id_from, id_to, description, status)
+        VALUES ({id_from}, {id_to}, '{description}', 'in process')
+    """
+    database_query(sql)
+
+def update_trainer_request(request_id, status):
+    sql = f"UPDATE trainer_requests SET status = '{status}' WHERE request_id = {request_id}"
+    database_query(sql, True)
 
 def get_all_day_data(user_id):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id}"
@@ -146,7 +170,7 @@ def save_news(title, content, image_path):
 
 
 def check_trainer(user_id):
-    sql = f'SELECT is_trainer FROM "User" WHERE id = {user_id}'
+    sql = f'SELECT is_trainer FROM "users" WHERE id = {user_id}'
     query = database_query(sql, True)
     if query == []:
         return False

@@ -349,6 +349,10 @@ body {
   margin-top: 30px;
   text-align: right;
 }
+.modal-buttons {
+  margin-top: 30px;
+  text-align: right;
+}
 
 .action-buttons button {
   margin-left: 15px;
@@ -410,6 +414,113 @@ body {
 .avatar-upload .form-control {
   background-color: white;
   border: 1px solid var(--border-color);
+}
+
+/* Recommended section styles - updated for full width */
+.recommended-section {
+  background-color: rgba(94, 114, 228, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  width: 100%; /* Ensure full width */
+}
+
+.recommended-section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: var(--text-color);
+  width: 100%; /* Full width header */
+  text-align: center; /* Center the heading */
+}
+
+.goal-buttons {
+  display: flex;
+  justify-content: space-between; /* Distribute buttons evenly */
+  width: 100%; /* Full width */
+  margin-bottom: 20px;
+}
+
+.goal-buttons button {
+  flex: 1; /* Each button takes equal space */
+  margin: 0 5px; /* Small margin between buttons */
+}
+
+.goal-buttons button:first-child {
+  margin-left: 0; /* Remove left margin from first button */
+}
+
+.goal-buttons button:last-child {
+  margin-right: 0; /* Remove right margin from last button */
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  padding: 10px 15px; /* Consistent padding */
+  text-align: center;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-outline.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.calculated-values {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-color);
+  width: 100%; /* Full width */
+}
+
+.insert-button {
+  text-align: center;
+  margin-top: 15px;
+  width: 100%; /* Full width */
+}
+
+.insert-button button {
+  min-width: 200px; /* Minimum width for the button */
+}
+
+/* Dark theme support */
+.dark-theme .recommended-section {
+  background-color: rgba(94, 114, 228, 0.1);
+}
+
+.dark-theme .calculated-values {
+  background-color: var(--card-bg-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .btn-outline {
+  border-color: var(--primary-light);
+  color: var(--primary-light);
+}
+
+.dark-theme .btn-outline:hover,
+.dark-theme .btn-outline.active {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .goal-buttons {
+      flex-direction: column;
+      gap: 10px;
+  }
+  
+  .goal-buttons button {
+      width: 100%;
+      margin: 0;
+  }
 }
 
 .nutrition-stats {
@@ -491,6 +602,222 @@ select.form-control {
   padding-right: 40px;
 }
 
+
+/* Trainer Application Section */
+.trainer-application {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(94, 114, 228, 0.05);
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.trainer-application p {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  background-color: var(--card-bg-color);
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(50, 50, 93, 0.2), 0 5px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  animation: modalFadeIn 0.3s;
+}
+
+.modal-header {
+  padding: 20px 30px;
+  background: linear-gradient(87deg, var(--primary-color) 0, var(--primary-light) 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.modal-header h3 i {
+  margin-right: 10px;
+}
+
+.close-modal {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-modal:hover {
+  transform: scale(1.1);
+}
+
+#trainer-form {
+  padding: 30px;
+}
+
+.file-upload {
+  background-color: rgba(94, 114, 228, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px dashed var(--primary-color);
+}
+
+.file-hint {
+  margin-top: 10px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+@keyframes modalFadeIn {
+  from {
+      opacity: 0;
+      transform: translateY(-20px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+/* Dark theme support for modal */
+.dark-theme .modal-content {
+  background-color: var(--card-bg-color);
+}
+
+.dark-theme .file-upload {
+  background-color: var(--section-bg-color);
+  border-color: var(--primary-dark);
+}
+
+.dark-theme .trainer-application {
+  background-color: rgba(94, 114, 228, 0.1);
+}
+
+
+
+
+
+/* Trainer Request Section Styles */
+#trainer-request-section {
+  animation-delay: 0.15s;
+}
+
+.trainer-info {
+  display: flex;
+  align-items: center;
+  background-color: rgba(94, 114, 228, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.trainer-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(87deg, var(--primary-color) 0, var(--primary-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  color: white;
+  font-size: 32px;
+  overflow: hidden; /* Добавлено для корректного отображения изображения */
+}
+
+.trainer-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.trainer-details h3 {
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+.trainer-details p {
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+}
+
+.trainer-details p i {
+  margin-right: 8px;
+  color: var(--primary-color);
+}
+
+.trainer-request-pending {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(251, 99, 64, 0.05);
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.trainer-request-pending i {
+  font-size: 48px;
+  color: var(--warning-color);
+  margin-bottom: 15px;
+}
+
+.trainer-request-pending p {
+  font-size: 18px;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+#trainer-request-form {
+  background-color: rgba(94, 114, 228, 0.05);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+/* Dark theme support */
+.dark-theme .trainer-info {
+  background-color: rgba(94, 114, 228, 0.1);
+}
+
+.dark-theme .trainer-request-pending {
+  background-color: rgba(251, 99, 64, 0.1);
+}
+
+.dark-theme #trainer-request-form {
+  background-color: rgba(94, 114, 228, 0.1);
+}
+
+
 @media (max-width: 768px) {
   .form-row {
     flex-direction: column;
@@ -556,3 +883,4 @@ select.form-control {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
 }
+
