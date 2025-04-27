@@ -12,7 +12,7 @@
             <button id="start-workout-btn" class="mode-btn active">Начать тренировку</button>
             <button id="record-workout-btn" class="mode-btn">Записать тренировку</button>
         </div>
-        <a href="#" class="diet-plan-btn">План питания</a>
+        <a href="{{day_plan}}" class="diet-plan-btn">План питания</a>
     </header>
 
     <div class="content">
@@ -29,14 +29,14 @@
                         <div class="exercise-grid" id="exercise-grid">
                             <div class="exercise-item" data-id="walking" data-name="Ходьба" data-img="exercise_walking">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_walking.png" alt="Ходьба">
+                                    <img src="{{ images['exercises/exercise_walking.png'] }}" alt="Ходьба">
                                 </div>
                                 <span class="exercise-name">Ходьба</span>
                             </div>
 
                             <div class="exercise-item" data-id="running" data-name="Бег" data-img="exercise_running">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_running.png" alt="Бег">
+                                    <img src="{{ images['exercises/exercise_running.png'] }}" alt="Бег">
                                 </div>
                                 <span class="exercise-name">Бег</span>
                             </div>
@@ -44,7 +44,7 @@
                             <div class="exercise-item" data-id="cycling" data-name="Езда на велосипеде"
                                  data-img="exercise_cycling">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_cycling.png" alt="Езда на велосипеде">
+                                    <img src="{{ images['exercises/exercise_cycling.png'] }}" alt="Езда на велосипеде">
                                 </div>
                                 <span class="exercise-name">Езда на велосипеде</span>
                             </div>
@@ -52,7 +52,7 @@
                             <div class="exercise-item" data-id="ellipsoid" data-name="Эллипсоид"
                                  data-img="exercise_ellipsoid">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_ellipsoid.png" alt="Эллипсоид">
+                                    <img src="{{ images['exercises/exercise_ellipsoid.png'] }}" alt="Эллипсоид">
                                 </div>
                                 <span class="exercise-name">Эллипсоид</span>
                             </div>
@@ -60,7 +60,7 @@
                             <div class="exercise-item" data-id="ergometer" data-name="Эргометр"
                                  data-img="exercise_ergometer">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_ergometer.png" alt="Эргометр">
+                                    <img src="{{ images['exercises/exercise_ergometer.png'] }}" alt="Эргометр">
                                 </div>
                                 <span class="exercise-name">Эргометр</span>
                             </div>
@@ -68,14 +68,14 @@
                             <div class="exercise-item" data-id="stepper" data-name="Степпер"
                                  data-img="exercise_stepper">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_stepper.png" alt="Степпер">
+                                    <img src="{{ images['exercises/exercise_stepper.png'] }}" alt="Степпер">
                                 </div>
                                 <span class="exercise-name">Степпер</span>
                             </div>
 
                             <div class="exercise-item" data-id="hiit" data-name="HIIT" data-img="exercise_hiit">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_hiit.png" alt="HIIT">
+                                    <img src="{{ images['exercises/exercise_hiit.png'] }}" alt="HIIT">
                                 </div>
                                 <span class="exercise-name">HIIT</span>
                             </div>
@@ -83,14 +83,14 @@
                             <div class="exercise-item" data-id="hiking" data-name="Пеший туризм"
                                  data-img="exercise_hiking">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_hiking.png" alt="Пеший туризм">
+                                    <img src="{{ images['exercises/exercise_hiking.png'] }}" alt="Пеший туризм">
                                 </div>
                                 <span class="exercise-name">Пеший туризм</span>
                             </div>
 
                             <div class="exercise-item" data-id="yoga" data-name="Йога" data-img="exercise_yoga">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_yoga.png" alt="Йога">
+                                    <img src="{{ images['exercises/exercise_yoga.png'] }}" alt="Йога">
                                 </div>
                                 <span class="exercise-name">Йога</span>
                             </div>
@@ -98,14 +98,14 @@
                             <div class="exercise-item" data-id="strength" data-name="Функционально-силовая тренировка"
                                  data-img="exercise_strength">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_strength.png" alt="Функционально-силовая тренировка">
+                                    <img src="{{ images['exercises/exercise_strength.png'] }}" alt="Функционально-силовая тренировка">
                                 </div>
                                 <span class="exercise-name">Функционально-силовая тренировка</span>
                             </div>
 
                             <div class="exercise-item" data-id="dance" data-name="Танцы" data-img="exercise_dance">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_dance.png" alt="Танцы">
+                                    <img src="{{ images['exercises/exercise_dance.png'] }}" alt="Танцы">
                                 </div>
                                 <span class="exercise-name">Танцы</span>
                             </div>
@@ -113,7 +113,7 @@
                             <div class="exercise-item" data-id="swimming" data-name="Плавание"
                                  data-img="exercise_swimming">
                                 <div class="exercise-icon">
-                                    <img src="/static/exercise_swimming.png" alt="Плавание">
+                                    <img src="{{ images['exercises/exercise_swimming.png'] }}" alt="Плавание">
                                 </div>
                                 <span class="exercise-name">Плавание</span>
                             </div>
@@ -237,6 +237,22 @@
 <div class="toast" id="toast"></div>
 
 <script>
+    // Передаем все пути к изображениям из Django/Flask в JavaScript
+    const serverImages = {
+        walking: "{{ images['exercises/exercise_walking.png'] }}",
+        running: "{{ images['exercises/exercise_running.png'] }}",
+        cycling: "{{ images['exercises/exercise_cycling.png'] }}",
+        ellipsoid: "{{ images['exercises/exercise_ellipsoid.png'] }}",
+        ergometer: "{{ images['exercises/exercise_ergometer.png'] }}",
+        stepper: "{{ images['exercises/exercise_stepper.png'] }}",
+        hiit: "{{ images['exercises/exercise_hiit.png'] }}",
+        hiking: "{{ images['exercises/exercise_hiking.png'] }}",
+        yoga: "{{ images['exercises/exercise_yoga.png'] }}",
+        strength: "{{ images['exercises/exercise_strength.png'] }}",
+        dance: "{{ images['exercises/exercise_dance.png'] }}",
+        swimming: "{{ images['exercises/exercise_swimming.png'] }}"
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
         // Переменные для работы с DOM
         const exerciseGrid = document.getElementById('exercise-grid');
@@ -336,58 +352,55 @@
 
         // Обновление истории тренировок
         function updateWorkoutHistory() {
-            if (workouts.length === 0) {
-                emptyState.style.display = 'block';
-                return;
-            }
+    if (workouts.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+    }
 
-            emptyState.style.display = 'none';
-            workoutHistory.innerHTML = '';
+    emptyState.style.display = 'none';
+    workoutHistory.innerHTML = '';
 
-            // Сортировка тренировок по дате (сначала новые)
-            workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Сортировка тренировок по дате (сначала новые)
+    workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            // Отображение последних 10 тренировок
-            const recentWorkouts = workouts.slice(0, 10);
+    // Отображение последних 10 тренировок
+    const recentWorkouts = workouts.slice(0, 10);
 
-            recentWorkouts.forEach(workout => {
-                const workoutItem = document.createElement('div');
-                workoutItem.className = 'workout-item slide-in';
+    recentWorkouts.forEach(workout => {
+        const workoutItem = document.createElement('div');
+        workoutItem.className = 'workout-item slide-in';
 
-                const formattedDate = new Date(workout.date).toLocaleDateString('ru-RU');
-                const formattedDuration = formatTime(workout.duration);
+        const formattedDate = new Date(workout.date).toLocaleDateString('ru-RU');
+        const formattedDuration = formatTime(workout.duration);
 
-                workoutItem.innerHTML = `
-                    <div class="workout-info">
-                        <div class="workout-icon">
-                            <img src="/static/${workout.img}.png" alt="${workout.exercise}" style="width: 40px; height: 40px">
-                        </div>
-                        <div class="workout-details">
-                            <h4>${workout.exercise}</h4>
-                            <p>${formattedDate} • ${formattedDuration}</p>
-                        </div>
-                    </div>
-                    <button class="delete-button" data-id="${workout.id}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
-                        </svg>
-                    </button>
-                `;
+        workoutItem.innerHTML = `
+            <div class="workout-info">
+                <div class="workout-icon">
+                    <img src="${serverImages[workout.img.replace('exercise_', '')]}" alt="${workout.exercise}" style="width: 40px; height: 40px">
+                </div>
+                <div class="workout-details">
+                    <h4>${workout.exercise}</h4>
+                    <p>${formattedDate} • ${formattedDuration}</p>
+                </div>
+            </div>
+            <button class="delete-button" data-id="${workout.id}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                </svg>
+            </button>
+        `;
 
-                workoutHistory.appendChild(workoutItem);
-            });
+        workoutHistory.appendChild(workoutItem);
+    });
 
-            // Добавление обработчиков для кнопок удаления
-            document.querySelectorAll('.delete-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    const workoutId = this.getAttribute('data-id');
-                    deleteWorkout(workoutId);
-                });
-            });
-
-            // Сохранение тренировок в localStorage
-            localStorage.setItem('workouts', JSON.stringify(workouts));
-        }
+    // Добавление обработчиков для кнопок удаления
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const workoutId = this.getAttribute('data-id');
+            deleteWorkout(workoutId);
+        });
+    });
+}
 
         // Удаление тренировки
         function deleteWorkout(id) {
@@ -580,22 +593,22 @@
             }, 3000);
         }
 
-        // Обработчик выбора упражнения
-        exerciseItems.forEach(item => {
-            item.addEventListener('click', function() {
-                // Снятие выделения со всех упражнений
-                exerciseItems.forEach(i => i.classList.remove('selected'));
+       // Обработчик выбора упражнения
+exerciseItems.forEach(item => {
+    item.addEventListener('click', function() {
+        // Снятие выделения со всех упражнений
+        exerciseItems.forEach(i => i.classList.remove('selected'));
 
-                // Выделение выбранного упражнения
-                this.classList.add('selected');
+        // Выделение выбранного упражнения
+        this.classList.add('selected');
 
-                // Сохранение выбранного упражнения
-                selectedExercise = this;
+        // Сохранение выбранного упражнения
+        selectedExercise = this;
 
-                // Обновление описания текущей тренировки
-                currentExerciseDescription.textContent = `Выбрано: ${this.getAttribute('data-name')}`;
-            });
-        });
+        // Обновление описания текущей тренировки
+        currentExerciseDescription.textContent = `Выбрано: ${this.getAttribute('data-name')}`;
+    });
+});
 
         // Обработчик запуска таймера
         startButton.addEventListener('click', startTimer);

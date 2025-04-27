@@ -2,6 +2,7 @@ from datetime import datetime, date, timezone
 
 from flask import request, render_template, session, jsonify, redirect
 
+from server.cloud.cloud_main import Cloud
 from server.database.use_DataBase import (
     get_dishes,
     get_user_data,
@@ -15,10 +16,10 @@ from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user, debug_print
 
-from server.cloud.cloud_main import Cloud
 
 class DayPlan:
     cloud = Cloud()
+
     @staticmethod
     def show_day_plan_page():
         if "user_id" in session:
@@ -273,13 +274,13 @@ def save_data():
 @app.route(physical_exercises)
 def open_physical_exercises_page():
     if "user_id" in session:
-        images = DayPlan.cloud.get_folder('excercises/')
+        images = DayPlan.cloud.get_folder('exercises')
         return render_template(
             "DayPlan/physical_exercises.html",
             header_links=choose_header_links("authorized"),
             title="Трекер Физических Упражнений",
             day_plan=day_plan,
-            images = images
+            images=images
         )
     return redirect(main_page)
 
