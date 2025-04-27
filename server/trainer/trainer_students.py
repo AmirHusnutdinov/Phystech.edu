@@ -7,8 +7,10 @@ from server.database.use_DataBase import *
 from server.service_files.links import *
 from settings import app
 
-
+from server.cloud.cloud_main import Cloud
 class Students:
+    cloud = Cloud()
+
     @staticmethod
     def show_students_page():
         if "user_id" in session:
@@ -39,7 +41,8 @@ class Students:
         user_info = get_user_data(student_id)
         if not user_info:
             return redirect(main_page)
-
+        
+        avatar = Students.cloud.get_url(f'avatar/{user_info['id']}')
         # Получаем историю сообщений
         messages = get_message_history(trainer_id, student_id)
 
@@ -61,7 +64,7 @@ class Students:
             title=f"Ученик {user_info['name']}",
             header_links=choose_header_links("authorized"),
             student_title=user_info["name"],
-            student_image_url=user_info["avatar"],
+            student_image_url=avatar,
             student_content=f"Возраст: {user_info['age']} Пол: {user_info['sex']} Почта: {user_info['email']}",
             cookies=user_info,
             messages=formatted_messages,
