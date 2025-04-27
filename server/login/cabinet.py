@@ -45,7 +45,6 @@ class Cabinet:
             nutrition_form = NutritionForm(obj=user)
 
             avatar = Cabinet.cloud.get_url(f'avatars/{session['user_id']}')
-            print(avatar)
             
             return render_template_with_user(
                 "Login/cabinet.html",
@@ -98,7 +97,7 @@ class Cabinet:
         for field, errors in profile_form.errors.items():
             for error in errors:
                 flash(f"{getattr(profile_form, field).label.text}: {error}", 'error')
-                print(field, error)
+                # print(field, error)
         return redirect(cabinet)
 
     @staticmethod
