@@ -1,11 +1,12 @@
-from flask import render_template, session, redirect, request, jsonify
+from datetime import datetime, timezone
+
+from flask import render_template, redirect, request, jsonify
 from flask import session
 
 from server.database.use_DataBase import *
 from server.service_files.links import *
 from settings import app
-from datetime import datetime, timezone
-from utils import debug_print
+
 
 class Students:
     @staticmethod
@@ -65,6 +66,16 @@ class Students:
             cookies=user_info,
             messages=formatted_messages,
             student_id=student_id,
+            # Далее идут те переменные, в которые ты, Варвара, должна поместить данные из БД.
+            nutrition_was=1000,
+            nutrition_needed=1500,
+            fats_was=1000,
+            fats_needed=1500,
+            carbohydrates_was=0,
+            carbohydrates_needed=1500,
+            water_was=1.5,
+            water_needed=3
+
         )
 
     @staticmethod
@@ -106,7 +117,7 @@ class Students:
             return jsonify({"status": "error", "message": "Not a trainer"}), 403
 
         last_update = request.args.get("last_update")
-        #debug_print('request for new messages, last update', last_update)
+        # debug_print('request for new messages, last update', last_update)
 
         since_dt = datetime.strptime(last_update, "%Y-%m-%dT%H:%M:%S.%fZ")
         since_sql = since_dt.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -127,7 +138,7 @@ class Students:
                     }
                 )
         # reducing to form 2025-04-22T13:54:07.343Z
-        current_time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z' 
+        current_time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
 
         # debug_print('CURRENT TIME', current_time)
         # debug_print('MESSAGES', formatted_messages)

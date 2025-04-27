@@ -15,8 +15,10 @@ from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user, debug_print
 
+from server.cloud.cloud_main import Cloud
 
 class DayPlan:
+    cloud = Cloud()
     @staticmethod
     def show_day_plan_page():
         if "user_id" in session:
@@ -33,17 +35,14 @@ class DayPlan:
                 cookies2["carbs"] = daily[0][9]
                 cookies2["fats"] = daily[0][11]
 
-            # Получаем ID тренера
             trainer_id = get_trainer_id(session["user_id"])
             has_trainer = trainer_id != 0
 
-            # Получаем сообщения чата, если есть тренер
-            messages = []
-            formatted_messages=[]
+            formatted_messages = []
             if has_trainer:
                 user_info = get_user_data(trainer_id)
                 messages = get_message_history(session["user_id"], trainer_id)
-                
+
                 formatted_messages = []
                 for msg in messages:
                     sender = "received" if msg["id_from"] == trainer_id else "sent"
@@ -65,11 +64,16 @@ class DayPlan:
                 cookies2=cookies2,
                 messages=formatted_messages,
                 has_trainer=has_trainer,
+                save_day_plan=save_day_plan,
+                add_product=add_product,
+                add_recipes=add_recipes,
+                physical_exercises=physical_exercises
+
             )
         return redirect(main_page)
 
     @staticmethod
-    def save_day_plan():
+    def save_food_intake():
         if "user_id" in session:
             id = session["user_id"]
             data = request.json
@@ -112,6 +116,16 @@ class DayPlan:
                 return jsonify({"message": "Error while saving day plan"}), 500
 
             return jsonify({"message": "Data saved successfully"}), 200
+        return redirect(main_page)
+
+    @staticmethod
+    def show_add_recipes():
+        if "user_id" in session:
+            return render_template_with_user(
+                "DayPlan/add_recipe.html",
+                header_links=choose_header_links("authorized"),
+                title="Добавить блюдо",
+            )
         return redirect(main_page)
 
     @staticmethod
@@ -208,9 +222,9 @@ def validate_data(data):
         try:
             for kbzhu in [target_kbzhu, actual_kbzhu]:
                 if not all(
-                    0 <= float(kbzhu[key]) <= (
-                        10000 if key == "calories" else 2000)
-                    for key in kbzhu
+                        0 <= float(kbzhu[key]) <= (
+                                10000 if key == "calories" else 2000)
+                        for key in kbzhu
                 ):
                     return False
 
@@ -230,6 +244,20 @@ def validate_date(date_str):
     return redirect(main_page)
 
 
+@app.route(add_product)
+def open_add_product():
+    if "user_id" in session:
+        return DayPlan.show_add_product_page()
+    return redirect(main_page)
+
+
+@app.route(add_recipes)
+def open_add_recipes():
+    if "user_id" in session:
+        return DayPlan.show_add_recipes()
+    return redirect(main_page)
+
+
 @app.route(day_plan)
 def open_day_plan_page():
     return DayPlan.show_day_plan_page()
@@ -237,17 +265,23 @@ def open_day_plan_page():
 
 @app.route(save_day_plan, methods=["POST"])
 def save_data():
-    return DayPlan.save_day_plan()
+    if "user_id" in session:
+        return DayPlan.save_food_intake()
+    return redirect(main_page)
 
 
-@app.route(add_product)
-def open_add_product():
-    return DayPlan.show_add_product_page()
-
-
-@app.route("/physical_exercises")
+@app.route(physical_exercises)
 def open_physical_exercises_page():
-    return render_template("DayPlan/physical_exercises.html")
+    if "user_id" in session:
+        images = DayPlan.cloud.get_folder('excercises/')
+        return render_template(
+            "DayPlan/physical_exercises.html",
+            header_links=choose_header_links("authorized"),
+            title="Трекер Физических Упражнений",
+            day_plan=day_plan,
+            images = images
+        )
+    return redirect(main_page)
 
 
 @app.route("/day_plan/get_new_messages", methods=["GET"])
@@ -257,5 +291,4 @@ def get_chat_messages_route():
 
 @app.route("/day_plan/send_message", methods=["POST"])
 def send_message_route():
-    # debug_print('test')
     return DayPlan.send_message()

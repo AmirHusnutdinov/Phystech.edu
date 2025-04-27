@@ -233,7 +233,7 @@
                         <div class="progress-container">
                             <div class="progress-bar" style="--progress-width: 70%"></div>
                         </div>
-                        <p><span class="current">120</span>/<span class="target">150</span>г</p>
+                        <p><span class="current">{{nutrition_was}}</span>/<span class="target">{{nutrition_needed}}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -245,7 +245,7 @@
                         <div class="progress-container">
                             <div class="progress-bar" style="--progress-width: 60%"></div>
                         </div>
-                        <p><span class="current">45</span>/<span class="target">75</span>г</p>
+                        <p><span class="current">{{fats_was}}</span>/<span class="target">{{fats_needed}}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -257,7 +257,7 @@
                         <div class="progress-container">
                             <div class="progress-bar" style="--progress-width: 80%"></div>
                         </div>
-                        <p><span class="current">200</span>/<span class="target">250</span>г</p>
+                        <p><span class="current">{{carbohydrates_was}}</span>/<span class="target">{{carbohydrates_needed}}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -269,7 +269,7 @@
                         <div class="progress-container">
                             <div class="progress-bar" style="--progress-width: 50%"></div>
                         </div>
-                        <p><span class="current">1.5</span>/<span class="target">3</span>л</p>
+                        <p><span class="current">{{water_was}}</span>/<span class="target">{{water_needed}}</span>л</p>
                     </div>
                 </div>
             </div>
@@ -301,7 +301,7 @@
                     <div class="message {{ message.type }}">
                         {% if message.type == 'received' %}
                         <div class="message-avatar">
-                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" 
+                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
                                  alt="Аватар {{ cookies.name }}">
                         </div>
                         {% endif %}
@@ -443,234 +443,235 @@
         </div>
     </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Get all elements
-    const weekTabs = document.querySelectorAll('.week-tab');
-    const weekContainers = document.querySelectorAll('.week-container');
-    const contactBtn = document.getElementById('contact-btn');
-    const chatModal = document.getElementById('chat-modal');
-    const closeModalBtns = document.querySelectorAll('.close-modal');
-    const dayCards = document.querySelectorAll('.day-card');
-    const dayDetailsModal = document.getElementById('day-details-modal');
-    const dayTitle = document.getElementById('day-title');
-    const calendarBtn = document.getElementById('calendar-btn');
-    const chatMessages = document.querySelector('.chat-messages');
-    const messageInput = document.getElementById('message-input');
-    const sendMessageBtn = document.getElementById('send-message');
-    
-    // Get student ID and initialize lastUpdate
-    const studentId = "{{ student_id }}";
-    let lastUpdate = new Date().toISOString();
-    let messageCheckInterval = null;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all elements
+            const weekTabs = document.querySelectorAll('.week-tab');
+            const weekContainers = document.querySelectorAll('.week-container');
+            const contactBtn = document.getElementById('contact-btn');
+            const chatModal = document.getElementById('chat-modal');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
+            const dayCards = document.querySelectorAll('.day-card');
+            const dayDetailsModal = document.getElementById('day-details-modal');
+            const dayTitle = document.getElementById('day-title');
+            const calendarBtn = document.getElementById('calendar-btn');
+            const chatMessages = document.querySelector('.chat-messages');
+            const messageInput = document.getElementById('message-input');
+            const sendMessageBtn = document.getElementById('send-message');
 
-    // Week tabs functionality
-    weekTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            weekTabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            const weekType = this.getAttribute('data-week');
-            weekContainers.forEach(container => {
-                container.classList.remove('active');
+            // Get student ID and initialize lastUpdate
+            const studentId = "{{ student_id }}";
+            let lastUpdate = new Date().toISOString();
+            let messageCheckInterval = null;
+
+            // Week tabs functionality
+            weekTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    weekTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const weekType = this.getAttribute('data-week');
+                    weekContainers.forEach(container => {
+                        container.classList.remove('active');
+                    });
+                    document.querySelector(`.week-container.${weekType}`).classList.add('active');
+                });
             });
-            document.querySelector(`.week-container.${weekType}`).classList.add('active');
-        });
-    });
 
-    // Highlight current day
-    function highlightCurrentDay() {
-        const today = new Date();
-        const dayOfWeek = today.getDay();
-        const dayMap = {
-            0: 'sunday',
-            1: 'monday',
-            2: 'tuesday',
-            3: 'wednesday',
-            4: 'thursday',
-            5: 'friday',
-            6: 'saturday'
-        };
-        const todayName = dayMap[dayOfWeek];
-        document.querySelectorAll('.day-card').forEach(card => {
-            card.classList.remove('active');
-        });
-        const todayCard = document.querySelector(`.week-container.current .day-card[data-day="${todayName}"]`);
-        if (todayCard) {
-            todayCard.classList.add('active');
-        }
-    }
-    highlightCurrentDay();
-
-    // Modal functions
-    function openModal(modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        if (modal === chatModal) {
-            startMessageChecking();
-            setTimeout(() => {
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 100);
-        }
-    }
-
-    function closeModal(modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-        if (modal === chatModal) {
-            stopMessageChecking();
-        }
-    }
-
-    function startMessageChecking() {
-        checkForNewMessages();
-        messageCheckInterval = setInterval(checkForNewMessages, 3000);
-    }
-
-    function stopMessageChecking() {
-        if (messageCheckInterval) {
-            clearInterval(messageCheckInterval);
-            messageCheckInterval = null;
-        }
-    }
-
-    // Event listeners
-    if (contactBtn) {
-        contactBtn.addEventListener('click', () => openModal(chatModal));
-    }
-
-    closeModalBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const modal = btn.closest('.modal');
-            closeModal(modal);
-        });
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) {
-            closeModal(e.target);
-        }
-    });
-
-    dayCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const day = card.getAttribute('data-day');
-            dayTitle.textContent = day.charAt(0).toUpperCase() + day.slice(1) + ', 14 мая';
-            openModal(dayDetailsModal);
-        });
-    });
-
-    // Chat functionality
-    sendMessageBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-
-    async function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message) {
-            try {
-                const response = await fetch('/send_message', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        student_id: studentId,
-                        message: message
-                    })
+            // Highlight current day
+            function highlightCurrentDay() {
+                const today = new Date();
+                const dayOfWeek = today.getDay();
+                const dayMap = {
+                    0: 'sunday',
+                    1: 'monday',
+                    2: 'tuesday',
+                    3: 'wednesday',
+                    4: 'thursday',
+                    5: 'friday',
+                    6: 'saturday'
+                };
+                const todayName = dayMap[dayOfWeek];
+                document.querySelectorAll('.day-card').forEach(card => {
+                    card.classList.remove('active');
                 });
-                
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    const messageHTML = `
-                        <div class="message sent">
-                            <div class="message-content">
-                                <div class="message-text">${message}</div>
-                                <div class="message-time">${data.time}</div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    chatMessages.insertAdjacentHTML('beforeend', messageHTML);
-                    messageInput.value = '';
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                    lastUpdate = new Date().toISOString();
-                } else {
-                    showNotification('Ошибка при отправке сообщения');
+                const todayCard = document.querySelector(`.week-container.current .day-card[data-day="${todayName}"]`);
+                if (todayCard) {
+                    todayCard.classList.add('active');
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                showNotification('Ошибка соединения');
             }
-        }
-    }
+            highlightCurrentDay();
 
-    async function checkForNewMessages() {
-        try {
-            const response = await fetch(`/get_new_messages/${studentId}?last_update=${lastUpdate}`);
-            const data = await response.json();
-            
-            if (data.status === 'success' && data.messages.length > 0) {
-                lastUpdate = data.last_update;
-                
-                data.messages.forEach(msg => {
-                    const messageHTML = `
-                        <div class="message received">
-                            <div class="message-avatar">
-                                <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}" 
-                                     alt="Аватар {{ cookies.name }}">
-                            </div>
-                            <div class="message-content">
-                                <div class="message-sender">{{ cookies.name }}</div>
-                                <div class="message-text">${msg.content}</div>
-                                <div class="message-time">${msg.time}</div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+            // Modal functions
+            function openModal(modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                if (modal === chatModal) {
+                    startMessageChecking();
+                    setTimeout(() => {
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 100);
+                }
+            }
+
+            function closeModal(modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                if (modal === chatModal) {
+                    stopMessageChecking();
+                }
+            }
+
+            function startMessageChecking() {
+                checkForNewMessages();
+                messageCheckInterval = setInterval(checkForNewMessages, 3000);
+            }
+
+            function stopMessageChecking() {
+                if (messageCheckInterval) {
+                    clearInterval(messageCheckInterval);
+                    messageCheckInterval = null;
+                }
+            }
+
+            // Event listeners
+            if (contactBtn) {
+                contactBtn.addEventListener('click', () => openModal(chatModal));
+            }
+
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const modal = btn.closest('.modal');
+                    closeModal(modal);
                 });
-                
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    closeModal(e.target);
+                }
+            });
+
+            dayCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const day = card.getAttribute('data-day');
+                    dayTitle.textContent = day.charAt(0).toUpperCase() + day.slice(1) + ', 14 мая';
+                    openModal(dayDetailsModal);
+                });
+            });
+
+            // Chat functionality
+            sendMessageBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            async function sendMessage() {
+                const message = messageInput.value.trim();
+                if (message) {
+                    try {
+                        const response = await fetch('/send_message', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                student_id: studentId,
+                                message: message
+                            })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.status === 'success') {
+                            const messageHTML = `
+                                <div class="message sent">
+                                    <div class="message-content">
+                                        <div class="message-text">${message}</div>
+                                        <div class="message-time">${data.time}</div>
+                                    </div>
+                                </div>
+                            `;
+
+                            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+                            messageInput.value = '';
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                            lastUpdate = new Date().toISOString();
+                        } else {
+                            showNotification('Ошибка при отправке сообщения');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showNotification('Ошибка соединения');
+                    }
+                }
             }
-        } catch (error) {
-            console.error('Error checking for new messages:', error);
-        }
-    }
 
-    function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.classList.add('notification');
-        notification.textContent = message;
-        document.body.appendChild(notification);
+            async function checkForNewMessages() {
+                try {
+                    const response = await fetch(`/get_new_messages/${studentId}?last_update=${lastUpdate}`);
+                    const data = await response.json();
 
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
-    }
+                    if (data.status === 'success' && data.messages.length > 0) {
+                        lastUpdate = data.last_update;
 
-    // Calendar button functionality
-    if (calendarBtn) {
-        calendarBtn.addEventListener('click', () => {
-            window.location.href = `/calendar/${studentId}`;
+                        data.messages.forEach(msg => {
+                            const messageHTML = `
+                                <div class="message received">
+                                    <div class="message-avatar">
+                                        <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
+                                             alt="Аватар {{ cookies.name }}">
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="message-sender">{{ cookies.name }}</div>
+                                        <div class="message-text">${msg.content}</div>
+                                        <div class="message-time">${msg.time}</div>
+                                    </div>
+                                </div>
+                            `;
+
+                            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+                        });
+
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                } catch (error) {
+                    console.error('Error checking for new messages:', error);
+                }
+            }
+
+            function showNotification(message) {
+                const notification = document.createElement('div');
+                notification.classList.add('notification');
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            // Calendar button functionality
+            if (calendarBtn) {
+                calendarBtn.addEventListener('click', () => {
+                    window.location.href = `/calendar/${studentId}`;
+                });
+            }
+
+            // Add animation classes to cards
+            document.querySelectorAll('.card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+                }, index * 100);
+            });
+
+            // Start message checking if chat is open
+            if (chatModal.classList.contains('active')) {
+                startMessageChecking();
+            }
         });
-    }
-
-    // Add animation classes to cards
-    document.querySelectorAll('.card').forEach((card, index) => {
-        setTimeout(() => {
-            card.classList.add('animate-in');
-        }, index * 100);
-    });
-
-    // Start message checking if chat is open
-    if (chatModal.classList.contains('active')) {
-        startMessageChecking();
-    }
-});
-</script>
+    </script>
+</div>
 </body>
 {% endblock %}

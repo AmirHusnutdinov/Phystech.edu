@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Трекер Физических Упражнений</title>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap">
-    <link rel="stylesheet" href="../../static/assets/css/style_physical_exercises.css">
-</head>
+{% extends "Base.html" %}
+
+{% block content %}
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../../static/assets/css/style_physical_exercises.css">
 <body>
 <div class="container">
     <header class="header">
         <h1>Трекер Физических Упражнений</h1>
+        <div class="mode-toggle">
+            <button id="start-workout-btn" class="mode-btn active">Начать тренировку</button>
+            <button id="record-workout-btn" class="mode-btn">Записать тренировку</button>
+        </div>
+        <a href="#" class="diet-plan-btn">План питания</a>
     </header>
 
     <div class="content">
@@ -26,110 +27,102 @@
                     </div>
                     <div class="card-content">
                         <div class="exercise-grid" id="exercise-grid">
-                            <div class="exercise-item" data-id="walking" data-name="Ходьба">
-
+                            <div class="exercise-item" data-id="walking" data-name="Ходьба" data-img="exercise_walking">
                                 <div class="exercise-icon">
-                                    <img src="C:\Users\Amir\PycharmProjects\Phystech.edu\aboba\walk.png">
+                                    <img src="/static/exercise_walking.png" alt="Ходьба">
                                 </div>
-
                                 <span class="exercise-name">Ходьба</span>
-                                <button class="change-icon-button" data-id="walking">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="running" data-name="Бег">
+                            <div class="exercise-item" data-id="running" data-name="Бег" data-img="exercise_running">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_running.png" alt="Бег">
                                 </div>
                                 <span class="exercise-name">Бег</span>
-                                <button class="change-icon-button" data-id="running">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="cycling" data-name="Езда на велосипеде">
+                            <div class="exercise-item" data-id="cycling" data-name="Езда на велосипеде"
+                                 data-img="exercise_cycling">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_cycling.png" alt="Езда на велосипеде">
                                 </div>
                                 <span class="exercise-name">Езда на велосипеде</span>
-                                <button class="change-icon-button" data-id="cycling">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="ellipsoid" data-name="Эллипсоид">
+                            <div class="exercise-item" data-id="ellipsoid" data-name="Эллипсоид"
+                                 data-img="exercise_ellipsoid">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_ellipsoid.png" alt="Эллипсоид">
                                 </div>
                                 <span class="exercise-name">Эллипсоид</span>
-                                <button class="change-icon-button" data-id="ellipsoid">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="ergometer" data-name="Эргометр">
+                            <div class="exercise-item" data-id="ergometer" data-name="Эргометр"
+                                 data-img="exercise_ergometer">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_ergometer.png" alt="Эргометр">
                                 </div>
                                 <span class="exercise-name">Эргометр</span>
-                                <button class="change-icon-button" data-id="ergometer">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="stepper" data-name="Степпер">
+                            <div class="exercise-item" data-id="stepper" data-name="Степпер"
+                                 data-img="exercise_stepper">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_stepper.png" alt="Степпер">
                                 </div>
                                 <span class="exercise-name">Степпер</span>
-                                <button class="change-icon-button" data-id="stepper">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="hiit" data-name="HIIT">
+                            <div class="exercise-item" data-id="hiit" data-name="HIIT" data-img="exercise_hiit">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_hiit.png" alt="HIIT">
                                 </div>
                                 <span class="exercise-name">HIIT</span>
-                                <button class="change-icon-button" data-id="hiit">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="hiking" data-name="Пеший туризм">
+                            <div class="exercise-item" data-id="hiking" data-name="Пеший туризм"
+                                 data-img="exercise_hiking">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_hiking.png" alt="Пеший туризм">
                                 </div>
                                 <span class="exercise-name">Пеший туризм</span>
-                                <button class="change-icon-button" data-id="hiking">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="yoga" data-name="Йога">
+                            <div class="exercise-item" data-id="yoga" data-name="Йога" data-img="exercise_yoga">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_yoga.png" alt="Йога">
                                 </div>
                                 <span class="exercise-name">Йога</span>
-                                <button class="change-icon-button" data-id="yoga">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="strength" data-name="Функционально-силовая тренировка">
+                            <div class="exercise-item" data-id="strength" data-name="Функционально-силовая тренировка"
+                                 data-img="exercise_strength">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_strength.png" alt="Функционально-силовая тренировка">
                                 </div>
                                 <span class="exercise-name">Функционально-силовая тренировка</span>
-                                <button class="change-icon-button" data-id="strength">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="dance" data-name="Танцы">
+                            <div class="exercise-item" data-id="dance" data-name="Танцы" data-img="exercise_dance">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_dance.png" alt="Танцы">
                                 </div>
                                 <span class="exercise-name">Танцы</span>
-                                <button class="change-icon-button" data-id="dance">
-                                </button>
                             </div>
 
-                            <div class="exercise-item" data-id="swimming" data-name="Плавание">
+                            <div class="exercise-item" data-id="swimming" data-name="Плавание"
+                                 data-img="exercise_swimming">
                                 <div class="exercise-icon">
+                                    <img src="/static/exercise_swimming.png" alt="Плавание">
                                 </div>
                                 <span class="exercise-name">Плавание</span>
-                                <button class="change-icon-button" data-id="swimming">
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Текущая тренировка (под выбором упражнения) -->
-                <div class="card fade-in" style="animation-delay: 0.2s;">
+                <div id="start-workout-section" class="card fade-in" style="animation-delay: 0.2s;">
                     <div class="card-header">
                         <h2 class="card-title">Текущая тренировка</h2>
                         <p class="card-description" id="current-exercise-description">Выберите упражнение, чтобы
@@ -138,22 +131,58 @@
                     <div class="card-content">
                         <div class="timer-container">
                             <div class="timer-display" id="timer-display">00:00:00</div>
-                            <button class="timer-button start-button" id="start-button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round">
-                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                                </svg>
-                            </button>
-                            <button class="timer-button stop-button" id="stop-button" style="display: none;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                </svg>
-                            </button>
+                            <div class="timer-controls">
+                                <button class="timer-button start-button" id="start-button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                    </svg>
+                                </button>
+                                <button class="timer-button stop-button" id="stop-button" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Форма для записи прошлой тренировки -->
+                <div id="record-workout-section" class="card fade-in" style="animation-delay: 0.2s; display: none;">
+                    <div class="card-header">
+                        <h2 class="card-title">Запись тренировки</h2>
+                        <p class="card-description">Добавьте информацию о выполненной тренировке</p>
+                    </div>
+                    <div class="card-content">
+                        <form id="record-workout-form" class="record-workout-form">
+                            <div class="form-group">
+                                <label for="workout-date">Дата тренировки</label>
+                                <input type="date" id="workout-date" class="form-control" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="workout-hours">Часы</label>
+                                    <input type="number" id="workout-hours" class="form-control" min="0" max="23"
+                                           value="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="workout-minutes">Минуты</label>
+                                    <input type="number" id="workout-minutes" class="form-control" min="0" max="59"
+                                           value="30" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="workout-seconds">Секунды</label>
+                                    <input type="number" id="workout-seconds" class="form-control" min="0" max="59"
+                                           value="0" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Добавить тренировку</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -200,47 +229,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Прошлая тренировка (под статистикой) -->
-                <div class="card fade-in" style="animation-delay: 0.25s;">
-                    <div class="card-header">
-                        <h2 class="card-title">Добавить прошлую тренировку</h2>
-                        <p class="card-description">Добавьте информацию о ранее выполненной тренировке</p>
-                    </div>
-                    <div class="card-content">
-                        <form id="past-workout-form" class="past-workout-form">
-                            <div class="form-group">
-                                <label for="past-exercise-select">Тип упражнения</label>
-                                <select id="past-exercise-select" class="form-control" required>
-                                    <option value="" disabled selected>Выберите тип упражнения</option>
-                                    <!-- Опции будут добавлены через JavaScript -->
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="past-workout-date">Дата тренировки</label>
-                                <input type="date" id="past-workout-date" class="form-control" required>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="past-workout-hours">Часы</label>
-                                    <input type="number" id="past-workout-hours" class="form-control" min="0" max="23"
-                                           value="0" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="past-workout-minutes">Минуты</label>
-                                    <input type="number" id="past-workout-minutes" class="form-control" min="0" max="59"
-                                           value="30" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="past-workout-seconds">Секунды</label>
-                                    <input type="number" id="past-workout-seconds" class="form-control" min="0" max="59"
-                                           value="0" required>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-block">Добавить тренировку</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -248,7 +236,456 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- Скрытый input для загрузки изображений -->
-<input type="file" id="custom-icon-input" accept="image/*" style="display: none;">
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Переменные для работы с DOM
+        const exerciseGrid = document.getElementById('exercise-grid');
+        const exerciseItems = document.querySelectorAll('.exercise-item');
+        const currentExerciseDescription = document.getElementById('current-exercise-description');
+        const timerDisplay = document.getElementById('timer-display');
+        const startButton = document.getElementById('start-button');
+        const stopButton = document.getElementById('stop-button');
+        const workoutHistory = document.getElementById('workout-history');
+        const emptyState = document.getElementById('empty-state');
+        const totalWorkouts = document.getElementById('total-workouts');
+        const weekWorkouts = document.getElementById('week-workouts');
+        const totalTime = document.getElementById('total-time');
+        const totalCalories = document.getElementById('total-calories');
+        const weeklyProgress = document.getElementById('weekly-progress');
+        const toast = document.getElementById('toast');
+        const startWorkoutBtn = document.getElementById('start-workout-btn');
+        const recordWorkoutBtn = document.getElementById('record-workout-btn');
+        const startWorkoutSection = document.getElementById('start-workout-section');
+        const recordWorkoutSection = document.getElementById('record-workout-section');
+        const recordWorkoutForm = document.getElementById('record-workout-form');
+        const workoutDate = document.getElementById('workout-date');
+
+        // Установка текущей даты по умолчанию
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        workoutDate.value = formattedDate;
+
+        // Переменные для таймера
+        let timer;
+        let seconds = 0;
+        let minutes = 0;
+        let hours = 0;
+        let isRunning = false;
+        let selectedExercise = null;
+
+        // Данные для статистики и истории
+        let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+        let stats = JSON.parse(localStorage.getItem('stats')) || {
+            totalWorkouts: 0,
+            weekWorkouts: 0,
+            totalTime: 0,
+            totalCalories: 0
+        };
+
+        // Загрузка сохраненного режима
+        const savedMode = localStorage.getItem('workoutMode') || 'start';
+        if (savedMode === 'record') {
+            recordWorkoutBtn.classList.add('active');
+            startWorkoutBtn.classList.remove('active');
+            recordWorkoutSection.style.display = 'flex';
+            startWorkoutSection.style.display = 'none';
+        } else {
+            startWorkoutBtn.classList.add('active');
+            recordWorkoutBtn.classList.remove('active');
+            startWorkoutSection.style.display = 'flex';
+            recordWorkoutSection.style.display = 'none';
+        }
+
+        // Переключение между режимами
+        startWorkoutBtn.addEventListener('click', function() {
+            startWorkoutBtn.classList.add('active');
+            recordWorkoutBtn.classList.remove('active');
+            startWorkoutSection.style.display = 'flex';
+            recordWorkoutSection.style.display = 'none';
+            localStorage.setItem('workoutMode', 'start');
+        });
+
+        recordWorkoutBtn.addEventListener('click', function() {
+            recordWorkoutBtn.classList.add('active');
+            startWorkoutBtn.classList.remove('active');
+            recordWorkoutSection.style.display = 'flex';
+            startWorkoutSection.style.display = 'none';
+            localStorage.setItem('workoutMode', 'record');
+        });
+
+        // Обновление статистики
+        function updateStats() {
+            totalWorkouts.textContent = stats.totalWorkouts;
+            weekWorkouts.textContent = stats.weekWorkouts;
+
+            // Форматирование общего времени
+            const totalHours = Math.floor(stats.totalTime / 3600);
+            const totalMinutes = Math.floor((stats.totalTime % 3600) / 60);
+            const totalSeconds = stats.totalTime % 60;
+            totalTime.textContent = `${totalHours.toString().padStart(2, '0')}:${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+
+            totalCalories.textContent = stats.totalCalories;
+
+            // Обновление прогресса недели (предполагаем цель 7 тренировок в неделю)
+            const weeklyProgressPercent = Math.min(100, (stats.weekWorkouts / 7) * 100);
+            weeklyProgress.style.width = `${weeklyProgressPercent}%`;
+
+            // Сохранение статистики в localStorage
+            localStorage.setItem('stats', JSON.stringify(stats));
+        }
+
+        // Обновление истории тренировок
+        function updateWorkoutHistory() {
+            if (workouts.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            workoutHistory.innerHTML = '';
+
+            // Сортировка тренировок по дате (сначала новые)
+            workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // Отображение последних 10 тренировок
+            const recentWorkouts = workouts.slice(0, 10);
+
+            recentWorkouts.forEach(workout => {
+                const workoutItem = document.createElement('div');
+                workoutItem.className = 'workout-item slide-in';
+
+                const formattedDate = new Date(workout.date).toLocaleDateString('ru-RU');
+                const formattedDuration = formatTime(workout.duration);
+
+                workoutItem.innerHTML = `
+                    <div class="workout-info">
+                        <div class="workout-icon">
+                            <img src="/static/${workout.img}.png" alt="${workout.exercise}" style="width: 40px; height: 40px">
+                        </div>
+                        <div class="workout-details">
+                            <h4>${workout.exercise}</h4>
+                            <p>${formattedDate} • ${formattedDuration}</p>
+                        </div>
+                    </div>
+                    <button class="delete-button" data-id="${workout.id}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                        </svg>
+                    </button>
+                `;
+
+                workoutHistory.appendChild(workoutItem);
+            });
+
+            // Добавление обработчиков для кнопок удаления
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const workoutId = this.getAttribute('data-id');
+                    deleteWorkout(workoutId);
+                });
+            });
+
+            // Сохранение тренировок в localStorage
+            localStorage.setItem('workouts', JSON.stringify(workouts));
+        }
+
+        // Удаление тренировки
+        function deleteWorkout(id) {
+            const workoutIndex = workouts.findIndex(w => w.id === id);
+
+            if (workoutIndex !== -1) {
+                const workout = workouts[workoutIndex];
+
+                // Обновление статистики
+                stats.totalWorkouts--;
+
+                // Проверка, была ли тренировка на этой неделе
+                const workoutDate = new Date(workout.date);
+                const today = new Date();
+                const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+                firstDayOfWeek.setHours(0, 0, 0, 0);
+
+                if (workoutDate >= firstDayOfWeek) {
+                    stats.weekWorkouts--;
+                }
+
+                // Вычитание времени тренировки из общего времени
+                stats.totalTime -= workout.duration;
+
+                // Вычитание калорий (примерно 5 калорий в минуту)
+                stats.totalCalories -= Math.floor((workout.duration / 60) * 5);
+
+                // Удаление тренировки из массива
+                workouts.splice(workoutIndex, 1);
+
+                // Обновление интерфейса
+                updateStats();
+                updateWorkoutHistory();
+
+                // Показ уведомления
+                showToast('Тренировка удалена', 'success');
+            }
+        }
+
+        // Форматирование времени
+        function formatTime(totalSeconds) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Обновление таймера
+        function updateTimer() {
+            seconds++;
+
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours++;
+                }
+            }
+
+            timerDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Запуск таймера
+        function startTimer() {
+            if (!selectedExercise) {
+                showToast('Выберите упражнение перед началом тренировки', 'error');
+                return;
+            }
+
+            isRunning = true;
+            startButton.style.display = 'none';
+            stopButton.style.display = 'flex';
+
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        // Остановка таймера и сохранение тренировки
+        function stopTimer() {
+            isRunning = false;
+            clearInterval(timer);
+
+            startButton.style.display = 'flex';
+            stopButton.style.display = 'none';
+
+            // Расчет общей продолжительности в секундах
+            const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+            if (totalSeconds > 0) {
+                // Создание новой записи о тренировке
+                const workout = {
+                    id: selectedExercise.getAttribute('data-id'),
+                    exercise: selectedExercise.getAttribute('data-name'),
+                    date: new Date().toISOString(),
+                    duration: totalSeconds,
+                    img: selectedExercise.getAttribute('data-img')
+                };
+
+                // Добавление тренировки в историю и обновление статистики
+                addWorkoutToHistory(workout);
+
+                // Сброс таймера
+                resetTimer();
+
+                // Показ уведомления
+                showToast('Тренировка успешно сохранена', 'success');
+            }
+        }
+
+        // Сброс таймера
+        function resetTimer() {
+            hours = 0;
+            minutes = 0;
+            seconds = 0;
+            timerDisplay.textContent = '00:00:00';
+        }
+
+        // Добавление тренировки в историю и обновление статистики
+        function addWorkoutToHistory(workout) {
+            // Добавление тренировки в историю
+            workouts.push(workout);
+
+            // Обновление статистики
+            stats.totalWorkouts++;
+
+            // Проверка, была ли тренировка на этой неделе
+            const workoutDate = new Date(workout.date);
+            const today = new Date();
+            const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+            firstDayOfWeek.setHours(0, 0, 0, 0);
+
+            if (workoutDate >= firstDayOfWeek) {
+                stats.weekWorkouts++;
+            }
+
+            // Добавление времени тренировки к общему времени
+            stats.totalTime += workout.duration;
+
+            // Добавление калорий (примерно 5 калорий в минуту)
+            stats.totalCalories += Math.floor((workout.duration / 60) * 5);
+
+            // Обновление интерфейса
+            updateStats();
+            updateWorkoutHistory();
+
+            // Отправка данных на сервер
+            sendWorkoutData(workout);
+        }
+
+        // Отправка данных о тренировке на сервер
+        function sendWorkoutData(workout) {
+            // Здесь будет POST запрос на сервер
+            fetch('/api/workouts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(workout)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при сохранении тренировки');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Тренировка успешно сохранена:', data);
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                showToast('Ошибка при сохранении тренировки на сервере', 'error');
+            });
+        }
+
+        // Показ уведомления
+        function showToast(message, type = 'info') {
+            toast.textContent = message;
+            toast.className = 'toast show';
+
+            if (type === 'error') {
+                toast.classList.add('toast-error');
+            } else if (type === 'success') {
+                toast.classList.add('toast-success');
+            }
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Обработчик выбора упражнения
+        exerciseItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Снятие выделения со всех упражнений
+                exerciseItems.forEach(i => i.classList.remove('selected'));
+
+                // Выделение выбранного упражнения
+                this.classList.add('selected');
+
+                // Сохранение выбранного упражнения
+                selectedExercise = this;
+
+                // Обновление описания текущей тренировки
+                currentExerciseDescription.textContent = `Выбрано: ${this.getAttribute('data-name')}`;
+            });
+        });
+
+        // Обработчик запуска таймера
+        startButton.addEventListener('click', startTimer);
+
+        // Обработчик остановки таймера
+        stopButton.addEventListener('click', stopTimer);
+
+        // Обработчик формы записи тренировки
+        recordWorkoutForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!selectedExercise) {
+                showToast('Выберите упражнение перед добавлением тренировки', 'error');
+                return;
+            }
+
+            const date = workoutDate.value;
+            const hours = parseInt(document.getElementById('workout-hours').value) || 0;
+            const minutes = parseInt(document.getElementById('workout-minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('workout-seconds').value) || 0;
+
+            // Проверка валидности времени
+            if (hours === 0 && minutes === 0 && seconds === 0) {
+                showToast('Укажите продолжительность тренировки', 'error');
+                return;
+            }
+
+            // Расчет общей продолжительности в секундах
+            const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+            // Создание новой записи о тренировке
+            const workout = {
+                id: selectedExercise.getAttribute('data-id'),
+                exercise: selectedExercise.getAttribute('data-name'),
+                date: new Date(date).toISOString(),
+                duration: totalSeconds,
+                img: selectedExercise.getAttribute('data-img')
+            };
+
+            // Добавление тренировки в историю и обновление статистики
+            addWorkoutToHistory(workout);
+
+            // Сброс формы
+            document.getElementById('workout-hours').value = 0;
+            document.getElementById('workout-minutes').value = 30;
+            document.getElementById('workout-seconds').value = 0;
+
+            // Показ уведомления
+            showToast('Тренировка успешно добавлена', 'success');
+        });
+
+        // Инициализация интерфейса
+        updateStats();
+        updateWorkoutHistory();
+
+        // Проверка и обновление статистики за неделю
+        function updateWeeklyStats() {
+            const today = new Date();
+            const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+            firstDayOfWeek.setHours(0, 0, 0, 0);
+
+            // Подсчет тренировок за текущую неделю
+            stats.weekWorkouts = workouts.filter(workout => {
+                const workoutDate = new Date(workout.date);
+                return workoutDate >= firstDayOfWeek;
+            }).length;
+
+            updateStats();
+        }
+
+        // Обновление статистики за неделю при загрузке
+        updateWeeklyStats();
+
+        // Проверка темы из localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+
+        // Синхронизация с темой из base.html
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'theme') {
+                if (e.newValue === 'dark') {
+                    document.body.classList.add('dark-theme');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                }
+            }
+        });
+    });
+</script>
 </body>
-</html>
+{% endblock %}

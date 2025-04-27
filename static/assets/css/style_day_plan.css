@@ -1,9 +1,9 @@
 /* Основные стили для страницы плана питания */
 :root {
-  --primary-color: #4caf50;
-  --primary-dark: #388e3c;
-  --primary-light: #c8e6c9;
-  --accent-color: #ff9800;
+  --primary-color: #1a73e8;
+  --primary-dark: #0d47a1;
+  --primary-light: #e8f0fe;
+  --accent-color: #4285f4;
   --text-color: #333;
   --text-light: #757575;
   --background-color: #f5f5f5;
@@ -23,10 +23,10 @@
 }
 
 body.dark-theme {
-  --primary-color: #66bb6a;
-  --primary-dark: #43a047;
-  --primary-light: #81c784;
-  --accent-color: #ffb74d;
+  --primary-color: #4285f4;
+  --primary-dark: #0d47a1;
+  --primary-light: #82b1ff;
+  --accent-color: #2979ff;
   --text-color: #f5f5f5;
   --text-light: #b0b0b0;
   --background-color: #121212;
@@ -503,7 +503,7 @@ body.dark-theme {
 
 .add-dish-btn {
   padding: 0.75rem;
-  background-color: var(--accent-color);
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 5px;
@@ -512,7 +512,7 @@ body.dark-theme {
 }
 
 .add-dish-btn:hover {
-  background-color: #f57c00;
+  background-color: var(--primary-dark);
 }
 
 .form-actions {

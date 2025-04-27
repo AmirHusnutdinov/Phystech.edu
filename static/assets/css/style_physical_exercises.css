@@ -2,8 +2,8 @@
   --primary: #4361ee;
   --primary-dark: #3a56d4;
   --primary-light: #4895ef;
-  --secondary: #f72585;
-  --secondary-dark: #e5196f;
+  --secondary: #1a73e8;
+  --secondary-dark: #0d47a1;
   --success: #4cc9f0;
   --success-dark: #38b6db;
   --warning: #f8961e;
@@ -28,8 +28,8 @@
   --primary: #4895ef;
   --primary-dark: #3a56d4;
   --primary-light: #4cc9f0;
-  --secondary: #f72585;
-  --secondary-dark: #e5196f;
+  --secondary: #1a73e8;
+  --secondary-dark: #0d47a1;
   --success: #4cc9f0;
   --success-dark: #38b6db;
   --warning: #f8961e;
@@ -58,7 +58,7 @@ body {
   line-height: 1.6;
   transition: var(--transition);
   min-height: 100vh;
-  padding-bottom: 60px;
+  padding-bottom: 0; /* Changed from 60px to 0 */
 }
 
 .container {
@@ -70,11 +70,19 @@ body {
 
 .header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   padding: 20px 0;
   margin-bottom: 30px;
   border-bottom: 1px solid var(--card-border);
+  gap: 15px;
+}
+
+@media (min-width: 768px) {
+  .header {
+    flex-direction: row;
+  }
 }
 
 .header h1 {
@@ -85,6 +93,55 @@ body {
   font-family: "Montserrat", sans-serif;
   letter-spacing: -0.5px;
 }
+
+/* Режимы тренировки */
+.mode-toggle {
+  display: flex;
+  background-color: var(--light);
+  border-radius: 30px;
+  padding: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .mode-toggle {
+  background-color: var(--gray-light);
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--gray);
+  transition: var(--transition);
+}
+
+.mode-btn.active {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Кнопка плана питания */
+.diet-plan-btn {
+  padding: 8px 16px;
+  background-color: var(--secondary);
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: var(--transition);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.diet-plan-btn:hover {
+  background-color: var(--secondary-dark);
+  transform: translateY(-2px);
+}
+
 /* Новая сетка для основного контента */
 .main-grid {
   display: grid;
@@ -206,11 +263,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: #212529;
-  padding: 10px;
 }
 
 .dark-theme .exercise-icon {
@@ -220,7 +276,8 @@ body {
 .exercise-icon svg {
   width: 100%;
   height: 100%;
-  fill: var(--primary);
+  stroke: #7cfc00;
+  fill: none;
 }
 
 .exercise-icon img {
@@ -235,49 +292,7 @@ body {
   font-weight: 500;
   text-align: center;
   line-height: 1.2;
-  color: var(--primary);
-}
-
-.change-icon-button {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: rgba(255, 255, 255, 0.7);
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.exercise-item:hover .change-icon-button {
-  opacity: 1;
-}
-
-.reset-icon-button {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background: rgba(255, 255, 255, 0.7);
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.exercise-item:hover .reset-icon-button {
-  opacity: 1;
+  color: var(--text);
 }
 
 .timer-container {
@@ -296,6 +311,11 @@ body {
   margin-bottom: 30px;
   color: var(--primary);
   text-shadow: 0 2px 10px rgba(67, 97, 238, 0.2);
+}
+
+.timer-controls {
+  display: flex;
+  gap: 20px;
 }
 
 .timer-button {
@@ -500,7 +520,7 @@ body {
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ease forwards;
+  animation: fadeIn 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; /* Changed from 0.5s ease to 0.8s with cubic-bezier */
 }
 
 @keyframes slideIn {
@@ -515,7 +535,7 @@ body {
 }
 
 .slide-in {
-  animation: slideIn 0.3s ease forwards;
+  animation: slideIn 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; /* Changed from 0.3s ease to 0.5s with cubic-bezier */
 }
 
 /* Дополнительные стили для улучшения визуального восприятия */
@@ -662,7 +682,7 @@ body {
 }
 
 /* Стили для формы добавления прошлых тренировок */
-.past-workout-form {
+.record-workout-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
