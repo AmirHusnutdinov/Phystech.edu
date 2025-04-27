@@ -69,7 +69,7 @@ class Registration:
             password_of_user = form.password.data
             hash_password(password_of_user)
             count_user = database_query(f"""SELECT COUNT(*) AS user_count 
-                          FROM "User"
+                          FROM users
                           WHERE email = '{email}';""", True)
             if count_user[0][0] > 0:
                 flash('Registration failed. Please check your input.', 'danger')
@@ -112,7 +112,7 @@ class Registration:
             if entered_code == session.get("code"):
                 flash('Code confirmed successfully!', 'success')
                 session["login"] = True
-                database_query(f"""INSERT INTO \"User\" (name, email, password) 
+                database_query(f"""INSERT INTO users (name, email, password) 
                                 VALUES ('{session["name"]}', '{session["email"]}', '{session["password"]}');
                                 """, Fetch=True)
                 session["code"] = None

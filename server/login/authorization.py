@@ -30,8 +30,8 @@ class Authorization:
         if form.validate_on_submit():
             name = form.name.data
             password = form.password.data
-            password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""", True)
-            user_id = database_query(f"""SELECT id FROM "User" WHERE email = '{name}';""", True)
+            password_prov = database_query(f"""SELECT password FROM users WHERE email = '{name}';""", True)
+            user_id = database_query(f"""SELECT id FROM users WHERE email = '{name}';""", True)
             if password_prov and password == password_prov[0][0]:  # Пример проверки
                 session['Login'] = True
                 session['email'] = name
