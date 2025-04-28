@@ -136,6 +136,7 @@ class Cabinet:
                 'proteins': nutrition_form.protein.data,
                 'fats': nutrition_form.fats.data,
                 'carbs': nutrition_form.carbs.data,
+                'water': 2000
             }
 
             update_user_data(session['user_id'], update_data)
