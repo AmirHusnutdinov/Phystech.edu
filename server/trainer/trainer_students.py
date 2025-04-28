@@ -42,7 +42,7 @@ class Students:
         if not user_info:
             return redirect(main_page)
         
-        avatar = Students.cloud.get_url(f'avatar/{user_info['id']}')
+        avatar = Students.cloud.get_url(f'''avatar/{user_info['id']}''')
         # Получаем историю сообщений
         messages = get_message_history(trainer_id, student_id)
 

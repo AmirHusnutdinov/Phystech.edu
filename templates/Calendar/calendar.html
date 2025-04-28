@@ -654,7 +654,13 @@ window.addEventListener('resize', function() {
             currentMonth = 11;
             currentYear--;
         }
-        renderCalendar(currentMonth, currentYear);
+        if (viewToggle.checked) {
+            renderChart(currentMonth, currentYear);
+        } else {
+            calendar.classList.remove('chart-view');
+            calendar.style.display = 'grid';
+            renderCalendar(currentMonth, currentYear);
+        }
     });
 
     nextBtn.addEventListener('click', () => {
@@ -663,18 +669,21 @@ window.addEventListener('resize', function() {
             currentMonth = 0;
             currentYear++;
         }
-        renderCalendar(currentMonth, currentYear);
+        if (viewToggle.checked) {
+            renderChart(currentMonth, currentYear);
+        } else {
+            calendar.classList.remove('chart-view');
+            calendar.style.display = 'grid';
+            renderCalendar(currentMonth, currentYear);
+        }
     });
 
 viewToggle.addEventListener('change', () => {
     if (viewToggle.checked) {
         renderChart(currentMonth, currentYear);
     } else {
-        // Remove chart-view class first
         calendar.classList.remove('chart-view');
-        // Reset the calendar's display style
         calendar.style.display = 'grid';
-        // Now render the calendar
         renderCalendar(currentMonth, currentYear);
     }
 });

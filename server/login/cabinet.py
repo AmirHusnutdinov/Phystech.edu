@@ -60,7 +60,7 @@ class Cabinet:
             if has_trainer:
                 trainer = get_user_data(trainer_id)
                 trainer_avatar = Cabinet.cloud.get_url(f'avatars/{trainer_id}')
-            avatar = Cabinet.cloud.get_url(f'avatars/{session['user_id']}')
+            avatar = Cabinet.cloud.get_url(f'''avatars/{session['user_id']}''')
             request = get_my_request(session['user_id'])
             has_request = True
             if request == []:
@@ -110,7 +110,6 @@ class Cabinet:
                 'sex': profile_form.gender.data,
                 'activity': profile_form.activity.data
             }
-
             # Обновляем данные пользователя
             update_user_data(session['user_id'], update_data)
             flash('Профиль успешно обновлен!', 'success')
@@ -136,7 +135,7 @@ class Cabinet:
                 'calories': nutrition_form.calories.data,
                 'proteins': nutrition_form.protein.data,
                 'fats': nutrition_form.fats.data,
-                'carbs': nutrition_form.carbs.data
+                'carbs': nutrition_form.carbs.data,
             }
 
             update_user_data(session['user_id'], update_data)

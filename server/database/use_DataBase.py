@@ -81,13 +81,7 @@ def update_user_data(user_id, data):
             return False
         # Экранируем специальные символы и обрабатываем разные типы данных
         value = data[key]
-        if isinstance(value, str):
-            value = f"'{value.replace("'", "''")}'"
-        elif value is None:
-            value = 'NULL'
-        else:
-            value = str(value)
-        set_parts.append(f'"{key}" = {value}')
+        set_parts.append(f""""{key}" = '{value}'""")
     
     set_clause = ', '.join(set_parts)
     
