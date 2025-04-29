@@ -23,6 +23,7 @@
 <script>
     // тру ученики
     const cookies = {{ cookies | tojson }};
+
     const studentsData = cookies.map(cookie => ({
       id: cookie.id,
       firstName: cookie.name,

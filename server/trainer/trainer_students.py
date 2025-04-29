@@ -18,13 +18,17 @@ class Students:
             if check_trainer(user_id):
                 student_list = get_list_of_student(user_id)
                 students_info = []
+                student_photo = []
                 for el in student_list:
                     students_info.append(get_user_data(el))
+                    students_info[-1]['avatar'] = Students.cloud.get_url(f'''avatars/{students_info[-1]['id']}''')
+                print(students_info)
                 return render_template(
                     "Trainer/students.html",
                     header_links=choose_header_links("authorized"),
                     title="Мои студенты",
                     cookies=students_info,
+                    cookiesPhoto=student_photo
                 )
             return redirect(main_page)
         return redirect(main_page)
@@ -42,11 +46,8 @@ class Students:
         if not user_info:
             return redirect(main_page)
         
-        avatar = Students.cloud.get_url(f'''avatar/{user_info['id']}''')
-        # Получаем историю сообщений
+        avatar = Students.cloud.get_url(f'''avatars/{user_info['id']}''')
         messages = get_message_history(trainer_id, student_id)
-
-        # Форматируем сообщения для шаблона
         formatted_messages = []
         for msg in messages:
             sender = "received" if msg["id_from"] == student_id else "sent"
