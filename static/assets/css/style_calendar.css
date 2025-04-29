@@ -477,6 +477,15 @@
   transition: border-color 0.3s;
 }
 
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nav-btn:disabled::after {
+    opacity: 0.5;
+}
+
 .diff-arrow.down-green {
     border-top-color: #32CD32; /* Зеленый для отрицательной разницы */
 }

@@ -320,6 +320,7 @@ function updateDifferenceArrow(elementId, difference, isDarkTheme = document.bod
     }
 
 function renderChart(month, year) {
+    nextBtn.disabled = isFutureMonth(month + 1, year);
     calendar.innerHTML = '';
     calendar.classList.add('chart-view');
     currentDate.textContent = new Date(year, month)
@@ -600,7 +601,8 @@ window.addEventListener('resize', function() {
         return Math.max(maxStreak, currentStreak);
     }
 
-    function renderCalendar(month, year) {
+function renderCalendar(month, year) {
+    nextBtn.disabled = isFutureMonth(month + 1, year);
     // Reset calendar layout
     calendar.classList.remove('chart-view');
     calendar.style.display = 'grid';
@@ -654,6 +656,15 @@ window.addEventListener('resize', function() {
         }
     }
 
+    function isFutureMonth(month, year) {
+        const today = new Date();
+        const currentYear = today.getFullYear();
+        const currentMonth = today.getMonth();
+
+        return year > currentYear || (year === currentYear && month > currentMonth);
+    }
+
+
     prevBtn.addEventListener('click', () => {
         currentMonth--;
         if (currentMonth < 0) {
@@ -670,6 +681,10 @@ window.addEventListener('resize', function() {
     });
 
     nextBtn.addEventListener('click', () => {
+        if (isFutureMonth(currentMonth + 1, currentYear)) {
+            return;
+        }
+
         currentMonth++;
         if (currentMonth > 11) {
             currentMonth = 0;
@@ -682,6 +697,8 @@ window.addEventListener('resize', function() {
             calendar.style.display = 'grid';
             renderCalendar(currentMonth, currentYear);
         }
+
+        nextBtn.disabled = isFutureMonth(currentMonth + 1, currentYear);
     });
 
 viewToggle.addEventListener('change', () => {
