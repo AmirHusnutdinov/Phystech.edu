@@ -477,6 +477,14 @@
   transition: border-color 0.3s;
 }
 
+.diff-arrow.down-green {
+    border-top-color: #32CD32; /* Зеленый для отрицательной разницы */
+}
+
+.diff-arrow.up-red {
+    border-bottom-color: #FF4500; /* Красный для положительной разницы */
+}
+
 .diff-arrow.down {
   border-top: 14px solid #ff0000;
   transition: border-color 0.3s;

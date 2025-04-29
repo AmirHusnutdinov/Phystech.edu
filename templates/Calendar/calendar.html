@@ -247,59 +247,65 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
 function getColorForValue(difference, maxDifference, isDarkTheme = document.body.classList.contains('dark-theme')) {
-    const absDifference = Math.abs(difference);
-    const ratio = Math.min(absDifference / maxDifference, 1);
-
-    const colors = [
-        'rgb(0, 255, 0)', // Зеленый
-        'rgb(173, 255, 0)',
-        'rgb(255, 255, 0)', // Желтый
-        'rgb(255, 173, 0)',
-        'rgb(255, 0, 0)'  // Красный
-    ];
-
-    const darkColors = [
-        'rgba(0, 255, 0, 0.3)', // Зеленый - even dimmer
-        'rgba(173, 255, 0, 0.3)',
-        'rgba(255, 255, 0, 0.3)', // Желтый - even dimmer
-        'rgba(255, 173, 0, 0.3)',
-        'rgba(255, 0, 0, 0.3)'  // Красный - even dimmer
-    ];
-
-    const index = ratio * (colors.length - 1);
-    const lowerIndex = Math.floor(index);
-    const upperIndex = Math.ceil(index);
-
-    if (lowerIndex === upperIndex) {
-        return isDarkTheme ? darkColors[lowerIndex] : colors[lowerIndex];
+    // Если разница равна 0 (показатели равны плану) - серый цвет
+    if (difference === 0) {
+        return isDarkTheme ? 'rgba(128, 128, 128, 0.3)' : 'rgba(128, 128, 128, 0.5)';
     }
 
-    const t = index - lowerIndex;
-    const color1 = isDarkTheme ? darkColors[lowerIndex] : colors[lowerIndex];
-    const color2 = isDarkTheme ? darkColors[upperIndex] : colors[upperIndex];
+    // Если разница отрицательная (показатели ниже плана) - зеленый
+    if (difference < 0) {
+        const ratio = Math.min(Math.abs(difference) / maxDifference, 1);
+        const darkColors = [
+            'rgba(50, 205, 50, 0.3)',   // Light green
+            'rgba(34, 139, 34, 0.4)',   // Medium green
+            'rgba(0, 100, 0, 0.5)'      // Dark green
+        ];
+        const lightColors = [
+            'rgba(144, 238, 144, 0.7)', // Light green
+            'rgba(0, 255, 0, 0.8)',      // Medium green
+            'rgba(0, 128, 0, 0.9)'        // Dark green
+        ];
 
-    const [r1, g1, b1] = color1.match(/\d+/g).map(Number);
-    const [r2, g2, b2] = color2.match(/\d+/g).map(Number);
+        const index = ratio * (darkColors.length - 1);
+        const colors = isDarkTheme ? darkColors : lightColors;
+        return colors[Math.floor(index)];
+    }
 
-    const r = Math.round(r1 * (1 - t) + r2 * t);
-    const g = Math.round(g1 * (1 - t) + g2 * t);
-    const b = Math.round(b1 * (1 - t) + b2 * t);
+    // Если разница положительная (показатели выше плана) - красный
+    const ratio = Math.min(difference / maxDifference, 1);
+    const darkColors = [
+        'rgba(255, 99, 71, 0.3)',    // Light red
+        'rgba(255, 69, 0, 0.4)',      // Medium red
+        'rgba(255, 0, 0, 0.5)'        // Dark red
+    ];
+    const lightColors = [
+        'rgba(255, 160, 122, 0.7)',  // Light red
+        'rgba(255, 69, 0, 0.8)',      // Medium red
+        'rgba(255, 0, 0, 0.9)'        // Dark red
+    ];
 
-    return `rgba(${r}, ${g}, ${b}, ${isDarkTheme ? 0.3 : 1})`;
+    const index = ratio * (darkColors.length - 1);
+    const colors = isDarkTheme ? darkColors : lightColors;
+    return colors[Math.floor(index)];
 }
 
 function updateDifferenceArrow(elementId, difference, isDarkTheme = document.body.classList.contains('dark-theme')) {
     const element = document.getElementById(elementId);
     const arrowSpan = element.parentElement.nextElementSibling;
     element.textContent = Math.abs(difference);
-    arrowSpan.className = 'diff-arrow ' + (difference >= 0 ? 'up' : 'down');
 
-    if (isDarkTheme) {
-        arrowSpan.style.borderBottomColor = difference >= 0 ? 'rgba(0, 255, 0, 0.4)' : 'rgba(255, 0, 0, 0.4)';
-        arrowSpan.style.borderTopColor = difference < 0 ? 'rgba(255, 0, 0, 0.4)' : 'transparent';
+    if (difference === 0) {
+        arrowSpan.className = 'diff-arrow';
+        arrowSpan.style.borderBottomColor = isDarkTheme ? 'rgba(128, 128, 128, 0.5)' : 'rgba(128, 128, 128, 0.7)';
+        arrowSpan.style.borderTopColor = 'transparent';
+    } else if (difference < 0) {
+        arrowSpan.className = 'diff-arrow down-green';
+        arrowSpan.style.borderBottomColor = 'transparent';
+        arrowSpan.style.borderTopColor = isDarkTheme ? 'rgba(50, 205, 50, 0.5)' : 'rgba(0, 128, 0, 0.8)';
     } else {
-        arrowSpan.style.borderBottomColor = difference >= 0 ? '#00FF00' : '#FF0000';
-        arrowSpan.style.borderTopColor = difference < 0 ? '#FF0000' : 'transparent';
+        arrowSpan.className = 'diff-arrow up-red';
+        arrowSpan.style.borderBottomColor = isDarkTheme ? 'rgba(255, 69, 0, 0.5)' : 'rgba(255, 0, 0, 0.8)';
+        arrowSpan.style.borderTopColor = 'transparent';
     }
 }
 
