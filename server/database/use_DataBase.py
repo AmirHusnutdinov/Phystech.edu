@@ -256,3 +256,16 @@ def add_message(id_from, id_to, content):
     VALUES ({id_from}, {id_to}, '{content}', NOW())
     """
     return database_query(sql)
+
+def get_all_trains(user_id):
+    sql = f"SELECT * FROM train WHERE id = {user_id}"
+    data = database_query(sql, True)
+    ans = []
+    for el in data:
+        ans.append({
+            "id": el[0],
+            "type": el[3],
+            "date": [el[1].year, el[1].month, el[1].day],
+            "calories": el[2]
+        })
+    return ans
