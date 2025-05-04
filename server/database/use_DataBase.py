@@ -103,9 +103,9 @@ def database_check():
     return database_query(sql, True)
 
 
-def save_news(title, content, image_path):
+def save_news_query(news_id, title, content, image_path):
     database_query(
-        f"""INSERT INTO news (title, picture, html, date) VALUES ('{title}', '{image_path}', '{content}', NOW())"""
+        f"""INSERT INTO news (id, title, html, date) VALUES ('{news_id}', '{title}', , '{content}', NOW())"""
     )
 
 
@@ -171,3 +171,14 @@ def add_message(id_from, id_to, content):
     VALUES ({id_from}, {id_to}, '{content}', NOW())
     """
     return database_query(sql)
+
+
+def update_news(news_id, title, content=None):
+    database_query(f"UPDATE news SET title = '{title}', html = '{content}', date = NOW() WHERE id = '{news_id}'")
+
+def delete_news(news_id):
+    """
+    Безопасное удаление новости
+    """
+    sql = f"DELETE FROM news WHERE id = {int(news_id)}"  # Приводим к int для безопасности
+    database_query(sql)

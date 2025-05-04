@@ -1,5 +1,6 @@
 from flask import render_template
 from flask import session
+from server.service_files.links import choose_header_links
 
 
 def is_login():
@@ -12,9 +13,11 @@ def data():
 
 def render_template_with_user(template_name_ot_list, **kwargs):
     kwargs["title"] = kwargs.get("title", "Главная страница")
+    kwargs["header_links"] = kwargs.get("header_links", choose_header_links("not-authorized"))
     return render_template(
         template_name_ot_list,
         data=data(),
+        # header_links=choose_header_links("not-authorized"),
         **kwargs  # Передаем именованные аргументы
     )
 
