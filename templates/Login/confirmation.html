@@ -141,22 +141,23 @@
 
             // Auto-submit when 6 digits are entered
             if (this.value.length === 6) {
-                // Simulate form submission with animation
-                simulateFormSubmission();
+                submitConfirmationForm();
             }
         });
 
-        // Form submission (for demo purposes)
+        // Form submission
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            simulateFormSubmission();
+            if (codeInput.value.length === 6) {
+                submitConfirmationForm();
+            }
         });
 
         // Close modals
         successButton.addEventListener('click', function() {
             successModal.classList.remove('show');
-            // Redirect or perform other actions
-            window.location.href = '/'; // Example redirect
+            // Redirect to success page
+            window.location.href = "{{ url_for('open_main_page') }}";
         });
 
         errorButton.addEventListener('click', function() {
@@ -169,14 +170,13 @@
         // Resend button
         resendButton.addEventListener('click', function() {
             if (!this.disabled) {
-                // Simulate resending code
-                animateResend();
+                resendConfirmationCode();
                 startResendTimer(60);
                 this.disabled = true;
             }
         });
 
-        // Functions
+        // Main functions
         function initializeAnimations() {
             // Create particles
             createParticles();
@@ -209,25 +209,98 @@
             });
         }
 
-        function simulateFormSubmission() {
+        function submitConfirmationForm() {
             // Add loading state
             document.querySelector('.submit-button').classList.add('loading');
 
-            // For demo: randomly show success or error
-            setTimeout(() => {
+            // Prepare form data
+            const formData = new FormData(form);
+
+            // Send POST request to confirm_code endpoint
+            fetch("{{ url_for('confirm_code') }}", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
                 document.querySelector('.submit-button').classList.remove('loading');
 
-                // For demo purposes: 80% chance of success
-                if (Math.random() < 0.8) {
+                if (data.success) {
+                    // Show success modal
                     successModal.classList.add('show');
+
+                    // Redirect after delay if needed
+                    if (data.redirect_url) {
+                        setTimeout(() => {
+                            window.location.href = data.redirect_url;
+                        }, 1500);
+                    }
                 } else {
+                    // Show error modal with server message
+                    const errorMessage = data.message || 'Неверный код подтверждения';
+                    document.querySelector('.error-content p').textContent = errorMessage;
                     errorModal.classList.add('show');
                 }
-            }, 2000);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.querySelector('.submit-button').classList.remove('loading');
+                document.querySelector('.error-content p').textContent = 'Ошибка соединения с сервером';
+                errorModal.classList.add('show');
+            });
+        }
+
+        function resendConfirmationCode() {
+            // Add sending state
+            const buttonText = resendButton.querySelector('.resend-text');
+            buttonText.classList.add('sending');
+
+            // Send request to resend code
+            fetch("{{ url_for('confirm_code') }}", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    buttonText.textContent = 'Код отправлен!';
+                    buttonText.classList.remove('sending');
+                    buttonText.classList.add('sent');
+
+                    // Reset button after delay
+                    setTimeout(() => {
+                        buttonText.textContent = 'Отправить код повторно';
+                        buttonText.classList.remove('sent');
+                        resendTimer.style.display = 'inline-block';
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                buttonText.textContent = 'Ошибка отправки';
+                setTimeout(() => {
+                    buttonText.textContent = 'Отправить код повторно';
+                    buttonText.classList.remove('sending');
+                }, 2000);
+            });
         }
 
         function startResendTimer(duration) {
             let timer = duration;
+            resendTimer.style.display = 'inline-block';
+
             const interval = setInterval(() => {
                 resendTimer.textContent = timer;
 
@@ -262,7 +335,6 @@
                 // Timer expired
                 if (timeLeft === 0) {
                     clearInterval(interval);
-                    // Handle expiration (e.g., disable form)
                     codeInput.disabled = true;
                     document.querySelector('.submit-button').disabled = true;
                 }
@@ -271,23 +343,6 @@
             // Initialize progress circle
             timerProgress.style.strokeDasharray = totalLength;
             timerProgress.style.strokeDashoffset = 0;
-        }
-
-        function animateResend() {
-            const button = resendButton.querySelector('.resend-text');
-            button.classList.add('sending');
-
-            setTimeout(() => {
-                button.textContent = 'Код отправлен!';
-                button.classList.remove('sending');
-                button.classList.add('sent');
-
-                setTimeout(() => {
-                    button.textContent = 'Отправить код повторно';
-                    button.classList.remove('sent');
-                    resendTimer.style.display = 'inline-block';
-                }, 2000);
-            }, 1500);
         }
 
         function createParticles() {

@@ -14,6 +14,7 @@ from email.mime.text import MIMEText
 
 from flask import redirect, url_for, flash, session
 from flask import request
+from flask import jsonify
 
 from server.database.use_DataBase import database_query
 from server.login.forms import RegistrationForm, ConfirmationForm  # Импортируйте новую форму
@@ -25,6 +26,7 @@ from utils import render_template_with_user
 from flask import request, render_template
 from settings import app, host
 from server.service_files.links import *
+
 
 def send_email(subject, recipient, body):
     msg = MIMEMultipart()
@@ -93,8 +95,6 @@ class Registration:
 
     @staticmethod
     def show_confirmation_page():
-        if "user_id" in session:
-            return redirect(main_page)
         form = ConfirmationForm()
         return render_template_with_user("Login/confirmation.html",
                                          header_links=choose_header_links("not-authorized"),
@@ -103,23 +103,28 @@ class Registration:
 
     @staticmethod
     def process_confirmation():
-        if "user_id" in session:
-            return redirect(main_page)
-
+        print(5)
+        # if "user_id" in session:
+        #     return redirect(main_page)
         form = ConfirmationForm()
+        print(form)
         if form.validate_on_submit():
             entered_code = form.code.data
-            if entered_code == session.get("code"):
+            print(entered_code, session.get("code"))
+            if str(entered_code) == str(session.get("code")):
                 flash('Code confirmed successfully!', 'success')
                 session["login"] = True
                 database_query(f"""INSERT INTO \"User\" (name, email, password) 
                                 VALUES ('{session["name"]}', '{session["email"]}', '{session["password"]}');
-                                """, Fetch=True)
+                                """, fetch=False)
                 session["code"] = None
                 session["login"] = True
                 session["password"] = None
                 session["email"] = None
-                return redirect(main_page)  # Перенаправьте на нужную страницу после подтверждения
+                return jsonify({
+                    'success': True,
+                    'redirect_url': url_for('open_main_page')
+                })
             else:
                 flash('Invalid confirmation code. Please try again.', 'danger')
                 return redirect(url_for('confirm_code'))  # Перенаправляем обратно на страницу подтверждения
