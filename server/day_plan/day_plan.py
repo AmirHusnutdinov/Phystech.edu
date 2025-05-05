@@ -55,7 +55,97 @@ class DayPlan:
                             "sender_name": user_info["name"] if sender == "received" else "Вы",
                         }
                     )
-
+            diet_meals = [
+                {
+                    "id": 1,
+                    "type_name": "Завтрак",
+                    "time": "08:00",
+                    "protein": 25,
+                    "fats": 15,
+                    "carbs": 30,
+                    "calories": 350,
+                    "dishes": [
+                        {
+                            "name": "Овсянка на молоке",
+                            "weight": 200,
+                            "protein": 10,
+                            "fats": 5,
+                            "carbs": 20,
+                            "calories": 150
+                        },
+                        {
+                            "name": "Яйца вареные",
+                            "weight": 100,
+                            "protein": 15,
+                            "fats": 10,
+                            "carbs": 0,
+                            "calories": 200
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "type_name": "Обед",
+                    "time": "13:00",
+                    "protein": 30,
+                    "fats": 20,
+                    "carbs": 40,
+                    "calories": 500,
+                    "dishes": [
+                        {
+                            "name": "Куриный суп",
+                            "weight": 300,
+                            "protein": 15,
+                            "fats": 8,
+                            "carbs": 10,
+                            "calories": 200
+                        },
+                        {
+                            "name": "Гречка с куриной грудкой",
+                            "weight": 250,
+                            "protein": 15,
+                            "fats": 12,
+                            "carbs": 30,
+                            "calories": 300
+                        }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "type_name": "Ужин",
+                    "time": "19:00",
+                    "protein": 20,
+                    "fats": 10,
+                    "carbs": 25,
+                    "calories": 300,
+                    "dishes": [
+                        {
+                            "name": "Творог с медом",
+                            "weight": 150,
+                            "protein": 15,
+                            "fats": 5,
+                            "carbs": 10,
+                            "calories": 150
+                        },
+                        {
+                            "name": "Салат овощной",
+                            "weight": 100,
+                            "protein": 2,
+                            "fats": 3,
+                            "carbs": 5,
+                            "calories": 50
+                        },
+                        {
+                            "name": "Хлебцы цельнозерновые",
+                            "weight": 30,
+                            "protein": 3,
+                            "fats": 1,
+                            "carbs": 10,
+                            "calories": 70
+                        }
+                    ]
+                }
+            ]
             return render_template_with_user(
                 "DayPlan/day_plan.html",
                 header_links=choose_header_links("authorized"),
@@ -68,7 +158,8 @@ class DayPlan:
                 save_day_plan=save_day_plan,
                 add_product=add_product,
                 add_recipes=add_recipes,
-                physical_exercises=physical_exercises
+                physical_exercises=physical_exercises,
+                diet_meals=diet_meals,
 
             )
         return redirect(main_page)

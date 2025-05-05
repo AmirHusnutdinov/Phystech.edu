@@ -329,6 +329,16 @@ document.addEventListener('DOMContentLoaded', function () {
   waterAmount = current.water;
   updateWaterDisplay();
 
+  // Initialize diet_meals data from Flask
+  const dietMealsData = {{ diet_meals | tojson }};
+  if (dietMealsData && dietMealsData.length > 0) {
+    // Store the diet meals for later use when diet mode is selected
+    window.dietMealsData = dietMealsData;
+
+    // Добавьте эту строку:
+    restoreDietMealsState();
+  }
+
   setupEventListeners();
   updateAddMealButtonVisibility();
   updateNutritionSummary();
@@ -859,17 +869,27 @@ function renderMeals() {
   const mealsContainer = document.getElementById('meals-container');
   mealsContainer.innerHTML = '';
 
-  const sortedMeals = [...meals].sort((a, b) => {
-    return a.time.localeCompare(b.time);
-  });
+  // If in diet mode and we have diet meals data, use that instead of the regular meals
+  let mealsToRender = meals;
+  if (planType === 'diet' && window.dietMealsData && window.dietMealsData.length > 0) {
+    mealsToRender = window.dietMealsData;
+  } else {
+    // Sort regular meals by time
+    mealsToRender = [...meals].sort((a, b) => {
+      return a.time.localeCompare(b.time);
+    });
+  }
 
-  sortedMeals.forEach((meal, index) => {
+  mealsToRender.forEach((meal, index) => {
     const mealElement = document.createElement('div');
     mealElement.className = 'meal-card animate-in';
 
     let headerContent = '';
-    if (planType === 'diet' && meal.type) {
-      headerContent = `<div class="meal-type">${getMealTypeName(meal.type)}</div>`;
+    if (planType === 'diet') {
+      headerContent = `
+        <div class="meal-type">${meal.type_name || getMealTypeName(meal.type)}</div>
+        <div class="meal-time">${meal.time}</div>
+      `;
     } else {
       headerContent = `<div class="meal-time">${meal.time}</div>`;
     }
@@ -879,7 +899,9 @@ function renderMeals() {
       dishesListContent = meal.dishes.map((dish, dishIndex) => `
         <div class="dish-item ${dish.consumed ? 'consumed' : ''}" data-meal-index="${index}" data-dish-index="${dishIndex}">
           <div class="dish-info">
-            <input type="checkbox" class="dish-checkbox" ${dish.consumed ? 'checked' : ''}>
+            <input type="checkbox" class="dish-checkbox" ${dish.consumed ? 'checked' : ''}
+                   data-protein="${dish.protein}" data-fats="${dish.fats}"
+                   data-carbs="${dish.carbs}" data-calories="${dish.calories}">
             <div>
               <div class="dish-name">${dish.name}</div>
               <div class="dish-weight">${dish.weight} г</div>
@@ -916,8 +938,8 @@ function renderMeals() {
       <div class="meal-header">
         ${headerContent}
         <div class="meal-actions">
-          <button class="edit-meal-btn" data-index="${index}">✎</button>
-          <button class="delete-meal-btn" data-index="${index}">✕</button>
+          ${planType !== 'diet' ? `<button class="edit-meal-btn" data-index="${index}">✎</button>
+          <button class="delete-meal-btn" data-index="${index}">✕</button>` : ''}
         </div>
       </div>
       <div class="meal-nutrition">
@@ -943,17 +965,19 @@ function renderMeals() {
       </div>
     `;
 
-    mealElement.querySelector('.edit-meal-btn').addEventListener('click', function () {
-      openMealModal(null, index);
-    });
+    if (planType !== 'diet') {
+      mealElement.querySelector('.edit-meal-btn').addEventListener('click', function () {
+        openMealModal(null, index);
+      });
 
-    mealElement.querySelector('.delete-meal-btn').addEventListener('click', function () {
-      if (confirm('Вы уверены, что хотите удалить этот прием пищи?')) {
-        meals.splice(index, 1);
-        renderMeals();
-        updateNutritionSummary();
-      }
-    });
+      mealElement.querySelector('.delete-meal-btn').addEventListener('click', function () {
+        if (confirm('Вы уверены, что хотите удалить этот прием пищи?')) {
+          meals.splice(index, 1);
+          renderMeals();
+          updateNutritionSummary();
+        }
+      });
+    }
 
     if (planType === 'diet') {
       const checkboxes = mealElement.querySelectorAll('.dish-checkbox');
@@ -963,9 +987,14 @@ function renderMeals() {
           const mealIndex = parseInt(dishItem.dataset.mealIndex);
           const dishIndex = parseInt(dishItem.dataset.dishIndex);
 
-          meals[mealIndex].dishes[dishIndex].consumed = this.checked;
-          dishItem.classList.toggle('consumed', this.checked);
+          if (window.dietMealsData) {
+            window.dietMealsData[mealIndex].dishes[dishIndex].consumed = this.checked;
 
+            // Сохраняем состояние в localStorage
+            saveDietMealsState();
+          }
+
+          dishItem.classList.toggle('consumed', this.checked);
           updateNutritionSummary();
         });
       });
@@ -973,6 +1002,56 @@ function renderMeals() {
 
     mealsContainer.appendChild(mealElement);
   });
+}
+
+// Функция для сохранения состояния диетических блюд
+function saveDietMealsState() {
+  if (window.dietMealsData) {
+    // Создаем упрощенную версию данных для хранения (только id и consumed)
+    const simplifiedData = window.dietMealsData.map(meal => ({
+      id: meal.id,
+      dishes: meal.dishes.map(dish => ({
+        name: dish.name,
+        consumed: dish.consumed || false
+      }))
+    }));
+
+    localStorage.setItem('dietMealsState', JSON.stringify(simplifiedData));
+  }
+}
+
+// Функция для восстановления состояния диетических блюд
+function restoreDietMealsState() {
+  const savedState = localStorage.getItem('dietMealsState');
+
+  if (savedState && window.dietMealsData) {
+    try {
+      const parsedState = JSON.parse(savedState);
+
+      // Применяем сохраненное состояние к текущим данным
+      parsedState.forEach(savedMeal => {
+        const currentMeal = window.dietMealsData.find(m => m.id === savedMeal.id);
+        if (currentMeal) {
+          savedMeal.dishes.forEach((savedDish, index) => {
+            if (index < currentMeal.dishes.length) {
+              // Проверяем, что это то же самое блюдо по имени
+              if (currentMeal.dishes[index].name === savedDish.name) {
+                currentMeal.dishes[index].consumed = savedDish.consumed;
+              }
+            }
+          });
+        }
+      });
+
+      // Перерисовываем интерфейс с восстановленными данными
+      if (planType === 'diet') {
+        renderMeals();
+        updateNutritionSummary();
+      }
+    } catch (e) {
+      console.error('Ошибка при восстановлении состояния диеты:', e);
+    }
+  }
 }
 
 function getMealTypeName(type) {
@@ -994,6 +1073,7 @@ function updateNutritionSummary() {
   let consumedCalories = current.calories;
   waterAmount = current.water;
 
+  // Учитываем обычные приемы пищи
   meals.forEach(meal => {
     meal.dishes.forEach(dish => {
       if (dish.consumed) {
@@ -1004,6 +1084,20 @@ function updateNutritionSummary() {
       }
     });
   });
+
+  // Учитываем диетические блюда, если они есть и мы в режиме диеты
+  if (planType === 'diet' && window.dietMealsData) {
+    window.dietMealsData.forEach(meal => {
+      meal.dishes.forEach(dish => {
+        if (dish.consumed) {
+          consumedProtein += parseFloat(dish.protein);
+          consumedFats += parseFloat(dish.fats);
+          consumedCarbs += parseFloat(dish.carbs);
+          consumedCalories += parseFloat(dish.calories);
+        }
+      });
+    });
+  }
 
   consumedProtein = consumedProtein.toFixed(1);
   consumedFats = consumedFats.toFixed(1);

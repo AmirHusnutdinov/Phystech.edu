@@ -3,11 +3,12 @@ from datetime import datetime, timezone
 from flask import render_template, redirect, request, jsonify
 from flask import session
 
+from server.cloud.cloud_main import Cloud
 from server.database.use_DataBase import *
 from server.service_files.links import *
 from settings import app
 
-from server.cloud.cloud_main import Cloud
+
 class Students:
     cloud = Cloud()
 
@@ -45,7 +46,7 @@ class Students:
         user_info = get_user_data(student_id)
         if not user_info:
             return redirect(main_page)
-        
+
         avatar = Students.cloud.get_url(f'''avatars/{user_info['id']}''')
         messages = get_message_history(trainer_id, student_id)
         formatted_messages = []

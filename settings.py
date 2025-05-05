@@ -6,6 +6,8 @@ from flask import Flask
 from flask_mail import Mail
 
 load_dotenv()
+
+
 class Config:
     DEBUG = True
     TESTING = True
@@ -17,7 +19,6 @@ class Config:
     BUCKET_MAIN_PATH = os.getenv('BUCKET_MAIN_PATH')
 
 
-    
 app = Flask(__name__)
 
 # folder for containing temp files before uploading them to the cloud

@@ -3,7 +3,6 @@ import psycopg2
 from settings import host
 from settings import user, password, db_name, port
 
-from datetime import datetime
 
 def database_query(sql, fetch=False):
     connection = []
@@ -82,12 +81,12 @@ def update_user_data(user_id, data):
         # Экранируем специальные символы и обрабатываем разные типы данных
         value = data[key]
         set_parts.append(f""""{key}" = '{value}'""")
-    
+
     set_clause = ', '.join(set_parts)
-    
+
     # Формируем полный SQL запрос
     sql = f'UPDATE users SET {set_clause} WHERE id = {user_id}'
-    
+
     try:
         # Выполняем запрос
         database_query(sql)
@@ -96,14 +95,16 @@ def update_user_data(user_id, data):
         print(f"Error updating user data: {e}")
         return False
 
+
 def get_day_data(user_id, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = '{date}'"
     return database_query(sql, True)
 
+
 def get_my_request(user_id):
     sql = f"SELECT * FROM trainer_requests WHERE id_from = {user_id} AND status = 'in process'"
     data = database_query(sql, True)
-    
+
     result = []
     for req in data:
         result.append({
@@ -114,13 +115,14 @@ def get_my_request(user_id):
             'status': req[4],
             'time': req[5]
         })
-    
+
     return result
+
 
 def get_trainer_request(user_id):
     sql = f"SELECT * FROM trainer_requests WHERE id_to = {user_id} AND status = 'in process'"
     data = database_query(sql, True)
-    
+
     result = []
     for req in data:
         result.append({
@@ -132,19 +134,21 @@ def get_trainer_request(user_id):
             'time': req[5]
         })
     return result
+
 
 def get_request(request_id):
     sql = f"SELECT * FROM trainer_requests WHERE request_id = {request_id}"
     data = database_query(sql, True)[0]
     result = {
-            'request_id': data[0],
-            'id_from': data[1],
-            'id_to': data[2],
-            'description': data[3],
-            'status': data[4],
-            'time': data[5]
+        'request_id': data[0],
+        'id_from': data[1],
+        'id_to': data[2],
+        'description': data[3],
+        'status': data[4],
+        'time': data[5]
     }
     return result
+
 
 def add_trainer_request(id_from, id_to, description):
     sql = f"""
@@ -153,9 +157,11 @@ def add_trainer_request(id_from, id_to, description):
     """
     database_query(sql)
 
+
 def update_trainer_request(request_id, status):
     sql = f"UPDATE trainer_requests SET status = '{status}' WHERE request_id = {request_id}"
     database_query(sql, True)
+
 
 def get_all_day_data(user_id):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id}"
@@ -219,11 +225,12 @@ def get_list_of_student(user_id):
         ans_list.append(int(el[0]))
     return ans_list
 
+
 def add_student(trainer_id, student_id):
     sql = f"INSERT INTO student (id, student_id) VALUES ({trainer_id}, {student_id})"
 
+
 def get_message_history(first_id, second_id, since=None):
-    
     if since:
         sql = f"""
         SELECT id_from, id_to, content, message_time
@@ -257,6 +264,7 @@ def add_message(id_from, id_to, content):
     """
     return database_query(sql)
 
+
 def get_all_trains(user_id):
     sql = f"SELECT * FROM train WHERE id = {user_id}"
     data = database_query(sql, True)
@@ -270,8 +278,10 @@ def get_all_trains(user_id):
         })
     return ans
 
+
 def update_news(news_id, title, content=None):
     database_query(f"UPDATE news SET title = '{title}', html = '{content}', date = NOW() WHERE id = '{news_id}'")
+
 
 def delete_news(news_id):
     """

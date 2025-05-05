@@ -1,21 +1,22 @@
+import os
+
 from flask import session, redirect, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SelectField, FileField, SubmitField, FloatField, TextAreaField
-from wtforms.validators import DataRequired, NumberRange, Email
-from werkzeug.utils import secure_filename
 from flask_wtf.file import FileField, FileAllowed
+from werkzeug.utils import secure_filename
+from wtforms import StringField, IntegerField, SelectField, SubmitField, FloatField, TextAreaField
+from wtforms.validators import DataRequired, NumberRange
 
-import os
-from server.database.use_DataBase import get_user_data, get_request, add_student, update_user_data, get_trainer_id, get_my_request, update_trainer_request, add_trainer_request, check_trainer, get_trainer_request, update_trainer_request
+from server.cloud.cloud_main import Cloud
+from server.database.use_DataBase import get_user_data, get_request, add_student, update_user_data, get_trainer_id, \
+    get_my_request, add_trainer_request, check_trainer, get_trainer_request, \
+    update_trainer_request
 from server.service_files.links import *
 from settings import app, UPLOAD_FOLDER
 from utils import render_template_with_user
-from datetime import datetime
-from server.cloud.cloud_main import Cloud
 
 
 class Cabinet:
-
     cloud = Cloud()
 
     @staticmethod
@@ -63,7 +64,7 @@ class Cabinet:
             avatar = Cabinet.cloud.get_url(f'''avatars/{session['user_id']}''')
             request = get_my_request(session['user_id'])
             has_request = True
-            if request == []:
+            if request:
                 has_request = False
 
             return render_template_with_user(
@@ -188,27 +189,29 @@ class Cabinet:
         if not user.get('is_trainer', False):
             flash('Только тренеры могут выполнять это действие', 'error')
             return redirect(cabinet)
-        
+
         update_trainer_request(request_id, 'approved')
         student_id = get_request(request_id)['id_from']
         add_student(session['user_id'], student_id)
         flash('Запрос успешно одобрен', 'success')
         return redirect(cabinet)
+
     @staticmethod
     def reject_request(request_id):
         if 'user_id' not in session:
             return redirect(main_page)
-        
+
         # Check if the current user is a trainer
         user = get_user_data(session['user_id'])
         if not user.get('is_trainer', False):
             flash('Только тренеры могут выполнять это действие', 'error')
             return redirect(cabinet)
-        
+
         update_trainer_request(request_id, 'rejected')
         flash('Запрос отклонен', 'success')
         return redirect(cabinet)
-    
+
+    @staticmethod
     def submit_trainer_application():
         if 'user_id' not in session:
             return redirect(main_page)
@@ -255,6 +258,7 @@ class Cabinet:
                 flash(f"{getattr(trainer_form, field).label.text}: {error}", 'error')
         return redirect(cabinet)
 
+
 # Routes
 
 
@@ -282,12 +286,17 @@ def submit_trainer_application():
 def request_trainer():
     return Cabinet.request_trainer()
 
+
 @app.route(cabinet + '/approve_request/<int:request_id>', methods=['POST'])
 def approve_request(request_id):
     return Cabinet.approve_request(request_id)
+
+
 @app.route(cabinet + '/reject_request/<int:request_id>', methods=['POST'])
 def reject_request(request_id):
     return Cabinet.reject_request(request_id)
+
+
 # Forms
 
 class ProfileForm(FlaskForm):
@@ -295,11 +304,11 @@ class ProfileForm(FlaskForm):
     name = StringField('Имя', validators=[DataRequired()])
     email = StringField('Почта', render_kw={'readonly': True})
     age = IntegerField('Возраст', validators=[
-                       DataRequired(), NumberRange(min=1, max=120)])
+        DataRequired(), NumberRange(min=1, max=120)])
     weight = FloatField('Вес (кг)', validators=[
-                        DataRequired(), NumberRange(min=30, max=300)])
+        DataRequired(), NumberRange(min=30, max=300)])
     height = IntegerField('Рост (см)', validators=[
-                          DataRequired(), NumberRange(min=100, max=250)])
+        DataRequired(), NumberRange(min=100, max=250)])
     gender = SelectField('Пол', choices=[
         ('male', 'Мужской'),
         ('female', 'Женский')
@@ -318,13 +327,13 @@ class ProfileForm(FlaskForm):
 
 class NutritionForm(FlaskForm):
     calories = IntegerField('Калории', validators=[
-                            DataRequired(), NumberRange(min=1000, max=10000)])
+        DataRequired(), NumberRange(min=1000, max=10000)])
     protein = IntegerField('Белки (г)', validators=[
-                           DataRequired(), NumberRange(min=0, max=500)])
+        DataRequired(), NumberRange(min=0, max=500)])
     fats = IntegerField('Жиры (г)', validators=[
-                        DataRequired(), NumberRange(min=0, max=500)])
+        DataRequired(), NumberRange(min=0, max=500)])
     carbs = IntegerField('Углеводы (г)', validators=[
-                         DataRequired(), NumberRange(min=0, max=1000)])
+        DataRequired(), NumberRange(min=0, max=1000)])
     submit = SubmitField('Сохранить')
 
 
