@@ -6,7 +6,7 @@ from server.database.use_DataBase import save_news_query, update_news, delete_ne
 from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user
-from server.database.use_DataBase import database_query
+from server.database.use_DataBase import database_query, check_admin
 
 from server.cloud.cloud_main import Cloud
 
@@ -14,32 +14,23 @@ from server.cloud.cloud_main import Cloud
 class News:
     @staticmethod
     def show_all_news_page():
-        if "user_id" in session:
-            header_links = choose_header_links("authorized")
-        else:
-            header_links = choose_header_links("not-authorized")
-
         sql = "SELECT id, title, picture, html FROM news ORDER BY date ASC"
         all_news = database_query(sql, fetch=True)[::-1]
         for i in range(len(all_news)):
             all_news[i] = list(all_news[i])
             id = all_news[i][0]
             all_news[i][2] = Cloud().get_url(f"news/{id}.jpg")
-            print(all_news[i])
         return render_template_with_user(
             "News/all_news.html",
-            header_links=header_links,
             title="Новости",
             news=all_news
         )
 
     @staticmethod
     def show_one_news_page(news_id):
-        if "user_id" in session:
-            header_links = choose_header_links("authorized")
-            is_admin = session.get('is_admin', False)
+        if'user_id' in session:
+            is_admin = check_admin(session["user_id"])
         else:
-            header_links = choose_header_links("not-authorized")
             is_admin = False
 
         sql = f"SELECT id, title, html FROM news WHERE id = {news_id}"
@@ -55,7 +46,6 @@ class News:
         return render_template_with_user(
             "News/one_news.html",
             title=news_title,
-            header_links=header_links,
             news_title=news_title,
             news_image_url=news_image_url,
             news_content=news_content,
@@ -65,6 +55,8 @@ class News:
 
     @staticmethod
     def show_make_news(news_id=None):
+        if "user_id" not in session or not check_admin(session["user_id"]):
+            abort(403)
         # if not session.get('is_admin'):
         #     abort(403)
 
@@ -91,8 +83,8 @@ class News:
 
     @staticmethod
     def handle_make_news():
-        # if not session.get('is_admin'):
-        #     abort(403)
+        if "user_id" not in session or not check_admin(session["user_id"]):
+             abort(403)
         news_id = request.form.get('news_id')
         edit = True
         if not news_id:
@@ -117,7 +109,7 @@ class News:
             filename = secure_filename(image.filename)
             image_path = filename
             image.save(image_path)
-            image_url = cloud.add_picture(image_path,  f"news/{news_id}.jpg")
+            cloud.upload_file(image_path,  f"news/{news_id}.jpg", replace=True)
             try:
                 os.remove(image_path)
             except OSError:
@@ -134,6 +126,8 @@ class News:
 
     @staticmethod
     def handle_delete_news(news_id):
+        if "user_id" not in session or not check_admin(session["user_id"]):
+            abort(403)
         # if not session.get('is_admin'):
         #     abort(403)
         # Cloud().
