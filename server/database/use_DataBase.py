@@ -192,9 +192,9 @@ def database_check():
     return database_query(sql, True)
 
 
-def save_news_query(news_id, title, content, image_path):
+def save_news_query(news_id, title, content):
     database_query(
-        f"""INSERT INTO news (id, title, html, date) VALUES ('{news_id}', '{title}', , '{content}', NOW())"""
+        f"""INSERT INTO news (id, title, html, date) VALUES ('{news_id}', '{title}', '{content}', NOW())"""
     )
 
 
@@ -289,3 +289,8 @@ def delete_news(news_id):
     """
     sql = f"DELETE FROM news WHERE id = {int(news_id)}"  # Приводим к int для безопасности
     database_query(sql)
+
+
+def check_admin(user_id):
+    sql = f"SELECT is_admin FROM users WHERE id = {int(user_id)}"  # Приводим к int для безопасности
+    return bool(database_query(sql)[0][0])

@@ -13,15 +13,13 @@ def data():
 
 def render_template_with_user(template_name_ot_list, **kwargs):
     kwargs["title"] = kwargs.get("title", "Главная страница")
-    kwargs["header_links"] = kwargs.get("header_links", choose_header_links("not-authorized"))
+    kwargs["header_links"] = kwargs.get("header_links", choose_header_links("not-authorized") if 'user_id' in session else choose_header_links("not-authorized"))
     return render_template(
         template_name_ot_list,
         data=data(),
         # header_links=choose_header_links("not-authorized"),
         **kwargs  # Передаем именованные аргументы
     )
-
-
 
 # debug stuff
 
