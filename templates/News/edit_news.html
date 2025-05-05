@@ -1,0 +1,39 @@
+{% extends "Base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../../static/assets/css/style_editor.css">
+
+<div class="editor-container">
+    <h1>Редактирование новости</h1>
+    <form action="{{ url_for('handle_make_news') }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="news_id" value="{{ news_id }}">
+
+        <div class="form-group">
+            <label for="news-title">Заголовок новости:</label>
+            <input type="text" id="news-title" name="news-title" value="{{ news_title }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="news-content">Текст новости:</label>
+            <textarea id="news-content" name="news-content" rows="10" required>{{ news_content }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="news-image">Изображение новости:</label>
+            <input type="file" id="news-image" name="news-image" accept="image/*">
+            {% if news_image_url %}
+                <div class="current-image">
+                    <p>Текущее изображение:</p>
+                    <img src="{{ news_image_url }}" alt="Current News Image" style="max-width: 200px;">
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="submit-button">Сохранить изменения</button>
+            <a href="{{ url_for('open_one_news_page', news_id=news_id) }}" class="cancel-button">Отмена</a>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

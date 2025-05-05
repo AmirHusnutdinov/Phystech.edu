@@ -1,14 +1,91 @@
 {% extends "Base.html" %}
 
 {% block content %}
-<link rel="stylesheet" href="../../static/assets/css/style_one_news.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style_one_news.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <div class="news-detail">
     <div class="news-header">
+        {# Кнопки действий в правом верхнем углу #}
+        {% if data["Login"] %}
+        <div class="news-action-buttons">
+            <a href="{{ url_for('edit_news_page', news_id=news_id) }}" class="action-btn edit-btn" title="Редактировать">
+                <i class="fas fa-pencil-alt"></i>
+            </a>
+            <form action="{{ url_for('delete_news_page', news_id=news_id) }}" method="POST" class="delete-form">
+                <input type="hidden" name="news_id" value="{{ news_id }}">
+                <button type="submit" class="action-btn delete-btn" title="Удалить" onclick="return confirm('Вы уверены, что хотите удалить эту новость?')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </form>
+        </div>
+        {% endif %}
+
         <h1 class="news-title fade-in-up">{{ news_title }}</h1>
-        <img src="{{ news_image_url }}" alt="News Image" class="news-image fade-in-up">
+        {% if news_image_url is not none %}
+        <div class="news-image-container fade-in-up">
+            <img src="{{ news_image_url }}" alt="News Image" class="news-image"
+                 onerror="this.onerror=null; this.style.display='none';">
+        </div>
+        {% endif %}
     </div>
+
     <div class="news-content fade-in-up">
         {{ news_content | safe }}
     </div>
 </div>
+
+<style>
+    /* Стили для кнопок действий */
+    .news-action-buttons {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 10px;
+        z-index: 10;
+    }
+
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .edit-btn {
+        background-color: #4CAF50;
+    }
+
+    .edit-btn:hover {
+        background-color: #45a049;
+        transform: scale(1.1);
+    }
+
+    .delete-btn {
+        background-color: #f44336;
+    }
+
+    .delete-btn:hover {
+        background-color: #d32f2f;
+        transform: scale(1.1);
+    }
+
+    .delete-form {
+        margin: 0;
+        padding: 0;
+    }
+
+    .news-header {
+        position: relative;
+    }
+</style>
 {% endblock %}
