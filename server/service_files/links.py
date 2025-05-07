@@ -1,27 +1,28 @@
 base_link = ""
-admin = base_link + '/admin'
-authorization = base_link + '/authorization'
-registration = base_link + '/registration'
-calendar = base_link + '/calendar'
-main_page = base_link + '/'
-day_plan = base_link + '/day_plan'
-selected_products = base_link + '/selected_products'
-answers = base_link + '/answers'
-cabinet = base_link + '/cabinet'
-all_news = base_link + '/all_news'
-one_news = base_link + '/one_news/<int:news_id>'
-make_news = base_link + '/make_news/'
-save_news = base_link + '/save_news/'
-add_product = base_link + '/add_product'
-add_recipes = base_link + '/add_recipes'
-physical_exercises = base_link + '/physical_exercises'
+admin = base_link + "/admin"
+authorization = base_link + "/authorization"
+registration = base_link + "/registration"
+calendar = base_link + "/calendar"
+main_page = base_link + "/"
+day_plan = base_link + "/day_plan"
+selected_products = base_link + "/selected_products"
+answers = base_link + "/answers"
+cabinet = base_link + "/cabinet"
+all_news = base_link + "/all_news"
+one_news = base_link + "/one_news/<int:news_id>"
+make_news = base_link + "/make_news/"
+save_news = base_link + "/save_news/"
+add_product = base_link + "/add_product"
+add_recipes = base_link + "/add_recipes"
+physical_exercises = base_link + "/physical_exercises"
 save_day_plan = "/day_plan/save_day_plan"
-process_registration = base_link + '/process_registration'
-confirm_code = base_link + '/confirm_code'
-process_login = base_link + '/process_login'
-logout = base_link + '/logout'
-all_students = base_link + '/all_students'
-student = base_link + '/student/<int:student_id>'
+process_registration = base_link + "/process_registration"
+confirm_code = base_link + "/confirm_code"
+process_login = base_link + "/process_login"
+logout = base_link + "/logout"
+all_students = base_link + "/all_students"
+student = base_link + "/student/<int:student_id>"
+process_registration = base_link + "/process_registration"
 
 
 def choose_header_links(role):
@@ -33,7 +34,7 @@ def choose_header_links(role):
             "calendar": calendar,
             "cabinet": cabinet,
             "all_news": all_news,
-            "all_students": all_students
+            "all_students": all_students,
         }
     elif role == "not-authorized":
         return {

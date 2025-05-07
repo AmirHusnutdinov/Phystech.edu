@@ -17,22 +17,14 @@ from wtforms.validators import DataRequired, NumberRange
 from server.cloud.cloud_main import Cloud
 from server.database.use_DataBase import (
     get_user_data,
-    get_request,
-    add_student,
     update_user_data,
-    get_trainer_id,
-    get_my_request,
-    add_trainer_request,
-    check_trainer,
-    get_trainer_request,
-    update_trainer_request,
 )
 from server.service_files.links import *
 from settings import app, UPLOAD_FOLDER
 from utils import render_template_with_user
 
 
-class Cabinet:
+class ProcessRegistration:
     cloud = Cloud()
 
     @staticmethod
@@ -60,8 +52,6 @@ class Cabinet:
     def show_cabinet_page():
         if "user_id" in session:
             user = get_user_data(session["user_id"])
-            if not user["is_activated"]:
-                return redirect(process_registration)
             profile_form = ProfileForm(obj=user)
             nutrition_form = NutritionForm(obj=user)
             trainer_form = TrainerApplicationForm(obj=user)
