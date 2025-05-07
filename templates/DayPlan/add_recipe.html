@@ -1,4 +1,1529 @@
-{% extends "Base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
+<div class="recipe-form-container">
+    <div class="page-header">
+        <h1 class="page-title">Добавить новое блюдо</h1>
+        <div class="header-decoration">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <form id="recipe-form" action="/add-recipes" method="post" class="recipe-form">
+        <div class="form-group dish-name-group">
+            <label for="dish-name">Название блюда</label>
+            <div class="input-wrapper">
+                <input type="text" id="dish-name" name="dish_name" required class="form-control"
+                       placeholder="Введите название блюда">
+                <div class="input-focus-effect"></div>
+            </div>
+        </div>
+
+        <div class="form-group ingredients-group">
+            <label>Ингредиенты</label>
+            <div class="ingredients-search-container">
+                <div class="input-wrapper search-wrapper">
+                    <input type="text" id="ingredient-search" class="form-control" placeholder="Поиск ингредиентов...">
+                    <div class="input-focus-effect"></div>
+                    <button type="button" id="search-btn" class="btn search-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="ingredients-list-container">
+                <div id="ingredients-list" class="ingredients-list">
+                    <!-- Ingredients will be loaded here -->
+                </div>
+            </div>
+
+            <div class="selected-ingredients-container">
+                <h3>Выбранные ингредиенты</h3>
+                <div id="selected-ingredients" class="selected-ingredients">
+                    <!-- Selected ingredients will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group nutrition-summary">
+            <h3>Итоговая пищевая ценность блюда</h3>
+            <div class="nutrition-grid">
+                <div class="nutrition-item">
+                    <div class="nutrition-icon calories-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v20M2 12h20"></path>
+                        </svg>
+                    </div>
+                    <span class="nutrition-label">Калории</span>
+                    <div class="nutrition-value-container">
+                        <span id="total-calories" class="nutrition-value">0</span>
+                        <span class="nutrition-unit">ккал</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar calories-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="nutrition-item">
+                    <div class="nutrition-icon proteins-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                            <line x1="6" y1="1" x2="6" y2="4"></line>
+                            <line x1="10" y1="1" x2="10" y2="4"></line>
+                            <line x1="14" y1="1" x2="14" y2="4"></line>
+                        </svg>
+                    </div>
+                    <span class="nutrition-label">Белки</span>
+                    <div class="nutrition-value-container">
+                        <span id="total-proteins" class="nutrition-value">0</span>
+                        <span class="nutrition-unit">г</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar proteins-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="nutrition-item">
+                    <div class="nutrition-icon fats-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <span class="nutrition-label">Жиры</span>
+                    <div class="nutrition-value-container">
+                        <span id="total-fats" class="nutrition-value">0</span>
+                        <span class="nutrition-unit">г</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar fats-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="nutrition-item">
+                    <div class="nutrition-icon carbs-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <span class="nutrition-label">Углеводы</span>
+                    <div class="nutrition-value-container">
+                        <span id="total-carbs" class="nutrition-value">0</span>
+                        <span class="nutrition-unit">г</span>
+                    </div>
+                    <div class="nutrition-progress">
+                        <div class="nutrition-progress-bar carbs-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="ingredient-ids" name="ingredient_ids" value="">
+        <input type="hidden" id="ingredient-weights" name="ingredient_weights" value="">
+
+        <div class="form-actions">
+            <button type="submit" class="btn submit-btn">
+                <span class="btn-text">Добавить блюдо</span>
+                <span class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
+                </span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mock data for ingredients (in a real app, this would come from the server)
+        const mockIngredients = [
+            { id: 1, name: 'Куриная грудка', calories: 165, proteins: 31, fats: 3.6, carbs: 0 },
+            { id: 2, name: 'Рис', calories: 130, proteins: 2.7, fats: 0.3, carbs: 28 },
+            { id: 3, name: 'Морковь', calories: 41, proteins: 0.9, fats: 0.2, carbs: 9.6 },
+            { id: 4, name: 'Лук', calories: 40, proteins: 1.1, fats: 0.1, carbs: 9.3 },
+            { id: 5, name: 'Оливковое масло', calories: 884, proteins: 0, fats: 100, carbs: 0 },
+            { id: 6, name: 'Томаты', calories: 18, proteins: 0.9, fats: 0.2, carbs: 3.9 },
+            { id: 7, name: 'Огурцы', calories: 15, proteins: 0.8, fats: 0.1, carbs: 3.6 },
+            { id: 8, name: 'Гречка', calories: 343, proteins: 12.6, fats: 3.3, carbs: 71.5 },
+            { id: 9, name: 'Творог', calories: 103, proteins: 18, fats: 2, carbs: 3 },
+            { id: 10, name: 'Яйцо', calories: 157, proteins: 12.7, fats: 11.5, carbs: 0.7 }
+        ];
+
+        const selectedIngredients = [];
+        const ingredientsList = document.getElementById('ingredients-list');
+        const selectedIngredientsList = document.getElementById('selected-ingredients');
+        const searchInput = document.getElementById('ingredient-search');
+        const searchBtn = document.getElementById('search-btn');
+
+        // Add staggered animation to the form groups
+        const formGroups = document.querySelectorAll('.form-group');
+        formGroups.forEach((group, index) => {
+            setTimeout(() => {
+                group.classList.add('animate-in');
+            }, 100 * index);
+        });
+
+        // Display all ingredients initially with staggered animation
+        displayIngredients(mockIngredients);
+
+        // Search functionality
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredIngredients = mockIngredients.filter(ingredient =>
+                ingredient.name.toLowerCase().includes(searchTerm)
+            );
+
+            // Add search animation
+            ingredientsList.classList.add('searching');
+            setTimeout(() => {
+                displayIngredients(filteredIngredients);
+                ingredientsList.classList.remove('searching');
+            }, 300);
+        }
+
+        function displayIngredients(ingredients) {
+            ingredientsList.innerHTML = '';
+
+            if (ingredients.length === 0) {
+                ingredientsList.innerHTML = '<p class="no-results">Ингредиенты не найдены</p>';
+                return;
+            }
+
+            ingredients.forEach((ingredient, index) => {
+                const ingredientCard = document.createElement('div');
+                ingredientCard.className = 'ingredient-card';
+                ingredientCard.dataset.id = ingredient.id;
+
+                ingredientCard.innerHTML = `
+                    <div class="ingredient-info">
+                        <h4>${ingredient.name}</h4>
+                        <div class="ingredient-nutrition">
+                            <span class="calories">${ingredient.calories} ккал</span>
+                            <div class="nutrition-details">
+                                <span class="protein">Б: ${ingredient.proteins}г</span>
+                                <span class="fat">Ж: ${ingredient.fats}г</span>
+                                <span class="carb">У: ${ingredient.carbs}г</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn add-ingredient-btn">
+                        <span class="btn-icon">+</span>
+                        <span class="btn-ripple"></span>
+                    </button>
+                `;
+
+                // Add staggered animation
+                setTimeout(() => {
+                    ingredientsList.appendChild(ingredientCard);
+                    ingredientCard.classList.add('card-appear');
+                }, 50 * index);
+
+                // Add click event to add ingredient after animation
+                setTimeout(() => {
+                    const addBtn = ingredientCard.querySelector('.add-ingredient-btn');
+                    addBtn.addEventListener('click', function(e) {
+                        // Add ripple effect
+                        const ripple = this.querySelector('.btn-ripple');
+                        ripple.classList.add('active');
+                        setTimeout(() => {
+                            ripple.classList.remove('active');
+                        }, 500);
+
+                        addIngredient(ingredient);
+                    });
+                }, 50 * index + 100);
+            });
+        }
+
+        function addIngredient(ingredient) {
+            // Check if ingredient is already added
+            const existingIndex = selectedIngredients.findIndex(item => item.ingredient.id === ingredient.id);
+
+            if (existingIndex !== -1) {
+                // If already exists, just update the weight
+                selectedIngredients[existingIndex].weight += 100;
+                updateSelectedIngredientsDisplay();
+            } else {
+                // Add new ingredient with default weight of 100g
+                selectedIngredients.push({
+                    ingredient: ingredient,
+                    weight: 100
+                });
+
+                // Create and add the selected ingredient element
+                const selectedIngredientEl = document.createElement('div');
+                selectedIngredientEl.className = 'selected-ingredient';
+                selectedIngredientEl.dataset.id = ingredient.id;
+
+                selectedIngredientEl.innerHTML = `
+                    <div class="selected-ingredient-info">
+                        <h4>${ingredient.name}</h4>
+                        <div class="weight-control">
+                            <button type="button" class="btn weight-btn decrease-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                            <input type="number" class="weight-input" value="100" min="1" max="5000">
+                            <span class="weight-unit">г</span>
+                            <button type="button" class="btn weight-btn increase-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn remove-ingredient-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                `;
+
+                selectedIngredientsList.appendChild(selectedIngredientEl);
+
+                // Add entrance animation
+                selectedIngredientEl.classList.add('slide-in-right');
+
+                // Add event listeners for weight control and removal
+                const decreaseBtn = selectedIngredientEl.querySelector('.decrease-btn');
+                const increaseBtn = selectedIngredientEl.querySelector('.increase-btn');
+                const weightInput = selectedIngredientEl.querySelector('.weight-input');
+                const removeBtn = selectedIngredientEl.querySelector('.remove-ingredient-btn');
+
+                decreaseBtn.addEventListener('click', function() {
+                    const currentWeight = parseInt(weightInput.value);
+                    if (currentWeight > 10) {
+                        weightInput.value = currentWeight - 10;
+                        weightInput.classList.add('pulse');
+                        setTimeout(() => {
+                            weightInput.classList.remove('pulse');
+                        }, 300);
+                        updateIngredientWeight(ingredient.id, currentWeight - 10);
+                    }
+                });
+
+                increaseBtn.addEventListener('click', function() {
+                    const currentWeight = parseInt(weightInput.value);
+                    weightInput.value = currentWeight + 10;
+                    weightInput.classList.add('pulse');
+                    setTimeout(() => {
+                        weightInput.classList.remove('pulse');
+                    }, 300);
+                    updateIngredientWeight(ingredient.id, currentWeight + 10);
+                });
+
+                weightInput.addEventListener('change', function() {
+                    const newWeight = parseInt(weightInput.value);
+                    if (newWeight < 1) weightInput.value = 1;
+                    if (newWeight > 5000) weightInput.value = 5000;
+                    updateIngredientWeight(ingredient.id, parseInt(weightInput.value));
+                });
+
+                removeBtn.addEventListener('click', function() {
+                    removeIngredient(ingredient.id);
+                });
+            }
+
+            updateNutritionTotals();
+            updateHiddenFields();
+        }
+
+        function updateIngredientWeight(ingredientId, newWeight) {
+            const index = selectedIngredients.findIndex(item => item.ingredient.id === ingredientId);
+            if (index !== -1) {
+                selectedIngredients[index].weight = newWeight;
+                updateNutritionTotals();
+                updateHiddenFields();
+            }
+        }
+
+        function removeIngredient(ingredientId) {
+            const index = selectedIngredients.findIndex(item => item.ingredient.id === ingredientId);
+            if (index !== -1) {
+                selectedIngredients.splice(index, 1);
+
+                const elementToRemove = selectedIngredientsList.querySelector(`[data-id="${ingredientId}"]`);
+                if (elementToRemove) {
+                    // Add exit animation
+                    elementToRemove.classList.add('slide-out-right');
+                    setTimeout(() => {
+                        selectedIngredientsList.removeChild(elementToRemove);
+                    }, 500);
+                }
+
+                updateNutritionTotals();
+                updateHiddenFields();
+            }
+        }
+
+        function updateSelectedIngredientsDisplay() {
+            selectedIngredients.forEach(item => {
+                const el = selectedIngredientsList.querySelector(`[data-id="${item.ingredient.id}"]`);
+                if (el) {
+                    const weightInput = el.querySelector('.weight-input');
+                    weightInput.value = item.weight;
+                    weightInput.classList.add('pulse');
+                    setTimeout(() => {
+                        weightInput.classList.remove('pulse');
+                    }, 300);
+                }
+            });
+        }
+
+        function updateNutritionTotals() {
+            let totalCalories = 0;
+            let totalProteins = 0;
+            let totalFats = 0;
+            let totalCarbs = 0;
+
+            selectedIngredients.forEach(item => {
+                const weightFactor = item.weight / 100; // Convert to percentage of 100g
+                totalCalories += item.ingredient.calories * weightFactor;
+                totalProteins += item.ingredient.proteins * weightFactor;
+                totalFats += item.ingredient.fats * weightFactor;
+                totalCarbs += item.ingredient.carbs * weightFactor;
+            });
+
+            // Update the display with animation
+            animateNutritionValue('total-calories', totalCalories.toFixed(1));
+            animateNutritionValue('total-proteins', totalProteins.toFixed(1));
+            animateNutritionValue('total-fats', totalFats.toFixed(1));
+            animateNutritionValue('total-carbs', totalCarbs.toFixed(1));
+
+            // Update progress bars
+            // Assuming some max values for visualization purposes
+            const maxCalories = 2000;
+            const maxProteins = 100;
+            const maxFats = 70;
+            const maxCarbs = 300;
+
+            updateProgressBar('calories-bar', totalCalories / maxCalories * 100);
+            updateProgressBar('proteins-bar', totalProteins / maxProteins * 100);
+            updateProgressBar('fats-bar', totalFats / maxFats * 100);
+            updateProgressBar('carbs-bar', totalCarbs / maxCarbs * 100);
+        }
+
+        function updateProgressBar(barClass, percentage) {
+            const bar = document.querySelector(`.${barClass}`);
+            const capped = Math.min(percentage, 100); // Cap at 100%
+
+            // Animate the progress bar
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.transition = 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                bar.style.width = `${capped}%`;
+            }, 50);
+        }
+
+        function animateNutritionValue(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            const currentValue = parseFloat(element.textContent);
+            const newValueFloat = parseFloat(newValue);
+
+            // If the change is significant, animate it
+            if (Math.abs(currentValue - newValueFloat) > 0.1) {
+                element.classList.add('value-updating');
+
+                setTimeout(() => {
+                    element.textContent = newValue;
+                    element.classList.remove('value-updating');
+                    element.classList.add('value-updated');
+
+                    setTimeout(() => {
+                        element.classList.remove('value-updated');
+                    }, 500);
+                }, 300);
+            } else {
+                element.textContent = newValue;
+            }
+        }
+
+        function updateHiddenFields() {
+            const ingredientIds = selectedIngredients.map(item => item.ingredient.id).join(',');
+            const ingredientWeights = selectedIngredients.map(item => item.weight).join(',');
+
+            document.getElementById('ingredient-ids').value = ingredientIds;
+            document.getElementById('ingredient-weights').value = ingredientWeights;
+        }
+
+        // Form submission
+        document.getElementById('recipe-form').addEventListener('submit', function(event) {
+            if (selectedIngredients.length === 0) {
+                event.preventDefault();
+
+                // Show error animation
+                const ingredientsGroup = document.querySelector('.ingredients-group');
+                ingredientsGroup.classList.add('shake-error');
+                setTimeout(() => {
+                    ingredientsGroup.classList.remove('shake-error');
+                }, 600);
+
+                return false;
+            }
+
+            // Add submission animation
+            const submitBtn = document.querySelector('.submit-btn');
+            submitBtn.classList.add('submitting');
+            submitBtn.querySelector('.btn-text').textContent = 'Добавление...';
+
+            // In a real app, you would submit the form here
+            // For this demo, we'll just simulate a submission
+            if (document.getElementById('dish-name').value.trim() === '') {
+                event.preventDefault();
+                submitBtn.classList.remove('submitting');
+                submitBtn.querySelector('.btn-text').textContent = 'Добавить блюдо';
+
+                // Show error animation
+                const dishNameGroup = document.querySelector('.dish-name-group');
+                dishNameGroup.classList.add('shake-error');
+                setTimeout(() => {
+                    dishNameGroup.classList.remove('shake-error');
+                }, 600);
+
+                return false;
+            }
+
+            // Form is valid, let it submit
+        });
+
+        // Add floating effect to nutrition items
+        const nutritionItems = document.querySelectorAll('.nutrition-item');
+        nutritionItems.forEach((item, index) => {
+            // Add staggered floating animation
+            item.style.animationDelay = `${index * 0.2}s`;
+            item.classList.add('floating');
+        });
+    });
+</script>
+
+<style>
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    /* Base styles */
+    :root {
+        /* Colors */
+        --primary-color: #1e88e5;
+        --primary-light: #64b5f6;
+        --primary-dark: #0d47a1;
+        --primary-gradient: linear-gradient(135deg, #42a5f5, #1976d2);
+        --secondary-color: #03a9f4;
+        --accent-color: #00bcd4;
+        --text-color: #333;
+        --text-light: #757575;
+        --bg-color: #fff;
+        --bg-light: #f5f8fa;
+        --bg-card: #fff;
+        --border-color: #e0e0e0;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --shadow-hover: rgba(0, 0, 0, 0.15);
+        --success-color: #4caf50;
+        --error-color: #f44336;
+        --warning-color: #ff9800;
+
+        /* Typography */
+        --font-primary: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        --font-mono: 'Roboto Mono', monospace;
+        --font-size-xs: 0.75rem;
+        --font-size-sm: 0.875rem;
+        --font-size-md: 1rem;
+        --font-size-lg: 1.125rem;
+        --font-size-xl: 1.25rem;
+        --font-size-2xl: 1.5rem;
+        --font-size-3xl: 1.875rem;
+        --font-size-4xl: 2.25rem;
+        --font-size-5xl: 3rem;
+        --line-height-tight: 1.2;
+        --line-height-normal: 1.5;
+        --line-height-relaxed: 1.75;
+        --letter-spacing-tight: -0.025em;
+        --letter-spacing-normal: 0;
+        --letter-spacing-wide: 0.025em;
+        --letter-spacing-wider: 0.05em;
+
+        /* Spacing */
+        --spacing-1: 0.25rem;
+        --spacing-2: 0.5rem;
+        --spacing-3: 0.75rem;
+        --spacing-4: 1rem;
+        --spacing-5: 1.25rem;
+        --spacing-6: 1.5rem;
+        --spacing-8: 2rem;
+        --spacing-10: 2.5rem;
+        --spacing-12: 3rem;
+
+        /* Other */
+        --transition-speed: 0.3s;
+        --border-radius: 12px;
+        --card-border-radius: 16px;
+        --button-border-radius: 8px;
+    }
+
+    .dark-theme {
+        --primary-color: #2196f3;
+        --primary-light: #64b5f6;
+        --primary-dark: #1565c0;
+        --primary-gradient: linear-gradient(135deg, #2196f3, #0d47a1);
+        --secondary-color: #03a9f4;
+        --accent-color: #00bcd4;
+        --text-color: #e0e0e0;
+        --text-light: #9e9e9e;
+        --bg-color: #121212;
+        --bg-light: #1e1e1e;
+        --bg-card: #242424;
+        --border-color: #333;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+        --shadow-hover: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Apply base typography */
+    body {
+        font-family: var(--font-primary);
+        line-height: var(--line-height-normal);
+        color: var(--text-color);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-secondary);
+        font-weight: 600;
+        line-height: var(--line-height-tight);
+        letter-spacing: var(--letter-spacing-tight);
+        margin: 0;
+    }
+
+    p {
+        margin: 0 0 var(--spacing-4) 0;
+    }
+
+    /* Container styles */
+    .recipe-form-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 2.5rem;
+        background-color: var(--bg-color);
+        border-radius: var(--border-radius);
+        box-shadow: 0 10px 30px var(--shadow-color);
+        transition: all var(--transition-speed) ease;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .recipe-form-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 6px;
+        background: var(--primary-gradient);
+    }
+
+    /* Page header */
+    .page-header {
+        text-align: center;
+        margin-bottom: var(--spacing-10);
+        position: relative;
+    }
+
+    .page-title {
+        color: var(--primary-color);
+        font-size: var(--font-size-4xl);
+        font-weight: 700;
+        margin-bottom: var(--spacing-4);
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: titleGlow 2s ease-in-out infinite alternate;
+        letter-spacing: var(--letter-spacing-tight);
+    }
+
+    .header-decoration {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .header-decoration span {
+        display: block;
+        height: 4px;
+        border-radius: 2px;
+        background: var(--primary-gradient);
+    }
+
+    .header-decoration span:nth-child(1) {
+        width: 30px;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .header-decoration span:nth-child(2) {
+        width: 60px;
+        animation: pulse 2s ease-in-out 0.3s infinite;
+    }
+
+    .header-decoration span:nth-child(3) {
+        width: 30px;
+        animation: pulse 2s ease-in-out 0.6s infinite;
+    }
+
+    /* Form styles */
+    .recipe-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-10);
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .form-group.animate-in {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .form-group label {
+        font-family: var(--font-secondary);
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: var(--font-size-lg);
+        position: relative;
+        display: inline-block;
+        margin-left: var(--spacing-2);
+        letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .form-group label::before {
+        content: '';
+        position: absolute;
+        left: -0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 16px;
+        background: var(--primary-color);
+        border-radius: 2px;
+    }
+
+    .input-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: var(--spacing-4) var(--spacing-5);
+        border: 1px solid var(--border-color);
+        border-radius: var(--button-border-radius);
+        font-size: var(--font-size-md);
+        font-family: var(--font-primary);
+        background-color: var(--bg-light);
+        color: var(--text-color);
+        transition: all var(--transition-speed) ease;
+        box-shadow: 0 2px 5px var(--shadow-color);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+    }
+
+    .input-focus-effect {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+        transform-origin: left;
+    }
+
+    .form-control:focus ~ .input-focus-effect {
+        transform: scaleX(1);
+    }
+
+    /* Ingredients search */
+    .ingredients-search-container {
+        display: flex;
+        gap: var(--spacing-2);
+    }
+
+    .search-wrapper {
+        flex: 1;
+        display: flex;
+    }
+
+    .search-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all var(--transition-speed) ease;
+        z-index: 2;
+    }
+
+    .search-btn:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-50%) scale(1.05);
+    }
+
+    /* Ingredients list */
+    .ingredients-list-container {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid var(--border-color);
+        border-radius: var(--card-border-radius);
+        background-color: var(--bg-light);
+        padding: var(--spacing-5);
+        margin-top: var(--spacing-2);
+        box-shadow: inset 0 2px 5px var(--shadow-color);
+        transition: all var(--transition-speed) ease;
+    }
+
+    .ingredients-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: var(--spacing-4);
+        transition: all 0.3s ease;
+    }
+
+    .ingredients-list.searching {
+        opacity: 0.5;
+        transform: scale(0.98);
+    }
+
+    .ingredient-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-5);
+        background-color: var(--bg-card);
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 4px 10px var(--shadow-color);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        opacity: 0;
+        transform: translateY(20px);
+        border-left: 3px solid var(--primary-color);
+    }
+
+    .ingredient-card.card-appear {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .ingredient-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 8px 15px var(--shadow-hover);
+    }
+
+    .ingredient-info {
+        flex: 1;
+    }
+
+    .ingredient-info h4 {
+        margin: 0 0 var(--spacing-2) 0;
+        color: var(--text-color);
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+    }
+
+    .ingredient-nutrition {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-1);
+    }
+
+    .calories {
+        font-weight: 600;
+        color: var(--primary-color);
+        font-size: var(--font-size-md);
+    }
+
+    .nutrition-details {
+        display: flex;
+        gap: var(--spacing-3);
+        font-size: var(--font-size-sm);
+        color: var(--text-light);
+        font-family: var(--font-secondary);
+    }
+
+    .protein {
+        color: #2196f3;
+    }
+
+    .fat {
+        color: #ff9800;
+    }
+
+    .carb {
+        color: #4caf50;
+    }
+
+    .add-ingredient-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: var(--font-size-xl);
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .add-ingredient-btn:hover {
+        background-color: var(--primary-dark);
+        transform: scale(1.1) rotate(90deg);
+    }
+
+    .btn-ripple {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+    }
+
+    .btn-ripple.active {
+        animation: ripple 0.5s ease-out;
+    }
+
+    /* Selected ingredients */
+    .selected-ingredients-container {
+        margin-top: var(--spacing-6);
+        background-color: var(--bg-light);
+        padding: var(--spacing-6);
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 4px 15px var(--shadow-color);
+    }
+
+    .selected-ingredients-container h3 {
+        margin-top: 0;
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-light);
+        padding-bottom: var(--spacing-3);
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+        letter-spacing: var(--letter-spacing-tight);
+    }
+
+    .selected-ingredients {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-4);
+        margin-top: var(--spacing-4);
+    }
+
+    .selected-ingredient {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-4) var(--spacing-5);
+        background-color: var(--bg-card);
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 3px 8px var(--shadow-color);
+        transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border-left: 4px solid var(--primary-color);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .selected-ingredient::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, var(--primary-color), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .selected-ingredient:hover::before {
+        opacity: 0.05;
+    }
+
+    .selected-ingredient-info {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .selected-ingredient-info h4 {
+        margin: 0;
+        color: var(--text-color);
+        font-size: var(--font-size-lg);
+        font-weight: 500;
+    }
+
+    .weight-control {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
+        background-color: var(--bg-light);
+        padding: var(--spacing-1) var(--spacing-3);
+        border-radius: 20px;
+        box-shadow: 0 2px 5px var(--shadow-color);
+    }
+
+    .weight-input {
+        width: 60px;
+        padding: var(--spacing-1);
+        text-align: center;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        background-color: var(--bg-card);
+        color: var(--text-color);
+        font-family: var(--font-mono);
+        font-size: var(--font-size-md);
+        transition: all 0.3s ease;
+    }
+
+    .weight-input.pulse {
+        animation: pulse 0.3s ease;
+    }
+
+    .weight-unit {
+        color: var(--text-light);
+        font-size: var(--font-size-sm);
+        font-family: var(--font-secondary);
+    }
+
+    .weight-btn {
+        background-color: var(--bg-card);
+        color: var(--primary-color);
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 0;
+    }
+
+    .weight-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .weight-btn:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .remove-ingredient-btn {
+        background-color: var(--error-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        margin-left: var(--spacing-2);
+    }
+
+    .remove-ingredient-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .remove-ingredient-btn:hover {
+        transform: scale(1.1) rotate(90deg);
+        background-color: #d32f2f;
+    }
+
+    /* Nutrition summary */
+    .nutrition-summary {
+        background-color: var(--bg-light);
+        padding: var(--spacing-8);
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 8px 20px var(--shadow-color);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nutrition-summary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(33, 150, 243, 0.05), transparent);
+        z-index: 0;
+    }
+
+    .nutrition-summary h3 {
+        margin-top: 0;
+        text-align: center;
+        color: var(--primary-color);
+        font-size: var(--font-size-2xl);
+        position: relative;
+        z-index: 1;
+        font-weight: 600;
+        letter-spacing: var(--letter-spacing-tight);
+    }
+
+    .nutrition-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: var(--spacing-6);
+        margin-top: var(--spacing-6);
+        position: relative;
+        z-index: 1;
+    }
+
+    .nutrition-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: var(--spacing-6);
+        background-color: var(--bg-card);
+        border-radius: var(--card-border-radius);
+        box-shadow: 0 5px 15px var(--shadow-color);
+        transition: all 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nutrition-item.floating {
+        animation: floating 3s ease-in-out infinite;
+    }
+
+    .nutrition-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-bottom: var(--spacing-4);
+        background-color: rgba(33, 150, 243, 0.1);
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+    }
+
+    .nutrition-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .calories-icon {
+        background-color: rgba(33, 150, 243, 0.1);
+        color: #2196f3;
+    }
+
+    .proteins-icon {
+        background-color: rgba(3, 169, 244, 0.1);
+        color: #03a9f4;
+    }
+
+    .fats-icon {
+        background-color: rgba(255, 152, 0, 0.1);
+        color: #ff9800;
+    }
+
+    .carbs-icon {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+    }
+
+    .nutrition-item:hover .nutrition-icon {
+        transform: scale(1.1);
+    }
+
+    .nutrition-label {
+        font-size: var(--font-size-md);
+        color: var(--text-light);
+        margin-bottom: var(--spacing-2);
+        font-family: var(--font-secondary);
+        font-weight: 500;
+        letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .nutrition-value-container {
+        display: flex;
+        align-items: baseline;
+        gap: var(--spacing-1);
+        margin-bottom: var(--spacing-4);
+    }
+
+    .nutrition-value {
+        font-size: var(--font-size-3xl);
+        font-weight: 700;
+        color: var(--primary-color);
+        transition: all 0.5s ease;
+        font-family: var(--font-secondary);
+        letter-spacing: var(--letter-spacing-tight);
+    }
+
+    .nutrition-unit {
+        font-size: var(--font-size-md);
+        color: var(--text-light);
+        font-family: var(--font-secondary);
+    }
+
+    .nutrition-progress {
+        width: 100%;
+        height: 6px;
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+        overflow: hidden;
+    }
+
+    .nutrition-progress-bar {
+        height: 100%;
+        border-radius: 3px;
+        width: 0;
+    }
+
+    .calories-bar {
+        background-color: #2196f3;
+    }
+
+    .proteins-bar {
+        background-color: #03a9f4;
+    }
+
+    .fats-bar {
+        background-color: #ff9800;
+    }
+
+    .carbs-bar {
+        background-color: #4caf50;
+    }
+
+    /* Form actions */
+    .form-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: var(--spacing-8);
+    }
+
+    .submit-btn {
+        background: var(--primary-gradient);
+        color: white;
+        border: none;
+        border-radius: var(--button-border-radius);
+        padding: var(--spacing-4) var(--spacing-10);
+        font-size: var(--font-size-lg);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-3);
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+        font-family: var(--font-secondary);
+        letter-spacing: var(--letter-spacing-wide);
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-icon svg {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    .submit-btn:hover .btn-icon svg {
+        transform: translateY(3px);
+    }
+
+    .submitting {
+        background: var(--primary-color);
+    }
+
+    .submitting .btn-icon svg {
+        animation: bounce 1s infinite;
+    }
+
+    /* Animations */
+    @keyframes ripple {
+        0% {
+            width: 0;
+            height: 0;
+            opacity: 0.5;
+        }
+        100% {
+            width: 200px;
+            height: 200px;
+            opacity: 0;
+        }
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes floating {
+        0% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-5px);
+        }
+        60% {
+            transform: translateY(-3px);
+        }
+    }
+
+    @keyframes titleGlow {
+        0% {
+            text-shadow: 0 0 5px rgba(33, 150, 243, 0.1);
+        }
+        100% {
+            text-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+        }
+    }
+
+    .slide-in-right {
+        animation: slideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .slide-out-right {
+        animation: slideOutRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideOutRight {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+    }
+
+    .value-updating {
+        animation: valueOut 0.3s ease forwards;
+    }
+
+    .value-updated {
+        animation: valueIn 0.5s ease forwards;
+    }
+
+    @keyframes valueOut {
+        from {
+            opacity: 1;
+            transform: scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+    }
+
+    @keyframes valueIn {
+        from {
+            opacity: 0;
+            transform: scale(1.2);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .shake-error {
+        animation: shakeError 0.6s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shakeError {
+        10%, 90% {
+            transform: translateX(-1px);
+        }
+        20%, 80% {
+            transform: translateX(2px);
+        }
+        30%, 50%, 70% {
+            transform: translateX(-4px);
+        }
+        40%, 60% {
+            transform: translateX(4px);
+        }
+    }
+
+    .no-results {
+        text-align: center;
+        color: var(--text-light);
+        padding: var(--spacing-8);
+        font-style: italic;
+        font-family: var(--font-secondary);
+        font-size: var(--font-size-lg);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+        .recipe-form-container {
+            padding: var(--spacing-6);
+            margin: var(--spacing-4);
+        }
+
+        .page-title {
+            font-size: var(--font-size-3xl);
+        }
+
+        .ingredients-list {
+            grid-template-columns: 1fr;
+        }
+
+        .selected-ingredient-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--spacing-3);
+        }
+
+        .nutrition-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-4);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .recipe-form-container {
+            padding: var(--spacing-4);
+            margin: var(--spacing-2);
+        }
+
+        .page-title {
+            font-size: var(--font-size-2xl);
+        }
+
+        .nutrition-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .nutrition-item {
+            padding: var(--spacing-4);
+        }
+
+        .nutrition-value {
+            font-size: var(--font-size-2xl);
+        }
+
+        .selected-ingredient-info {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .weight-control {
+            margin-top: var(--spacing-2);
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+</style>
 {% endblock %}

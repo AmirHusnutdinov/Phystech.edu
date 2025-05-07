@@ -217,6 +217,7 @@ class DayPlan:
                 "DayPlan/add_recipe.html",
                 header_links=choose_header_links("authorized"),
                 title="Добавить блюдо",
+
             )
         return redirect(main_page)
 
@@ -343,10 +344,13 @@ def open_add_product():
     return redirect(main_page)
 
 
-@app.route(add_recipes)
+@app.route(add_recipes, methods=["GET", "POST"])
 def open_add_recipes():
     if "user_id" in session:
-        return DayPlan.show_add_recipes()
+        if request.method == "POST":
+            print("hello")
+        elif request.method == "GET":
+            return DayPlan.show_add_recipes()
     return redirect(main_page)
 
 

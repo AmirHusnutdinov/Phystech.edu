@@ -201,7 +201,7 @@ def save_news_query(news_id, title, content):
 def check_trainer(user_id):
     sql = f'SELECT is_trainer FROM "users" WHERE id = {user_id}'
     query = database_query(sql, True)
-    if query == []:
+    if not query:
         return False
     data = database_query(sql, True)[0][0]
     if data:
