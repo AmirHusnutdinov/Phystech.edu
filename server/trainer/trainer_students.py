@@ -73,7 +73,7 @@ class Students:
             student_id=student_id,
             # Далее идут те переменные, в которые ты, Варвара, должна поместить данные из БД.
             nutrition_was=1000,
-            nutrition_needed=1500,
+            nutrition_needed=1800,
             fats_was=1000,
             fats_needed=1500,
             carbohydrates_was=0,

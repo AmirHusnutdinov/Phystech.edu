@@ -212,7 +212,7 @@ def check_trainer(user_id):
 def get_trainer_id(user_id):
     sql = f"SELECT id FROM student WHERE student_id = {user_id}"
     query = database_query(sql, True)
-    if query == []:
+    if not query:
         return 0
     return int(query[0][0])
 
@@ -266,7 +266,7 @@ def add_message(id_from, id_to, content):
 
 
 def get_all_trains(user_id):
-    sql = f"SELECT * FROM train WHERE id = {user_id}"
+    sql = f"SELECT * FROM trainings WHERE id = {user_id}"
     data = database_query(sql, True)
     ans = []
     for el in data:
