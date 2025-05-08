@@ -44,7 +44,7 @@ class ProcessRegistration:
         )
 
     @staticmethod
-    def process_Registration():
+    def submit():
         if "user_id" not in session:
             return redirect(main_page)
 

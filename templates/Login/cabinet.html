@@ -632,87 +632,81 @@
     // Function to calculate nutrition values based on user data and goal
     function calculateNutrition(goal) {
       // Get user data
-      const weight = parseFloat('{{ user.weight }}');
-      const height = parseFloat('{{ user.height }}');
-      const age = parseFloat('{{ user.age }}');
-      const gender = '{{ user.gender }}';
-      const activity = '{{ user.activity }}';
+      const weight = parseFloat('{{ user.weight }}') || 70; // default 70kg if not set
+      const height = parseFloat('{{ user.height }}') || 170; // default 170cm if not set
+      const age = parseFloat('{{ user.age }}') || 30; // default 30 years if not set
+      const gender = '{{ user.gender }}' || 'male'; // default male if not set
+      const activity = '{{ user.activity }}' || 'moderate'; // default moderate if not set
 
-      // Calculate BMR (Basal Metabolic Rate) using Harris-Benedict equation
-      let bmr = 0;
+      // 1. Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation (more accurate)
+      let bmr;
       if (gender === 'male') {
-        bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
       } else {
-        bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
       }
 
-      // Apply activity multiplier
-      let activityMultiplier = 1.2; // Default: sedentary
+      // 2. Apply activity multiplier (updated values)
+      let activityMultiplier;
       switch (activity) {
-        case 'sedentary':
-          activityMultiplier = 1.2;
-          break;
-        case 'light':
-          activityMultiplier = 1.375;
-          break;
-        case 'moderate':
-          activityMultiplier = 1.55;
-          break;
-        case 'active':
-          activityMultiplier = 1.725;
-          break;
-        case 'very_active':
-          activityMultiplier = 1.9;
-          break;
+        case 'sedentary': activityMultiplier = 1.2; break;    // little or no exercise
+        case 'light': activityMultiplier = 1.375; break;      // light exercise 1-3 days/week
+        case 'moderate': activityMultiplier = 1.55; break;    // moderate exercise 3-5 days/week
+        case 'active': activityMultiplier = 1.725; break;     // hard exercise 6-7 days/week
+        case 'very_active': activityMultiplier = 1.9; break; // very hard exercise & physical job
+        default: activityMultiplier = 1.55;
       }
 
       let tdee = bmr * activityMultiplier; // Total Daily Energy Expenditure
 
-      // Apply goal modifier
-      let calories = tdee;
+      // 3. Apply goal modifier with safe ranges
+      let calories;
       switch (goal) {
         case 'lose':
-          calories = tdee * 0.8; // 20% deficit for weight loss
+          calories = tdee * 0.85; // 15% deficit (safe weight loss)
           break;
         case 'maintain':
           calories = tdee; // Maintenance calories
           break;
         case 'gain':
-          calories = tdee * 1.15; // 15% surplus for weight gain
+          calories = tdee * 1.1; // 10% surplus (lean mass gain)
           break;
+        default:
+          calories = tdee;
       }
 
-      // Calculate macronutrients
-      let protein = 0, fats = 0, carbs = 0;
+      // 4. Calculate macronutrients with improved ratios
+      let protein, fats, carbs;
 
-      switch (goal) {
-        case 'lose':
-          protein = weight * 2.2; // Higher protein for weight loss (2.2g per kg)
-          fats = weight * 1; // 1g per kg of bodyweight
-          carbs = (calories - (protein * 4) - (fats * 9)) / 4;
-          break;
-        case 'maintain':
-          protein = weight * 1.8; // 1.8g per kg of bodyweight
-          fats = weight * 1; // 1g per kg of bodyweight
-          carbs = (calories - (protein * 4) - (fats * 9)) / 4;
-          break;
-        case 'gain':
-          protein = weight * 2; // 2g per kg of bodyweight
-          fats = weight * 1; // 1g per kg of bodyweight
-          carbs = (calories - (protein * 4) - (fats * 9)) / 4;
-          break;
+      // Protein: based on activity level and goals
+      if (goal === 'lose') {
+        protein = weight * 2.2; // Higher protein for fat loss (preserves muscle)
+      } else if (goal === 'gain') {
+        protein = weight * 2.0; // Slightly higher for muscle growth
+      } else {
+        protein = weight * 1.6; // Moderate for maintenance
       }
 
-      // Calculate water intake (30ml per kg of bodyweight)
-      let water = weight * 30;
-      water = Math.round(water / 100) * 100;
+      // Fats: 25-30% of total calories
+      fats = (calories * 0.25) / 9; // 1g fat = 9 kcal
 
-      // Round values
+      // Carbs: remaining calories after protein and fat
+      carbs = (calories - (protein * 4) - (fats * 9)) / 4; // 1g carb = 4 kcal
+
+      // 5. Water intake - more precise calculation
+      let water;
+      if (activity === 'sedentary' || activity === 'light') {
+        water = weight * 30; // 30ml per kg for less active
+      } else {
+        water = weight * 40; // 40ml per kg for active individuals
+      }
+
+      // Round values to whole numbers
       calories = Math.round(calories);
       protein = Math.round(protein);
       fats = Math.round(fats);
       carbs = Math.round(carbs);
-      water = Math.round(water);
+      water = Math.round(water / 100) * 100; // Round to nearest 100ml
 
       // Update calculated fields
       document.getElementById('calc_calories').value = calories;

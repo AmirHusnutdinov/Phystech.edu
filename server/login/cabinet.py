@@ -80,9 +80,9 @@ class Cabinet:
                 trainer_avatar = Cabinet.cloud.get_url(f"avatars/{trainer_id}")
             avatar = Cabinet.cloud.get_url(f"""avatars/{session['user_id']}""")
             request = get_my_request(session["user_id"])
-            has_request = True
+            has_request = False
             if request:
-                has_request = False
+                has_request = True
 
             return render_template_with_user(
                 "Login/cabinet.html",
