@@ -4,722 +4,757 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="stylesheet" href="../../static/assets/css/style_cabinet.css">
 <div class="container">
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash-message flash-{{ category }}">
-                        <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-messages">
+    {% for category, message in messages %}
+    <div class="flash-message flash-{{ category }}">
+      <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
 
-    <!-- Cabinet Header -->
-    <div class="cabinet-header">
-        <div class="avatar-container">
-            {% if avatar %}
-                <img src="{{ avatar }}" alt="Аватар пользователя">
+  <!-- Cabinet Header -->
+  <div class="cabinet-header">
+    <div class="avatar-container">
+      {% if avatar %}
+      <img src="{{ avatar }}" alt="Аватар пользователя">
+      {% else %}
+      <img src="/static/images/default-avatar.png" alt="Аватар по умолчанию">
+      {% endif %}
+    </div>
+    <div class="user-info">
+      <h1>{{ user.name }}</h1>
+      <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+      <p><i class="fas fa-user"></i> {{ user.login }}</p>
+      <p><i class="fas fa-user"></i> id: {{ user.id}}</p>
+    </div>
+  </div>
+
+  <!-- Personal Data Section -->
+  <div class="cabinet-section" id="profile-section">
+    <div class="section-header">
+      <h2 class="section-title"><i class="fas fa-id-card"></i> Личные данные</h2>
+      <button class="btn btn-primary edit-btn" data-target="profile-form">
+        <i class="fas fa-edit"></i> Изменить
+      </button>
+    </div>
+
+    <form id="profile-form" action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data">
+      {{ profile_form.csrf_token }}
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="name">{{ profile_form.name.label.text }}</label>
+            {{ profile_form.name(class="form-control", disabled=True, value=user.name) }}
+            <i class="fas fa-user form-icon"></i>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="login">{{ profile_form.login.label.text }}</label>
+            {{ profile_form.login(class="form-control", disabled=True, value=user.login) }}
+            <i class="fas fa-user-tag form-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="email">{{ profile_form.email.label.text }}</label>
+            {{ profile_form.email(class="form-control", disabled=True, value=user.email) }}
+            <i class="fas fa-envelope form-icon"></i>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="age">{{ profile_form.age.label.text }}</label>
+            {{ profile_form.age(class="form-control", disabled=True, value=user.age) }}
+            <i class="fas fa-birthday-cake form-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="weight">{{ profile_form.weight.label.text }}</label>
+            {{ profile_form.weight(class="form-control", disabled=True, value=user.weight) }}
+            <i class="fas fa-weight form-icon"></i>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="height">{{ profile_form.height.label.text }}</label>
+            {{ profile_form.height(class="form-control", disabled=True, value=user.height) }}
+            <i class="fas fa-ruler-vertical form-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="gender">{{ profile_form.gender.label.text }}</label>
+            {{ profile_form.gender(class="form-control", disabled=True) }}
+            <i class="fas fa-venus-mars form-icon"></i>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="activity">{{ profile_form.activity.label.text }}</label>
+            {{ profile_form.activity(class="form-control", disabled=True) }}
+            <i class="fas fa-running form-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="avatar-upload" style="display: none;">
+        <label for="avatar"><i class="fas fa-image"></i> {{ profile_form.avatar.label.text }}</label>
+        {{ profile_form.avatar(class="form-control") }}
+        <p style="margin-top: 10px; color: var(--text-light); font-size: 14px;">
+          <i class="fas fa-info-circle"></i> Поддерживаемые форматы: JPG, PNG, JPEG
+        </p>
+      </div>
+
+      <div class="action-buttons" id="profile-actions">
+        <button type="button" class="btn btn-danger cancel-btn" data-target="profile-form">
+          <i class="fas fa-times"></i> Отмена
+        </button>
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-save"></i> Сохранить
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Nutrition Data Section -->
+  <div class="cabinet-section" id="nutrition-section">
+    <div class="section-header">
+      <h2 class="section-title"><i class="fas fa-utensils"></i> Данные КБЖУ</h2>
+      <button class="btn btn-primary edit-btn" data-target="nutrition-form">
+        <i class="fas fa-edit"></i> Изменить
+      </button>
+    </div>
+
+    <!-- Nutrition Stats Cards -->
+    <div class="nutrition-stats">
+      <div class="stat-card">
+        <div class="stat-icon calories-icon">
+          <i class="fas fa-fire"></i>
+        </div>
+        <div class="stat-value">{{ user.calories }}</div>
+        <div class="stat-label">Калории</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon protein-icon">
+          <i class="fas fa-drumstick-bite"></i>
+        </div>
+        <div class="stat-value">{{ user.proteins }}</div>
+        <div class="stat-label">Белки (г)</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon fats-icon">
+          <i class="fas fa-cheese"></i>
+        </div>
+        <div class="stat-value">{{ user.fats }}</div>
+        <div class="stat-label">Жиры (г)</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon carbs-icon">
+          <i class="fas fa-bread-slice"></i>
+        </div>
+        <div class="stat-value">{{ user.carbs }}</div>
+        <div class="stat-label">Углеводы (г)</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon water-icon">
+          <i class="fas fa-tint"></i>
+        </div>
+        <div class="stat-value">{{ user.water }}</div>
+        <div class="stat-label">Вода (мл)</div>
+      </div>
+    </div>
+
+    <form id="nutrition-form" action="{{ url_for('update_nutrition') }}" method="POST">
+      {{ nutrition_form.csrf_token }}
+
+      <div class="recommended-section">
+        <h3>Рекомендуемые показатели</h3>
+
+        <div class="goal-buttons">
+          <button type="button" class="btn btn-outline goal-btn" data-goal="lose">Сбросить вес</button>
+          <button type="button" class="btn btn-outline goal-btn" data-goal="maintain">Поддержание веса</button>
+          <button type="button" class="btn btn-outline goal-btn" data-goal="gain">Набор массы</button>
+        </div>
+
+        <div class="calculated-values">
+          <div class="form-row">
+            <div class="form-col">
+              <div class="form-group">
+                <label for="calc_calories">Расчетные калории</label>
+                <input type="text" id="calc_calories" class="form-control" readonly>
+                <i class="fas fa-fire form-icon"></i>
+              </div>
+            </div>
+            <div class="form-col">
+              <div class="form-group">
+                <label for="calc_protein">Расчетные белки (г)</label>
+                <input type="text" id="calc_protein" class="form-control" readonly>
+                <i class="fas fa-drumstick-bite form-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-col">
+              <div class="form-group">
+                <label for="calc_fats">Расчетные жиры (г)</label>
+                <input type="text" id="calc_fats" class="form-control" readonly>
+                <i class="fas fa-cheese form-icon"></i>
+              </div>
+            </div>
+            <div class="form-col">
+              <div class="form-group">
+                <label for="calc_carbs">Расчетные углеводы (г)</label>
+                <input type="text" id="calc_carbs" class="form-control" readonly>
+                <i class="fas fa-bread-slice form-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-col">
+              <div class="form-group">
+                <label for="calc_water">Расчетная вода (мл)</label>
+                <input type="text" id="calc_water" class="form-control" readonly>
+                <i class="fas fa-tint form-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="insert-button">
+            <button type="button" class="btn btn-primary" id="insert-values">
+              <i class="fas fa-arrow-down"></i> Вставить значения
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Original form fields continue here -->
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="calories">{{ nutrition_form.calories.label.text }}</label>
+            {{ nutrition_form.calories(class="form-control", disabled=True, value=user.calories) }}
+            <i class="fas fa-fire form-icon"></i>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="protein">{{ nutrition_form.protein.label.text }}</label>
+            {{ nutrition_form.protein(class="form-control", disabled=True, value=user.proteins) }}
+            <i class="fas fa-drumstick-bite form-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="fats">{{ nutrition_form.fats.label.text }}</label>
+            {{ nutrition_form.fats(class="form-control", disabled=True, value=user.fats) }}
+            <i class="fas fa-cheese form-icon"></i>
+          </div>
+        </div>
+        <div class="form-col">
+          <div class="form-group">
+            <label for="carbs">{{ nutrition_form.carbs.label.text }}</label>
+            {{ nutrition_form.carbs(class="form-control", disabled=True, value=user.carbs) }}
+            <i class="fas fa-bread-slice form-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-group">
+            <label for="water">{{ nutrition_form.water.label.text }}</label>
+            {{ nutrition_form.water(class="form-control", disabled=True, value=user.water) }}
+            <i class="fas fa-tint form-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons" id="nutrition-actions">
+        <button type="button" class="btn btn-danger cancel-btn" data-target="nutrition-form">
+          <i class="fas fa-times"></i> Отмена
+        </button>
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-save"></i> Сохранить
+        </button>
+      </div>
+    </form>
+  </div>
+  {% if user.is_trainer %}
+  <div class="cabinet-section" id="trainer-requests-section">
+    <div class="section-header">
+      <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Заявки пользователей</h2>
+    </div>
+
+    {% if trainer_request != [] %}
+    <div class="trainer-requests-list">
+      {% for request in trainer_request %}
+      <div class="request-card">
+        <div class="request-user-info">
+          <div class="request-avatar">
+            {% if request.avatar_url %}
+            <img src="{{ request.avatar_url }}" alt="Аватар пользователя">
             {% else %}
-                <img src="/static/images/default-avatar.png" alt="Аватар по умолчанию">
+            <i class="fas fa-user"></i>
             {% endif %}
+          </div>
+          <div class="request-details">
+            <h3>{{ request.id_from}}</h3>
+            <p><i class="fas fa-calendar-alt"></i> Дата запроса: {{ request.time }}</p>
+          </div>
         </div>
-        <div class="user-info">
-            <h1>{{ user.name }}</h1>
-            <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
-            <p><i class="fas fa-user"></i> {{ user.login }}</p>
-            <p><i class="fas fa-user"></i> id: {{ user.id}}</p>
-        </div>
-    </div>
-
-    <!-- Personal Data Section -->
-    <div class="cabinet-section" id="profile-section">
-        <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-id-card"></i> Личные данные</h2>
-            <button class="btn btn-primary edit-btn" data-target="profile-form">
-                <i class="fas fa-edit"></i> Изменить
+        <div class="request-actions">
+          <form action="{{ url_for('approve_request', request_id=request.request_id) }}" method="POST"
+            class="inline-form">
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-check"></i> Подтвердить
             </button>
-        </div>
-        
-        <form id="profile-form" action="{{ url_for('update_profile') }}" method="POST" enctype="multipart/form-data">
-            {{ profile_form.csrf_token }}
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="name">{{ profile_form.name.label.text }}</label>
-                        {{ profile_form.name(class="form-control", disabled=True, value=user.name) }}
-                        <i class="fas fa-user form-icon"></i>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="login">{{ profile_form.login.label.text }}</label>
-                        {{ profile_form.login(class="form-control", disabled=True, value=user.login) }}
-                        <i class="fas fa-user-tag form-icon"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="email">{{ profile_form.email.label.text }}</label>
-                        {{ profile_form.email(class="form-control", disabled=True, value=user.email) }}
-                        <i class="fas fa-envelope form-icon"></i>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="age">{{ profile_form.age.label.text }}</label>
-                        {{ profile_form.age(class="form-control", disabled=True, value=user.age) }}
-                        <i class="fas fa-birthday-cake form-icon"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="weight">{{ profile_form.weight.label.text }}</label>
-                        {{ profile_form.weight(class="form-control", disabled=True, value=user.weight) }}
-                        <i class="fas fa-weight form-icon"></i>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="height">{{ profile_form.height.label.text }}</label>
-                        {{ profile_form.height(class="form-control", disabled=True, value=user.height) }}
-                        <i class="fas fa-ruler-vertical form-icon"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="gender">{{ profile_form.gender.label.text }}</label>
-                        {{ profile_form.gender(class="form-control", disabled=True) }}
-                        <i class="fas fa-venus-mars form-icon"></i>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="activity">{{ profile_form.activity.label.text }}</label>
-                        {{ profile_form.activity(class="form-control", disabled=True) }}
-                        <i class="fas fa-running form-icon"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="avatar-upload" style="display: none;">
-                <label for="avatar"><i class="fas fa-image"></i> {{ profile_form.avatar.label.text }}</label>
-                {{ profile_form.avatar(class="form-control") }}
-                <p style="margin-top: 10px; color: var(--text-light); font-size: 14px;">
-                    <i class="fas fa-info-circle"></i> Поддерживаемые форматы: JPG, PNG, JPEG
-                </p>
-            </div>
-            
-            <div class="action-buttons" id="profile-actions">
-                <button type="button" class="btn btn-danger cancel-btn" data-target="profile-form">
-                    <i class="fas fa-times"></i> Отмена
-                </button>
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Сохранить
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <!-- Nutrition Data Section -->
-    <div class="cabinet-section" id="nutrition-section">
-        <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-utensils"></i> Данные КБЖУ</h2>
-            <button class="btn btn-primary edit-btn" data-target="nutrition-form">
-                <i class="fas fa-edit"></i> Изменить
+          </form>
+          <form action="{{ url_for('reject_request', request_id=request.request_id) }}" method="POST"
+            class="inline-form">
+            <button type="submit" class="btn btn-danger">
+              <i class="fas fa-times"></i> Отклонить
             </button>
+          </form>
         </div>
-        
-        <!-- Nutrition Stats Cards -->
-        <div class="nutrition-stats">
-            <div class="stat-card">
-                <div class="stat-icon calories-icon">
-                    <i class="fas fa-fire"></i>
-                </div>
-                <div class="stat-value">{{ user.calories }}</div>
-                <div class="stat-label">Калории</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon protein-icon">
-                    <i class="fas fa-drumstick-bite"></i>
-                </div>
-                <div class="stat-value">{{ user.proteins }}</div>
-                <div class="stat-label">Белки (г)</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon fats-icon">
-                    <i class="fas fa-cheese"></i>
-                </div>
-                <div class="stat-value">{{ user.fats }}</div>
-                <div class="stat-label">Жиры (г)</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon carbs-icon">
-                    <i class="fas fa-bread-slice"></i>
-                </div>
-                <div class="stat-value">{{ user.carbs }}</div>
-                <div class="stat-label">Углеводы (г)</div>
-            </div>
-        </div>
-        
-        <form id="nutrition-form" action="{{ url_for('update_nutrition') }}" method="POST">
-            {{ nutrition_form.csrf_token }}
-            
-            <div class="recommended-section">
-                <h3>Рекомендуемые показатели</h3>
-                
-                <div class="goal-buttons">
-                    <button type="button" class="btn btn-outline goal-btn" data-goal="lose">Сбросить вес</button>
-                    <button type="button" class="btn btn-outline goal-btn" data-goal="maintain">Поддержание веса</button>
-                    <button type="button" class="btn btn-outline goal-btn" data-goal="gain">Набор массы</button>
-                </div>
-                
-                <div class="calculated-values">
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="calc_calories">Расчетные калории</label>
-                                <input type="text" id="calc_calories" class="form-control" readonly>
-                                <i class="fas fa-fire form-icon"></i>
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="calc_protein">Расчетные белки (г)</label>
-                                <input type="text" id="calc_protein" class="form-control" readonly>
-                                <i class="fas fa-drumstick-bite form-icon"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="calc_fats">Расчетные жиры (г)</label>
-                                <input type="text" id="calc_fats" class="form-control" readonly>
-                                <i class="fas fa-cheese form-icon"></i>
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label for="calc_carbs">Расчетные углеводы (г)</label>
-                                <input type="text" id="calc_carbs" class="form-control" readonly>
-                                <i class="fas fa-bread-slice form-icon"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="insert-button">
-                        <button type="button" class="btn btn-primary" id="insert-values">
-                            <i class="fas fa-arrow-down"></i> Вставить значения
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Original form fields continue here -->
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="calories">{{ nutrition_form.calories.label.text }}</label>
-                        {{ nutrition_form.calories(class="form-control", disabled=True, value=user.calories) }}
-                        <i class="fas fa-fire form-icon"></i>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="protein">{{ nutrition_form.protein.label.text }}</label>
-                        {{ nutrition_form.protein(class="form-control", disabled=True, value=user.proteins) }}
-                        <i class="fas fa-drumstick-bite form-icon"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="fats">{{ nutrition_form.fats.label.text }}</label>
-                        {{ nutrition_form.fats(class="form-control", disabled=True, value=user.fats) }}
-                        <i class="fas fa-cheese form-icon"></i>
-                    </div>
-                </div>
-                <div class="form-col">
-                    <div class="form-group">
-                        <label for="carbs">{{ nutrition_form.carbs.label.text }}</label>
-                        {{ nutrition_form.carbs(class="form-control", disabled=True, value=user.carbs) }}
-                        <i class="fas fa-bread-slice form-icon"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="action-buttons" id="nutrition-actions">
-                <button type="button" class="btn btn-danger cancel-btn" data-target="nutrition-form">
-                    <i class="fas fa-times"></i> Отмена
-                </button>
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Сохранить
-                </button>
-            </div>
-        </form>
+      </div>
+      {% endfor %}
     </div>
-    {% if user.is_trainer %}
-    <div class="cabinet-section" id="trainer-requests-section">
-        <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Заявки пользователей</h2>
-        </div>
-        
-        {% if trainer_request != [] %}
-            <div class="trainer-requests-list">
-                {% for request in trainer_request %}
-                    <div class="request-card">
-                        <div class="request-user-info">
-                            <div class="request-avatar">
-                                {% if request.avatar_url %}
-                                    <img src="{{ request.avatar_url }}" alt="Аватар пользователя">
-                                {% else %}
-                                    <i class="fas fa-user"></i>
-                                {% endif %}
-                            </div>
-                            <div class="request-details">
-                                <h3>{{ request.id_from}}</h3>
-                                <p><i class="fas fa-calendar-alt"></i> Дата запроса: {{ request.time }}</p>
-                            </div>
-                        </div>
-                        <div class="request-actions">
-                            <form action="{{ url_for('approve_request', request_id=request.request_id) }}" method="POST" class="inline-form">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check"></i> Подтвердить
-                                </button>
-                            </form>
-                            <form action="{{ url_for('reject_request', request_id=request.request_id) }}" method="POST" class="inline-form">
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-times"></i> Отклонить
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-requests">
-                <i class="fas fa-inbox"></i>
-                <p>У вас нет новых заявок от пользователей</p>
-            </div>
-        {% endif %}
+    {% else %}
+    <div class="empty-requests">
+      <i class="fas fa-inbox"></i>
+      <p>У вас нет новых заявок от пользователей</p>
     </div>
     {% endif %}
-    <!-- Trainer Request Section - NEW SECTION -->
-    <div class="cabinet-section" id="trainer-request-section">
-        <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-user-friends"></i> Мой тренер</h2>
-        </div>
-        
-        {% if has_trainer %}
-            <!-- User has a trainer -->
-            <div class="trainer-info">
-                <div class="trainer-avatar">
-                    {% if trainer_avatar %}
-                    <img src="{{ trainer_avatar }}" alt="Аватар пользователя">
-                    {% else %}
-                    <i class="fas fa-user-tie"></i>
-                    {% endif %}
-                </div>
-                <div class="trainer-details">
-                    <h3>{{ trainer.name }}</h3>
-                    <p><i class="fas fa-id-card"></i> ID: {{ trainer.id }}</p>
-                </div>
-            </div>
-        {% elif has_request %}
-            <!-- User has a pending request -->
-            <div class="trainer-request-pending">
-                <i class="fas fa-hourglass-half"></i>
-                <p>Тренер получил ваш запрос</p>
-            </div>
-        {% else %}
-            <!-- User has no trainer - Using Flask-WTF form -->
-            <form id="trainer-request-form" action="{{ url_for('request_trainer') }}" method="POST">
-                {{ trainer_request_form.csrf_token }}
-                <div class="form-group">
-                    <label for="trainer_id">{{ trainer_request_form.trainer_id.label.text }}</label>
-                    {{ trainer_request_form.trainer_id(class="form-control", required=True) }}
-                    <i class="fas fa-id-card form-icon"></i>
-                </div>
-                {{ trainer_request_form.submit(class="btn btn-primary") }}
-            </form>
-        {% endif %}
-    </div>
-    {%if not user.is_trainer %}
-    <div class="cabinet-section" id="trainer-section">
-        <div class="section-header">
-            <h2 class="section-title"><i class="fas fa-dumbbell"></i> Хотите стать тренером?</h2>
-        </div>
-        
-        <div class="trainer-application">
-            <p>Станьте частью нашей команды профессиональных тренеров и помогайте другим достигать их целей!</p>
-            <button id="open-trainer-modal" class="btn btn-primary">
-                <i class="fas fa-user-plus"></i> Стать
-            </button>
-        </div>
+  </div>
+  {% endif %}
+  <!-- Trainer Request Section - NEW SECTION -->
+  <div class="cabinet-section" id="trainer-request-section">
+    <div class="section-header">
+      <h2 class="section-title"><i class="fas fa-user-friends"></i> Мой тренер</h2>
     </div>
 
-    <!-- Trainer Application Modal -->
-    <div id="trainer-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-dumbbell"></i> Заявка на позицию тренера</h3>
-                <span class="close-modal">&times;</span>
-            </div>
-            <form id="trainer-form" action="{{ url_for('submit_trainer_application') }}" method="POST" enctype="multipart/form-data">
-                {{ trainer_form.csrf_token }}
-                
-                <div class="form-group">
-                    <label for="experience">{{ trainer_form.experience.label.text }}</label>
-                    {{ trainer_form.experience(class="form-control", rows=5) }}
-                    <i class="fas fa-file-alt form-icon"></i>
-                </div>
-                
-                <div class="form-group file-upload">
-                    <label for="documents">{{ trainer_form.documents.label.text }}</label>
-                    {{ trainer_form.documents(class="form-control") }}
-                    <i class="fas fa-file-upload form-icon"></i>
-                    <p class="file-hint">Поддерживаемые форматы: PDF, DOC, DOCX, JPG, PNG</p>
-                </div>
-                
-                <div class="modal-buttons">
-                    <button type="button" class="btn btn-danger cancel-modal">
-                        <i class="fas fa-times"></i> Отмена
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-paper-plane"></i> Отправить
-                    </button>
-                </div>
-            </form>
-        </div>
+    {% if has_trainer %}
+    <!-- User has a trainer -->
+    <div class="trainer-info">
+      <div class="trainer-avatar">
+        {% if trainer_avatar %}
+        <img src="{{ trainer_avatar }}" alt="Аватар пользователя">
+        {% else %}
+        <i class="fas fa-user-tie"></i>
+        {% endif %}
+      </div>
+      <div class="trainer-details">
+        <h3>{{ trainer.name }}</h3>
+        <p><i class="fas fa-id-card"></i> ID: {{ trainer.id }}</p>
+      </div>
     </div>
-    {%endif%}
+    {% elif has_request %}
+    <!-- User has a pending request -->
+    <div class="trainer-request-pending">
+      <i class="fas fa-hourglass-half"></i>
+      <p>Тренер получил ваш запрос</p>
+    </div>
+    {% else %}
+    <!-- User has no trainer - Using Flask-WTF form -->
+    <form id="trainer-request-form" action="{{ url_for('request_trainer') }}" method="POST">
+      {{ trainer_request_form.csrf_token }}
+      <div class="form-group">
+        <label for="trainer_id">{{ trainer_request_form.trainer_id.label.text }}</label>
+        {{ trainer_request_form.trainer_id(class="form-control", required=True) }}
+        <i class="fas fa-id-card form-icon"></i>
+      </div>
+      {{ trainer_request_form.submit(class="btn btn-primary") }}
+    </form>
+    {% endif %}
+  </div>
+  {%if not user.is_trainer %}
+  <div class="cabinet-section" id="trainer-section">
+    <div class="section-header">
+      <h2 class="section-title"><i class="fas fa-dumbbell"></i> Хотите стать тренером?</h2>
+    </div>
+
+    <div class="trainer-application">
+      <p>Станьте частью нашей команды профессиональных тренеров и помогайте другим достигать их целей!</p>
+      <button id="open-trainer-modal" class="btn btn-primary">
+        <i class="fas fa-user-plus"></i> Стать
+      </button>
+    </div>
+  </div>
+
+  <!-- Trainer Application Modal -->
+  <div id="trainer-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-dumbbell"></i> Заявка на позицию тренера</h3>
+        <span class="close-modal">&times;</span>
+      </div>
+      <form id="trainer-form" action="{{ url_for('submit_trainer_application') }}" method="POST"
+        enctype="multipart/form-data">
+        {{ trainer_form.csrf_token }}
+
+        <div class="form-group">
+          <label for="experience">{{ trainer_form.experience.label.text }}</label>
+          {{ trainer_form.experience(class="form-control", rows=5) }}
+          <i class="fas fa-file-alt form-icon"></i>
+        </div>
+
+        <div class="form-group file-upload">
+          <label for="documents">{{ trainer_form.documents.label.text }}</label>
+          {{ trainer_form.documents(class="form-control") }}
+          <i class="fas fa-file-upload form-icon"></i>
+          <p class="file-hint">Поддерживаемые форматы: PDF, DOC, DOCX, JPG, PNG</p>
+        </div>
+
+        <div class="modal-buttons">
+          <button type="button" class="btn btn-danger cancel-modal">
+            <i class="fas fa-times"></i> Отмена
+          </button>
+          <button type="submit" class="btn btn-success">
+            <i class="fas fa-paper-plane"></i> Отправить
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  {%endif%}
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Edit buttons
-        const editButtons = document.querySelectorAll('.edit-btn');
-        editButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const formId = this.getAttribute('data-target');
-                enableFormEditing(formId);
-            });
-        });
-        
-        // Cancel buttons
-        const cancelButtons = document.querySelectorAll('.cancel-btn');
-        cancelButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const formId = this.getAttribute('data-target');
-                disableFormEditing(formId);
-            });
-        });
-        
-        // Function to enable form editing
-        function enableFormEditing(formId) {
-            const form = document.getElementById(formId);
-            const inputs = form.querySelectorAll('input, select');
-            const actionButtons = form.querySelector('.action-buttons');
-            
-            // Enable all inputs except readonly ones
-            inputs.forEach(input => {
-                if (!input.hasAttribute('readonly')) {
-                    input.disabled = false;
-                }
-            });
-            
-            // Show action buttons
-            actionButtons.style.display = 'block';
-            
-            // Show avatar upload if it's the profile form
-            if (formId === 'profile-form') {
-                const avatarUpload = form.querySelector('.avatar-upload');
-                if (avatarUpload) {
-                    avatarUpload.style.display = 'block';
-                }
-            }
-            
-            // Hide edit button
-            const sectionId = formId.replace('-form', '-section');
-            const editBtn = document.querySelector(`#${sectionId} .edit-btn`);
-            editBtn.style.display = 'none';
-        }
-        
-        // Function to disable form editing
-        function disableFormEditing(formId) {
-            const form = document.getElementById(formId);
-            const inputs = form.querySelectorAll('input, select');
-            const actionButtons = form.querySelector('.action-buttons');
-            
-            // Disable all inputs
-            inputs.forEach(input => {
-                input.disabled = true;
-            });
-            
-            // Hide action buttons
-            actionButtons.style.display = 'none';
-            
-            // Hide avatar upload if it's the profile form
-            if (formId === 'profile-form') {
-                const avatarUpload = form.querySelector('.avatar-upload');
-                if (avatarUpload) {
-                    avatarUpload.style.display = 'none';
-                }
-            }
-            
-            // Show edit button
-            const sectionId = formId.replace('-form', '-section');
-            const editBtn = document.querySelector(`#${sectionId} .edit-btn`);
-            editBtn.style.display = 'block';
-            
-            // Reset form to original values
-            form.reset();
-            
-            // Restore original values after reset
-            if (formId === 'profile-form') {
-                document.querySelector('#profile-form [name="name"]').value = '{{ user.name }}';
-                document.querySelector('#profile-form [name="login"]').value = '{{ user.login }}';
-                document.querySelector('#profile-form [name="email"]').value = '{{ user.email }}';
-                document.querySelector('#profile-form [name="age"]').value = '{{ user.age }}';
-                document.querySelector('#profile-form [name="weight"]').value = '{{ user.weight }}';
-                document.querySelector('#profile-form [name="height"]').value = '{{ user.height }}';
-                
-                // Для select элементов нужно установить выбранное значение
-                const genderSelect = document.querySelector('#profile-form [name="gender"]');
-                for (let i = 0; i < genderSelect.options.length; i++) {
-                    if (genderSelect.options[i].value === '{{ user.gender }}') {
-                        genderSelect.selectedIndex = i;
-                        break;
-                    }
-                }
-                
-                const activitySelect = document.querySelector('#profile-form [name="activity"]');
-                for (let i = 0; i < activitySelect.options.length; i++) {
-                    if (activitySelect.options[i].value === '{{ user.activity }}') {
-                        activitySelect.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-            
-            if (formId === 'nutrition-form') {
-                document.querySelector('#nutrition-form [name="calories"]').value = '{{ user.calories }}';
-                document.querySelector('#nutrition-form [name="protein"]').value = '{{ user.proteins }}';
-                document.querySelector('#nutrition-form [name="fats"]').value = '{{ user.fats }}';
-                document.querySelector('#nutrition-form [name="carbs"]').value = '{{ user.carbs }}';
-            }
-        }
-
-        // Добавляем анимацию для flash-сообщений
-        const flashMessages = document.querySelectorAll('.flash-message');
-        flashMessages.forEach((message, index) => {
-            message.style.animationDelay = `${index * 0.1}s`;
-            message.style.animation = 'fadeIn 0.5s ease-out forwards';
-        });
-
-        const trainerRequestSection = document.getElementById('trainer-request-section');
-        if (trainerRequestSection) {
-            trainerRequestSection.style.animationDelay = '0.15s';
-        }
-        // advice_goal
-
-        const goalButtons = document.querySelectorAll('.goal-btn');
-        const insertButton = document.getElementById('insert-values');
-        let currentGoal = null;
-        
-        // Goal button click handler
-        goalButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Remove active class from all buttons
-                goalButtons.forEach(btn => btn.classList.remove('active'));
-                
-                // Add active class to clicked button
-                this.classList.add('active');
-                
-                // Store the selected goal
-                currentGoal = this.getAttribute('data-goal');
-                
-                // Calculate nutrition values based on user data and selected goal
-                calculateNutrition(currentGoal);
-            });
-        });
-        
-        // Insert button click handler
-        if (insertButton) {
-            insertButton.addEventListener('click', function() {
-                if (!currentGoal) {
-                    alert('Пожалуйста, выберите цель перед вставкой значений');
-                    return;
-                }
-                
-                // Get calculated values
-                const calcCalories = document.getElementById('calc_calories').value;
-                const calcProtein = document.getElementById('calc_protein').value;
-                const calcFats = document.getElementById('calc_fats').value;
-                const calcCarbs = document.getElementById('calc_carbs').value;
-                
-                // Insert values into the form fields
-                const caloriesInput = document.querySelector('#nutrition-form [name="calories"]');
-                const proteinInput = document.querySelector('#nutrition-form [name="protein"]');
-                const fatsInput = document.querySelector('#nutrition-form [name="fats"]');
-                const carbsInput = document.querySelector('#nutrition-form [name="carbs"]');
-                
-                caloriesInput.value = calcCalories;
-                proteinInput.value = calcProtein;
-                fatsInput.value = calcFats;
-                carbsInput.value = calcCarbs;
-                
-                // Enable form editing
-                enableFormEditing('nutrition-form');
-            });
-        }
-        
-        // Function to calculate nutrition values based on user data and goal
-        function calculateNutrition(goal) {
-            // Get user data
-            const weight = parseFloat('{{ user.weight }}');
-            const height = parseFloat('{{ user.height }}');
-            const age = parseFloat('{{ user.age }}');
-            const gender = '{{ user.gender }}';
-            const activity = '{{ user.activity }}';
-            
-            // Calculate BMR (Basal Metabolic Rate) using Harris-Benedict equation
-            let bmr = 0;
-            if (gender === 'male') {
-                bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age);
-            } else {
-                bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age);
-            }
-            
-            // Apply activity multiplier
-            let activityMultiplier = 1.2; // Default: sedentary
-            switch (activity) {
-                case 'sedentary':
-                    activityMultiplier = 1.2;
-                    break;
-                case 'light':
-                    activityMultiplier = 1.375;
-                    break;
-                case 'moderate':
-                    activityMultiplier = 1.55;
-                    break;
-                case 'active':
-                    activityMultiplier = 1.725;
-                    break;
-                case 'very_active':
-                    activityMultiplier = 1.9;
-                    break;
-            }
-            
-            let tdee = bmr * activityMultiplier; // Total Daily Energy Expenditure
-            
-            // Apply goal modifier
-            let calories = tdee;
-            switch (goal) {
-                case 'lose':
-                    calories = tdee * 0.8; // 20% deficit for weight loss
-                    break;
-                case 'maintain':
-                    calories = tdee; // Maintenance calories
-                    break;
-                case 'gain':
-                    calories = tdee * 1.15; // 15% surplus for weight gain
-                    break;
-            }
-            
-            // Calculate macronutrients
-            let protein = 0, fats = 0, carbs = 0;
-            
-            switch (goal) {
-                case 'lose':
-                    protein = weight * 2.2; // Higher protein for weight loss (2.2g per kg)
-                    fats = weight * 1; // 1g per kg of bodyweight
-                    carbs = (calories - (protein * 4) - (fats * 9)) / 4;
-                    break;
-                case 'maintain':
-                    protein = weight * 1.8; // 1.8g per kg of bodyweight
-                    fats = weight * 1; // 1g per kg of bodyweight
-                    carbs = (calories - (protein * 4) - (fats * 9)) / 4;
-                    break;
-                case 'gain':
-                    protein = weight * 2; // 2g per kg of bodyweight
-                    fats = weight * 1; // 1g per kg of bodyweight
-                    carbs = (calories - (protein * 4) - (fats * 9)) / 4;
-                    break;
-            }
-            
-            // Round values
-            calories = Math.round(calories);
-            protein = Math.round(protein);
-            fats = Math.round(fats);
-            carbs = Math.round(carbs);
-            
-            // Update calculated fields
-            document.getElementById('calc_calories').value = calories;
-            document.getElementById('calc_protein').value = protein;
-            document.getElementById('calc_fats').value = fats;
-            document.getElementById('calc_carbs').value = carbs;
-        }
-
-
-        // modal
-        const modal = document.getElementById('trainer-modal');
-        const openModalBtn = document.getElementById('open-trainer-modal');
-        const closeModalBtn = document.querySelector('.close-modal');
-        const cancelModalBtn = document.querySelector('.cancel-modal');
-        
-        openModalBtn.addEventListener('click', function() {
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        });
-        
-        function closeModal() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Enable scrolling
-        }
-        
-        closeModalBtn.addEventListener('click', closeModal);
-        cancelModalBtn.addEventListener('click', closeModal);
-        
-        // Close modal when clicking outside
-        window.addEventListener('click', function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        });
-        
-        // File upload preview
-        const fileInput = document.querySelector('#trainer-form [name="documents"]');
-        if (fileInput) {
-            fileInput.addEventListener('change', function() {
-                const fileHint = this.parentElement.querySelector('.file-hint');
-                if (this.files.length > 0) {
-                    fileHint.textContent = `Выбрано файлов: ${this.files.length}`;
-                } else {
-                    fileHint.textContent = 'Поддерживаемые форматы: PDF, DOC, DOCX, JPG, PNG';
-                }
-            });
-        }
+  document.addEventListener('DOMContentLoaded', function () {
+    // Edit buttons
+    const editButtons = document.querySelectorAll('.edit-btn');
+    editButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const formId = this.getAttribute('data-target');
+        enableFormEditing(formId);
+      });
     });
+
+    // Cancel buttons
+    const cancelButtons = document.querySelectorAll('.cancel-btn');
+    cancelButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        const formId = this.getAttribute('data-target');
+        disableFormEditing(formId);
+      });
+    });
+
+    // Function to enable form editing
+    function enableFormEditing(formId) {
+      const form = document.getElementById(formId);
+      const inputs = form.querySelectorAll('input, select');
+      const actionButtons = form.querySelector('.action-buttons');
+
+      // Enable all inputs except readonly ones
+      inputs.forEach(input => {
+        if (!input.hasAttribute('readonly')) {
+          input.disabled = false;
+        }
+      });
+
+      // Show action buttons
+      actionButtons.style.display = 'block';
+
+      // Show avatar upload if it's the profile form
+      if (formId === 'profile-form') {
+        const avatarUpload = form.querySelector('.avatar-upload');
+        if (avatarUpload) {
+          avatarUpload.style.display = 'block';
+        }
+      }
+
+      // Hide edit button
+      const sectionId = formId.replace('-form', '-section');
+      const editBtn = document.querySelector(`#${sectionId} .edit-btn`);
+      editBtn.style.display = 'none';
+    }
+
+    // Function to disable form editing
+    function disableFormEditing(formId) {
+      const form = document.getElementById(formId);
+      const inputs = form.querySelectorAll('input, select');
+      const actionButtons = form.querySelector('.action-buttons');
+
+      // Disable all inputs
+      inputs.forEach(input => {
+        input.disabled = true;
+      });
+
+      // Hide action buttons
+      actionButtons.style.display = 'none';
+
+      // Hide avatar upload if it's the profile form
+      if (formId === 'profile-form') {
+        const avatarUpload = form.querySelector('.avatar-upload');
+        if (avatarUpload) {
+          avatarUpload.style.display = 'none';
+        }
+      }
+
+      // Show edit button
+      const sectionId = formId.replace('-form', '-section');
+      const editBtn = document.querySelector(`#${sectionId} .edit-btn`);
+      editBtn.style.display = 'block';
+
+      // Reset form to original values
+      form.reset();
+
+      // Restore original values after reset
+      if (formId === 'profile-form') {
+        document.querySelector('#profile-form [name="name"]').value = '{{ user.name }}';
+        document.querySelector('#profile-form [name="login"]').value = '{{ user.login }}';
+        document.querySelector('#profile-form [name="email"]').value = '{{ user.email }}';
+        document.querySelector('#profile-form [name="age"]').value = '{{ user.age }}';
+        document.querySelector('#profile-form [name="weight"]').value = '{{ user.weight }}';
+        document.querySelector('#profile-form [name="height"]').value = '{{ user.height }}';
+
+        // Для select элементов нужно установить выбранное значение
+        const genderSelect = document.querySelector('#profile-form [name="gender"]');
+        for (let i = 0; i < genderSelect.options.length; i++) {
+          if (genderSelect.options[i].value === '{{ user.gender }}') {
+            genderSelect.selectedIndex = i;
+            break;
+          }
+        }
+
+        const activitySelect = document.querySelector('#profile-form [name="activity"]');
+        for (let i = 0; i < activitySelect.options.length; i++) {
+          if (activitySelect.options[i].value === '{{ user.activity }}') {
+            activitySelect.selectedIndex = i;
+            break;
+          }
+        }
+      }
+
+      if (formId === 'nutrition-form') {
+        document.querySelector('#nutrition-form [name="calories"]').value = '{{ user.calories }}';
+        document.querySelector('#nutrition-form [name="protein"]').value = '{{ user.proteins }}';
+        document.querySelector('#nutrition-form [name="fats"]').value = '{{ user.fats }}';
+        document.querySelector('#nutrition-form [name="carbs"]').value = '{{ user.carbs }}';
+        document.querySelector('#nutrition-form [name="water"]').value = '{{ user.water }}';
+      }
+    }
+
+    // Добавляем анимацию для flash-сообщений
+    const flashMessages = document.querySelectorAll('.flash-message');
+    flashMessages.forEach((message, index) => {
+      message.style.animationDelay = `${index * 0.1}s`;
+      message.style.animation = 'fadeIn 0.5s ease-out forwards';
+    });
+
+    const trainerRequestSection = document.getElementById('trainer-request-section');
+    if (trainerRequestSection) {
+      trainerRequestSection.style.animationDelay = '0.15s';
+    }
+    // advice_goal
+
+    const goalButtons = document.querySelectorAll('.goal-btn');
+    const insertButton = document.getElementById('insert-values');
+    let currentGoal = null;
+
+    // Goal button click handler
+    goalButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        // Remove active class from all buttons
+        goalButtons.forEach(btn => btn.classList.remove('active'));
+
+        // Add active class to clicked button
+        this.classList.add('active');
+
+        // Store the selected goal
+        currentGoal = this.getAttribute('data-goal');
+
+        // Calculate nutrition values based on user data and selected goal
+        calculateNutrition(currentGoal);
+      });
+    });
+
+    // Insert button click handler
+    if (insertButton) {
+      insertButton.addEventListener('click', function () {
+        if (!currentGoal) {
+          alert('Пожалуйста, выберите цель перед вставкой значений');
+          return;
+        }
+
+        // Get calculated values
+        const calcCalories = document.getElementById('calc_calories').value;
+        const calcProtein = document.getElementById('calc_protein').value;
+        const calcFats = document.getElementById('calc_fats').value;
+        const calcCarbs = document.getElementById('calc_carbs').value;
+        const calcWater = document.getElementById('calc_water').value;
+
+        // Insert values into the form fields
+        const caloriesInput = document.querySelector('#nutrition-form [name="calories"]');
+        const proteinInput = document.querySelector('#nutrition-form [name="protein"]');
+        const fatsInput = document.querySelector('#nutrition-form [name="fats"]');
+        const carbsInput = document.querySelector('#nutrition-form [name="carbs"]');
+        const waterInput = document.querySelector('#nutrition-form [name="water"]');
+
+        caloriesInput.value = calcCalories;
+        proteinInput.value = calcProtein;
+        fatsInput.value = calcFats;
+        carbsInput.value = calcCarbs;
+        waterInput.value = calcWater;
+
+        // Enable form editing
+        enableFormEditing('nutrition-form');
+      });
+    }
+
+    // Function to calculate nutrition values based on user data and goal
+    function calculateNutrition(goal) {
+      // Get user data
+      const weight = parseFloat('{{ user.weight }}') || 70; // default 70kg if not set
+      const height = parseFloat('{{ user.height }}') || 170; // default 170cm if not set
+      const age = parseFloat('{{ user.age }}') || 30; // default 30 years if not set
+      const gender = '{{ user.gender }}' || 'male'; // default male if not set
+      const activity = '{{ user.activity }}' || 'moderate'; // default moderate if not set
+
+      // 1. Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation (more accurate)
+      let bmr;
+      if (gender === 'male') {
+        bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+      } else {
+        bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+      }
+
+      // 2. Apply activity multiplier (updated values)
+      let activityMultiplier;
+      switch (activity) {
+        case 'sedentary': activityMultiplier = 1.2; break;    // little or no exercise
+        case 'light': activityMultiplier = 1.375; break;      // light exercise 1-3 days/week
+        case 'moderate': activityMultiplier = 1.55; break;    // moderate exercise 3-5 days/week
+        case 'active': activityMultiplier = 1.725; break;     // hard exercise 6-7 days/week
+        case 'very_active': activityMultiplier = 1.9; break; // very hard exercise & physical job
+        default: activityMultiplier = 1.55;
+      }
+
+      let tdee = bmr * activityMultiplier; // Total Daily Energy Expenditure
+
+      // 3. Apply goal modifier with safe ranges
+      let calories;
+      switch (goal) {
+        case 'lose':
+          calories = tdee * 0.85; // 15% deficit (safe weight loss)
+          break;
+        case 'maintain':
+          calories = tdee; // Maintenance calories
+          break;
+        case 'gain':
+          calories = tdee * 1.1; // 10% surplus (lean mass gain)
+          break;
+        default:
+          calories = tdee;
+      }
+
+      // 4. Calculate macronutrients with improved ratios
+      let protein, fats, carbs;
+
+      // Protein: based on activity level and goals
+      if (goal === 'lose') {
+        protein = weight * 2.2; // Higher protein for fat loss (preserves muscle)
+      } else if (goal === 'gain') {
+        protein = weight * 2.0; // Slightly higher for muscle growth
+      } else {
+        protein = weight * 1.6; // Moderate for maintenance
+      }
+
+      // Fats: 25-30% of total calories
+      fats = (calories * 0.25) / 9; // 1g fat = 9 kcal
+
+      // Carbs: remaining calories after protein and fat
+      carbs = (calories - (protein * 4) - (fats * 9)) / 4; // 1g carb = 4 kcal
+
+      // 5. Water intake - more precise calculation
+      let water;
+      if (activity === 'sedentary' || activity === 'light') {
+        water = weight * 30; // 30ml per kg for less active
+      } else {
+        water = weight * 40; // 40ml per kg for active individuals
+      }
+
+      // Round values to whole numbers
+      calories = Math.round(calories);
+      protein = Math.round(protein);
+      fats = Math.round(fats);
+      carbs = Math.round(carbs);
+      water = Math.round(water / 100) * 100; // Round to nearest 100ml
+
+      // Update calculated fields
+      document.getElementById('calc_calories').value = calories;
+      document.getElementById('calc_protein').value = protein;
+      document.getElementById('calc_fats').value = fats;
+      document.getElementById('calc_carbs').value = carbs;
+      document.getElementById('calc_water').value = water;
+    }
+
+
+    // modal
+    const modal = document.getElementById('trainer-modal');
+    const openModalBtn = document.getElementById('open-trainer-modal');
+    const closeModalBtn = document.querySelector('.close-modal');
+    const cancelModalBtn = document.querySelector('.cancel-modal');
+
+    openModalBtn.addEventListener('click', function () {
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    });
+
+    function closeModal() {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Enable scrolling
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    cancelModalBtn.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function (event) {
+      if (event.target == modal) {
+        closeModal();
+      }
+    });
+
+    // File upload preview
+    const fileInput = document.querySelector('#trainer-form [name="documents"]');
+    if (fileInput) {
+      fileInput.addEventListener('change', function () {
+        const fileHint = this.parentElement.querySelector('.file-hint');
+        if (this.files.length > 0) {
+          fileHint.textContent = `Выбрано файлов: ${this.files.length}`;
+        } else {
+          fileHint.textContent = 'Поддерживаемые форматы: PDF, DOC, DOCX, JPG, PNG';
+        }
+      });
+    }
+  });
 </script>
 {% endblock %}

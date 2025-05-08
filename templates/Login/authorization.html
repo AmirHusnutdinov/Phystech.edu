@@ -3,53 +3,71 @@
 
 <link rel="stylesheet" href="../../static/assets/css/style_authorization.css">
 
-<div class="body_login">
-    <div class="auth-container">
-        <div class="auth-form">
-            <h1 class="auth-title">Добро пожаловать!</h1>
-            <form method="POST" action="{{ url_for('process_login') }}">
-                {{ form.hidden_tag() }}
-                <div class="input-group">
-                    <label>Email</label>
-                    {{ form.name(size=32) }}<br>
-                    {% for error in form.name.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    {{ form.password(size=32) }}<br>
-                    {% for error in form.password.errors %}
-                    <span style="color: red;">[{{ error }}]</span>
-                    {% endfor %}
-                </div>
-                {{ form.submit(class="auth-button", value="Войти") }}
-            </form>
-
-            <div class="registration-text">Если у Вас нет акаунта, предлагаем Вам зарегистрироваться на нашем прекрасном сайте</div>
-            <form method="POST" action="{{ url_for('show_registration_page')  }}">
-                {{ form_registration.hidden_tag() }}
-                {{ form_registration.submit(value="Зарегистрироваться", class="register-button") }}
-            </form>
-        </div>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>Добро пожаловать!</h1>
+      <p class="login-subtitle">Войдите в свой аккаунт</p>
     </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-container">
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">
-                        <div class="flash-content">
-                            <span class="flash-icon">{% if category == 'success' %}✓{% elif category == 'danger' %}!{% elif category == 'info' %}i{% else %}•{% endif %}</span>
-                            <span class="flash-text">{{ message }}</span>
-                        </div>
-                        <button class="flash-close" onclick="this.parentElement.style.display='none'">×</button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
+    <form method="POST" action="{{ url_for('process_login') }}" class="login-form">
+      {{ form.hidden_tag() }}
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrapper">
+          {{ form.name(size=32, placeholder="Введите ваш email", id="email") }}
+        </div>
+        {% for error in form.name.errors %}
+        <span class="error-message">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          {{ form.password(size=32, placeholder="Введите ваш пароль", id="password") }}
+        </div>
+        {% for error in form.password.errors %}
+        <span class="error-message">{{ error }}</span>
+        {% endfor %}
+      </div>
+
+      {{ form.submit(class="btn-primary", value="Войти") }}
+    </form>
+
+    <div class="divider">
+      <span>Нет аккаунта?</span>
+    </div>
+
+    <div class="register-section">
+      <p>Если у Вас нет акаунта, предлагаем Вам зарегистрироваться на нашем прекрасном сайте</p>
+      <form method="POST" action="{{ url_for('show_registration_page') }}">
+        {{ form_registration.hidden_tag() }}
+        {{ form_registration.submit(value="Зарегистрироваться", class="btn-secondary") }}
+      </form>
+    </div>
+  </div>
 </div>
 
-{% endblock %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="toast-container">
+  {% for category, message in messages %}
+  <div class="toast toast-{{ category }}">
+    <div class="toast-icon">
+      {% if category == 'success' %}✓
+      {% elif category == 'danger' %}!
+      {% elif category == 'info' %}i
+      {% else %}•
+      {% endif %}
+    </div>
+    <div class="toast-message">{{ message }}</div>
+    <button class="toast-close" onclick="this.parentElement.classList.add('toast-hide')">×</button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
 
+{% endblock %}

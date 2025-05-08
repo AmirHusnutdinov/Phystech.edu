@@ -1,14 +1,14 @@
-from flask import redirect, url_for, request, session, abort, flash
-from werkzeug.utils import secure_filename
 import os
 
+from flask import redirect, url_for, request, session, abort, flash
+from werkzeug.utils import secure_filename
+
+from server.cloud.cloud_main import Cloud
+from server.database.use_DataBase import database_query, check_admin
 from server.database.use_DataBase import save_news_query, update_news, delete_news
 from server.service_files.links import *
 from settings import app
 from utils import render_template_with_user
-from server.database.use_DataBase import database_query, check_admin
-
-from server.cloud.cloud_main import Cloud
 
 
 class News:
@@ -20,15 +20,21 @@ class News:
             all_news[i] = list(all_news[i])
             id = all_news[i][0]
             all_news[i][2] = Cloud().get_url(f"news/{id}.jpg")
+        if 'user_id' in session:
+            role = "authorized"
+        else:
+            role = "not-authorized"
         return render_template_with_user(
             "News/all_news.html",
             title="Новости",
-            news=all_news
+            news=all_news,
+            header_links=choose_header_links(role)
+
         )
 
     @staticmethod
     def show_one_news_page(news_id):
-        if'user_id' in session:
+        if 'user_id' in session:
             is_admin = check_admin(session["user_id"])
         else:
             is_admin = False
@@ -84,7 +90,7 @@ class News:
     @staticmethod
     def handle_make_news():
         if "user_id" not in session or not check_admin(session["user_id"]):
-             abort(403)
+            abort(403)
         news_id = request.form.get('news_id')
         edit = True
         if not news_id:
@@ -109,7 +115,7 @@ class News:
             filename = secure_filename(image.filename)
             image_path = filename
             image.save(image_path)
-            cloud.upload_file(image_path,  f"news/{news_id}.jpg", replace=True)
+            cloud.upload_file(image_path, f"news/{news_id}.jpg", replace=True)
             try:
                 os.remove(image_path)
             except OSError:

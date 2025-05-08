@@ -98,7 +98,8 @@
                             <div class="exercise-item" data-id="strength" data-name="Функционально-силовая тренировка"
                                  data-img="exercise_strength">
                                 <div class="exercise-icon">
-                                    <img src="{{ images['exercises/exercise_strength.png'] }}" alt="Функционально-силовая тренировка">
+                                    <img src="{{ images['exercises/exercise_strength.png'] }}"
+                                         alt="Функционально-силовая тренировка">
                                 </div>
                                 <span class="exercise-name">Функционально-силовая тренировка</span>
                             </div>
@@ -219,7 +220,13 @@
 
                         <!-- История тренировок -->
                         <div class="workout-history-container">
-                            <h3 class="workout-history-title">История тренировок</h3>
+                            <div class="workout-history-header">
+                                <h3 class="workout-history-title">История тренировок</h3>
+                                <button id="clear-history-btn" class="btn btn-outline"
+                                        style="padding: 5px 10px; font-size: 12px; display: none;">
+                                    Очистить историю
+                                </button>
+                            </div>
                             <div id="workout-history" class="workout-history">
                                 <div class="empty-state" id="empty-state">
                                     У вас пока нет записей о тренировках. Начните тренировку, чтобы увидеть историю.
@@ -275,6 +282,7 @@
         const recordWorkoutSection = document.getElementById('record-workout-section');
         const recordWorkoutForm = document.getElementById('record-workout-form');
         const workoutDate = document.getElementById('workout-date');
+        const clearHistoryBtn = document.getElementById('clear-history-btn');
 
         // Установка текущей даты по умолчанию
         const today = new Date();
@@ -354,10 +362,13 @@
         function updateWorkoutHistory() {
     if (workouts.length === 0) {
         emptyState.style.display = 'block';
+        clearHistoryBtn.style.display = 'none';
+        workoutHistory.innerHTML = '';
         return;
     }
 
     emptyState.style.display = 'none';
+    clearHistoryBtn.style.display = 'block';
     workoutHistory.innerHTML = '';
 
     // Сортировка тренировок по дате (сначала новые)
@@ -369,6 +380,7 @@
     recentWorkouts.forEach(workout => {
         const workoutItem = document.createElement('div');
         workoutItem.className = 'workout-item slide-in';
+        workoutItem.setAttribute('data-id', workout.id);
 
         const formattedDate = new Date(workout.date).toLocaleDateString('ru-RU');
         const formattedDuration = formatTime(workout.duration);
@@ -395,7 +407,8 @@
 
     // Добавление обработчиков для кнопок удаления
     document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
             const workoutId = this.getAttribute('data-id');
             deleteWorkout(workoutId);
         });
@@ -404,11 +417,19 @@
 
         // Удаление тренировки
         function deleteWorkout(id) {
-            const workoutIndex = workouts.findIndex(w => w.id === id);
+    const workoutIndex = workouts.findIndex(w => w.id === id);
 
-            if (workoutIndex !== -1) {
-                const workout = workouts[workoutIndex];
+    if (workoutIndex !== -1) {
+        const workout = workouts[workoutIndex];
 
+        // Находим элемент в DOM и удаляем его с анимацией
+        const workoutElement = document.querySelector(`.workout-item[data-id="${id}"]`);
+        if (workoutElement) {
+            workoutElement.style.opacity = '0';
+            workoutElement.style.transform = 'translateX(20px)';
+            workoutElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+            setTimeout(() => {
                 // Обновление статистики
                 stats.totalWorkouts--;
 
@@ -431,14 +452,31 @@
                 // Удаление тренировки из массива
                 workouts.splice(workoutIndex, 1);
 
+                // Сохранение обновленных данных в localStorage
+                localStorage.setItem('workouts', JSON.stringify(workouts));
+                localStorage.setItem('stats', JSON.stringify(stats));
+
                 // Обновление интерфейса
                 updateStats();
-                updateWorkoutHistory();
+
+                // Проверяем, остались ли еще тренировки
+                if (workouts.length === 0) {
+                    emptyState.style.display = 'block';
+                    clearHistoryBtn.style.display = 'none';
+                    workoutHistory.innerHTML = '';
+                } else {
+                    // Если элемент был последним видимым, но в массиве еще есть элементы
+                    if (workoutHistory.children.length <= 1) {
+                        updateWorkoutHistory();
+                    }
+                }
 
                 // Показ уведомления
                 showToast('Тренировка удалена', 'success');
-            }
+            }, 300); // Задержка для анимации
         }
+    }
+}
 
         // Форматирование времени
         function formatTime(totalSeconds) {
@@ -520,6 +558,36 @@
             timerDisplay.textContent = '00:00:00';
         }
 
+        // Функция для удаления всех тренировок
+        function clearAllWorkouts() {
+            if (workouts.length === 0) return;
+
+            // Сброс статистики
+            stats = {
+                totalWorkouts: 0,
+                weekWorkouts: 0,
+                totalTime: 0,
+                totalCalories: 0
+            };
+
+            // Очистка массива тренировок
+            workouts = [];
+
+            // Сохранение обновленных данных в localStorage
+            localStorage.setItem('workouts', JSON.stringify(workouts));
+            localStorage.setItem('stats', JSON.stringify(stats));
+
+            // Обновление интерфейса
+            updateStats();
+            updateWorkoutHistory();
+
+            // Скрытие кнопки очистки истории
+            clearHistoryBtn.style.display = 'none';
+
+            // Показ уведомления
+            showToast('История тренировок очищена', 'success');
+        }
+
         // Добавление тренировки в историю и обновление статистики
         function addWorkoutToHistory(workout) {
             // Добавление тренировки в историю
@@ -543,6 +611,10 @@
 
             // Добавление калорий (примерно 5 калорий в минуту)
             stats.totalCalories += Math.floor((workout.duration / 60) * 5);
+
+            // Сохранение обновленных данных в localStorage
+            localStorage.setItem('workouts', JSON.stringify(workouts));
+            localStorage.setItem('stats', JSON.stringify(stats));
 
             // Обновление интерфейса
             updateStats();
@@ -660,9 +732,18 @@ exerciseItems.forEach(item => {
             showToast('Тренировка успешно добавлена', 'success');
         });
 
+        // Добавление обработчика для кнопки очистки истории
+        clearHistoryBtn.addEventListener('click', clearAllWorkouts);
+
+        // Обновление видимости кнопки очистки истории
+        function updateClearButtonVisibility() {
+            clearHistoryBtn.style.display = workouts.length > 0 ? 'block' : 'none';
+        }
+
         // Инициализация интерфейса
         updateStats();
         updateWorkoutHistory();
+        updateClearButtonVisibility();
 
         // Проверка и обновление статистики за неделю
         function updateWeeklyStats() {
@@ -702,3 +783,4 @@ exerciseItems.forEach(item => {
 </script>
 </body>
 {% endblock %}
+

@@ -3,11 +3,12 @@ from datetime import datetime, timezone
 from flask import render_template, redirect, request, jsonify
 from flask import session
 
+from server.cloud.cloud_main import Cloud
 from server.database.use_DataBase import *
 from server.service_files.links import *
 from settings import app
 
-from server.cloud.cloud_main import Cloud
+
 class Students:
     cloud = Cloud()
 
@@ -15,20 +16,25 @@ class Students:
     def show_students_page():
         if "user_id" in session:
             user_id = session["user_id"]
-            if check_trainer(user_id):
+            user = get_user_data(session["user_id"])
+            if not user["is_activated"]:
+                return redirect(process_registration)
+            if user["is_trainer"]:
                 student_list = get_list_of_student(user_id)
                 students_info = []
                 student_photo = []
                 for el in student_list:
                     students_info.append(get_user_data(el))
-                    students_info[-1]['avatar'] = Students.cloud.get_url(f'''avatars/{students_info[-1]['id']}''')
+                    students_info[-1]["avatar"] = Students.cloud.get_url(
+                        f"""avatars/{students_info[-1]['id']}"""
+                    )
                 print(students_info)
                 return render_template(
                     "Trainer/students.html",
                     header_links=choose_header_links("authorized"),
                     title="Мои студенты",
                     cookies=students_info,
-                    cookiesPhoto=student_photo
+                    cookiesPhoto=student_photo,
                 )
             return redirect(main_page)
         return redirect(main_page)
@@ -45,8 +51,8 @@ class Students:
         user_info = get_user_data(student_id)
         if not user_info:
             return redirect(main_page)
-        
-        avatar = Students.cloud.get_url(f'''avatars/{user_info['id']}''')
+
+        avatar = Students.cloud.get_url(f"""avatars/{user_info['id']}""")
         messages = get_message_history(trainer_id, student_id)
         formatted_messages = []
         for msg in messages:
@@ -72,14 +78,13 @@ class Students:
             student_id=student_id,
             # Далее идут те переменные, в которые ты, Варвара, должна поместить данные из БД.
             nutrition_was=1000,
-            nutrition_needed=1500,
+            nutrition_needed=1800,
             fats_was=1000,
             fats_needed=1500,
             carbohydrates_was=0,
             carbohydrates_needed=1500,
             water_was=1.5,
-            water_needed=3
-
+            water_needed=3,
         )
 
     @staticmethod
@@ -127,12 +132,13 @@ class Students:
         since_sql = since_dt.strftime("%Y-%m-%d %H:%M:%S.%f")
         last_update = since_sql
 
-        messages = get_message_history(
-            trainer_id, student_id, since=last_update)
+        messages = get_message_history(trainer_id, student_id, since=last_update)
         formatted_messages = []
         # debug_print('student_id', student_id)
         for msg in messages:
-            if str(msg["id_from"]) == str(student_id):  # Только новые сообщения от студента
+            if str(msg["id_from"]) == str(
+                student_id
+            ):  # Только новые сообщения от студента
                 user_info = get_user_data(student_id)
                 formatted_messages.append(
                     {
@@ -142,7 +148,9 @@ class Students:
                     }
                 )
         # reducing to form 2025-04-22T13:54:07.343Z
-        current_time = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+        current_time = (
+            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+        )
 
         # debug_print('CURRENT TIME', current_time)
         # debug_print('MESSAGES', formatted_messages)
