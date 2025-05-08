@@ -282,4 +282,4 @@ def delete_news(news_id):
 
 def check_admin(user_id):
     sql = f"SELECT is_admin FROM users WHERE id = {int(user_id)}"  # Приводим к int для безопасности
-    return bool(database_query(sql)[0][0])
+    return bool(database_query(sql, fetch=True)[0][0])
