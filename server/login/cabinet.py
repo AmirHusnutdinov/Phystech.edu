@@ -61,7 +61,7 @@ class Cabinet:
         if "user_id" in session:
             user = get_user_data(session["user_id"])
             if not user["is_activated"]:
-                redirect(process_registration)
+                return redirect(process_registration)
             profile_form = ProfileForm(obj=user)
             nutrition_form = NutritionForm(obj=user)
             trainer_form = TrainerApplicationForm(obj=user)
