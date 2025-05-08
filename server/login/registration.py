@@ -125,11 +125,9 @@ class Registration:
 
     @staticmethod
     def process_confirmation():
-        print(5)
         # if "user_id" in session:
         #     return redirect(main_page)
         form = ConfirmationForm()
-        print(form)
         if form.validate_on_submit():
             entered_code = form.code.data
             print(entered_code, session.get("code"))
