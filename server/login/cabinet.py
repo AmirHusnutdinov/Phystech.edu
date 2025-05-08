@@ -61,7 +61,7 @@ class Cabinet:
         if "user_id" in session:
             user = get_user_data(session["user_id"])
             if not user["is_activated"]:
-                return redirect(process_registration)
+                redirect(process_registration)
             profile_form = ProfileForm(obj=user)
             nutrition_form = NutritionForm(obj=user)
             trainer_form = TrainerApplicationForm(obj=user)
@@ -153,7 +153,7 @@ class Cabinet:
                 "proteins": nutrition_form.protein.data,
                 "fats": nutrition_form.fats.data,
                 "carbs": nutrition_form.carbs.data,
-                "water": 2000,
+                "water": nutrition_form.water.data,
             }
 
             update_user_data(session["user_id"], update_data)
@@ -365,6 +365,9 @@ class NutritionForm(FlaskForm):
     )
     carbs = IntegerField(
         "Углеводы (г)", validators=[DataRequired(), NumberRange(min=0, max=1000)]
+    )
+    water = IntegerField(
+        "Вода (мл)", validators=[DataRequired(), NumberRange(min=0, max=10000)]
     )
     submit = SubmitField("Сохранить")
 

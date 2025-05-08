@@ -10,9 +10,10 @@
   --danger-color: #f5365c;
   --warning-color: #fb6340;
   --info-color: #11cdef;
+  --water-color: #36a9e1;
   --card-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
   --transition-speed: 0.3s;
-  
+
   /* Light theme colors */
   --bg-color: #f8f9fe;
   --card-bg-color: #ffffff;
@@ -32,7 +33,7 @@
   --section-bg-color: #252525;
   --input-bg-color: #2d2d2d;
   --avatar-border-color: #333333;
-  
+
   /* Component-specific dark theme styles */
   --header-bg-color: linear-gradient(87deg, #3a4b8d 0, #4a5da0 100%);
   --card-shadow: 0 7px 14px rgba(0, 0, 0, 0.2), 0 3px 6px rgba(0, 0, 0, 0.15);
@@ -349,6 +350,7 @@ body {
   margin-top: 30px;
   text-align: right;
 }
+
 .modal-buttons {
   margin-top: 30px;
   text-align: right;
@@ -422,42 +424,52 @@ body {
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 25px;
-  width: 100%; /* Ensure full width */
+  width: 100%;
+  /* Ensure full width */
 }
 
 .recommended-section h3 {
   font-size: 18px;
   margin-bottom: 15px;
   color: var(--text-color);
-  width: 100%; /* Full width header */
-  text-align: center; /* Center the heading */
+  width: 100%;
+  /* Full width header */
+  text-align: center;
+  /* Center the heading */
 }
 
 .goal-buttons {
   display: flex;
-  justify-content: space-between; /* Distribute buttons evenly */
-  width: 100%; /* Full width */
+  justify-content: space-between;
+  /* Distribute buttons evenly */
+  width: 100%;
+  /* Full width */
   margin-bottom: 20px;
 }
 
 .goal-buttons button {
-  flex: 1; /* Each button takes equal space */
-  margin: 0 5px; /* Small margin between buttons */
+  flex: 1;
+  /* Each button takes equal space */
+  margin: 0 5px;
+  /* Small margin between buttons */
 }
 
 .goal-buttons button:first-child {
-  margin-left: 0; /* Remove left margin from first button */
+  margin-left: 0;
+  /* Remove left margin from first button */
 }
 
 .goal-buttons button:last-child {
-  margin-right: 0; /* Remove right margin from last button */
+  margin-right: 0;
+  /* Remove right margin from last button */
 }
 
 .btn-outline {
   background-color: transparent;
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
-  padding: 10px 15px; /* Consistent padding */
+  padding: 10px 15px;
+  /* Consistent padding */
   text-align: center;
 }
 
@@ -477,17 +489,20 @@ body {
   border-radius: 8px;
   margin-bottom: 15px;
   border: 1px solid var(--border-color);
-  width: 100%; /* Full width */
+  width: 100%;
+  /* Full width */
 }
 
 .insert-button {
   text-align: center;
   margin-top: 15px;
-  width: 100%; /* Full width */
+  width: 100%;
+  /* Full width */
 }
 
 .insert-button button {
-  min-width: 200px; /* Minimum width for the button */
+  min-width: 200px;
+  /* Minimum width for the button */
 }
 
 /* Dark theme support */
@@ -513,13 +528,13 @@ body {
 
 @media (max-width: 768px) {
   .goal-buttons {
-      flex-direction: column;
-      gap: 10px;
+    flex-direction: column;
+    gap: 10px;
   }
-  
+
   .goal-buttons button {
-      width: 100%;
-      margin: 0;
+    width: 100%;
+    margin: 0;
   }
 }
 
@@ -579,6 +594,10 @@ body {
 
 .carbs-icon {
   background: linear-gradient(87deg, var(--info-color) 0, #1171ef 100%);
+}
+
+.water-icon {
+  background: linear-gradient(87deg, var(--water-color) 0, #64c4f2 100%);
 }
 
 .stat-value {
@@ -695,12 +714,13 @@ select.form-control {
 
 @keyframes modalFadeIn {
   from {
-      opacity: 0;
-      transform: translateY(-20px);
+    opacity: 0;
+    transform: translateY(-20px);
   }
+
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -747,7 +767,8 @@ select.form-control {
   margin-right: 20px;
   color: white;
   font-size: 32px;
-  overflow: hidden; /* Добавлено для корректного отображения изображения */
+  overflow: hidden;
+  /* Добавлено для корректного отображения изображения */
 }
 
 .trainer-avatar img {
@@ -924,14 +945,14 @@ select.form-control {
 
 @media (max-width: 768px) {
   .request-card {
-      flex-direction: column;
-      align-items: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
+
   .request-actions {
-      margin-top: 15px;
-      width: 100%;
-      justify-content: space-between;
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
@@ -1000,4 +1021,3 @@ select.form-control {
   transform: translateY(1px);
   box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
 }
-
