@@ -1,14 +1,15 @@
-import bcrypt
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask import render_template
 from flask import session
 from server.service_files.links import choose_header_links
 
 
-def hash_password(password):
-    salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
-    return hashed_password.decode('utf-8')
 
+def hash_password(password):
+    return generate_password_hash(password)
+
+def check_password(hashed_password, input_password):
+    return check_password_hash(hashed_password, input_password)
 
 def is_login():
     return session["Login"]

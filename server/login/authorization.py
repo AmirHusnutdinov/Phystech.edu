@@ -3,6 +3,7 @@ from flask import redirect, url_for, flash, session
 from server.database.use_DataBase import database_query
 from server.login.forms import LoginForm, RegistrationForm
 from server.service_files.links import *
+from server.login.utils import check_password
 from settings import app
 from utils import render_template_with_user
 
@@ -30,9 +31,11 @@ class Authorization:
         if form.validate_on_submit():
             name = form.name.data
             password = form.password.data
-            password_prov = database_query(f"""SELECT password FROM users WHERE email = '{name}';""", True)
-            user_id = database_query(f"""SELECT id FROM users WHERE email = '{name}';""", True)
-            if password_prov and password == password_prov[0][0]:  # Пример проверки
+            password_prov = database_query(f"""SELECT password FROM "User" WHERE email = '{name}';""", True)
+            if password_prov:
+               hased_password = password_prov[0][0]
+            user_id = database_query(f"""SELECT id FROM "User" WHERE email = '{name}';""", True)
+            if password_prov and check_password(hased_password, password):  # Пример проверки
                 session['Login'] = True
                 session['email'] = name
                 session["user_id"] = user_id[0][0]
