@@ -25,17 +25,17 @@ class DayPlan:
         if "user_id" in session:
             dishes = get_dishes()
             user = get_user_data(session["user_id"])
-            if not user["is_activated"]:
-                return redirect(process_registration)
             daily = get_day_data(session["user_id"], date.today())
+            print(daily)
 
-            cookies2 = {"water": 0, "carbs": 0, "calories": 0, "protein": 0, "fats": 0}
+            cookies2 = {"water": 0, "carbs": 0,
+                        "calories": 0, "protein": 0, "fats": 0}
             if daily:
                 cookies2["water"] = daily[0][3]
                 cookies2["calories"] = daily[0][5]
                 cookies2["protein"] = daily[0][7]
-                cookies2["carbs"] = daily[0][9]
-                cookies2["fats"] = daily[0][11]
+                cookies2["carbs"] = daily[0][11]
+                cookies2["fats"] = daily[0][9]
 
             trainer_id = get_trainer_id(session["user_id"])
             has_trainer = trainer_id != 0
@@ -53,102 +53,10 @@ class DayPlan:
                             "type": sender,
                             "content": msg["content"],
                             "time": msg["time"].strftime("%H:%M"),
-                            "sender_name": (
-                                user_info["name"] if sender == "received" else "Вы"
-                            ),
+                            "sender_name": user_info["name"] if sender == "received" else "Вы",
                         }
                     )
-            diet_meals = [
-                {
-                    "id": 1,
-                    "type_name": "Завтрак",
-                    "time": "08:00",
-                    "protein": 25,
-                    "fats": 15,
-                    "carbs": 30,
-                    "calories": 350,
-                    "dishes": [
-                        {
-                            "name": "Овсянка на молоке",
-                            "weight": 200,
-                            "protein": 10,
-                            "fats": 5,
-                            "carbs": 20,
-                            "calories": 150,
-                        },
-                        {
-                            "name": "Яйца вареные",
-                            "weight": 100,
-                            "protein": 15,
-                            "fats": 10,
-                            "carbs": 0,
-                            "calories": 200,
-                        },
-                    ],
-                },
-                {
-                    "id": 2,
-                    "type_name": "Обед",
-                    "time": "13:00",
-                    "protein": 30,
-                    "fats": 20,
-                    "carbs": 40,
-                    "calories": 500,
-                    "dishes": [
-                        {
-                            "name": "Куриный суп",
-                            "weight": 300,
-                            "protein": 15,
-                            "fats": 8,
-                            "carbs": 10,
-                            "calories": 200,
-                        },
-                        {
-                            "name": "Гречка с куриной грудкой",
-                            "weight": 250,
-                            "protein": 15,
-                            "fats": 12,
-                            "carbs": 30,
-                            "calories": 300,
-                        },
-                    ],
-                },
-                {
-                    "id": 3,
-                    "type_name": "Ужин",
-                    "time": "19:00",
-                    "protein": 20,
-                    "fats": 10,
-                    "carbs": 25,
-                    "calories": 300,
-                    "dishes": [
-                        {
-                            "name": "Творог с медом",
-                            "weight": 150,
-                            "protein": 15,
-                            "fats": 5,
-                            "carbs": 10,
-                            "calories": 150,
-                        },
-                        {
-                            "name": "Салат овощной",
-                            "weight": 100,
-                            "protein": 2,
-                            "fats": 3,
-                            "carbs": 5,
-                            "calories": 50,
-                        },
-                        {
-                            "name": "Хлебцы цельнозерновые",
-                            "weight": 30,
-                            "protein": 3,
-                            "fats": 1,
-                            "carbs": 10,
-                            "calories": 70,
-                        },
-                    ],
-                },
-            ]
+
             return render_template_with_user(
                 "DayPlan/day_plan.html",
                 header_links=choose_header_links("authorized"),
@@ -161,8 +69,8 @@ class DayPlan:
                 save_day_plan=save_day_plan,
                 add_product=add_product,
                 add_recipes=add_recipes,
-                physical_exercises=physical_exercises,
-                diet_meals=diet_meals,
+                physical_exercises=physical_exercises
+
             )
         return redirect(main_page)
 
@@ -259,7 +167,7 @@ class DayPlan:
                 }
             )
         except Exception as e:
-            debug_print("error", e)
+            debug_print('error', e)
             return jsonify({"status": "error", "message": str(e)}), 500
 
     @staticmethod
@@ -285,9 +193,7 @@ class DayPlan:
             )
             formatted_messages = []
             for msg in messages:
-                if str(msg["id_from"]) == str(
-                    trainer_id
-                ):  # Только новые сообщения от trainer
+                if str(msg["id_from"]) == str(trainer_id):  # Только новые сообщения от trainer
                     user_info = get_user_data(trainer_id)
                     formatted_messages.append(
                         {
@@ -297,9 +203,8 @@ class DayPlan:
                         }
                     )
             # debug_print('MESSAGES', formatted_messages)
-            current_time = (
-                datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
-            )
+            current_time = datetime.now(timezone.utc).strftime(
+                '%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
             return jsonify(
                 {
                     "status": "success",
@@ -319,8 +224,9 @@ def validate_data(data):
         try:
             for kbzhu in [target_kbzhu, actual_kbzhu]:
                 if not all(
-                    0 <= float(kbzhu[key]) <= (10000 if key == "calories" else 2000)
-                    for key in kbzhu
+                        0 <= float(kbzhu[key]) <= (
+                                10000 if key == "calories" else 2000)
+                        for key in kbzhu
                 ):
                     return False
 
@@ -347,13 +253,10 @@ def open_add_product():
     return redirect(main_page)
 
 
-@app.route(add_recipes, methods=["GET", "POST"])
+@app.route(add_recipes)
 def open_add_recipes():
     if "user_id" in session:
-        if request.method == "POST":
-            print("hello")
-        elif request.method == "GET":
-            return DayPlan.show_add_recipes()
+        return DayPlan.show_add_recipes()
     return redirect(main_page)
 
 
@@ -372,13 +275,13 @@ def save_data():
 @app.route(physical_exercises)
 def open_physical_exercises_page():
     if "user_id" in session:
-        images = DayPlan.cloud.get_folder("exercises")
+        images = DayPlan.cloud.get_folder('exercises')
         return render_template(
             "DayPlan/physical_exercises.html",
             header_links=choose_header_links("authorized"),
             title="Трекер Физических Упражнений",
             day_plan=day_plan,
-            images=images,
+            images=images
         )
     return redirect(main_page)
 

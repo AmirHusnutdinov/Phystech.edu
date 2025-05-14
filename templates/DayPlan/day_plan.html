@@ -211,8 +211,8 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="{{add_product}}" class="action-btn">Добавить продукт</a>
-                    <a href="{{add_recipes}}" class="action-btn">Добавить рецепт</a>
+                    <a href="/products/add" class="action-btn">Добавить продукт</a>
+                    <a href="/recipes/add" class="action-btn">Добавить рецепт</a>
                 </div>
 
                 <div class="search-results" id="search-results">
@@ -300,7 +300,6 @@
     </div>
 </div>
 {% endif %}
-
 <script>
     const cookies = {{ cookies | tojson }};
 const cookies2 = {{ cookies2 | tojson }};
@@ -318,114 +317,22 @@ const GLASS_SIZE = 250;
 
 let meals = [];
 let waterAmount = 0;
-let planType = localStorage.getItem('mealPlanType') || 'custom';
+let planType = 'custom';
 let selectedDishId = null;
 let currentMealIndex = null;
-// Объект для хранения текущих значений КБЖУ
-let currentNutrition = {
-  protein: 0,
-  fats: 0,
-  carbs: 0,
-  calories: 0,
-  water: 0
-};
 
 document.addEventListener('DOMContentLoaded', function () {
-    updateCurrentDate();
-    initWaterGlasses();
+  updateCurrentDate();
+  initWaterGlasses();
 
-    // Restore saved plan type
-    planType = localStorage.getItem('mealPlanType') || 'custom';
+  const current = getCurrentNutrition();
+  waterAmount = current.water;
+  updateWaterDisplay();
 
-    // Update UI to reflect saved plan type
-    const planTypeButtons = document.querySelectorAll('.plan-type-btn');
-    planTypeButtons.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.type === planType) {
-            btn.classList.add('active');
-        }
-    });
-
-    // Восстанавливаем сохраненные значения КБЖУ из localStorage
-    restoreNutritionValues();
-
-    // Восстанавливаем количество воды
-    const savedWater = localStorage.getItem('waterAmount');
-    if (savedWater) {
-        waterAmount = parseInt(savedWater, 10) || 0;
-        updateWaterDisplay();
-    }
-
-    // Initialize diet_meals data from Flask
-    const dietMealsData = {{ diet_meals | tojson }};
-    if (dietMealsData && dietMealsData.length > 0) {
-        // Store the diet meals for later use when diet mode is selected
-        window.dietMealsData = dietMealsData;
-
-        // Restore diet meals state
-        restoreDietMealsState();
-    }
-
-    // Restore custom meals from localStorage
-    const savedMeals = localStorage.getItem('customMeals');
-    if (savedMeals) {
-        try {
-            meals = JSON.parse(savedMeals);
-        } catch (e) {
-            console.error('Error parsing saved meals:', e);
-            meals = [];
-        }
-    }
-
-    setupEventListeners();
-    updateAddMealButtonVisibility();
-    renderMeals();
-    updateNutritionSummary();
+  setupEventListeners();
+  updateAddMealButtonVisibility();
+  updateNutritionSummary();
 });
-
-// Функция для восстановления значений КБЖУ из localStorage
-function restoreNutritionValues() {
-    const savedNutrition = localStorage.getItem('currentNutrition');
-    if (savedNutrition) {
-        try {
-            currentNutrition = JSON.parse(savedNutrition);
-        } catch (e) {
-            console.error('Error parsing saved nutrition values:', e);
-            currentNutrition = {
-                protein: 0,
-                fats: 0,
-                carbs: 0,
-                calories: 0,
-                water: 0
-            };
-        }
-    } else {
-        // Если нет сохраненных значений, используем значения из cookies
-        currentNutrition = getCurrentNutrition();
-    }
-
-    // Обновляем отображение прогресс-баров
-    updateNutritionDisplay();
-}
-
-// Функция для обновления отображения прогресс-баров без пересчета значений
-function updateNutritionDisplay() {
-    document.getElementById('protein-value').textContent = `${currentNutrition.protein.toFixed(1)}/${DAILY_GOALS.protein} г`;
-    document.getElementById('fat-value').textContent = `${currentNutrition.fats.toFixed(1)}/${DAILY_GOALS.fats} г`;
-    document.getElementById('carb-value').textContent = `${currentNutrition.carbs.toFixed(1)}/${DAILY_GOALS.carbs} г`;
-    document.getElementById('calorie-value').textContent = `${Math.round(currentNutrition.calories)}/${DAILY_GOALS.calories} ккал`;
-    document.getElementById('water-value').textContent = `${waterAmount}/${DAILY_GOALS.water} мл`;
-
-    document.getElementById('protein-fill').style.width = `${Math.min(100, (currentNutrition.protein / DAILY_GOALS.protein) * 100)}%`;
-    document.getElementById('fat-fill').style.width = `${Math.min(100, (currentNutrition.fats / DAILY_GOALS.fats) * 100)}%`;
-    document.getElementById('carb-fill').style.width = `${Math.min(100, (currentNutrition.carbs / DAILY_GOALS.carbs) * 100)}%`;
-    document.getElementById('calorie-fill').style.width = `${Math.min(100, (currentNutrition.calories / DAILY_GOALS.calories) * 100)}%`;
-}
-
-// Функция для сохранения текущих значений КБЖУ в localStorage
-function saveNutritionValues() {
-    localStorage.setItem('currentNutrition', JSON.stringify(currentNutrition));
-}
 
 function getCurrentNutrition() {
   return {
@@ -477,10 +384,6 @@ function toggleWaterGlass(index) {
   }
 
   updateWaterValue();
-  // Save water amount to localStorage
-  localStorage.setItem('waterAmount', waterAmount.toString());
-  currentNutrition.water = waterAmount;
-  saveNutritionValues();
   prepareSaveData();
 }
 
@@ -522,23 +425,19 @@ function updateAddMealButtonVisibility() {
 
 function setupEventListeners() {
   const planTypeButtons = document.querySelectorAll('.plan-type-btn');
-    planTypeButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            planTypeButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            planType = this.dataset.type;
+  planTypeButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      planTypeButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      planType = this.dataset.type;
 
-            // Save plan type to localStorage
-            localStorage.setItem('mealPlanType', planType);
+      const mealTypeGroup = document.getElementById('meal-type-group');
+      mealTypeGroup.style.display = planType === 'diet' ? 'block' : 'none';
 
-            const mealTypeGroup = document.getElementById('meal-type-group');
-            mealTypeGroup.style.display = planType === 'diet' ? 'block' : 'none';
-
-            updateAddMealButtonVisibility();
-            renderMeals();
-            updateNutritionSummary();
-        });
+      updateAddMealButtonVisibility();
+      renderMeals();
     });
+  });
 
   document.getElementById('add-water').addEventListener('click', addWaterGlass);
   document.getElementById('add-meal-btn').addEventListener('click', openMealModal);
@@ -751,40 +650,15 @@ function saveMeal() {
   meal.fats = meal.fats.toFixed(1);
   meal.carbs = meal.carbs.toFixed(1);
 
-  // Если это редактирование существующего приема пищи, удаляем старые значения из прогресс-баров
-  if (currentMealIndex !== null && planType === 'custom') {
-    const oldMeal = meals[currentMealIndex];
-    oldMeal.dishes.forEach(dish => {
-      if (dish.consumed) {
-        currentNutrition.protein -= parseFloat(dish.protein);
-        currentNutrition.fats -= parseFloat(dish.fats);
-        currentNutrition.carbs -= parseFloat(dish.carbs);
-        currentNutrition.calories -= dish.calories;
-      }
-    });
+  if (currentMealIndex !== null) {
     meals[currentMealIndex] = meal;
   } else {
     meals.push(meal);
   }
 
-  // Если это свободный режим, добавляем значения в прогресс-бары
-  if (planType === 'custom') {
-    meal.dishes.forEach(dish => {
-      if (dish.consumed) {
-        currentNutrition.protein += parseFloat(dish.protein);
-        currentNutrition.fats += parseFloat(dish.fats);
-        currentNutrition.carbs += parseFloat(dish.carbs);
-        currentNutrition.calories += dish.calories;
-      }
-    });
-    saveNutritionValues();
-  }
-
   document.getElementById('meal-modal').style.display = 'none';
   renderMeals();
-  // Save custom meals to localStorage
-  localStorage.setItem('customMeals', JSON.stringify(meals));
-  updateNutritionDisplay();
+  updateNutritionSummary();
 }
 
 function openDishModal() {
@@ -985,27 +859,17 @@ function renderMeals() {
   const mealsContainer = document.getElementById('meals-container');
   mealsContainer.innerHTML = '';
 
-  // If in diet mode and we have diet meals data, use that instead of the regular meals
-  let mealsToRender = meals;
-  if (planType === 'diet' && window.dietMealsData && window.dietMealsData.length > 0) {
-    mealsToRender = window.dietMealsData;
-  } else {
-    // Sort regular meals by time
-    mealsToRender = [...meals].sort((a, b) => {
-      return a.time.localeCompare(b.time);
-    });
-  }
+  const sortedMeals = [...meals].sort((a, b) => {
+    return a.time.localeCompare(b.time);
+  });
 
-  mealsToRender.forEach((meal, index) => {
+  sortedMeals.forEach((meal, index) => {
     const mealElement = document.createElement('div');
     mealElement.className = 'meal-card animate-in';
 
     let headerContent = '';
-    if (planType === 'diet') {
-      headerContent = `
-        <div class="meal-type">${meal.type_name || getMealTypeName(meal.type)}</div>
-        <div class="meal-time">${meal.time}</div>
-      `;
+    if (planType === 'diet' && meal.type) {
+      headerContent = `<div class="meal-type">${getMealTypeName(meal.type)}</div>`;
     } else {
       headerContent = `<div class="meal-time">${meal.time}</div>`;
     }
@@ -1015,9 +879,7 @@ function renderMeals() {
       dishesListContent = meal.dishes.map((dish, dishIndex) => `
         <div class="dish-item ${dish.consumed ? 'consumed' : ''}" data-meal-index="${index}" data-dish-index="${dishIndex}">
           <div class="dish-info">
-            <input type="checkbox" class="dish-checkbox" ${dish.consumed ? 'checked' : ''}
-                   data-protein="${dish.protein}" data-fats="${dish.fats}"
-                   data-carbs="${dish.carbs}" data-calories="${dish.calories}">
+            <input type="checkbox" class="dish-checkbox" ${dish.consumed ? 'checked' : ''}>
             <div>
               <div class="dish-name">${dish.name}</div>
               <div class="dish-weight">${dish.weight} г</div>
@@ -1054,8 +916,8 @@ function renderMeals() {
       <div class="meal-header">
         ${headerContent}
         <div class="meal-actions">
-          ${planType !== 'diet' ? `<button class="edit-meal-btn" data-index="${index}">✎</button>
-          <button class="delete-meal-btn" data-index="${index}">✕</button>` : ''}
+          <button class="edit-meal-btn" data-index="${index}">✎</button>
+          <button class="delete-meal-btn" data-index="${index}">✕</button>
         </div>
       </div>
       <div class="meal-nutrition">
@@ -1081,123 +943,36 @@ function renderMeals() {
       </div>
     `;
 
-    if (planType !== 'diet') {
-      mealElement.querySelector('.edit-meal-btn').addEventListener('click', function () {
-        openMealModal(null, index);
-      });
+    mealElement.querySelector('.edit-meal-btn').addEventListener('click', function () {
+      openMealModal(null, index);
+    });
 
-      mealElement.querySelector('.delete-meal-btn').addEventListener('click', function () {
-        if (confirm('Вы уверены, что хотите удалить этот прием пищи?')) {
-          // Удаляем значения КБЖУ из прогресс-баров перед удалением приема пищи
-          const mealToDelete = meals[index];
-          mealToDelete.dishes.forEach(dish => {
-            if (dish.consumed) {
-              currentNutrition.protein -= parseFloat(dish.protein);
-              currentNutrition.fats -= parseFloat(dish.fats);
-              currentNutrition.carbs -= parseFloat(dish.carbs);
-              currentNutrition.calories -= dish.calories;
-            }
-          });
-
-          meals.splice(index, 1);
-          renderMeals();
-          saveNutritionValues();
-          localStorage.setItem('customMeals', JSON.stringify(meals));
-          updateNutritionDisplay();
-        }
-      });
-    }
+    mealElement.querySelector('.delete-meal-btn').addEventListener('click', function () {
+      if (confirm('Вы уверены, что хотите удалить этот прием пищи?')) {
+        meals.splice(index, 1);
+        renderMeals();
+        updateNutritionSummary();
+      }
+    });
 
     if (planType === 'diet') {
       const checkboxes = mealElement.querySelectorAll('.dish-checkbox');
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function () {
-                const dishItem = this.closest('.dish-item');
-                const mealIndex = parseInt(dishItem.dataset.mealIndex);
-                const dishIndex = parseInt(dishItem.dataset.dishIndex);
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+          const dishItem = this.closest('.dish-item');
+          const mealIndex = parseInt(dishItem.dataset.mealIndex);
+          const dishIndex = parseInt(dishItem.dataset.dishIndex);
 
-                if (window.dietMealsData) {
-                    const dish = window.dietMealsData[mealIndex].dishes[dishIndex];
-                    const wasConsumed = dish.consumed || false;
-                    dish.consumed = this.checked;
+          meals[mealIndex].dishes[dishIndex].consumed = this.checked;
+          dishItem.classList.toggle('consumed', this.checked);
 
-                    // Обновляем значения КБЖУ в прогресс-барах
-                    if (this.checked && !wasConsumed) {
-                        // Добавляем значения, если блюдо отмечено
-                        currentNutrition.protein += parseFloat(dish.protein);
-                        currentNutrition.fats += parseFloat(dish.fats);
-                        currentNutrition.carbs += parseFloat(dish.carbs);
-                        currentNutrition.calories += parseFloat(dish.calories);
-                    } else if (!this.checked && wasConsumed) {
-                        // Вычитаем значения, если отметка снята
-                        currentNutrition.protein -= parseFloat(dish.protein);
-                        currentNutrition.fats -= parseFloat(dish.fats);
-                        currentNutrition.carbs -= parseFloat(dish.carbs);
-                        currentNutrition.calories -= parseFloat(dish.calories);
-                    }
-
-                    // Сохраняем состояние в localStorage
-                    saveDietMealsState();
-                    saveNutritionValues();
-                }
-
-                dishItem.classList.toggle('consumed', this.checked);
-                updateNutritionDisplay();
-            });
+          updateNutritionSummary();
         });
+      });
     }
 
     mealsContainer.appendChild(mealElement);
   });
-}
-
-// Функция для сохранения состояния диетических блюд
-function saveDietMealsState() {
-  if (window.dietMealsData) {
-    // Создаем упрощенную версию данных для хранения (только id и consumed)
-    const simplifiedData = window.dietMealsData.map(meal => ({
-      id: meal.id,
-      dishes: meal.dishes.map(dish => ({
-        name: dish.name,
-        consumed: dish.consumed || false
-      }))
-    }));
-
-    localStorage.setItem('dietMealsState', JSON.stringify(simplifiedData));
-  }
-}
-
-// Функция для восстановления состояния диетических блюд
-function restoreDietMealsState() {
-  const savedState = localStorage.getItem('dietMealsState');
-
-  if (savedState && window.dietMealsData) {
-    try {
-      const parsedState = JSON.parse(savedState);
-
-      // Применяем сохраненное состояние к текущим данным
-      parsedState.forEach(savedMeal => {
-        const currentMeal = window.dietMealsData.find(m => m.id === savedMeal.id);
-        if (currentMeal) {
-          savedMeal.dishes.forEach((savedDish, index) => {
-            if (index < currentMeal.dishes.length) {
-              // Проверяем, что это то же самое блюдо по имени
-              if (currentMeal.dishes[index].name === savedDish.name) {
-                currentMeal.dishes[index].consumed = savedDish.consumed;
-              }
-            }
-          });
-        }
-      });
-
-      // Перерисовываем интерфейс с восстановленными данными
-      if (planType === 'diet') {
-        renderMeals();
-      }
-    } catch (e) {
-      console.error('Ошибка при восстановлении состояния диеты:', e);
-    }
-  }
 }
 
 function getMealTypeName(type) {
@@ -1211,48 +986,42 @@ function getMealTypeName(type) {
 }
 
 function updateNutritionSummary() {
-  // Пересчитываем значения КБЖУ на основе выбранных блюд
-  currentNutrition = {
-    protein: 0,
-    fats: 0,
-    carbs: 0,
-    calories: 0,
-    water: waterAmount
-  };
+  const current = getCurrentNutrition();
 
-  // Учитываем обычные приемы пищи
-  if (planType === 'custom') {
-    meals.forEach(meal => {
-      meal.dishes.forEach(dish => {
-        if (dish.consumed) {
-          currentNutrition.protein += parseFloat(dish.protein);
-          currentNutrition.fats += parseFloat(dish.fats);
-          currentNutrition.carbs += parseFloat(dish.carbs);
-          currentNutrition.calories += parseFloat(dish.calories);
-        }
-      });
+  let consumedProtein = current.protein;
+  let consumedFats = current.fats;
+  let consumedCarbs = current.carbs;
+  let consumedCalories = current.calories;
+  waterAmount = current.water;
+
+  meals.forEach(meal => {
+    meal.dishes.forEach(dish => {
+      if (dish.consumed) {
+        consumedProtein += parseFloat(dish.protein);
+        consumedFats += parseFloat(dish.fats);
+        consumedCarbs += parseFloat(dish.carbs);
+        consumedCalories += dish.calories;
+      }
     });
-  }
+  });
 
-  // Учитываем диетические блюда, если они есть и мы в режиме диеты
-  if (planType === 'diet' && window.dietMealsData) {
-    window.dietMealsData.forEach(meal => {
-      meal.dishes.forEach(dish => {
-        if (dish.consumed) {
-          currentNutrition.protein += parseFloat(dish.protein);
-          currentNutrition.fats += parseFloat(dish.fats);
-          currentNutrition.carbs += parseFloat(dish.carbs);
-          currentNutrition.calories += parseFloat(dish.calories);
-        }
-      });
-    });
-  }
+  consumedProtein = consumedProtein.toFixed(1);
+  consumedFats = consumedFats.toFixed(1);
+  consumedCarbs = consumedCarbs.toFixed(1);
 
-  // Сохраняем значения в localStorage
-  saveNutritionValues();
+  document.getElementById('protein-value').textContent = `${consumedProtein}/${DAILY_GOALS.protein} г`;
+  document.getElementById('fat-value').textContent = `${consumedFats}/${DAILY_GOALS.fats} г`;
+  document.getElementById('carb-value').textContent = `${consumedCarbs}/${DAILY_GOALS.carbs} г`;
+  document.getElementById('calorie-value').textContent = `${consumedCalories}/${DAILY_GOALS.calories} ккал`;
+  document.getElementById('water-value').textContent = `${waterAmount}/${DAILY_GOALS.water} мл`;
 
-  // Обновляем отображение
-  updateNutritionDisplay();
+  document.getElementById('protein-fill').style.width = `${Math.min(100, (consumedProtein / DAILY_GOALS.protein) * 100)}%`;
+  document.getElementById('fat-fill').style.width = `${Math.min(100, (consumedFats / DAILY_GOALS.fats) * 100)}%`;
+  document.getElementById('carb-fill').style.width = `${Math.min(100, (consumedCarbs / DAILY_GOALS.carbs) * 100)}%`;
+  document.getElementById('calorie-fill').style.width = `${Math.min(100, (consumedCalories / DAILY_GOALS.calories) * 100)}%`;
+
+
+  updateWaterDisplay();
 }
 
 function prepareSaveData() {
