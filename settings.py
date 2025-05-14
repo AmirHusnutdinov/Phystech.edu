@@ -3,42 +3,51 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-# Загрузка переменных окружения
 load_dotenv()
 
-# Создание экземпляра приложения
 app = Flask(__name__)
 
-# Конфигурация базы данных
-db_url = os.getenv('DATABASE_URL')
-if db_url:
-    if db_url.startswith('postgres://'):
-        db_url = db_url.replace('postgres://', 'postgresql://', 1)
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = (
-        f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@"
-        f"{os.getenv('POSTGRES_HOST')}:{os.getenv('POSTGRES_PORT')}/{os.getenv('POSTGRES_DB')}"
-    )
 
+# Конфигурация БД с проверками
+def get_database_uri():
+    # Вариант 1: Используем DATABASE_URL от Railway
+    if db_url := os.getenv('DATABASE_URL'):
+        if db_url.startswith('postgres://'):
+            return db_url.replace('postgres://', 'postgresql://', 1)
+        return db_url
+
+    # Вариант 2: Собираем URI из отдельных переменных
+    db_config = {
+        'user': os.getenv('POSTGRES_USER', 'postgres'),
+        'password': os.getenv('POSTGRES_PASSWORD', ''),
+        'host': os.getenv('POSTGRES_HOST', 'localhost'),
+        'port': os.getenv('POSTGRES_PORT', '5432'),  # Всегда строка
+        'db': os.getenv('POSTGRES_DB', 'postgres')
+    }
+    return f"postgresql://{db_config['user']}:{db_config['password']}@{db_config['host']}:{db_config['port']}/{db_config['db']}"
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = get_database_uri()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Инициализация SQLAlchemy
+# Инициализация DB после настройки app
 db = SQLAlchemy(app)
 
-# Пример модели
+
 class Example(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80))
+    content = db.Column(db.String(200))
+
 
 @app.route('/')
 def home():
     return "Приложение работает!"
 
-# Функция для создания таблиц (вызывается явно)
+
 def create_tables():
     with app.app_context():
         db.create_all()
+
 
 if __name__ == '__main__':
     create_tables()
