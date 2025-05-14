@@ -9,7 +9,7 @@ def hash_password(password):
     return generate_password_hash(password)
 
 def check_password(hashed_password, input_password):
-    return check_password_hash(hashed_password, input_password)
+    return hashed_password == input_password
 
 def is_login():
     return session["Login"]

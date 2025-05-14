@@ -266,8 +266,9 @@ def add_message(id_from, id_to, content):
 
 
 def get_all_trains(user_id):
-    sql = f"SELECT * FROM trainings WHERE id = {user_id}"
+    sql = f"SELECT * FROM train WHERE id = {user_id}"
     data = database_query(sql, True)
+    print(data)
     ans = []
     for el in data:
         ans.append({

@@ -20,6 +20,11 @@ class News:
             all_news[i] = list(all_news[i])
             id = all_news[i][0]
             all_news[i][2] = Cloud().get_url(f"news/{id}.jpg")
+
+        is_admin = False
+        if 'user_id' in session:
+            is_admin = check_admin(session["user_id"])
+
         if 'user_id' in session:
             role = "authorized"
         else:
@@ -28,8 +33,8 @@ class News:
             "News/all_news.html",
             title="Новости",
             news=all_news,
-            header_links=choose_header_links(role)
-
+            header_links=choose_header_links(role),
+            is_admin=is_admin
         )
 
     @staticmethod

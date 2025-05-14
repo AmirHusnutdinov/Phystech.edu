@@ -4,6 +4,14 @@
 <link rel="stylesheet" href="../../static/assets/css/style_news.css">
 
 <div class="body_news">
+    {% if is_admin %}
+    <div class="add-news-btn-wrapper">
+        <a href="{{ url_for('open_make_news_page') }}" class="btn-add-news">
+            <i class="fas fa-plus"></i> Создать новость
+        </a>
+    </div>
+    {% endif %}
+
     {% for item in news %}
     <a href="/one_news/{{ item[0] }}" class="news-link">  <!-- item[0] - это id новости -->
         <div class="news-card">
