@@ -2,6 +2,19 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from server.hendler.handler import Handler
+from server.admin.admin import Admin
+from server.calendar.calendar import Calendar
+from server.day_plan.day_plan import DayPlan
+from server.login.authorization import Authorization
+from server.login.cabinet import Cabinet
+from server.login.registration import Registration
+from server.main_page.main_page import StartPage
+from server.news.news import News
+from server.selected_products.selectedProducts import SelectedProduct
+from server.trainer.trainer_students import Students
+from server.food_controler.food_controller import food_blueprint, delete_old_diets
+from apscheduler.schedulers.background import BackgroundScheduler
 
 load_dotenv()
 
@@ -38,12 +51,6 @@ class Example(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200))
 
-
-@app.route('/')
-def home():
-    return "Приложение работает!"
-
-
 def create_tables():
     with app.app_context():
         db.create_all()
@@ -51,4 +58,6 @@ def create_tables():
 
 if __name__ == '__main__':
     create_tables()
-    app.run()
+    if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 8000))  # Railway использует переменную PORT
+    app.run(host='0.0.0.0', port=port)
