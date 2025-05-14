@@ -1,188 +1,469 @@
-/* Общие стили */
-.body_login {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, rgb(245, 247, 250), rgb(195, 207, 226));
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 76vh;
-    overflow: hidden;
-    perspective: 1000px;
+/* Modern Login Page Styles */
+:root {
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary-color: #f9fafb;
+  --text-color: #1f2937;
+  --text-light: #6b7280;
+  --border-color: #e5e7eb;
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --info-color: #3b82f6;
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --transition: all 0.3s ease;
+  --bg-gradient-start: #f0f4ff;
+  --bg-gradient-end: #e0e7ff;
+  --card-bg: white;
 }
 
-/* Контейнер формы */
-.auth-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 55px;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-in-out, rotateIn 1s ease-in-out;
-    max-width: 500px;
-    width: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.5s ease-in-out;
+/* Dark Theme Variables */
+.dark-theme {
+  --primary-color: #818cf8;
+  --primary-hover: #6366f1;
+  --secondary-color: #1f2937;
+  --text-color: #f9fafb;
+  --text-light: #9ca3af;
+  --border-color: #374151;
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --bg-gradient-start: #111827;
+  --bg-gradient-end: #1f2937;
+  --card-bg: #111827;
 }
 
-/* Убираем поворот при наведении */
-.auth-container:hover {
-    transform: scale(1.05);
+/* Base Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--text-color);
+  line-height: 1.5;
 }
 
-/* Заголовок формы */
-.auth-title {
-    text-align: center;
-    color: rgb(51, 51, 51);
-    margin-bottom: 30px;
-    font-size: 2em;
-    animation: slideInDown 1s ease-in-out;
-    font-family: 'Montserrat', sans-serif;
+/* Login Container */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  padding: 2rem;
+  transition: var(--transition);
 }
 
-/* Группа полей ввода */
-.input-group {
-    margin-bottom: 20px;
-    position: relative;
-    animation: fadeIn 1s ease-in-out;
+/* Login Card */
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  animation: fadeIn 0.6s ease-out;
+  transform: translateY(0);
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: rgb(85, 85, 85);
-    font-size: 1em;
-    animation: fadeIn 1s ease-in-out;
+.login-card:hover {
+  transform: translateY(-5px);
 }
 
-.input-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgb(204, 204, 204);
-    border-radius: 5px;
-    font-size: 1em;
-    transition: border-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+/* Login Header */
+.login-header {
+  padding: 2.5rem 2.5rem 1.5rem;
+  text-align: center;
 }
 
-.input-group input:focus {
-    border-color: rgb(108, 99, 255);
-    outline: none;
-    transform: scale(1.05);
+.login-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  animation: slideDown 0.5s ease-out;
+  transition: color 0.3s ease;
 }
 
-/* Кнопка входа */
-.auth-button {
-    width: 100%;
-    padding: 10px;
-    background: rgb(108, 99, 255);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
-    animation: fadeIn 1s ease-in-out;
+.login-subtitle {
+  color: var(--text-light);
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  animation: fadeIn 0.8s ease-out;
+  transition: color 0.3s ease;
 }
 
-.auth-button:hover {
-    background: rgb(86, 77, 255);
-    transform: translateY(-2px);
+/* Login Form */
+.login-form {
+  padding: 0 2.5rem 1.5rem;
 }
 
-/* Адаптивность */
-@media (max-width: 600px) {
-    .auth-container {
-        padding: 20px;
-    }
-
-    .auth-title {
-        font-size: 1.5em;
-    }
-
-    .input-group input, .auth-button {
-        font-size: 0.9em;
-    }
+.form-group {
+  margin-bottom: 1.5rem;
+  animation: slideUp 0.5s ease-out;
 }
 
-@media (max-width: 480px) {
-    .auth-container {
-        padding: 15px;
-    }
-
-    .auth-title {
-        font-size: 1.2em;
-    }
-
-    .input-group input, .auth-button {
-        font-size: 0.8em;
-    }
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
 }
 
-/* Анимации */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 1rem;
+  color: var(--text-light);
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.icon-email:before {
+  content: "✉";
+}
+
+.icon-password:before {
+  content: "🔒";
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: var(--transition);
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.error-message {
+  display: block;
+  color: var(--error-color);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+  margin-top: 1.5rem;
+  animation: fadeIn 1s ease-out;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  margin-top: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(99, 102, 241, 0.1);
+  transform: translateY(-2px);
+}
+
+.dark-theme .btn-secondary:hover {
+  background-color: rgba(129, 140, 248, 0.2);
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  padding: 0 2.5rem;
+  animation: fadeIn 1.2s ease-out;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-color);
+  transition: background-color 0.3s ease;
+}
+
+.divider span {
+  padding: 0 1rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+/* Register Section */
+.register-section {
+  padding: 0 2.5rem 2.5rem;
+  text-align: center;
+  animation: fadeIn 1.4s ease-out;
+}
+
+.register-section p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+/* Toast Notifications */
+.toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  width: 350px;
+  max-width: calc(100vw - 3rem);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideInRight 0.4s forwards;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 0.75rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.toast-message {
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.toast-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  margin-left: 0.75rem;
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+.toast-success {
+  background-color: rgba(16, 185, 129, 0.95);
+  color: white;
+  border-left: 4px solid #059669;
+}
+
+.toast-success .toast-icon {
+  background: #059669;
+  color: white;
+}
+
+.toast-danger {
+  background-color: rgba(239, 68, 68, 0.95);
+  color: white;
+  border-left: 4px solid #dc2626;
+}
+
+.toast-danger .toast-icon {
+  background: #dc2626;
+  color: white;
+}
+
+.toast-info {
+  background-color: rgba(59, 130, 246, 0.95);
+  color: white;
+  border-left: 4px solid #2563eb;
+}
+
+.toast-info .toast-icon {
+  background: #2563eb;
+  color: white;
+}
+
+.toast-hide {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+/* Dark Theme Specific Styles */
+.dark-theme .login-card {
+  background-color: var(--card-bg);
+}
+
+.dark-theme .form-group input {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dark-theme .form-group input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.3);
+}
+
+/* Theme Toggle Button (Optional) */
+/* .theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+} */
+
+/* .theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-theme .theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+} */
+
+.theme-toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.dark-theme .theme-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Animations */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
-@keyframes slideInDown {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-@keyframes rotateIn {
-    from {
-        transform: rotateY(90deg);
-        opacity: 0;
-    }
-    to {
-        transform: rotateY(0deg);
-        opacity: 1;
-    }
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-/* Темная тема */
-.dark-theme .body_login {
-    background: linear-gradient(135deg, rgb(30, 30, 30), rgb(51, 51, 51));
-    color: rgb(224, 224, 224);
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-.dark-theme .auth-container {
-    background: rgba(51, 51, 51, 0.9);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+/* Responsive Design */
+@media (max-width: 600px) {
+  .login-header {
+    padding: 2rem 1.5rem 1rem;
+  }
+
+  .login-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .login-form,
+  .register-section {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .divider {
+    padding: 0 1.5rem;
+  }
 }
 
-.dark-theme .auth-title {
-    color: rgb(224, 224, 224);
-}
+@media (max-width: 400px) {
+  .login-header h1 {
+    font-size: 1.5rem;
+  }
 
-.dark-theme .input-group label {
-    color: rgb(153, 153, 153);
-}
-
-.dark-theme .input-group input {
-    background: rgb(68, 68, 68);
-    color: rgb(224, 224, 224);
-    border-color: rgb(85, 85, 85);
-}
-
-.dark-theme .input-group input:focus {
-    border-color: rgb(108, 99, 255);
-}
-
-.dark-theme .auth-button {
-    background: rgb(108, 99, 255);
-}
-
-.dark-theme .auth-button:hover {
-    background: rgb(86, 77, 255);
+  .form-group input,
+  .btn-primary,
+  .btn-secondary {
+    font-size: 0.95rem;
+  }
 }

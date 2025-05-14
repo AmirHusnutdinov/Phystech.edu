@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "phystech-edu"
+version = "0.1.0"
+description = ""
+authors = ["Vair <varvara.volodina@gmail.com>"]
+readme = "README.md"
+packages = [{include = "phystech"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

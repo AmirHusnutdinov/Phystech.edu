@@ -2,8 +2,9 @@
 {% block content %}
 <link rel="stylesheet" href="../../static/assets/css/style_student.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+<body>
 <div class="app-container">
     <br> <br><br>
     <!-- Main Content -->
@@ -11,8 +12,17 @@
         <!-- Week Visualization -->
         <section class="week-section card">
             <h2 class="section-title">Обзор недели</h2>
-            <div class="week-container">
-                <div class="day-card" data-day="monday">
+
+            <!-- Week Tabs -->
+            <div class="week-tabs">
+                <button class="week-tab active" data-week="current">Текущая неделя</button>
+                <button class="week-tab" data-week="next">Следующая неделя</button>
+                <button class="week-tab" data-week="third">Через неделю</button>
+            </div>
+
+            <!-- Week Containers -->
+            <div class="week-container current active">
+                <a href="/day/monday" class="day-card" data-day="monday">
                     <div class="day-icon">
                         <span>П</span>
                     </div>
@@ -20,8 +30,8 @@
                     <div class="day-status complete">
                         <i class="fas fa-check"></i>
                     </div>
-                </div>
-                <div class="day-card active" data-day="tuesday">
+                </a>
+                <a href="/day/tuesday" class="day-card active" data-day="tuesday">
                     <div class="day-icon">
                         <span>В</span>
                     </div>
@@ -29,8 +39,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="wednesday">
+                </a>
+                <a href="/day/wednesday" class="day-card" data-day="wednesday">
                     <div class="day-icon">
                         <span>С</span>
                     </div>
@@ -38,8 +48,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="thursday">
+                </a>
+                <a href="/day/thursday" class="day-card" data-day="thursday">
                     <div class="day-icon">
                         <span>Ч</span>
                     </div>
@@ -47,8 +57,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="friday">
+                </a>
+                <a href="/day/friday" class="day-card" data-day="friday">
                     <div class="day-icon">
                         <span>П</span>
                     </div>
@@ -56,8 +66,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="saturday">
+                </a>
+                <a href="/day/saturday" class="day-card" data-day="saturday">
                     <div class="day-icon">
                         <span>С</span>
                     </div>
@@ -65,8 +75,8 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
-                <div class="day-card" data-day="sunday">
+                </a>
+                <a href="/day/sunday" class="day-card" data-day="sunday">
                     <div class="day-icon">
                         <span>В</span>
                     </div>
@@ -74,11 +84,140 @@
                     <div class="day-status">
                         <i class="fas fa-utensils"></i>
                     </div>
-                </div>
+                </a>
             </div>
-            <button id="add-food-btn" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Добавить еду
-            </button>
+
+            <div class="week-container next">
+                <a href="/day/next-monday" class="day-card" data-day="monday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Понедельник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-tuesday" class="day-card" data-day="tuesday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Вторник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-wednesday" class="day-card" data-day="wednesday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Среда</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-thursday" class="day-card" data-day="thursday">
+                    <div class="day-icon">
+                        <span>Ч</span>
+                    </div>
+                    <span class="day-name">Четверг</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-friday" class="day-card" data-day="friday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Пятница</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-saturday" class="day-card" data-day="saturday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Суббота</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/next-sunday" class="day-card" data-day="sunday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Воскресенье</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+            </div>
+
+            <div class="week-container third">
+                <a href="/day/third-monday" class="day-card" data-day="monday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Понедельник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-tuesday" class="day-card" data-day="tuesday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Вторник</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-wednesday" class="day-card" data-day="wednesday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Среда</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-thursday" class="day-card" data-day="thursday">
+                    <div class="day-icon">
+                        <span>Ч</span>
+                    </div>
+                    <span class="day-name">Четверг</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-friday" class="day-card" data-day="friday">
+                    <div class="day-icon">
+                        <span>П</span>
+                    </div>
+                    <span class="day-name">Пятница</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-saturday" class="day-card" data-day="saturday">
+                    <div class="day-icon">
+                        <span>С</span>
+                    </div>
+                    <span class="day-name">Суббота</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+                <a href="/day/third-sunday" class="day-card" data-day="sunday">
+                    <div class="day-icon">
+                        <span>В</span>
+                    </div>
+                    <span class="day-name">Воскресенье</span>
+                    <div class="day-status">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </a>
+            </div>
         </section>
 
         <!-- Today's Nutrition -->
@@ -92,9 +231,9 @@
                     <div class="nutrition-info">
                         <h3>Белки</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: 75%"></div>
+                            <div class="progress-bar" style="--progress-width: 70%"></div>
                         </div>
-                        <p><span class="current">75</span>/<span class="target">100</span>г</p>
+                        <p><span class="current">{{nutrition_was}}</span>/<span class="target">{{nutrition_needed}}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -106,7 +245,7 @@
                         <div class="progress-container">
                             <div class="progress-bar" style="--progress-width: 60%"></div>
                         </div>
-                        <p><span class="current">45</span>/<span class="target">75</span>г</p>
+                        <p><span class="current">{{fats_was}}</span>/<span class="target">{{fats_needed}}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -116,9 +255,9 @@
                     <div class="nutrition-info">
                         <h3>Углеводы</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: 40%"></div>
+                            <div class="progress-bar" style="--progress-width: 80%"></div>
                         </div>
-                        <p><span class="current">120</span>/<span class="target">300</span>г</p>
+                        <p><span class="current">{{carbohydrates_was}}</span>/<span class="target">{{carbohydrates_needed}}</span>г</p>
                     </div>
                 </div>
                 <div class="nutrition-card">
@@ -128,63 +267,11 @@
                     <div class="nutrition-info">
                         <h3>Вода</h3>
                         <div class="progress-container">
-                            <div class="progress-bar" style="--progress-width: 80%"></div>
+                            <div class="progress-bar" style="--progress-width: 50%"></div>
                         </div>
-                        <p><span class="current">1.6</span>/<span class="target">2</span>л</p>
+                        <p><span class="current">{{water_was}}</span>/<span class="target">{{water_needed}}</span>л</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Nutrition Statistics -->
-        <section class="nutrition-stats card">
-            <h2 class="section-title">Статистика питания</h2>
-            <div class="stats-container">
-                <div class="chart-container">
-                    <canvas id="weeklyChart"></canvas>
-                </div>
-                <div class="stats-summary">
-                    <div class="stat-item">
-                        <h3>Среднее за неделю</h3>
-                        <div class="stat-value">2,150 ккал</div>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Доля белков</h3>
-                        <div class="stat-value">25%</div>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Доля жиров</h3>
-                        <div class="stat-value">30%</div>
-                    </div>
-                    <div class="stat-item">
-                        <h3>Доля углеводов</h3>
-                        <div class="stat-value">45%</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Monthly Calendar -->
-        <section class="monthly-calendar card">
-            <h2 class="section-title">Обзор месяца</h2>
-            <div class="calendar-header">
-                <button id="prev-month" class="btn btn-icon">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <h3 id="current-month">Май 2024</h3>
-                <button id="next-month" class="btn btn-icon">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="calendar-grid">
-                <div class="calendar-day-header">Вс</div>
-                <div class="calendar-day-header">Пн</div>
-                <div class="calendar-day-header">Вт</div>
-                <div class="calendar-day-header">Ср</div>
-                <div class="calendar-day-header">Чт</div>
-                <div class="calendar-day-header">Пт</div>
-                <div class="calendar-day-header">Сб</div>
-                <!-- Calendar days will be generated by JS -->
             </div>
         </section>
 
@@ -193,92 +280,40 @@
             <i class="fas fa-comment-dots"></i>
             <span>Связаться со студентом</span>
         </button>
-    </main>
 
-    <!-- Food Input Modal -->
-    <div id="food-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Добавить еду</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="food-form">
-                    <div class="form-group">
-                        <label for="food-name">Название еды</label>
-                        <input type="text" id="food-name" placeholder="Например, Куриная грудка" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="food-category">Категория</label>
-                        <select id="food-category">
-                            <option value="protein">Белки</option>
-                            <option value="carbs">Углеводы</option>
-                            <option value="fat">Жиры</option>
-                            <option value="fruit">Фрукты</option>
-                            <option value="vegetable">Овощи</option>
-                            <option value="dairy">Молочные продукты</option>
-                            <option value="other">Другое</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="food-amount">Количество</label>
-                            <input type="number" id="food-amount" min="0" step="1" value="100" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="food-unit">Единица измерения</label>
-                            <select id="food-unit">
-                                <option value="g">граммы</option>
-                                <option value="ml">миллилитры</option>
-                                <option value="oz">унции</option>
-                                <option value="serving">порция</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="food-protein">Белки (г)</label>
-                            <input type="number" id="food-protein" min="0" step="0.1" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="food-fat">Жиры (г)</label>
-                            <input type="number" id="food-fat" min="0" step="0.1" value="0">
-                        </div>
-                        <div class="form-group">
-                            <label for="food-carbs">Углеводы (г)</label>
-                            <input type="number" id="food-carbs" min="0" step="0.1" value="0">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="food-calories">Калории</label>
-                        <input type="number" id="food-calories" min="0" step="1" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="meal-time">Время приема пищи</label>
-                        <select id="meal-time">
-                            <option value="breakfast">Завтрак</option>
-                            <option value="lunch">Обед</option>
-                            <option value="dinner">Ужин</option>
-                            <option value="snack">Перекус</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Добавить еду</button>
-                </form>
-            </div>
-        </div>
-    </div>
+        <!-- Calendar Button -->
+        <button id="calendar-btn" class="calendar-btn enhanced-calendar-btn">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Перейти в календарь ученика</span>
+        </button>
+    </main>
 
     <!-- Chat Modal -->
     <div id="chat-modal" class="modal">
         <div class="modal-content chat-modal-content">
             <div class="modal-header">
-                <h2>Сообщения тренера</h2>
+                <h2>Чат с {{ cookies.name }}</h2>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="chat-container">
                 <div class="chat-messages">
-
+                    {% for message in messages %}
+                    <div class="message {{ message.type }}">
+                        {% if message.type == 'received' %}
+                        <div class="message-avatar">
+                            <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
+                                 alt="Аватар {{ cookies.name }}">
+                        </div>
+                        {% endif %}
+                        <div class="message-content">
+                            {% if message.type == 'received' %}
+                            <div class="message-sender">{{ message.sender_name }}</div>
+                            {% endif %}
+                            <div class="message-text">{{ message.content }}</div>
+                            <div class="message-time">{{ message.time }}</div>
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
                 <div class="chat-input">
                     <input type="text" id="message-input" placeholder="Введите сообщение...">
@@ -294,7 +329,7 @@
     <div id="day-details-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="day-details-title">Вторник, 14 мая</h2>
+                <h2 id="day-title">Вторник, 14 мая</h2>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -408,309 +443,235 @@
         </div>
     </div>
 
-</div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all elements
+            const weekTabs = document.querySelectorAll('.week-tab');
+            const weekContainers = document.querySelectorAll('.week-container');
+            const contactBtn = document.getElementById('contact-btn');
+            const chatModal = document.getElementById('chat-modal');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
+            const dayCards = document.querySelectorAll('.day-card');
+            const dayDetailsModal = document.getElementById('day-details-modal');
+            const dayTitle = document.getElementById('day-title');
+            const calendarBtn = document.getElementById('calendar-btn');
+            const chatMessages = document.querySelector('.chat-messages');
+            const messageInput = document.getElementById('message-input');
+            const sendMessageBtn = document.getElementById('send-message');
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // DOM Elements
-    const addFoodBtn = document.getElementById('add-food-btn');
-    const foodModal = document.getElementById('food-modal');
-    const chatModal = document.getElementById('chat-modal');
-    const dayDetailsModal = document.getElementById('day-details-modal');
-    const contactBtn = document.getElementById('contact-btn');
-    const closeModalBtns = document.querySelectorAll('.close-modal');
-    const foodForm = document.getElementById('food-form');
-    const sendMessageBtn = document.getElementById('send-message');
-    const messageInput = document.getElementById('message-input');
-    const chatMessages = document.querySelector('.chat-messages');
-    const dayCards = document.querySelectorAll('.day-card');
-    const prevMonthBtn = document.getElementById('prev-month');
-    const nextMonthBtn = document.getElementById('next-month');
-    const currentMonthEl = document.getElementById('current-month');
-    const calendarGrid = document.querySelector('.calendar-grid');
+            // Get student ID and initialize lastUpdate
+            const studentId = "{{ student_id }}";
+            let lastUpdate = new Date().toISOString();
+            let messageCheckInterval = null;
 
-    // Modal Functions
-    function openModal(modal) {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
+            // Week tabs functionality
+            weekTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    weekTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    const weekType = this.getAttribute('data-week');
+                    weekContainers.forEach(container => {
+                        container.classList.remove('active');
+                    });
+                    document.querySelector(`.week-container.${weekType}`).classList.add('active');
+                });
+            });
 
-    function closeModal(modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
+            // Highlight current day
+            function highlightCurrentDay() {
+                const today = new Date();
+                const dayOfWeek = today.getDay();
+                const dayMap = {
+                    0: 'sunday',
+                    1: 'monday',
+                    2: 'tuesday',
+                    3: 'wednesday',
+                    4: 'thursday',
+                    5: 'friday',
+                    6: 'saturday'
+                };
+                const todayName = dayMap[dayOfWeek];
+                document.querySelectorAll('.day-card').forEach(card => {
+                    card.classList.remove('active');
+                });
+                const todayCard = document.querySelector(`.week-container.current .day-card[data-day="${todayName}"]`);
+                if (todayCard) {
+                    todayCard.classList.add('active');
+                }
+            }
+            highlightCurrentDay();
 
-    // Event Listeners for Modals
-    addFoodBtn.addEventListener('click', () => openModal(foodModal));
-    contactBtn.addEventListener('click', () => openModal(chatModal));
-
-    closeModalBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const modal = btn.closest('.modal');
-            closeModal(modal);
-        });
-    });
-
-    // Close modal when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal')) {
-            closeModal(e.target);
-        }
-    });
-
-    // Day Cards Click Event
-    dayCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const day = card.getAttribute('data-day');
-            document.getElementById('day-details-title').textContent = day.charAt(0).toUpperCase() + day.slice(1) + ', 14 мая';
-            openModal(dayDetailsModal);
-        });
-    });
-
-    // Food Form Submission
-    foodForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Here you would normally process the form data
-        // For demo purposes, we'll just close the modal
-        closeModal(foodModal);
-
-        // Show a success notification
-        showNotification('Еда успешно добавлена!');
-
-        // Reset form
-        foodForm.reset();
-    });
-
-    // Chat Functionality
-    sendMessageBtn.addEventListener('click', sendMessage);
-    messageInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-
-    function sendMessage() {
-        const message = messageInput.value.trim();
-        if (message) {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-            const messageHTML = `
-                <div class="message sent">
-                    <div class="message-content">
-                        <div class="message-text">${message}</div>
-                        <div class="message-time">${timeString}</div>
-                    </div>
-                </div>
-            `;
-
-            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
-            messageInput.value = '';
-
-            // Auto-scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Simulate response after 1 second
-            setTimeout(() => {
-                const responseHTML = `
-                    <div class="message received">
-                        <div class="message-avatar">
-                            <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="Тренер">
-                        </div>
-                        <div class="message-content">
-                            <div class="message-sender">Ученик абоба</div>
-                            <div class="message-text">bruth</div>
-                            <div class="message-time">${timeString}</div>
-                        </div>
-                    </div>
-                `;
-
-                chatMessages.insertAdjacentHTML('beforeend', responseHTML);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            }, 1000);
-        }
-    }
-
-    // Calendar Functionality
-    let currentDate = new Date();
-
-    function updateCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth();
-
-        // Update month display
-        currentMonthEl.textContent = new Date(year, month, 1).toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' });
-
-        // Clear existing calendar days
-        const dayElements = document.querySelectorAll('.calendar-day');
-        dayElements.forEach(day => day.remove());
-
-        // Get first day of month and number of days
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        // Add empty cells for days before the first of the month
-        for (let i = 0; i < firstDay; i++) {
-            const emptyDay = document.createElement('div');
-            emptyDay.className = 'calendar-day empty';
-            calendarGrid.appendChild(emptyDay);
-        }
-
-        // Add days of the month
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayEl = document.createElement('div');
-            dayEl.className = 'calendar-day';
-
-            // Check if it's today
-            const isToday = new Date().getDate() === day &&
-                            new Date().getMonth() === month &&
-                            new Date().getFullYear() === year;
-
-            if (isToday) {
-                dayEl.classList.add('today');
+            // Modal functions
+            function openModal(modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                if (modal === chatModal) {
+                    startMessageChecking();
+                    setTimeout(() => {
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 100);
+                }
             }
 
-            // Generate random nutrition data for demo
-            const hasData = Math.random() > 0.3;
-            if (hasData) {
-                dayEl.classList.add('has-data');
-
-                // Generate random values for protein, fat, carbs
-                const protein = Math.floor(Math.random() * 100) + 20;
-                const fat = Math.floor(Math.random() * 70) + 10;
-                const carbs = Math.floor(Math.random() * 200) + 50;
-
-                dayEl.innerHTML = `
-                    <div class="day-number">${day}</div>
-                    <div class="day-nutrition">
-                        <div class="mini-bar protein" style="height: ${protein}%"></div>
-                        <div class="mini-bar fat" style="height: ${fat}%"></div>
-                        <div class="mini-bar carbs" style="height: ${carbs}%"></div>
-                    </div>
-                `;
-            } else {
-                dayEl.innerHTML = `<div class="day-number">${day}</div>`;
+            function closeModal(modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+                if (modal === chatModal) {
+                    stopMessageChecking();
+                }
             }
 
-            // Add click event to show day details
-            dayEl.addEventListener('click', () => {
-                if (hasData) {
-                    const dateStr = new Date(year, month, day).toLocaleDateString('ru-RU', { weekday: 'long', month: 'long', day: 'numeric' });
-                    document.getElementById('day-details-title').textContent = dateStr;
-                    openModal(dayDetailsModal);
+            function startMessageChecking() {
+                checkForNewMessages();
+                messageCheckInterval = setInterval(checkForNewMessages, 3000);
+            }
+
+            function stopMessageChecking() {
+                if (messageCheckInterval) {
+                    clearInterval(messageCheckInterval);
+                    messageCheckInterval = null;
+                }
+            }
+
+            // Event listeners
+            if (contactBtn) {
+                contactBtn.addEventListener('click', () => openModal(chatModal));
+            }
+
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const modal = btn.closest('.modal');
+                    closeModal(modal);
+                });
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target.classList.contains('modal')) {
+                    closeModal(e.target);
                 }
             });
 
-            calendarGrid.appendChild(dayEl);
-        }
-    }
+            dayCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const day = card.getAttribute('data-day');
+                    dayTitle.textContent = day.charAt(0).toUpperCase() + day.slice(1) + ', 14 мая';
+                    openModal(dayDetailsModal);
+                });
+            });
 
-    // Month navigation
-    prevMonthBtn.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        updateCalendar();
-    });
+            // Chat functionality
+            sendMessageBtn.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
 
-    nextMonthBtn.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        updateCalendar();
-    });
+            async function sendMessage() {
+                const message = messageInput.value.trim();
+                if (message) {
+                    try {
+                        const response = await fetch('/send_message', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                student_id: studentId,
+                                message: message
+                            })
+                        });
 
-    // Notification System
-    function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas fa-check-circle"></i>
-                <span>${message}</span>
-            </div>
-        `;
+                        const data = await response.json();
 
-        document.body.appendChild(notification);
+                        if (data.status === 'success') {
+                            const messageHTML = `
+                                <div class="message sent">
+                                    <div class="message-content">
+                                        <div class="message-text">${message}</div>
+                                        <div class="message-time">${data.time}</div>
+                                    </div>
+                                </div>
+                            `;
 
-        // Animate in
-        setTimeout(() => {
-            notification.classList.add('active');
-
-            // Remove after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('active');
-                setTimeout(() => {
-                    notification.remove();
-                }, 300);
-            }, 3000);
-        }, 10);
-    }
-
-    // Charts
-    function initCharts() {
-        const ctx = document.getElementById('weeklyChart').getContext('2d');
-
-        const weeklyChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-                datasets: [
-                    {
-                        label: 'Белки',
-                        data: [65, 75, 70, 60, 80, 55, 40],
-                        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Жиры',
-                        data: [40, 45, 50, 35, 60, 30, 25],
-                        backgroundColor: 'rgba(255, 159, 64, 0.7)',
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        borderWidth: 1
-                    },
-                    {
-                        label: 'Углеводы',
-                        data: [120, 130, 150, 110, 140, 100, 90],
-                        backgroundColor: 'rgba(255, 99, 132, 0.7)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: 'rgba(200, 200, 200, 0.1)'
+                            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+                            messageInput.value = '';
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                            lastUpdate = new Date().toISOString();
+                        } else {
+                            showNotification('Ошибка при отправке сообщения');
                         }
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        position: 'top',
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showNotification('Ошибка соединения');
                     }
                 }
             }
-        });
-    }
 
-    // Initialize everything
-    document.addEventListener('DOMContentLoaded', () => {
-        updateCalendar();
-        initCharts();
+            async function checkForNewMessages() {
+                try {
+                    const response = await fetch(`/get_new_messages/${studentId}?last_update=${lastUpdate}`);
+                    const data = await response.json();
 
-        // Add animation classes
-        document.querySelectorAll('.card').forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('animate-in');
-            }, index * 100);
+                    if (data.status === 'success' && data.messages.length > 0) {
+                        lastUpdate = data.last_update;
+
+                        data.messages.forEach(msg => {
+                            const messageHTML = `
+                                <div class="message received">
+                                    <div class="message-avatar">
+                                        <img src="{{ cookies.avatar if cookies.avatar else '../../static/assets/images/default_avatar.png' }}"
+                                             alt="Аватар {{ cookies.name }}">
+                                    </div>
+                                    <div class="message-content">
+                                        <div class="message-sender">{{ cookies.name }}</div>
+                                        <div class="message-text">${msg.content}</div>
+                                        <div class="message-time">${msg.time}</div>
+                                    </div>
+                                </div>
+                            `;
+
+                            chatMessages.insertAdjacentHTML('beforeend', messageHTML);
+                        });
+
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
+                } catch (error) {
+                    console.error('Error checking for new messages:', error);
+                }
+            }
+
+            function showNotification(message) {
+                const notification = document.createElement('div');
+                notification.classList.add('notification');
+                notification.textContent = message;
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            // Calendar button functionality
+            if (calendarBtn) {
+                calendarBtn.addEventListener('click', () => {
+                    window.location.href = `/calendar/${studentId}`;
+                });
+            }
+
+            // Add animation classes to cards
+            document.querySelectorAll('.card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate-in');
+                }, index * 100);
+            });
+
+            // Start message checking if chat is open
+            if (chatModal.classList.contains('active')) {
+                startMessageChecking();
+            }
         });
-    });
-</script>
+    </script>
+</div>
+</body>
 {% endblock %}

@@ -1,0 +1,683 @@
+:root {
+  --primary: #4361ee;
+  --primary-light: #4895ef;
+  --primary-dark: #3f37c9;
+  --secondary: #6c757d;
+  --success: #4cc9f0;
+  --success-dark: #4895ef;
+  --danger: #f72585;
+  --warning: #f8961e;
+  --info: #4cc9f0;
+  --light: #f8f9fa;
+  --dark: #343a40;
+  --white: #ffffff;
+  --gray: #6c757d;
+  --gray-dark: #343a40;
+  --gray-light: #f8f9fa;
+  --body-bg: #f0f4f8;
+  --text: #212529;
+  --text-light: #6c757d;
+  --border: #dee2e6;
+  --shadow: rgba(0, 0, 0, 0.1);
+
+  /* Nutrition colors */
+  --calories-color: #f72585;
+  --protein-color: #7209b7;
+  --fats-color: #f8961e;
+  --carbs-color: #4361ee;
+  --water-color: #4cc9f0;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--primary), var(--primary-light));
+  --gradient-success: linear-gradient(135deg, var(--success), var(--success-dark));
+  --gradient-calories: linear-gradient(135deg, #f72585, #b5179e);
+  --gradient-protein: linear-gradient(135deg, #7209b7, #560bad);
+  --gradient-fats: linear-gradient(135deg, #f8961e, #f3722c);
+  --gradient-carbs: linear-gradient(135deg, #4361ee, #3a0ca3);
+  --gradient-water: linear-gradient(135deg, #4cc9f0, #4895ef);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.page-background {
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), rgba(76, 201, 240, 0.1));
+  padding: 20px 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Flash Messages */
+.flash-messages {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 300px;
+}
+
+.flash-message {
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.3s ease;
+}
+
+.flash-success {
+  background-color: rgba(76, 201, 240, 0.1);
+  border-left: 4px solid var(--success);
+  color: var(--success-dark);
+}
+
+.flash-error {
+  background-color: rgba(247, 37, 133, 0.1);
+  border-left: 4px solid var(--danger);
+  color: var(--danger);
+}
+
+.flash-message i {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Registration Header */
+.registration-header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.header-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2);
+}
+
+.header-icon i {
+  font-size: 36px;
+  color: white;
+}
+
+.registration-header h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.registration-header p {
+  color: var(--text-light);
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Registration Sections */
+.registration-section {
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  margin-bottom: 30px;
+  animation: fadeIn 0.5s ease-out forwards;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(222, 226, 230, 0.3);
+}
+
+.registration-section:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-size: 24px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.section-title i {
+  margin-right: 12px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 26px;
+}
+
+/* Avatar Upload */
+.avatar-upload-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: rgba(240, 244, 248, 0.5);
+  border-radius: 12px;
+}
+
+.avatar-preview {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20px;
+  background-color: #e9ecef;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-image i {
+  font-size: 40px;
+  color: var(--gray);
+}
+
+.avatar-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.avatar-overlay i {
+  color: white;
+  font-size: 24px;
+}
+
+.avatar-preview:hover .avatar-overlay {
+  opacity: 1;
+}
+
+.avatar-upload {
+  flex: 1;
+}
+
+.avatar-upload label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.avatar-upload input[type="file"] {
+  display: none;
+}
+
+.avatar-upload .file-hint {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* Form Styles */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+  margin-bottom: 20px;
+}
+
+.form-col {
+  flex: 1;
+  padding: 0 10px;
+  min-width: 280px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: var(--text);
+  font-size: 16px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 15px 14px 45px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s;
+  background-color: #f8f9fa;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+  background-color: white;
+}
+
+.form-control::placeholder {
+  color: #adb5bd;
+}
+
+.form-control.error {
+  border-color: var(--danger);
+  background-color: rgba(247, 37, 133, 0.05);
+}
+
+.error-message {
+  color: var(--danger);
+  font-size: 14px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.error-message::before {
+  content: "\f071";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 5px;
+}
+
+.form-icon {
+  position: absolute;
+  left: 15px;
+  top: 45px;
+  color: var(--text-light);
+  font-size: 18px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn i {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.btn-primary {
+  background: var(--gradient-primary);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 10px rgba(67, 97, 238, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: var(--gradient-success);
+  color: var(--white);
+  padding: 14px 30px;
+  font-size: 18px;
+}
+
+.btn-success:hover {
+  box-shadow: 0 6px 10px rgba(76, 201, 240, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-goal {
+  background-color: white;
+  border: 2px solid var(--border);
+  color: var(--text);
+  flex: 1;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 150px;
+  transition: all 0.3s;
+}
+
+.btn-goal i {
+  font-size: 24px;
+  margin: 0;
+  transition: all 0.3s;
+}
+
+.btn-goal span {
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.btn-goal:hover,
+.btn-goal.active {
+  background: var(--gradient-primary);
+  border-color: transparent;
+  color: var(--white);
+  transform: translateY(-5px);
+}
+
+.btn-goal:hover i,
+.btn-goal.active i {
+  transform: scale(1.2);
+}
+
+/* Calculator Section */
+.calculator-section,
+.manual-input {
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--border);
+}
+
+.calculator-section h3,
+.manual-input h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.calculator-section h3 i,
+.manual-input h3 i {
+  margin-right: 10px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.calculator-section p,
+.manual-input p {
+  margin-bottom: 25px;
+  color: var(--text-light);
+  font-size: 16px;
+}
+
+.goal-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.calculated-values {
+  background-color: rgba(240, 244, 248, 0.5);
+  padding: 25px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(222, 226, 230, 0.3);
+}
+
+/* Nutrition Cards */
+.nutrition-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.nutrition-card {
+  flex: 1;
+  min-width: 180px;
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s;
+}
+
+.nutrition-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  color: white;
+}
+
+.calories-card .card-icon {
+  background: var(--gradient-calories);
+}
+
+.protein-card .card-icon {
+  background: var(--gradient-protein);
+}
+
+.fats-card .card-icon {
+  background: var(--gradient-fats);
+}
+
+.carbs-card .card-icon {
+  background: var(--gradient-carbs);
+}
+
+.water-card .card-icon {
+  background: var(--gradient-water);
+}
+
+.card-icon i {
+  font-size: 24px;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-content h4 {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 5px;
+}
+
+.card-value {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 0;
+}
+
+.insert-button {
+  text-align: center;
+  margin-top: 25px;
+}
+
+/* Submit Section */
+.submit-section {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.submit-section .btn {
+  padding: 16px 40px;
+  font-size: 18px;
+  border-radius: 50px;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(76, 201, 240, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+  }
+}
+
+.highlight {
+  animation: pulse 1s;
+  border-color: var(--success) !important;
+  background-color: rgba(76, 201, 240, 0.05) !important;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+
+  .registration-section {
+    padding: 20px;
+  }
+
+  .form-col {
+    flex: 100%;
+    margin-bottom: 10px;
+  }
+
+  .goal-buttons {
+    flex-direction: column;
+  }
+
+  .nutrition-card {
+    min-width: 100%;
+  }
+
+  .avatar-upload-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .avatar-preview {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .header-icon {
+    width: 70px;
+    height: 70px;
+  }
+
+  .header-icon i {
+    font-size: 30px;
+  }
+
+  .registration-header h1 {
+    font-size: 28px;
+  }
+
+  .section-title {
+    font-size: 20px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .registration-header h1 {
+    font-size: 24px;
+  }
+
+  .registration-header p {
+    font-size: 16px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .form-control {
+    padding: 12px 15px 12px 40px;
+  }
+
+  .form-icon {
+    top: 42px;
+  }
+}

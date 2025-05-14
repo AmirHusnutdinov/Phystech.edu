@@ -1,0 +1,759 @@
+/* Confirmation Page Styles with Dark Theme Support */
+:root {
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary-color: #f9fafb;
+  --text-color: #1f2937;
+  --text-light: #6b7280;
+  --border-color: #e5e7eb;
+  --error-color: #ef4444;
+  --success-color: #10b981;
+  --info-color: #3b82f6;
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --transition: all 0.3s ease;
+  --bg-gradient-start: #f0f4ff;
+  --bg-gradient-end: #e0e7ff;
+  --card-bg: white;
+  --envelope-color: #e0e7ff;
+  --envelope-shadow: #d1d5db;
+  --letter-color: white;
+  --letter-text: #9ca3af;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --particle-color: rgba(99, 102, 241, 0.2);
+}
+
+/* Dark Theme Variables */
+.dark-theme {
+  --primary-color: #818cf8;
+  --primary-hover: #6366f1;
+  --secondary-color: #1f2937;
+  --text-color: #f9fafb;
+  --text-light: #9ca3af;
+  --border-color: #374151;
+  --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --bg-gradient-start: #111827;
+  --bg-gradient-end: #1f2937;
+  --card-bg: #111827;
+  --envelope-color: #2d3748;
+  --envelope-shadow: #1a202c;
+  --letter-color: #374151;
+  --letter-text: #6b7280;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+  --particle-color: rgba(129, 140, 248, 0.2);
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--text-color);
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* Confirmation Container */
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Confirmation Card */
+.confirmation-card {
+  width: 100%;
+  max-width: 500px;
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  animation: fadeIn 0.6s ease-out;
+  position: relative;
+  z-index: 2;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Card Header */
+.card-header {
+  padding: 2.5rem 2.5rem 1.5rem;
+  text-align: center;
+}
+
+.confirmation-title {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.confirmation-subtitle {
+  color: var(--text-light);
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+/* Card Body */
+.card-body {
+  padding: 0 2.5rem 2.5rem;
+}
+
+/* Code Input */
+.code-input-container {
+  margin-bottom: 2rem;
+}
+
+.code-label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.code-field {
+  position: relative;
+  margin: 0 auto;
+  max-width: 360px;
+}
+
+.code-input {
+  width: 100%;
+  padding: 0.75rem 0;
+  font-size: 1.5rem;
+  letter-spacing: 2.5rem;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  position: relative;
+  z-index: 2;
+  caret-color: var(--primary-color);
+  transition: color 0.3s ease;
+  opacity: 0.01;
+}
+
+.code-input:focus {
+  outline: none;
+}
+
+.code-underlines {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.code-underlines span {
+  flex: 1;
+  margin: 0 0.25rem;
+  border-bottom: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.code-underlines span.filled {
+  border-bottom-color: var(--primary-color);
+}
+
+/* Timer */
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.timer-circle {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.75rem;
+}
+
+.timer-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-background {
+  fill: none;
+  stroke: var(--border-color);
+  stroke-width: 5;
+  transition: stroke 0.3s ease;
+}
+
+.timer-progress {
+  fill: none;
+  stroke: var(--primary-color);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+}
+
+.timer-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.timer-label {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+/* Submit Button */
+.submit-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.submit-button {
+  display: block;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: var(--primary-color);
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.submit-button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.submit-button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-button.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.button-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Resend Button */
+.resend-container {
+  text-align: center;
+}
+
+.resend-button {
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+.resend-button:hover:not(:disabled) {
+  background-color: rgba(99, 102, 241, 0.1);
+}
+
+.resend-button:disabled {
+  color: var(--text-light);
+  cursor: default;
+}
+
+.resend-text.sending::after {
+  content: "";
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 8px;
+  border: 2px solid var(--primary-color);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+.resend-text.sent {
+  color: var(--success-color);
+}
+
+.resend-timer {
+  display: inline-block;
+  margin-left: 8px;
+  background-color: var(--border-color);
+  color: var(--text-color);
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Envelope Animation */
+.envelope-animation {
+  width: 120px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  perspective: 600px;
+}
+
+.envelope {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.envelope-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--envelope-color);
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.envelope-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.envelope-flap {
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  top: -40%;
+  background-color: var(--envelope-color);
+  border-radius: 5px 5px 0 0;
+  transform-origin: bottom;
+  transform: rotateX(180deg);
+  transition: transform 0.6s ease-out, background-color 0.3s ease;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.envelope-flap.open {
+  transform: rotateX(0deg);
+}
+
+.letter {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  left: 5%;
+  background-color: var(--letter-color);
+  border-radius: 3px;
+  transform: translateZ(1px) translateY(20px);
+  transition: transform 0.6s ease-out 0.3s, background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.letter.raise {
+  transform: translateZ(50px) translateY(-30px);
+}
+
+.letter-content {
+  padding: 15px 10px;
+}
+
+.letter-line {
+  height: 4px;
+  background-color: var(--letter-text);
+  margin-bottom: 6px;
+  border-radius: 2px;
+  transition: background-color 0.3s ease;
+}
+
+.letter-line:nth-child(1) {
+  width: 80%;
+}
+
+.letter-line:nth-child(2) {
+  width: 90%;
+}
+
+.letter-line:nth-child(3) {
+  width: 70%;
+}
+
+.letter-line:nth-child(4) {
+  width: 85%;
+}
+
+/* Background Animation */
+.background-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  z-index: 0;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.particles-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.particles {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.particle {
+  position: absolute;
+  background-color: var(--particle-color);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float 15s infinite linear;
+  transition: background-color 0.3s ease;
+}
+
+/* Success Modal */
+.success-modal,
+.error-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.success-modal.show,
+.error-modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.success-content,
+.error-content {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--card-shadow);
+  transform: scale(0.9);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.success-modal.show .success-content,
+.error-modal.show .error-content {
+  transform: scale(1);
+}
+
+.success-icon,
+.error-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+}
+
+.success-circle,
+.error-circle {
+  stroke: var(--success-color);
+  stroke-width: 2;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  animation: stroke 0.6s forwards;
+}
+
+.error-circle {
+  stroke: var(--error-color);
+}
+
+.success-check {
+  stroke: var(--success-color);
+  stroke-width: 2;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: stroke 0.6s 0.3s forwards;
+}
+
+.error-x {
+  stroke: var(--error-color);
+  stroke-width: 2;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: stroke 0.6s 0.3s forwards;
+}
+
+.success-content h2,
+.error-content h2 {
+  color: var(--text-color);
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.success-content p,
+.error-content p {
+  color: var(--text-light);
+  margin: 0 0 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.success-button,
+.error-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.success-button {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.success-button:hover {
+  background-color: #0ca678;
+  transform: translateY(-2px);
+}
+
+.error-button {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.error-button:hover {
+  background-color: #dc2626;
+  transform: translateY(-2px);
+}
+
+/* Theme Toggle Button */
+/* .theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  z-index: 10;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-theme .theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+} */
+
+.theme-toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.dark-theme .theme-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0);
+  }
+
+  33% {
+    transform: translateY(-50px) translateX(50px) rotate(120deg);
+  }
+
+  66% {
+    transform: translateY(50px) translateX(-50px) rotate(240deg);
+  }
+
+  100% {
+    transform: translateY(0) translateX(0) rotate(360deg);
+  }
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .card-header {
+    padding: 2rem 1.5rem 1rem;
+  }
+
+  .confirmation-title {
+    font-size: 1.75rem;
+  }
+
+  .card-body {
+    padding: 0 1.5rem 2rem;
+  }
+
+  .code-input {
+    font-size: 1.25rem;
+    letter-spacing: 2rem;
+  }
+
+  .code-underlines span {
+    font-size: 1.25rem;
+  }
+
+  .timer-circle {
+    width: 80px;
+    height: 80px;
+  }
+
+  .timer-text {
+    font-size: 1.25rem;
+  }
+
+  .success-content,
+  .error-content {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .confirmation-title {
+    font-size: 1.5rem;
+  }
+
+  .confirmation-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .code-input {
+    font-size: 1rem;
+    letter-spacing: 1.5rem;
+  }
+
+  .code-underlines span {
+    font-size: 1rem;
+    margin: 0 0.15rem;
+  }
+
+  .timer-circle {
+    width: 70px;
+    height: 70px;
+  }
+
+  .timer-text {
+    font-size: 1.1rem;
+  }
+
+  .submit-button,
+  .resend-button {
+    font-size: 0.9rem;
+  }
+
+  .success-icon,
+  .error-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .success-content h2,
+  .error-content h2 {
+    font-size: 1.25rem;
+  }
+}
