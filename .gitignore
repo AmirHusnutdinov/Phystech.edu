@@ -1,7 +1,11 @@
-.idea/
-.vscode/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
 venv/
 .env
-.log
-prob.py
+.venv
+.vscode
+.idea
