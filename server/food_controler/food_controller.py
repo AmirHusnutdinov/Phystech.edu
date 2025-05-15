@@ -95,7 +95,7 @@ def set_diets_to_user(user_id):
 
     trainer_id = form.trainer_id.data
 
-    is_trainer_have_access = sql_query(f"SELECT 1 WHERE EXISTS ( SELECT 1 FROM users_trainers WHERE tainer_id = '{trainer_id}' AND user_id = '{user_id}'", Fetch=True)
+    is_trainer_have_access = database_query(f"SELECT 1 WHERE EXISTS ( SELECT 1 FROM users_trainers WHERE tainer_id = '{trainer_id}' AND user_id = '{user_id}'", Fetch=True)
     if not is_trainer_have_access:
          return jsonify({'error': 'Access denied'}), 403
 

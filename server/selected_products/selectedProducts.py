@@ -20,6 +20,4 @@ class SelectedProduct:
         return redirect(main_page)
 
 
-@app.route(selected_products)
-def open_selected_products_page():
-    return SelectedProduct.show_selected_product_page()
+

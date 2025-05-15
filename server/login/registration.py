@@ -154,18 +154,3 @@ class Registration:
         return redirect(url_for("confirm_code"))
 
 
-@app.route(registration, methods=["GET", "POST"])
-def show_registration_page():
-    return Registration.show_registration_page()
-
-
-@app.route(process_registration, methods=["POST"])
-def process_registration():
-    return Registration.process_registration()
-
-
-@app.route(confirm_code, methods=["GET", "POST"])
-def confirm_code():
-    if request.method == "POST":
-        return Registration.process_confirmation()
-    return Registration.show_confirmation_page()

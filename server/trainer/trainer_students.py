@@ -163,22 +163,3 @@ class Students:
         )
 
 
-@app.route(all_students)
-def open_all_students_page():
-    return Students.show_students_page()
-
-
-@app.route(student)
-def open_students_page(student_id):
-    return Students.show_one_student_page(student_id)
-
-
-@app.route("/send_message", methods=["POST"])
-def send_message():
-    return Students.send_message()
-
-
-@app.route("/get_new_messages/<student_id>")
-def get_new_messages(student_id):
-    pass
-    return Students.get_new_messages(student_id)

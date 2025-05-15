@@ -25,6 +25,3 @@ class StartPage:
         )
 
 
-@app.route(main_page)
-def open_main_page():
-    return StartPage.show_the_main_page()
