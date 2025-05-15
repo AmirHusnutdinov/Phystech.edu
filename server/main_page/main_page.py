@@ -14,7 +14,7 @@ class StartPage:
             header_links = choose_header_links("authorized")
         else:
             header_links = choose_header_links("not-authorized")
-        
+
         images = StartPage.cloud_client.get_folder("images/")
 
         return render_template_with_user(
@@ -25,6 +25,6 @@ class StartPage:
         )
 
 
-@app.route(main_page)
+@app.route("/")
 def open_main_page():
     return StartPage.show_the_main_page()
