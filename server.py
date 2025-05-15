@@ -17,8 +17,6 @@ from server.food_controler.food_controller import food_blueprint, delete_old_die
 from apscheduler.schedulers.background import BackgroundScheduler
 from settings import app, host
 
-__all__ = ["app"]
-
 app.secret_key = os.urandom(24)
 app.register_blueprint(food_blueprint)
 
