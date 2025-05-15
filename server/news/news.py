@@ -148,31 +148,3 @@ class News:
 
 
 # Основные роутеры
-@app.route(all_news)
-def open_all_news_page():
-    return News.show_all_news_page()
-
-
-@app.route(one_news)
-def open_one_news_page(news_id):
-    return News.show_one_news_page(news_id)
-
-
-@app.route(make_news, methods=['GET'])
-def open_make_news_page():
-    return News.show_make_news()
-
-
-@app.route(save_news, methods=['POST'])
-def handle_make_news():
-    return News.handle_make_news()
-
-
-@app.route('/news/<int:news_id>/edit', methods=['GET'])
-def edit_news_page(news_id):
-    return News.show_make_news(news_id)
-
-
-@app.route('/news/<int:news_id>/delete', methods=['POST'])
-def delete_news_page(news_id):
-    return News.handle_delete_news(news_id)

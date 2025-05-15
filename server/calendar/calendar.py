@@ -39,13 +39,3 @@ class Calendar:
                 cookies=user_in_all_time
             )
         return redirect(main_page)
-
-    @staticmethod
-    @app.route("/calendar/<int:student_id>")
-    def calendar_page(student_id):
-        return Calendar.show_calendar_page_with_id(student_id)
-
-
-@app.route(calendar)
-def open_calendar_page():
-    return Calendar.show_calendar_page()

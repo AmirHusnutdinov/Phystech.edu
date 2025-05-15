@@ -279,39 +279,6 @@ class Cabinet:
 # Routes
 
 
-@app.route(cabinet, methods=["GET", "POST"])
-def open_cabinet_page():
-    return Cabinet.show_cabinet_page()
-
-
-@app.route(cabinet + "/update_profile", methods=["POST"])
-def update_profile():
-    return Cabinet.update_profile()
-
-
-@app.route(cabinet + "/update_nutrition", methods=["POST"])
-def update_nutrition():
-    return Cabinet.update_nutrition()
-
-
-@app.route(cabinet + "/submit_trainer_application", methods=["POST"])
-def submit_trainer_application():
-    return Cabinet.submit_trainer_application()
-
-
-@app.route(cabinet + "/request_trainer", methods=["POST"])
-def request_trainer():
-    return Cabinet.request_trainer()
-
-
-@app.route(cabinet + "/approve_request/<int:request_id>", methods=["POST"])
-def approve_request(request_id):
-    return Cabinet.approve_request(request_id)
-
-
-@app.route(cabinet + "/reject_request/<int:request_id>", methods=["POST"])
-def reject_request(request_id):
-    return Cabinet.reject_request(request_id)
 
 
 # Forms

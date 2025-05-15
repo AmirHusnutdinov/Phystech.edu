@@ -115,14 +115,6 @@ class ProcessRegistration:
 
 
 # Routes
-@app.route(process_registration, methods=["GET"])
-def show_ProcessRegistration_page():
-    return ProcessRegistration.show_ProcessRegistration_page()
-
-
-@app.route(process_registration + "/submit", methods=["POST"])
-def submit_registration():
-    return ProcessRegistration.submit()
 
 
 class ProcessRegistrationForm(FlaskForm):

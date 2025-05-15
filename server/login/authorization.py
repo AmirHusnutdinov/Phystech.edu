@@ -58,17 +58,3 @@ class Authorization:
             return redirect(url_for('open_main_page'))  # Перенаправление на главную страницу
         return redirect(main_page)
 
-
-@app.route(authorization, methods=['GET', 'POST'])
-def open_authorization_page():
-    return Authorization.show_authorization_page()
-
-
-@app.route(process_login, methods=['POST'])
-def process_login():
-    return Authorization.process_login()
-
-
-@app.route(logout)
-def logout():
-    return Authorization.logout()

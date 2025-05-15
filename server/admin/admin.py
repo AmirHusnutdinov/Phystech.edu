@@ -9,6 +9,3 @@ class Admin:
         return render_template_with_user("Admin/admin.html")
 
 
-@app.route(admin)
-def open_admin_page():
-    return Admin.show_admin_page()
