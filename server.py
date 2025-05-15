@@ -1,5 +1,6 @@
 import os
 
+from flask import *
 from server.hendler.handler import Handler
 from server.admin.admin import Admin
 from server.calendar.calendar import Calendar
@@ -9,7 +10,8 @@ from server.login.cabinet import Cabinet
 
 # from server.login.process_registration import ProcessRegistration
 from server.login.registration import Registration
-from server.main_page.main_page import StartPage
+
+# from server.main_page.main_page import StartPage
 from server.news.news import News
 from server.selected_products.selectedProducts import SelectedProduct
 from server.trainer.trainer_students import Students
@@ -27,3 +29,12 @@ scheduler.start()
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port, debug=False)
+
+
+@app.route("/")
+def open_main_page():
+    return show_the_main_page()
+
+
+def show_the_main_page():
+    return render_template("MainPage/main.html", title="Главная страница")
