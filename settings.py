@@ -28,12 +28,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
-app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=365)
 host = "0.0.0.0"
-port = os.getenv('POSTGRES_PORT')
-user = os.getenv('POSTGRES_USER')
-password = os.getenv('POSTGRES_PASSWORD')
-db_name = os.getenv('DATABASE_NAME')
+port = int(os.getenv("PORT", 8080))
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config.from_object(Config)
 
 MAIL_SERVER = 'smtp.yandex.ru'
