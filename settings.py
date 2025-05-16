@@ -29,7 +29,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=365)
-host = "127.0.0.1"
+host = "0.0.0.0"
 port = os.getenv('POSTGRES_PORT')
 user = os.getenv('POSTGRES_USER')
 password = os.getenv('POSTGRES_PASSWORD')
