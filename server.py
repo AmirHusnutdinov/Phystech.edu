@@ -163,7 +163,7 @@ def confirm_code():
         return Registration.process_confirmation()
     return Registration.show_confirmation_page()
 
-@app.route(main_page)
+@app.route("/")
 def open_main_page():
     return "Главная страница"
 
