@@ -165,7 +165,7 @@ def confirm_code():
 
 @app.route(main_page)
 def open_main_page():
-    return StartPage.show_the_main_page()
+    return "Главная страница"
 
 @app.route(all_news)
 def open_all_news_page():
