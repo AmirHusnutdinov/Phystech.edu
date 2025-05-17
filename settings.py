@@ -1,9 +1,11 @@
 import datetime
 import os
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import Flask
 from flask_mail import Mail
+from route import server_blueprint
 
 load_dotenv()
 
@@ -43,3 +45,14 @@ MAIL_USERNAME = os.getenv('MAIL_USERNAME')
 MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
 
 mail = Mail(app)
+
+app.secret_key = os.urandom(24)
+app.register_blueprint(server_blueprint)
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(server_blueprint, "cron", hour=0, minute=0)
+scheduler.start()
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port, debug=False)
