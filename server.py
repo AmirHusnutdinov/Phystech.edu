@@ -11,7 +11,6 @@ from server.food_controler.food_controller import food_blueprint, delete_old_die
 from server.login.authorization import Authorization
 from server.login.cabinet import Cabinet
 from server.login.process_registration import ProcessRegistration
-# from server.login.process_registration import ProcessRegistration
 from server.login.registration import Registration
 from server.main_page.main_page import StartPage
 from server.news.news import News
