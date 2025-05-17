@@ -1,5 +1,6 @@
 import datetime
 import os
+from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 from flask import Flask
@@ -39,12 +40,24 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
 app.config["PERMANENT_SESSION_LIFETIME"] = datetime.timedelta(days=365)
-host = "127.0.0.1"
-port = os.getenv('POSTGRES_PORT')
-user = os.getenv('POSTGRES_USER')
-password = os.getenv('POSTGRES_PASSWORD')
-db_name = os.getenv('DATABASE_NAME')
+
+
+db_url = os.getenv('DATABASE_URL')
+
+if db_url:
+    db_url = db_url.replace('postgresql://', 'postgres://')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config.from_object(Config)
+
+parsed = urlparse(db_url)
+
+host = parsed.hostname
+port = parsed.port
+user = parsed.username
+password = parsed.password
+db_name = parsed.path[1:]
 
 MAIL_SERVER = 'smtp.yandex.ru'
 MAIL_PORT = 587
