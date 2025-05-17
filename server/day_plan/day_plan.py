@@ -25,6 +25,8 @@ class DayPlan:
         if "user_id" in session:
             dishes = get_dishes()
             user = get_user_data(session["user_id"])
+            if (user["calories"] == None):
+                return redirect(cabinet)
             daily = get_day_data(session["user_id"], date.today())
             print(daily)
 

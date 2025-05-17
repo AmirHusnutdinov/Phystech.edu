@@ -98,7 +98,25 @@ def update_user_data(user_id, data):
 
 def get_day_data(user_id, date):
     sql = f"SELECT * FROM user_daily_metrics WHERE id = {user_id} AND date = '{date}'"
-    return database_query(sql, True)
+    ans = database_query(sql, True)
+    if (len(ans) == 0):
+        el = database_query(f"SELECT * FROM users WHERE id = {user_id}")
+        ans = {
+            user_id,
+            el[10],
+            el[11],
+            el[9],
+            date,
+            0,
+            el[12],
+            0,
+            el[13],
+            0,
+            el[15],
+            0,
+            el[14]
+        }
+    return ans
 
 
 def get_my_request(user_id):
