@@ -1,15 +1,16 @@
 from datetime import datetime
 
 from flask import jsonify, Blueprint
-from flask import request
-from ..database.use_DataBase import database_query
+
 from forms import TrainForm
-from utils import render_template_with_user
 from server.service_files.links import *
+from utils import render_template_with_user
+from ..database.use_DataBase import database_query
 
 trains_blueprint = Blueprint('trains_blueprint', __name__)
 
-@trains_blueprint.route('/<int:user_id>/trains', methods=['POST']) 
+
+@trains_blueprint.route('/<int:user_id>/trains', methods=['POST'])
 def add_trains_to_user(user_id):
     form = TrainForm()
     train_id = form.train_id.data
@@ -35,6 +36,7 @@ def add_trains_to_user(user_id):
 
     return jsonify({'message': 'Succsess'}), 201
 
+
 @trains_blueprint.route('/<int:user_id>/trains', methods=['GET'])
 def get_user_train(user_id):
     current_date = datetime().now().date()
@@ -49,7 +51,7 @@ def get_user_train(user_id):
 
     if not sql:
         return jsonify({'error': 'Record not found'}), 200
-    
+
     trainings = [
         {
             "name": row[0],
@@ -67,8 +69,7 @@ def get_user_train(user_id):
         trainings=trainings
     )
 
-    
-    
+
 def parse_tine(time: str):
     hours, mins = divmod(time, 60)
     if hours > 0 and mins > 0:

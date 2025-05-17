@@ -77,6 +77,7 @@
     <div class="meals-container" id="meals-container">
         {% if plan_type == 'diet' %}
         {% for meal in diet_meals %}
+
         <div class="meal-card" data-meal-id="{{ meal.id }}">
             <div class="meal-header">
                 <div class="meal-type">{{ meal.type_name }}</div>
@@ -211,8 +212,8 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="/products/add" class="action-btn">Добавить продукт</a>
-                    <a href="/recipes/add" class="action-btn">Добавить рецепт</a>
+                    <a href="{{add_product}}" class="action-btn">Добавить продукт</a>
+                    <a href="{{add_recipes}}" class="action-btn">Добавить рецепт</a>
                 </div>
 
                 <div class="search-results" id="search-results">
@@ -328,6 +329,56 @@ document.addEventListener('DOMContentLoaded', function () {
   const current = getCurrentNutrition();
   waterAmount = current.water;
   updateWaterDisplay();
+
+  // Add this code to initialize diet meals from the server data
+  if ('{{ plan_type }}' === 'diet') {
+    try {
+      // Parse the diet_meals data from the server
+      const dietMealsData = {{ diet_meals | tojson }};
+
+      // Check if we have valid diet meals data
+      if (Array.isArray(dietMealsData) && dietMealsData.length > 0) {
+        // Convert the server data to our meals format
+        dietMealsData.forEach(meal => {
+          const mealObj = {
+            id: meal.id,
+            time: meal.time,
+            type_name: meal.type_name,
+            protein: meal.protein,
+            fats: meal.fats,
+            carbs: meal.carbs,
+            calories: meal.calories,
+            dishes: meal.dishes.map(dish => ({
+              name: dish.name,
+              weight: dish.weight,
+              protein: dish.protein,
+              fats: dish.fats,
+              carbs: dish.carbs,
+              calories: dish.calories,
+              consumed: false
+            }))
+          };
+          meals.push(mealObj);
+        });
+
+        // Set plan type to diet
+        planType = 'diet';
+
+        // Update UI to show diet mode is active
+        document.querySelectorAll('.plan-type-btn').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.dataset.type === 'diet') {
+            btn.classList.add('active');
+          }
+        });
+
+        // Render the meals
+        renderMeals();
+      }
+    } catch (error) {
+      console.error('Error parsing diet meals:', error);
+    }
+  }
 
   setupEventListeners();
   updateAddMealButtonVisibility();
@@ -1205,6 +1256,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 {% endif %}
 
+document.addEventListener('DOMContentLoaded', function() {
+  const dietCheckboxes = document.querySelectorAll('.dish-checkbox');
+  dietCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const dishItem = this.closest('.dish-item');
+      dishItem.classList.toggle('consumed', this.checked);
+      updateNutritionSummary();
+    });
+  });
+});
+
 const style = document.createElement('style');
 style.textContent = `
   :root {
@@ -1426,16 +1488,5 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
-
-document.addEventListener('DOMContentLoaded', function() {
-  const dietCheckboxes = document.querySelectorAll('.dish-checkbox');
-  dietCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-      const dishItem = this.closest('.dish-item');
-      dishItem.classList.toggle('consumed', this.checked);
-      updateNutritionSummary();
-    });
-  });
-});
 </script>
 {% endblock %}

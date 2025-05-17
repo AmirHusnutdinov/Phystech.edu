@@ -1,26 +1,24 @@
 import os
 
-from flask import session, redirect, render_template
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import request
-from server.hendler.handler import Handler
+from flask import session, redirect, render_template
+
 from server.admin.admin import Admin
 from server.calendar.calendar import Calendar
 from server.day_plan.day_plan import DayPlan
+from server.food_controler.food_controller import food_blueprint, delete_old_diets
 from server.login.authorization import Authorization
 from server.login.cabinet import Cabinet
 from server.login.process_registration import ProcessRegistration
-
 # from server.login.process_registration import ProcessRegistration
 from server.login.registration import Registration
 from server.main_page.main_page import StartPage
 from server.news.news import News
 from server.selected_products.selectedProducts import SelectedProduct
-from server.trainer.trainer_students import Students
-from server.food_controler.food_controller import food_blueprint, delete_old_diets
-from apscheduler.schedulers.background import BackgroundScheduler
-from settings import app
 from server.service_files.links import *;
-
+from server.trainer.trainer_students import Students
+from settings import app
 
 app.secret_key = os.urandom(24)
 app.register_blueprint(food_blueprint)
@@ -28,9 +26,12 @@ app.register_blueprint(food_blueprint)
 scheduler = BackgroundScheduler()
 scheduler.add_job(delete_old_diets, "cron", hour=0, minute=0)
 scheduler.start()
+
+
 @app.route(admin)
 def open_admin_page():
     return Admin.show_admin_page()
+
 
 @app.route("/calendar/<int:student_id>")
 def calendar_page(student_id):
@@ -41,14 +42,15 @@ def calendar_page(student_id):
 def open_calendar_page():
     return Calendar.show_calendar_page()
 
-@app.route(add_product)
+
+@app.route(add_product, methods=['GET', 'POST'])
 def open_add_product():
     if "user_id" in session:
         return DayPlan.show_add_product_page()
     return redirect(main_page)
 
 
-@app.route(add_recipes)
+@app.route(add_recipes, methods=['GET', 'POST'])
 def open_add_recipes():
     if "user_id" in session:
         return DayPlan.show_add_recipes()
@@ -90,6 +92,7 @@ def get_chat_messages_route():
 def send_message_route():
     return DayPlan.send_message()
 
+
 @app.route(authorization, methods=['GET', 'POST'])
 def open_authorization_page():
     return Authorization.show_authorization_page()
@@ -103,6 +106,7 @@ def process_login():
 @app.route(logout)
 def logout():
     return Authorization.logout()
+
 
 @app.route(cabinet, methods=["GET", "POST"])
 def open_cabinet_page():
@@ -138,6 +142,7 @@ def approve_request(request_id):
 def reject_request(request_id):
     return Cabinet.reject_request(request_id)
 
+
 @app.route(process_registration, methods=["GET"])
 def show_ProcessRegistration_page():
     return ProcessRegistration.show_ProcessRegistration_page()
@@ -146,6 +151,7 @@ def show_ProcessRegistration_page():
 @app.route(process_registration + "/submit", methods=["POST"])
 def submit_registration():
     return ProcessRegistration.submit()
+
 
 @app.route(registration, methods=["GET", "POST"])
 def show_registration_page():
@@ -163,9 +169,11 @@ def confirm_code():
         return Registration.process_confirmation()
     return Registration.show_confirmation_page()
 
+
 @app.route(main_page)
 def open_main_page():
     return StartPage.show_the_main_page()
+
 
 @app.route(all_news)
 def open_all_news_page():
@@ -196,16 +204,18 @@ def edit_news_page(news_id):
 def delete_news_page(news_id):
     return News.handle_delete_news(news_id)
 
+
 @app.route(selected_products)
 def open_selected_products_page():
     return SelectedProduct.show_selected_product_page()
+
 
 @app.route(all_students)
 def open_all_students_page():
     return Students.show_students_page()
 
 
-@app.route(student)
+@app.route(student, methods=["GET", "POST"])
 def open_students_page(student_id):
     return Students.show_one_student_page(student_id)
 
@@ -219,7 +229,6 @@ def send_message():
 def get_new_messages(student_id):
     pass
     return Students.get_new_messages(student_id)
-
 
 
 if __name__ == "__main__":

@@ -1,12 +1,12 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 
 from flask import render_template, redirect, request, jsonify
 from flask import session
 
 from server.cloud.cloud_main import Cloud
 from server.database.use_DataBase import *
+from server.database.use_DataBase import get_dishes
 from server.service_files.links import *
-from settings import app
 
 
 class Students:
@@ -44,6 +44,13 @@ class Students:
         if "user_id" not in session:
             return redirect(main_page)
 
+        if request.method == "POST":
+            data = request.get_json()
+            database_query(sql=f"""
+            insert into diets (name, owner, description) 
+            values ('диета', {student_id}, '{str(data).replace("'", '"')}')
+            """, fetch=False)
+
         trainer_id = session["user_id"]
         if not check_trainer(trainer_id):
             return redirect(main_page)
@@ -65,7 +72,10 @@ class Students:
                     "sender_name": user_info["name"] if sender == "received" else "Вы",
                 }
             )
-
+        today = date.today()
+        today_str = today.strftime('%Y-%m-%d')
+        user_daily_metrics = list(database_query(sql=f"""select * from user_daily_metrics
+        where id={student_id} and date='{today_str}'""", fetch=True)[0])
         return render_template(
             "Trainer/student.html",
             title=f"Ученик {user_info['name']}",
@@ -76,15 +86,15 @@ class Students:
             cookies=user_info,
             messages=formatted_messages,
             student_id=student_id,
-            # Далее идут те переменные, в которые ты, Варвара, должна поместить данные из БД.
-            nutrition_was=1000,
-            nutrition_needed=1800,
-            fats_was=1000,
-            fats_needed=1500,
-            carbohydrates_was=0,
-            carbohydrates_needed=1500,
-            water_was=1.5,
-            water_needed=3,
+            nutrition_was=user_daily_metrics[7],
+            nutrition_needed=user_daily_metrics[8],
+            fats_was=user_daily_metrics[9],
+            fats_needed=user_daily_metrics[10],
+            carbohydrates_was=user_daily_metrics[11],
+            carbohydrates_needed=user_daily_metrics[12],
+            calories_was=user_daily_metrics[5],
+            calories_needed=user_daily_metrics[6],
+            dishes=get_dishes()
         )
 
     @staticmethod
@@ -137,7 +147,7 @@ class Students:
         # debug_print('student_id', student_id)
         for msg in messages:
             if str(msg["id_from"]) == str(
-                student_id
+                    student_id
             ):  # Только новые сообщения от студента
                 user_info = get_user_data(student_id)
                 formatted_messages.append(
@@ -149,7 +159,7 @@ class Students:
                 )
         # reducing to form 2025-04-22T13:54:07.343Z
         current_time = (
-            datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+                datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
         )
 
         # debug_print('CURRENT TIME', current_time)
@@ -161,5 +171,3 @@ class Students:
                 "last_update": current_time,
             }
         )
-
-

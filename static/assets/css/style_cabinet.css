@@ -101,19 +101,18 @@
   background: linear-gradient(87deg, var(--primary-dark) 0, var(--primary-color) 100%);
 }
 
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
 }
 
 body {
   background-color: #f8f9fe;
   color: var(--text-color);
   line-height: 1.6;
-  padding-bottom: 40px;
+  padding-bottom: 0;
 }
 
 .container {
@@ -132,7 +131,6 @@ body {
   margin-bottom: -15px;
   /* перекрытие секций уменьшено */
 }
-
 
 .page-title {
   color: white;
@@ -154,7 +152,7 @@ body {
 }
 
 .cabinet-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: 0;
@@ -621,7 +619,6 @@ select.form-control {
   padding-right: 40px;
 }
 
-
 /* Trainer Application Section */
 .trainer-application {
   text-align: center;
@@ -737,10 +734,6 @@ select.form-control {
 .dark-theme .trainer-application {
   background-color: rgba(94, 114, 228, 0.1);
 }
-
-
-
-
 
 /* Trainer Request Section Styles */
 #trainer-request-section {

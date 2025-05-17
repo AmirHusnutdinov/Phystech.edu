@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <form id="recipe-form" action="/add-recipes" method="post" class="recipe-form">
+    <form id="recipe-form" action="/add_recipes" method="post" class="recipe-form">
         <div class="form-group dish-name-group">
             <label for="dish-name">Название блюда</label>
             <div class="input-wrapper">
@@ -35,9 +35,11 @@
                 </div>
             </div>
 
+
             <div class="ingredients-list-container">
                 <div id="ingredients-list" class="ingredients-list">
                     <!-- Ingredients will be loaded here -->
+                    <p class="search-prompt">Введите название ингредиента для поиска</p>
                 </div>
             </div>
 
@@ -128,8 +130,12 @@
             </div>
         </div>
 
-        <input type="hidden" id="ingredient-ids" name="ingredient_ids" value="">
-        <input type="hidden" id="ingredient-weights" name="ingredient_weights" value="">
+        <!-- Hidden fields for nutritional totals -->
+        <input type="hidden" id="total-calories-value" name="total_calories" value="0">
+        <input type="hidden" id="total-proteins-value" name="total_proteins" value="0">
+        <input type="hidden" id="total-fats-value" name="total_fats" value="0">
+        <input type="hidden" id="total-carbs-value" name="total_carbs" value="0">
+        <input type="hidden" id="total-weight-value" name="total_weight" value="0">
 
         <div class="form-actions">
             <button type="submit" class="btn submit-btn">
@@ -148,21 +154,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Mock data for ingredients (in a real app, this would come from the server)
-        const mockIngredients = [
-            { id: 1, name: 'Куриная грудка', calories: 165, proteins: 31, fats: 3.6, carbs: 0 },
-            { id: 2, name: 'Рис', calories: 130, proteins: 2.7, fats: 0.3, carbs: 28 },
-            { id: 3, name: 'Морковь', calories: 41, proteins: 0.9, fats: 0.2, carbs: 9.6 },
-            { id: 4, name: 'Лук', calories: 40, proteins: 1.1, fats: 0.1, carbs: 9.3 },
-            { id: 5, name: 'Оливковое масло', calories: 884, proteins: 0, fats: 100, carbs: 0 },
-            { id: 6, name: 'Томаты', calories: 18, proteins: 0.9, fats: 0.2, carbs: 3.9 },
-            { id: 7, name: 'Огурцы', calories: 15, proteins: 0.8, fats: 0.1, carbs: 3.6 },
-            { id: 8, name: 'Гречка', calories: 343, proteins: 12.6, fats: 3.3, carbs: 71.5 },
-            { id: 9, name: 'Творог', calories: 103, proteins: 18, fats: 2, carbs: 3 },
-            { id: 10, name: 'Яйцо', calories: 157, proteins: 12.7, fats: 11.5, carbs: 0.7 }
-        ];
+        // Use the server-provided dishes variable
+        const dishes = {{ dishes|tojson }};
 
-        const selectedIngredients = [];
+        // Store selected ingredients with their weights
+        let selectedIngredients = [];
+
+        // Get DOM elements
         const ingredientsList = document.getElementById('ingredients-list');
         const selectedIngredientsList = document.getElementById('selected-ingredients');
         const searchInput = document.getElementById('ingredient-search');
@@ -176,8 +174,8 @@
             }, 100 * index);
         });
 
-        // Display all ingredients initially with staggered animation
-        displayIngredients(mockIngredients);
+        // Initially show search prompt, not all dishes
+        ingredientsList.innerHTML = '<p class="search-prompt">Введите название ингредиента для поиска</p>';
 
         // Search functionality
         searchBtn.addEventListener('click', performSearch);
@@ -187,10 +185,96 @@
             }
         });
 
+        // Функция для обработки клика на кнопки в выбранных ингредиентах
+        function handleSelectedIngredientsClick(event) {
+            // Проверяем, был ли клик по кнопке или её дочернему элементу (SVG)
+            let target = event.target;
+
+            // Если клик был по SVG или path внутри SVG, находим родительскую кнопку
+            while (target && !target.classList.contains('decrease-btn') &&
+                   !target.classList.contains('increase-btn') &&
+                   !target.classList.contains('remove-ingredient-btn')) {
+                if (target === selectedIngredientsList) return; // Если дошли до контейнера, выходим
+                target = target.parentElement;
+            }
+
+            if (!target) return; // Если не нашли нужную кнопку, выходим
+
+            // Находим родительский элемент ингредиента
+            const selectedIngredientEl = target.closest('.selected-ingredient');
+            if (!selectedIngredientEl) return;
+
+            const ingredientId = parseInt(selectedIngredientEl.dataset.id);
+            const weightInput = selectedIngredientEl.querySelector('.weight-input');
+
+            console.log('Clicked button:', target.className, 'for ingredient ID:', ingredientId);
+
+            if (target.classList.contains('decrease-btn')) {
+                // Обработка кнопки уменьшения
+                const currentWeight = parseInt(weightInput.value);
+                if (currentWeight > 10) {
+                    const newWeight = currentWeight - 10;
+                    weightInput.value = newWeight;
+                    updateIngredientWeight(ingredientId, newWeight);
+                    weightInput.classList.add('pulse');
+                    setTimeout(() => {
+                        weightInput.classList.remove('pulse');
+                    }, 300);
+                }
+            } else if (target.classList.contains('increase-btn')) {
+                // Обработка кнопки увеличения
+                const currentWeight = parseInt(weightInput.value);
+                const newWeight = currentWeight + 10;
+                weightInput.value = newWeight;
+                updateIngredientWeight(ingredientId, newWeight);
+                weightInput.classList.add('pulse');
+                setTimeout(() => {
+                    weightInput.classList.remove('pulse');
+                }, 300);
+            } else if (target.classList.contains('remove-ingredient-btn')) {
+                // Обработка кнопки удаления
+                removeIngredient(ingredientId);
+            }
+        }
+
+        // Функция для обработки изменения веса в поле ввода
+        function handleWeightInputChange(event) {
+            if (event.target.classList.contains('weight-input')) {
+                const selectedIngredientEl = event.target.closest('.selected-ingredient');
+                if (!selectedIngredientEl) return;
+
+                const ingredientId = parseInt(selectedIngredientEl.dataset.id);
+                let newWeight = parseInt(event.target.value);
+
+                console.log('Weight changed for ingredient ID:', ingredientId, 'New weight:', newWeight);
+
+                if (isNaN(newWeight) || newWeight < 1) {
+                    newWeight = 1;
+                    event.target.value = 1;
+                } else if (newWeight > 5000) {
+                    newWeight = 5000;
+                    event.target.value = 5000;
+                }
+
+                updateIngredientWeight(ingredientId, newWeight);
+            }
+        }
+
+        // Добавляем обработчики событий напрямую на контейнер
+        selectedIngredientsList.addEventListener('click', handleSelectedIngredientsClick);
+        selectedIngredientsList.addEventListener('input', handleWeightInputChange);
+
         function performSearch() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredIngredients = mockIngredients.filter(ingredient =>
-                ingredient.name.toLowerCase().includes(searchTerm)
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            // If search term is empty, show prompt
+            if (searchTerm === '') {
+                ingredientsList.innerHTML = '<p class="search-prompt">Введите название ингредиента для поиска</p>';
+                return;
+            }
+
+            const filteredIngredients = dishes.filter(dish =>
+                dish.name.toLowerCase().includes(searchTerm)
             );
 
             // Add search animation
@@ -220,303 +304,277 @@
                         <div class="ingredient-nutrition">
                             <span class="calories">${ingredient.calories} ккал</span>
                             <div class="nutrition-details">
-                                <span class="protein">Б: ${ingredient.proteins}г</span>
+                                <span class="protein">Б: ${ingredient.protein}г</span>
                                 <span class="fat">Ж: ${ingredient.fats}г</span>
                                 <span class="carb">У: ${ingredient.carbs}г</span>
                             </div>
                         </div>
-                    </div>
-                    <button type="button" class="btn add-ingredient-btn">
-                        <span class="btn-icon">+</span>
-                        <span class="btn-ripple"></span>
-                    </button>
-                `;
+                        <button type="button" class="btn add-ingredient-btn">
+                            <span class="btn-icon">+</span>
+                            <span class="btn-ripple"></span>
+                        </button>
+                    `;
 
-                // Add staggered animation
-                setTimeout(() => {
-                    ingredientsList.appendChild(ingredientCard);
-                    ingredientCard.classList.add('card-appear');
-                }, 50 * index);
+                    // Add staggered animation
+                    setTimeout(() => {
+                        ingredientsList.appendChild(ingredientCard);
+                        ingredientCard.classList.add('card-appear');
+                    }, 50 * index);
 
-                // Add click event to add ingredient after animation
-                setTimeout(() => {
-                    const addBtn = ingredientCard.querySelector('.add-ingredient-btn');
-                    addBtn.addEventListener('click', function(e) {
-                        // Add ripple effect
-                        const ripple = this.querySelector('.btn-ripple');
-                        ripple.classList.add('active');
-                        setTimeout(() => {
-                            ripple.classList.remove('active');
-                        }, 500);
+                    // Add click event to add ingredient after animation
+                    setTimeout(() => {
+                        const addBtn = ingredientCard.querySelector('.add-ingredient-btn');
+                        addBtn.addEventListener('click', function(e) {
+                            // Add ripple effect
+                            const ripple = this.querySelector('.btn-ripple');
+                            ripple.classList.add('active');
+                            setTimeout(() => {
+                                ripple.classList.remove('active');
+                            }, 500);
 
-                        addIngredient(ingredient);
-                    });
-                }, 50 * index + 100);
-            });
-        }
-
-        function addIngredient(ingredient) {
-            // Check if ingredient is already added
-            const existingIndex = selectedIngredients.findIndex(item => item.ingredient.id === ingredient.id);
-
-            if (existingIndex !== -1) {
-                // If already exists, just update the weight
-                selectedIngredients[existingIndex].weight += 100;
-                updateSelectedIngredientsDisplay();
-            } else {
-                // Add new ingredient with default weight of 100g
-                selectedIngredients.push({
-                    ingredient: ingredient,
-                    weight: 100
+                            addIngredient(ingredient);
+                        });
+                    }, 50 * index + 100);
                 });
+            }
 
-                // Create and add the selected ingredient element
-                const selectedIngredientEl = document.createElement('div');
-                selectedIngredientEl.className = 'selected-ingredient';
-                selectedIngredientEl.dataset.id = ingredient.id;
+            function addIngredient(ingredient) {
+                // Check if ingredient is already added
+                const existingIndex = selectedIngredients.findIndex(item => item.ingredient.id === ingredient.id);
 
-                selectedIngredientEl.innerHTML = `
-                    <div class="selected-ingredient-info">
-                        <h4>${ingredient.name}</h4>
-                        <div class="weight-control">
-                            <button type="button" class="btn weight-btn decrease-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </button>
-                            <input type="number" class="weight-input" value="100" min="1" max="5000">
-                            <span class="weight-unit">г</span>
-                            <button type="button" class="btn weight-btn increase-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="12" y1="5" x2="12" y2="19"></line>
-                                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                                </svg>
-                            </button>
+                if (existingIndex !== -1) {
+                    // If already exists, just update the weight
+                    selectedIngredients[existingIndex].weight += 100;
+                    updateSelectedIngredientsDisplay();
+                } else {
+                    // Add new ingredient with default weight of 100g
+                    selectedIngredients.push({
+                        ingredient: ingredient,
+                        weight: 100
+                    });
+
+                    // Create and add the selected ingredient element
+                    const selectedIngredientEl = document.createElement('div');
+                    selectedIngredientEl.className = 'selected-ingredient';
+                    selectedIngredientEl.dataset.id = ingredient.id;
+
+                    selectedIngredientEl.innerHTML = `
+                        <div class="selected-ingredient-info">
+                            <h4>${ingredient.name}</h4>
+                            <div class="weight-control">
+                                <button type="button" class="btn weight-btn decrease-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                                <input type="number" class="weight-input" value="100" min="1" max="5000">
+                                <span class="weight-unit">г</span>
+                                <button type="button" class="btn weight-btn increase-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <button type="button" class="btn remove-ingredient-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                `;
+                        <button type="button" class="btn remove-ingredient-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    `;
 
-                selectedIngredientsList.appendChild(selectedIngredientEl);
+                    selectedIngredientsList.appendChild(selectedIngredientEl);
 
-                // Add entrance animation
-                selectedIngredientEl.classList.add('slide-in-right');
+                    // Add entrance animation
+                    selectedIngredientEl.classList.add('slide-in-right');
+                }
 
-                // Add event listeners for weight control and removal
-                const decreaseBtn = selectedIngredientEl.querySelector('.decrease-btn');
-                const increaseBtn = selectedIngredientEl.querySelector('.increase-btn');
-                const weightInput = selectedIngredientEl.querySelector('.weight-input');
-                const removeBtn = selectedIngredientEl.querySelector('.remove-ingredient-btn');
+                updateNutritionTotals();
+            }
 
-                decreaseBtn.addEventListener('click', function() {
-                    const currentWeight = parseInt(weightInput.value);
-                    if (currentWeight > 10) {
-                        weightInput.value = currentWeight - 10;
+            function updateIngredientWeight(ingredientId, newWeight) {
+                console.log('Updating weight for ingredient ID:', ingredientId, 'New weight:', newWeight);
+
+                // Преобразуем ID в число для надежного сравнения
+                ingredientId = Number(ingredientId);
+
+                const index = selectedIngredients.findIndex(item => Number(item.ingredient.id) === ingredientId);
+                if (index !== -1) {
+                    selectedIngredients[index].weight = newWeight;
+                    updateNutritionTotals();
+                    console.log('Weight updated successfully');
+                } else {
+                    console.log('Ingredient not found in selectedIngredients array');
+                }
+            }
+
+            function removeIngredient(ingredientId) {
+                console.log('Removing ingredient ID:', ingredientId);
+
+                // Преобразуем ID в число для надежного сравнения
+                ingredientId = Number(ingredientId);
+
+                const index = selectedIngredients.findIndex(item => Number(item.ingredient.id) === ingredientId);
+                if (index !== -1) {
+                    selectedIngredients.splice(index, 1);
+
+                    const elementToRemove = selectedIngredientsList.querySelector(`[data-id="${ingredientId}"]`);
+                    if (elementToRemove) {
+                        // Add exit animation
+                        elementToRemove.classList.add('slide-out-right');
+                        setTimeout(() => {
+                            selectedIngredientsList.removeChild(elementToRemove);
+                        }, 500);
+                    }
+
+                    updateNutritionTotals();
+                    console.log('Ingredient removed successfully');
+                } else {
+                    console.log('Ingredient not found for removal');
+                }
+            }
+
+            function updateSelectedIngredientsDisplay() {
+                selectedIngredients.forEach(item => {
+                    const el = selectedIngredientsList.querySelector(`[data-id="${item.ingredient.id}"]`);
+                    if (el) {
+                        const weightInput = el.querySelector('.weight-input');
+                        weightInput.value = item.weight;
                         weightInput.classList.add('pulse');
                         setTimeout(() => {
                             weightInput.classList.remove('pulse');
                         }, 300);
-                        updateIngredientWeight(ingredient.id, currentWeight - 10);
                     }
                 });
-
-                increaseBtn.addEventListener('click', function() {
-                    const currentWeight = parseInt(weightInput.value);
-                    weightInput.value = currentWeight + 10;
-                    weightInput.classList.add('pulse');
-                    setTimeout(() => {
-                        weightInput.classList.remove('pulse');
-                    }, 300);
-                    updateIngredientWeight(ingredient.id, currentWeight + 10);
-                });
-
-                weightInput.addEventListener('change', function() {
-                    const newWeight = parseInt(weightInput.value);
-                    if (newWeight < 1) weightInput.value = 1;
-                    if (newWeight > 5000) weightInput.value = 5000;
-                    updateIngredientWeight(ingredient.id, parseInt(weightInput.value));
-                });
-
-                removeBtn.addEventListener('click', function() {
-                    removeIngredient(ingredient.id);
-                });
             }
 
-            updateNutritionTotals();
-            updateHiddenFields();
-        }
+            function updateNutritionTotals() {
+                let totalCalories = 0;
+                let totalProteins = 0;
+                let totalFats = 0;
+                let totalCarbs = 0;
+                let totalWeight = 0;
 
-        function updateIngredientWeight(ingredientId, newWeight) {
-            const index = selectedIngredients.findIndex(item => item.ingredient.id === ingredientId);
-            if (index !== -1) {
-                selectedIngredients[index].weight = newWeight;
-                updateNutritionTotals();
-                updateHiddenFields();
+                selectedIngredients.forEach(item => {
+                    const weightFactor = item.weight / 100; // Convert to percentage of 100g
+                    totalCalories += item.ingredient.calories * weightFactor;
+                    totalProteins += item.ingredient.protein * weightFactor;
+                    totalFats += item.ingredient.fats * weightFactor;
+                    totalCarbs += item.ingredient.carbs * weightFactor;
+                    totalWeight += item.weight;
+                });
+
+                // Update the display with animation
+                animateNutritionValue('total-calories', totalCalories.toFixed(1));
+                animateNutritionValue('total-proteins', totalProteins.toFixed(1));
+                animateNutritionValue('total-fats', totalFats.toFixed(1));
+                animateNutritionValue('total-carbs', totalCarbs.toFixed(1));
+
+                // Update hidden fields for form submission
+                document.getElementById('total-calories-value').value = totalCalories.toFixed(1);
+                document.getElementById('total-proteins-value').value = totalProteins.toFixed(1);
+                document.getElementById('total-fats-value').value = totalFats.toFixed(1);
+                document.getElementById('total-carbs-value').value = totalCarbs.toFixed(1);
+                document.getElementById('total-weight-value').value = totalWeight;
+
+                // Update progress bars
+                // Assuming some max values for visualization purposes
+                const maxCalories = 2000;
+                const maxProteins = 100;
+                const maxFats = 70;
+                const maxCarbs = 300;
+
+                updateProgressBar('calories-bar', totalCalories / maxCalories * 100);
+                updateProgressBar('proteins-bar', totalProteins / maxProteins * 100);
+                updateProgressBar('fats-bar', totalFats / maxFats * 100);
+                updateProgressBar('carbs-bar', totalCarbs / maxCarbs * 100);
             }
-        }
 
-        function removeIngredient(ingredientId) {
-            const index = selectedIngredients.findIndex(item => item.ingredient.id === ingredientId);
-            if (index !== -1) {
-                selectedIngredients.splice(index, 1);
+            function updateProgressBar(barClass, percentage) {
+                const bar = document.querySelector(`.${barClass}`);
+                const capped = Math.min(percentage, 100); // Cap at 100%
 
-                const elementToRemove = selectedIngredientsList.querySelector(`[data-id="${ingredientId}"]`);
-                if (elementToRemove) {
-                    // Add exit animation
-                    elementToRemove.classList.add('slide-out-right');
-                    setTimeout(() => {
-                        selectedIngredientsList.removeChild(elementToRemove);
-                    }, 500);
-                }
-
-                updateNutritionTotals();
-                updateHiddenFields();
-            }
-        }
-
-        function updateSelectedIngredientsDisplay() {
-            selectedIngredients.forEach(item => {
-                const el = selectedIngredientsList.querySelector(`[data-id="${item.ingredient.id}"]`);
-                if (el) {
-                    const weightInput = el.querySelector('.weight-input');
-                    weightInput.value = item.weight;
-                    weightInput.classList.add('pulse');
-                    setTimeout(() => {
-                        weightInput.classList.remove('pulse');
-                    }, 300);
-                }
-            });
-        }
-
-        function updateNutritionTotals() {
-            let totalCalories = 0;
-            let totalProteins = 0;
-            let totalFats = 0;
-            let totalCarbs = 0;
-
-            selectedIngredients.forEach(item => {
-                const weightFactor = item.weight / 100; // Convert to percentage of 100g
-                totalCalories += item.ingredient.calories * weightFactor;
-                totalProteins += item.ingredient.proteins * weightFactor;
-                totalFats += item.ingredient.fats * weightFactor;
-                totalCarbs += item.ingredient.carbs * weightFactor;
-            });
-
-            // Update the display with animation
-            animateNutritionValue('total-calories', totalCalories.toFixed(1));
-            animateNutritionValue('total-proteins', totalProteins.toFixed(1));
-            animateNutritionValue('total-fats', totalFats.toFixed(1));
-            animateNutritionValue('total-carbs', totalCarbs.toFixed(1));
-
-            // Update progress bars
-            // Assuming some max values for visualization purposes
-            const maxCalories = 2000;
-            const maxProteins = 100;
-            const maxFats = 70;
-            const maxCarbs = 300;
-
-            updateProgressBar('calories-bar', totalCalories / maxCalories * 100);
-            updateProgressBar('proteins-bar', totalProteins / maxProteins * 100);
-            updateProgressBar('fats-bar', totalFats / maxFats * 100);
-            updateProgressBar('carbs-bar', totalCarbs / maxCarbs * 100);
-        }
-
-        function updateProgressBar(barClass, percentage) {
-            const bar = document.querySelector(`.${barClass}`);
-            const capped = Math.min(percentage, 100); // Cap at 100%
-
-            // Animate the progress bar
-            bar.style.width = '0%';
-            setTimeout(() => {
-                bar.style.transition = 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                bar.style.width = `${capped}%`;
-            }, 50);
-        }
-
-        function animateNutritionValue(elementId, newValue) {
-            const element = document.getElementById(elementId);
-            const currentValue = parseFloat(element.textContent);
-            const newValueFloat = parseFloat(newValue);
-
-            // If the change is significant, animate it
-            if (Math.abs(currentValue - newValueFloat) > 0.1) {
-                element.classList.add('value-updating');
-
+                // Animate the progress bar
+                bar.style.width = '0%';
                 setTimeout(() => {
+                    bar.style.transition = 'width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    bar.style.width = `${capped}%`;
+                }, 50);
+            }
+
+            function animateNutritionValue(elementId, newValue) {
+                const element = document.getElementById(elementId);
+                const currentValue = parseFloat(element.textContent);
+                const newValueFloat = parseFloat(newValue);
+
+                // If the change is significant, animate it
+                if (Math.abs(currentValue - newValueFloat) > 0.1) {
+                    element.classList.add('value-updating');
+
+                    setTimeout(() => {
+                        element.textContent = newValue;
+                        element.classList.remove('value-updating');
+                        element.classList.add('value-updated');
+
+                        setTimeout(() => {
+                            element.classList.remove('value-updated');
+                        }, 500);
+                    }, 300);
+                } else {
                     element.textContent = newValue;
-                    element.classList.remove('value-updating');
-                    element.classList.add('value-updated');
+                }
+            }
 
+            // Form submission
+            document.getElementById('recipe-form').addEventListener('submit', function(event) {
+                if (selectedIngredients.length === 0) {
+                    event.preventDefault();
+
+                    // Show error animation
+                    const ingredientsGroup = document.querySelector('.ingredients-group');
+                    ingredientsGroup.classList.add('shake-error');
                     setTimeout(() => {
-                        element.classList.remove('value-updated');
-                    }, 500);
-                }, 300);
-            } else {
-                element.textContent = newValue;
-            }
-        }
+                        ingredientsGroup.classList.remove('shake-error');
+                    }, 600);
 
-        function updateHiddenFields() {
-            const ingredientIds = selectedIngredients.map(item => item.ingredient.id).join(',');
-            const ingredientWeights = selectedIngredients.map(item => item.weight).join(',');
+                    return false;
+                }
 
-            document.getElementById('ingredient-ids').value = ingredientIds;
-            document.getElementById('ingredient-weights').value = ingredientWeights;
-        }
+                // Add submission animation
+                const submitBtn = document.querySelector('.submit-btn');
+                submitBtn.classList.add('submitting');
+                submitBtn.querySelector('.btn-text').textContent = 'Добавление...';
 
-        // Form submission
-        document.getElementById('recipe-form').addEventListener('submit', function(event) {
-            if (selectedIngredients.length === 0) {
-                event.preventDefault();
+                // Update form action to the requested URL
+                this.action = '/add_recipes';
 
-                // Show error animation
-                const ingredientsGroup = document.querySelector('.ingredients-group');
-                ingredientsGroup.classList.add('shake-error');
-                setTimeout(() => {
-                    ingredientsGroup.classList.remove('shake-error');
-                }, 600);
+                // Form is valid, let it submit
+                if (document.getElementById('dish-name').value.trim() === '') {
+                    event.preventDefault();
+                    submitBtn.classList.remove('submitting');
+                    submitBtn.querySelector('.btn-text').textContent = 'Добавить блюдо';
 
-                return false;
-            }
+                    // Show error animation
+                    const dishNameGroup = document.querySelector('.dish-name-group');
+                    dishNameGroup.classList.add('shake-error');
+                    setTimeout(() => {
+                        dishNameGroup.classList.remove('shake-error');
+                    }, 600);
 
-            // Add submission animation
-            const submitBtn = document.querySelector('.submit-btn');
-            submitBtn.classList.add('submitting');
-            submitBtn.querySelector('.btn-text').textContent = 'Добавление...';
+                    return false;
+                }
+            });
 
-            // In a real app, you would submit the form here
-            // For this demo, we'll just simulate a submission
-            if (document.getElementById('dish-name').value.trim() === '') {
-                event.preventDefault();
-                submitBtn.classList.remove('submitting');
-                submitBtn.querySelector('.btn-text').textContent = 'Добавить блюдо';
-
-                // Show error animation
-                const dishNameGroup = document.querySelector('.dish-name-group');
-                dishNameGroup.classList.add('shake-error');
-                setTimeout(() => {
-                    dishNameGroup.classList.remove('shake-error');
-                }, 600);
-
-                return false;
-            }
-
-            // Form is valid, let it submit
+            // Add floating effect to nutrition items
+            const nutritionItems = document.querySelectorAll('.nutrition-item');
+            nutritionItems.forEach((item, index) => {
+                // Add staggered floating animation
+                item.style.animationDelay = `${index * 0.2}s`;
+                item.classList.add('floating');
+            });
         });
-
-        // Add floating effect to nutrition items
-        const nutritionItems = document.querySelectorAll('.nutrition-item');
-        nutritionItems.forEach((item, index) => {
-            // Add staggered floating animation
-            item.style.animationDelay = `${index * 0.2}s`;
-            item.classList.add('floating');
-        });
-    });
 </script>
 
 <style>
@@ -833,6 +891,16 @@
     .ingredients-list.searching {
         opacity: 0.5;
         transform: scale(0.98);
+    }
+
+    .search-prompt {
+        text-align: center;
+        color: var(--text-light);
+        padding: var(--spacing-8);
+        font-style: italic;
+        font-family: var(--font-secondary);
+        font-size: var(--font-size-lg);
+        grid-column: 1 / -1;
     }
 
     .ingredient-card {
