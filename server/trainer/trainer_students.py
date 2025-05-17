@@ -74,8 +74,10 @@ class Students:
             )
         today = date.today()
         today_str = today.strftime('%Y-%m-%d')
-        user_daily_metrics = list(database_query(sql=f"""select * from user_daily_metrics
-        where id={student_id} and date='{today_str}'""", fetch=True)[0])
+        print(student_id)
+        print(today_str)
+        user_daily_metrics = get_day_data(student_id, today_str)[0]
+        print(user_daily_metrics)
         return render_template(
             "Trainer/student.html",
             title=f"Ученик {user_info['name']}",

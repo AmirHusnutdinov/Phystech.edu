@@ -1,6 +1,6 @@
 from datetime import datetime, date, timezone
 
-from flask import request, session, jsonify, redirect
+from flask import request, render_template, session, jsonify, redirect
 
 from server.cloud.cloud_main import Cloud
 from server.database.use_DataBase import (
@@ -13,6 +13,7 @@ from server.database.use_DataBase import (
     get_trainer_id,
 )
 from server.service_files.links import *
+from settings import app
 from utils import render_template_with_user, debug_print
 
 
@@ -25,10 +26,8 @@ class DayPlan:
             dishes = get_dishes()
             user = get_user_data(session["user_id"])
             daily = get_day_data(session["user_id"], date.today())
-            diet_meals = database_query(f"""
-            select * from diets where owner={user["id"]}""", fetch=True)[0][3]
-            if not diet_meals:
-                diet_meals = []
+            print(daily)
+
             cookies2 = {"water": 0, "carbs": 0,
                         "calories": 0, "protein": 0, "fats": 0}
             if daily:
@@ -57,7 +56,7 @@ class DayPlan:
                             "sender_name": user_info["name"] if sender == "received" else "Вы",
                         }
                     )
-            print(diet_meals)
+
             return render_template_with_user(
                 "DayPlan/day_plan.html",
                 header_links=choose_header_links("authorized"),
@@ -70,8 +69,7 @@ class DayPlan:
                 save_day_plan=save_day_plan,
                 add_product=add_product,
                 add_recipes=add_recipes,
-                physical_exercises=physical_exercises,
-                diet_meals=list(diet_meals),
+                physical_exercises=physical_exercises
 
             )
         return redirect(main_page)
@@ -125,55 +123,21 @@ class DayPlan:
     @staticmethod
     def show_add_recipes():
         if "user_id" in session:
-            if request.method == "POST":
-                dish_name = request.form.get('dish_name')
-                total_calories = int(request.form.get('total_calories').split(".")[0])
-                total_proteins = float(request.form.get('total_proteins'))
-                total_fats = float(request.form.get('total_fats'))
-                total_carbs = float(request.form.get('total_carbs'))
-                total_weight = request.form.get('total_weight')
-                user = session["user_id"]
-                coefficient = int(total_weight) / 100
-                sql = f""" Insert into dish
-                                (name, owner, calories, proteins, carbohydrates, fats, category)
-                                 values ('{dish_name}', {user},
-                                {int(total_calories / coefficient)},
-                                {int(total_proteins / coefficient)},
-                                {int(total_carbs / coefficient)},
-                                {int(total_fats / coefficient)}, 'Castom')
-                                """
-                database_query(sql=sql, fetch=False)
             return render_template_with_user(
                 "DayPlan/add_recipe.html",
                 header_links=choose_header_links("authorized"),
                 title="Добавить блюдо",
-                dishes=get_dishes()
             )
         return redirect(main_page)
 
     @staticmethod
     def show_add_product_page():
         if "user_id" in session:
-            if request.method == "POST":
-                product_name = request.form.get('product-name')
-                protein = request.form.get('protein')
-                fat = request.form.get('fat')
-                carbs = request.form.get('carbs')
-                calories = request.form.get('calories')
-                user = session["user_id"]
-                sql = f""" Insert into dish
-                (name, owner, calories, proteins, carbohydrates, fats, category)
-                 values ('{product_name}', {user}, {calories}, {protein}, {carbs}, {fat}, 'Castom')
-                """
-                database_query(sql=sql, fetch=False)
-
             return render_template_with_user(
                 "DayPlan/add_product.html",
                 header_links=choose_header_links("authorized"),
                 title="Добавить продукт",
-                add_product=add_product
             )
-
         return redirect(main_page)
 
     @staticmethod
@@ -280,3 +244,4 @@ def validate_date(date_str):
         except ValueError:
             return False
     return redirect(main_page)
+
