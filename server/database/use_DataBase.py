@@ -228,6 +228,7 @@ def get_list_of_student(user_id):
 
 def add_student(trainer_id, student_id):
     sql = f"INSERT INTO student (id, student_id) VALUES ({trainer_id}, {student_id})"
+    database_query(sql)
 
 
 def get_message_history(first_id, second_id, since=None):
