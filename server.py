@@ -18,9 +18,7 @@ from server.news.news import News
 from server.selected_products.selectedProducts import SelectedProduct
 from server.service_files.links import *;
 from server.trainer.trainer_students import Students
-from settings import app as apchy
-
-app = apchy
+from settings import app
 
 app.secret_key = os.urandom(24)
 app.register_blueprint(food_blueprint)
