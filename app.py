@@ -232,5 +232,5 @@ def get_new_messages(student_id):
     return Students.get_new_messages(student_id)
 
 
-port = int(os.environ.get("PORT", 8080))
+port = int(os.environ.get("PORT", 8000))
 app.run(host="0.0.0.0", port=port, debug=False)
