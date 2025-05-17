@@ -77,7 +77,7 @@ class Registration:
             name = form.name.data  # Сохраните имя пользователя
             email = form.email.data
             password_of_user = form.password.data
-            hased_password = hash_password(password_of_user)
+            hased_password = password_of_user
             count_user = database_query(f"""SELECT COUNT(*) AS user_count 
                           FROM "User"
                           WHERE email = '{email}';""", True)
