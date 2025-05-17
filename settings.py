@@ -20,6 +20,16 @@ class Config:
 
 
 app = Flask(__name__)
+app.config.from_object(Config)  # Теперь параметры будут в app.config
+
+# Добавьте явно все параметры в конфиг
+app.config.update({
+    'BUCKET_MAIN_PATH': Config.BUCKET_MAIN_PATH,
+    'ENDPOINT_URL': Config.ENDPOINT_URL,
+    'REGION_NAME': Config.REGION_NAME,
+    'ACC_ACCESS_KEY': Config.ACC_ACCESS_KEY,
+    'ACC_SECRET_KEY': Config.ACC_SECRET_KEY
+})
 
 # folder for containing temp files before uploading them to the cloud
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp_uploads')
