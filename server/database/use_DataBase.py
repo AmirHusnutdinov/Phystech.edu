@@ -101,7 +101,7 @@ def get_day_data(user_id, date):
     ans = database_query(sql, True)
     if (len(ans) == 0):
         el = database_query(f"SELECT * FROM users WHERE id = {user_id}")
-        ans = {
+        ans = [{
             user_id,
             el[10],
             el[11],
@@ -115,7 +115,7 @@ def get_day_data(user_id, date):
             el[15],
             0,
             el[14]
-        }
+        }]
     return ans
 
 
