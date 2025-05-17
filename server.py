@@ -19,6 +19,8 @@ from server.service_files.links import *;
 from server.trainer.trainer_students import Students
 from settings import app
 
+app = app
+
 app.secret_key = os.urandom(24)
 app.register_blueprint(food_blueprint)
 
