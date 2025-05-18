@@ -63,6 +63,8 @@ class Cabinet:
             if not user["is_activated"]:
                 return redirect(process_registration)
             profile_form = ProfileForm(obj=user)
+            profile_form.activity.data = user["activity"]
+            profile_form.gender.data = user["sex"]
             nutrition_form = NutritionForm(obj=user)
             trainer_form = TrainerApplicationForm(obj=user)
             trainer_request_form = TrainerRequestForm()
@@ -277,8 +279,6 @@ class Cabinet:
 
 
 # Routes
-
-
 
 
 # Forms
