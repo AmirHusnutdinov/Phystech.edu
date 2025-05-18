@@ -28,6 +28,8 @@ class DayPlan:
             if (user["calories"] == None):
                 return redirect(cabinet)
             daily = get_day_data(session["user_id"], date.today())
+            print(daily)
+
             cookies2 = {"water": 0, "carbs": 0,
                         "calories": 0, "protein": 0, "fats": 0}
             if daily:
@@ -79,6 +81,7 @@ class DayPlan:
         if "user_id" in session:
             id = session["user_id"]
             data = request.json
+            print(data)
             weight = data.get("weight")
             water = data.get("water")
             target_kbzhu = data.get("targetKBZHU")
