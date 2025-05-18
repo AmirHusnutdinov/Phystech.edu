@@ -611,10 +611,17 @@ input:checked + .slider:before {
 @media (max-width: 768px) {
   .calendar-container {
     padding: 15px 10px;
+    overflow-x: auto; /* Добавлено для горизонтальной прокрутки */
+    width: 100%; /* Ограничение ширины */
+    max-width: 100vw; /* Не больше ширины экрана */
+    margin: 10px 0;
   }
 
   .calendar {
     grid-template-columns: repeat(7, minmax(40px, 1fr));
+    min-width: 300px; /* Минимальная ширина для 7 колонок */
+    width: 100%;
+    overflow: visible;
   }
 
   .nav-btn {
@@ -683,12 +690,13 @@ input:checked + .slider:before {
 @media (max-width: 576px) {
   .calendar-container {
     padding: 10px 5px;
-    width: 98%;
+    width: 100%;
+    margin: 5px 0;
   }
 
   .calendar {
     grid-template-columns: repeat(7, minmax(30px, 1fr));
-    gap: 3px;
+    min-width: 280px; /* Минимальная ширина для 7 колонок */
   }
 
   .header_calendar {
@@ -796,7 +804,8 @@ input:checked + .slider:before {
 @media (max-width: 375px) {
   .calendar {
     grid-template-columns: repeat(7, minmax(25px, 1fr));
-    gap: 2px;
+    min-width: 250px; /* Минимальная ширина для 7 колонок */
+    gap: 1px;
   }
 
   .day {
@@ -830,6 +839,12 @@ input:checked + .slider:before {
     height: 60vh;
     min-height: 250px;
     padding: 10px;
+    width: calc(100vw - 30px); /* Ширина с учетом отступов */
+    margin: 0 auto;
+  }
+
+  .chart-view {
+    overflow-x: auto; /* Горизонтальная прокрутка если нужно */
   }
 }
 
@@ -847,5 +862,31 @@ input:checked + .slider:before {
 
 .dark-theme .nutrient-section:nth-child(4) {
   background-color: rgba(255, 69, 0, 0.3);
+}
+
+.calendar-page {
+  min-height: calc(79vh);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden; /* Предотвращает горизонтальный скролл страницы */
+}
+
+.calendar-container {
+  background: var(--card-bg-color);
+  border-radius: 20px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  width: 95%;
+  max-width: 1200px;
+  padding: 15px;
+  animation: fadeIn 1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  margin: 10px auto;
+  flex: 1;
+  min-height: auto;
+  overflow: hidden; /* Скрывает содержимое, выходящее за границы */
 }
 
