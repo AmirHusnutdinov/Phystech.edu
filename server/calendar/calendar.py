@@ -13,8 +13,6 @@ class Calendar:
             user_id = session["user_id"]
             user_in_all_time = get_all_day_data(user_id)
             user_train = get_all_trains(user_id)
-            print(user_in_all_time)
-            print(user_train)
             return render_template_with_user(
                 "Calendar/calendar.html",
                 header_links=choose_header_links("authorized"),
@@ -31,7 +29,6 @@ class Calendar:
             user_id = us_id
             user_in_all_time = get_all_day_data(user_id)
             user_train = get_all_trains(user_id)
-            print(user_in_all_time)
             return render_template_with_user(
                 "Calendar/calendar.html",
                 header_links=choose_header_links("authorized"),

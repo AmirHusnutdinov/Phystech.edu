@@ -105,12 +105,16 @@ function generateNutritionData(month, year) {
             cookie.date[1] === month + 1 &&
             cookie.date[2] === i
         );
-        const dayCal = cookies2.find(cookie =>
+
+        // Находим все записи для этого дня и суммируем calories
+        const dayCals = cookies2.filter(cookie =>
             cookie.date[0] === year &&
             cookie.date[1] === month + 1 &&
             cookie.date[2] === i
         );
-        if (dayData && dayCal) {
+        const totalCaloriesPhys = dayCals.reduce((sum, item) => sum + item.calories, 0);
+
+        if (dayData && dayCals.length > 0) {
             monthData[i] = {
                 calories: dayData.calories,
                 protein: dayData.proteins,
@@ -120,7 +124,7 @@ function generateNutritionData(month, year) {
                 planProtein: dayData.planProteins,
                 planFats: dayData.planFats,
                 planCarbs: dayData.planCarbs,
-                caloriesPhys: dayCal.calories
+                caloriesPhys: totalCaloriesPhys
             };
         } else if (dayData) {
             monthData[i] = {
@@ -134,7 +138,7 @@ function generateNutritionData(month, year) {
                 planCarbs: dayData.planCarbs,
                 caloriesPhys: 0
             };
-        } else if (dayCal) {
+        } else if (dayCals.length > 0) {
             monthData[i] = {
                 calories: 0,
                 protein: 0,
@@ -144,7 +148,7 @@ function generateNutritionData(month, year) {
                 planProtein: 0,
                 planFats: 0,
                 planCarbs: 0,
-                caloriesPhys: dayCal.calories
+                caloriesPhys: totalCaloriesPhys
             };
         } else {
             monthData[i] = {
