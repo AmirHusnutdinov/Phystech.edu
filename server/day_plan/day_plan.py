@@ -1,6 +1,6 @@
 from datetime import datetime, date, timezone
 
-from flask import request, render_template, session, jsonify, redirect
+from flask import request, session, jsonify, redirect
 
 from server.cloud.cloud_main import Cloud
 from server.database.use_DataBase import (
@@ -13,7 +13,6 @@ from server.database.use_DataBase import (
     get_trainer_id,
 )
 from server.service_files.links import *
-from settings import app
 from utils import render_template_with_user, debug_print
 
 
@@ -28,7 +27,6 @@ class DayPlan:
             if (user["calories"] == None):
                 return redirect(cabinet)
             daily = get_day_data(session["user_id"], date.today())
-            print(daily)
 
             cookies2 = {"water": 0, "carbs": 0,
                         "calories": 0, "protein": 0, "fats": 0}
@@ -246,4 +244,3 @@ def validate_date(date_str):
         except ValueError:
             return False
     return redirect(main_page)
-

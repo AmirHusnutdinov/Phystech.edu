@@ -1,11 +1,13 @@
 import os
+from datetime import timedelta
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import request
+from flask import request, url_for
 from flask import session, redirect, render_template
 
 from server.admin.admin import Admin
 from server.calendar.calendar import Calendar
+from server.database.use_DataBase import database_query, get_user_data
 from server.day_plan.day_plan import DayPlan
 from server.food_controler.food_controller import food_blueprint, delete_old_diets
 from server.login.authorization import Authorization
@@ -70,16 +72,91 @@ def save_data():
     return redirect(main_page)
 
 
-@app.route(physical_exercises)
+exercise_met = {
+    "Ходьба": 3.5,
+    "Бег": 8.0,
+    "Езда на велосипеде": 8.0,
+    "Эллипсоид": 6.0,
+    "Эргометр": 6.0,
+    "Степпер": 7.0,
+    "HIIT": 9.0,
+    "Пеший туризм": 5.0,
+    "Йога": 2.5,  # Йога
+    "Функционально-силовая тренировка": 6.0,
+    "Танцы": 5.0,
+    "Плавание": 6.0
+}
+
+exercise_images = {
+    "Ходьба": "exercises/exercise_walking.png",
+    "Бег": "exercises/exercise_running.png",
+    "Езда на велосипеде": "exercises/exercise_cycling.png",
+    "Эллипсоид": "exercises/exercise_ellipsoid.png",
+    "Эргометр": "exercises/exercise_ergometer.png",
+    "Степпер": "exercises/exercise_stepper.png",
+    "HIIT": "exercises/exercise_hiit.png",
+    "Пеший туризм": "exercises/exercise_hiking.png",
+    "Йога": "exercises/exercise_yoga.png",
+    "Функционально-силовая тренировка": "exercises/exercise_strength.png",
+    "Танцы": "exercises/exercise_dance.png",
+    "Плавание": "exercises/exercise_swimming.png",
+}
+
+
+@app.route(physical_exercises, methods=["GET", "POST"])
 def open_physical_exercises_page():
     if "user_id" in session:
+        user = get_user_data(session["user_id"])
+
+        if request.method == "POST":
+            data = request.get_json()
+            exercise_name = data.get('exercise')
+            date_str = data.get('date')
+            duration_seconds = data.get('duration')
+
+            calories = float(user["weight"]) * exercise_met[exercise_name] * duration_seconds / 3600
+            td = timedelta(seconds=duration_seconds)
+            hours, remainder = divmod(td.seconds, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            total_duration = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
+
+            database_query(f"""Insert into train
+            (id, date, calories, type, time) values (
+                {user["id"]},
+                '{date_str.split("T")[0]}',
+                {calories},
+                '{exercise_name}',
+                '{total_duration}')""", fetch=False)
+
+            return redirect(physical_exercises)
+
+        workout_history = database_query(f"""Select * from train 
+        where id={user["id"]} and date >= CURRENT_DATE - INTERVAL '7 days'""", fetch=True)
+        total_seconds = 0
+        total_calories = 0
+
+        for i in range(len(workout_history)):
+            workout_history[i] = list(workout_history[i])
+            workout_history[i].append(exercise_images[workout_history[i][3]])
+            total_calories += workout_history[i][2]
+            h, m, s = map(int, str(workout_history[i][4]).split(':'))
+            total_seconds += h * 3600 + m * 60 + s
+
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+        total_time = f"{hours:02d}:{minutes:02d}:{seconds:02d}"
         images = DayPlan.cloud.get_folder('exercises')
         return render_template(
             "DayPlan/physical_exercises.html",
             header_links=choose_header_links("authorized"),
             title="Трекер Физических Упражнений",
             day_plan=day_plan,
-            images=images
+            images=images,
+            workout_history=workout_history,
+            len_workout_history=len(workout_history),
+            total_time=total_time,
+            total_calories=total_calories
         )
     return redirect(main_page)
 
